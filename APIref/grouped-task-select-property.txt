@@ -1,0 +1,34 @@
+Grouped task property selection
+
+You can specify which properties will be included in the grouped task prompt. Use this to limit the information provided in the prompt, and to reduce the prompt length.
+
+In the below example, the prompt will only include the question and answer properties. Note that the answer property is not explicitly retrieved in the query, but is used by the prompt.
+
+```graphql
+{
+  Get {
+    JeopardyQuestion (
+      nearText: {
+        concepts: ["Australian animals"]
+      }
+      limit: 3
+    ) {
+      question
+      points
+      _additional {
+        generate(
+          groupedResult: {
+            task: """
+              What do these animals have in common, if anything?
+            """
+            properties: ["answer", "question"]
+          }
+        ) {
+          groupedResult
+          error
+        }
+      }
+    }
+  }
+}
+```

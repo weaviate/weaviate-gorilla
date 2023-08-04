@@ -1,0 +1,66 @@
+{
+    "class": "User",
+    "description": "A user.",
+    "properties": [
+      {
+        "name": "userId",
+        "dataType": ["uuid"],
+        "description": "A unique identifier for each user.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": true,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      },
+      {
+        "name": "userName",
+        "dataType": ["text"],
+        "description": "The name of the user.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": false,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      },
+      {
+        "name": "posts",
+        "dataType": ["Post"],
+        "description": "Posts made by the user.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": true,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      },
+      {
+        "name": "comments",
+        "dataType": ["Comment"],
+        "description": "Comments made by the user.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": true,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      },
+      {
+        "name": "reactions",
+        "dataType": ["Reaction"],
+        "description": "Reactions made by the user.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": true,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      }
+    ]
+  }

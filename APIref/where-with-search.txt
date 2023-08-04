@@ -1,0 +1,28 @@
+With a search operator
+
+Conditional filters can be combined with a search operator such as nearXXX, hybrid or bm25.
+
+The following example adds a points filter to a nearText query, where the points property must be greater than 200. Note that the valueInt is used as the property datatype is int.
+
+```graphql
+{
+  Get {
+    JeopardyQuestion(
+      limit: 3
+      where: {
+        path: ["points"],
+        operator: GreaterThan,
+        valueInt: 200
+      }
+      nearText: {
+        concepts: ["fashion icons"]
+    }
+    ) {
+      question
+      answer
+      round
+      points
+    }
+  }
+}
+```

@@ -1,0 +1,66 @@
+{
+    "class": "Movie",
+    "description": "A movie.",
+    "properties": [
+      {
+        "name": "movieId",
+        "dataType": ["uuid"],
+        "description": "A unique identifier for each movie.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": true,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      },
+      {
+        "name": "title",
+        "dataType": ["text"],
+        "description": "The title of the movie.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": false,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      },
+      {
+        "name": "releaseDate",
+        "dataType": ["date"],
+        "description": "The release date of the movie.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": true,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      },
+      {
+        "name": "genre",
+        "dataType": ["text"],
+        "description": "The genre of the movie.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": false,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      },
+      {
+        "name": "director",
+        "dataType": ["Director"],
+        "description": "The director of the movie.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": true,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      }
+    ]
+  }

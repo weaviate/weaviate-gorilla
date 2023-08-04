@@ -1,0 +1,39 @@
+Single prompt property selection
+
+When using generative search with single prompts, you must specify which object properties to use in the prompt.
+
+The properties to use as a part of the prompt do not need to be among the properties retrieved in the query.
+
+In the below example, the query:
+
+Retrieves two JeopardyQuestion objects related to World history,
+Prepares a prompt for each object, based on the prompt "Convert this quiz question: {question} and answer: {answer} into a trivia tweet. where {question} and {answer} are object properties, and
+Retrieves a generated text for each object (2 total), and
+Returns the generated text as a part of each object.
+Note that the question and answer properties are not retrieved in the query, but are used in the prompt.
+
+```graphql
+{
+  Get {
+    JeopardyQuestion (
+      nearText: {
+        concepts: ["World history"]
+      }
+      limit: 2
+    ) {
+      _additional {
+        generate(
+          singleResult: {
+            prompt: """
+              Convert this quiz question: {question} and answer: {answer} into a trivia tweet.
+            """
+          }
+        ) {
+          singleResult
+          error
+        }
+      }
+    }
+  }
+}
+```

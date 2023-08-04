@@ -1,0 +1,29 @@
+With nearXXX
+When using a similarity search operator (i.e. nearXXX) with Aggregate, you should include a way to limit the search results. This is because a vector search in itself does not exclude any objects from the results set - all objects have some degree of similarity to the query.
+
+Thus, for the vector search to affect the Aggregate output, you must set a limit on:
+
+The number of results returned (with limit), or
+How similar the results are to the query (with distance).
+
+Set a maximum distance
+You can set the distance operator to specify the maximum dissimilarity (i.e. minimum similarity) of results to be aggregated.
+
+The below query retrieves the 10 question objects with vectors that are within a distance of 0.19 to "animals in space", and returns the sum total of the point property.
+
+```graphql
+{
+  Aggregate {
+    JeopardyQuestion(
+      nearText: {
+        concepts: ["animals in space"]
+        distance: 0.19
+      }
+    ) {
+      points {
+        sum
+      }
+    }
+  }
+}
+```

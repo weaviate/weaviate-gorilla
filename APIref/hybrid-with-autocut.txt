@@ -1,0 +1,24 @@
+Autocut in Hybrid Search
+
+Another way to limit the results returned by a hybrid search is to use the `autocut` filter. Autocut takes a positive integer parameter `N`, looks at the score of each result, and stops returning results after the `N`th "drop" in score. Because `hybrid` combines a vector search with a keyword (BM25F) search, their scores/distances cannot be directly compared, so the cut points may not be intuitive.
+
+Autocut can be used as follows:
+
+```graphql
+{
+  Get {
+    JeopardyQuestion(
+      hybrid: {
+        query: "safety"
+      }
+      autocut: 1
+    ) {
+      question
+      answer
+      _additional {
+        score
+      }
+    }
+  }
+}
+```

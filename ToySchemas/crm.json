@@ -1,0 +1,42 @@
+{
+    "class": "Customer",
+    "description": "A customer in the CRM system.",
+    "properties": [
+      {
+        "name": "customerId",
+        "dataType": ["uuid"],
+        "description": "A unique identifier for each customer.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": true,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      },
+      {
+        "name": "name",
+        "dataType": ["text"],
+        "description": "The name of the customer.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": false,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      },
+      {
+        "name": "email",
+        "dataType": ["text"],
+        "description": "The email of the customer.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": true,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      }
+    ]
+}

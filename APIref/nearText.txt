@@ -1,0 +1,26 @@
+1. nearText
+- `near<Media>` - Finds objects closest to an input medium:
+    - E.g.: Use it to find text objects most similar to `cute animals`, or images most similar to a particular image.
+
+You can use these operators to find objects most similar to a raw (un-vectorized) input, such as text or image. For text objects, you can provide an input text to `nearText`, and for image objects, you can provide an input image to `nearImage`. Or either if you are using CLIP.
+
+The example below searches the `JeopardyQuestion` class for the top 2 objects best matching `"animals in movies"`, using `nearText`:
+
+```graphql
+{
+  Get {
+    JeopardyQuestion(
+      limit: 2
+      nearText: {
+        concepts: ["animals in movies"]
+      }
+    ) {
+      question
+      answer
+      _additional {
+        distance
+      }
+    }
+  }
+}
+```

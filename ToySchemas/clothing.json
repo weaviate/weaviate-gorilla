@@ -1,0 +1,78 @@
+{
+    "class": "ClothingItem",
+    "description": "An item of clothing.",
+    "properties": [
+      {
+        "name": "itemId",
+        "dataType": ["uuid"],
+        "description": "A unique identifier for each clothing item.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": true,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      },
+      {
+        "name": "name",
+        "dataType": ["text"],
+        "description": "The name of the clothing item.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": false,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      },
+      {
+        "name": "size",
+        "dataType": ["text"],
+        "description": "The size of the clothing item.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": false,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      },
+      {
+        "name": "color",
+        "dataType": ["text"],
+        "description": "The color of the clothing item.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": false,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      },
+      {
+        "name": "material",
+        "dataType": ["text"],
+        "description": "The material of the clothing item.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": false,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      },
+      {
+        "name": "brand",
+        "dataType": ["Brand"],
+        "description": "The brand of the clothing item.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": true,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      }
+    ]
+  }

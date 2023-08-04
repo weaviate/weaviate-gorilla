@@ -1,0 +1,16 @@
+Simple Get to return a single property
+
+`Get` function requirements
+To retrieve objects from Weaviate, you must use the `Get` function and specify at least:
+
+- The target `class` to search, and
+- One or more `properties` to retrieve.
+
+```graphql
+{
+  Get {
+    JeopardyQuestion {
+      question
+    }
+  }
+```

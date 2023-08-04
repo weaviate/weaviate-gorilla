@@ -1,0 +1,66 @@
+{
+    "class": "Workout",
+    "description": "A workout.",
+    "properties": [
+      {
+        "name": "workoutId",
+        "dataType": ["uuid"],
+        "description": "A unique identifier for each workout.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": true,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      },
+      {
+        "name": "workoutName",
+        "dataType": ["text"],
+        "description": "The name of the workout.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": false,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      },
+      {
+        "name": "date",
+        "dataType": ["date"],
+        "description": "The date of the workout.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": true,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      },
+      {
+        "name": "user",
+        "dataType": ["User"],
+        "description": "The user who did the workout.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": true,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      },
+      {
+        "name": "exercises",
+        "dataType": ["Exercise"],
+        "description": "The exercises in the workout.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": true,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      }
+    ]
+  }

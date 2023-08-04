@@ -1,0 +1,29 @@
+Add a conditional (`where`) filter
+
+You can add a conditional filter to your search results using the `where` argument.
+
+The example below searches the `JeopardyQuestion` class for the top 2 objects best matching `"animals in movies"`, as long as their `round` property is exactly `"Double Jeopardy!"`:
+
+```graphql
+{
+  Get {
+    JeopardyQuestion(
+      limit: 2
+      nearText: {
+        concepts: ["animals in movies"]
+      }
+      where: {
+        path: ["round"]
+        operator: Equal
+        valueText: "Double Jeopardy!"
+      }
+    ) {
+      question
+      answer
+      _additional {
+        distance
+      }
+    }
+  }
+}
+```

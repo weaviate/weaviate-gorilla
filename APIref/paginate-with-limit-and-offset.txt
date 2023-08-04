@@ -1,0 +1,22 @@
+Paginate with `limit` and `offset`
+
+If you only want the `n` results after the first `m` results from the query, you can do this with `limit` and `offset` as shown below.
+
+Be aware that although you will only see `n` results, this could become an expensive operation as `m` grows larger, as Weaviate must fetch `n+m` results.
+
+FOR EXHAUSTIVE RETRIEVAL, USE `after` INSTEAD.
+
+If you want to list and retrieve all objects from a `class`, use the cursor API instead with the `after` operator.
+
+```graphql
+{
+  Get {
+    JeopardyQuestion (
+      limit: 1
+      offset: 1
+    ) {
+      question
+    }
+  }
+}
+```

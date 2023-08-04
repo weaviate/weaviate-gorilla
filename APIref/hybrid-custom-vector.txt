@@ -1,0 +1,22 @@
+Custom Vector for Hybrid Search
+
+You can provide your own `vector` input to the hybrid query. In this scenario, Weaviate will use the query string for the `bm25` search and the input vector for the vector search.
+
+The below example supplies the vector for "italian food", while using "food" as the query text. Note how the results have now skewed towards Italian food.
+
+```graphql
+{
+  Get {
+    JeopardyQuestion(
+      limit: 3
+      hybrid: {
+        query: "food"
+        vector: [0.013085687533020973, -0.00777443777769804, 0.005439540836960077, ...]
+      }
+    ) {
+      question
+      answer
+    }
+  }
+}
+```

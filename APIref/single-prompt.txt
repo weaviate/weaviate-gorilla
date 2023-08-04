@@ -1,0 +1,37 @@
+Single prompt
+
+A single prompt generative search returns a generated response for each object in the query results. For single prompt generative searches, you must specify which object properties to use in the prompt.
+
+In the below example, the query:
+
+Retrieves two JeopardyQuestion objects related to World history,
+Prepares a prompt for each object, based on the prompt "Convert the following into a question for twitter. Include emojis for fun, but do not include the answer: {question}.", where {question} is an object property, and
+Retrieves a generated text for each object (2 total), and
+Returns the generated text as a part of each object, along with the question property.
+
+```graphql
+{
+  Get {
+    JeopardyQuestion (
+      nearText: {
+        concepts: ["World history"]
+      }
+      limit: 2
+    ) {
+      question
+      _additional {
+        generate(
+          singleResult: {
+            prompt: """
+              Convert the following into a question for twitter. Include emojis for fun, but do not include the answer: {question}.
+            """
+          }
+        ) {
+          singleResult
+          error
+        }
+      }
+    }
+  }
+}
+```

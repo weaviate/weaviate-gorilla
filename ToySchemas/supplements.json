@@ -1,0 +1,66 @@
+{
+    "class": "Supplement",
+    "description": "A nutritional supplement.",
+    "properties": [
+      {
+        "name": "supplementId",
+        "dataType": ["uuid"],
+        "description": "A unique identifier for each supplement.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": true,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      },
+      {
+        "name": "name",
+        "dataType": ["text"],
+        "description": "The name of the supplement.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": false,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      },
+      {
+        "name": "ingredients",
+        "dataType": ["text[]"],
+        "description": "The ingredients of the supplement.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": false,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      },
+      {
+        "name": "dosage",
+        "dataType": ["text"],
+        "description": "The recommended dosage of the supplement.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": false,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      },
+      {
+        "name": "manufacturer",
+        "dataType": ["Manufacturer"],
+        "description": "The manufacturer of the supplement.",
+        "moduleConfig": {
+          "text2vec-transformers": {
+            "skip": true,
+            "vectorizeClassName": false,
+            "vectorizePropertyName": false
+          }
+        }
+      }
+    ]
+  }

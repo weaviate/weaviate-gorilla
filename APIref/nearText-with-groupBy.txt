@@ -1,0 +1,40 @@
+Group results by a property or cross-reference
+
+You can group search results by any arbitrary property or cross-reference.
+
+The example below searches the `JeopardyQuestion` class for objects best matching `"animals in movies"`, fetching the 10 closest results. Then those results are grouped by `round`, returning a maximum of two groups, each group with a maximum of two results (`hits`):
+
+```graphql
+{
+  Get {
+    JeopardyQuestion(
+      nearText: {
+        concepts: ["animals in movies"],
+      }
+      limit: 10
+      groupBy: {
+        path: ["round"],
+        groups: 2,
+        objectsPerGroup: 2
+      }
+    ) {
+      _additional {
+        group {
+          id
+          groupedBy {
+            path
+            value
+          }
+          count
+          minDistance
+          maxDistance
+          hits {
+            question
+            answer
+          }
+        }
+      }
+    }
+  }
+}
+```

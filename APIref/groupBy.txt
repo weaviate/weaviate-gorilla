@@ -1,0 +1,64 @@
+`groupBy`
+
+To maintain granularity while viewing the broader context of the objects (e.g. documents as a whole), a `groupBy` search may be appropriate.
+
+To use `groupBy`:
+
+- Provide the property by which the the results will be grouped,
+- The maximum number of groups, and
+- The maximum number of objects per group.
+
+In this example, you have a collection of `Passage` objects with, each object belonging to a `Document`.
+
+You could group the results of a `Passage` search by any of its property, including the cross-reference property linking `Passage` to a parent `Document` with a search as below.
+
+Here, the `groups` and `objectsPerGroup` limits are customizable.
+
+This example:
+
+1. retrieves the top 100 objects
+2. groups them to identify the up to 2 most relevant `Document` objects,
+3. based on the up to top 2 `Passage` objects from each `Document`.
+
+```graphql
+{
+  Get{
+    Passage(
+      limit: 100
+      nearObject: {
+        id: "00000000-0000-0000-0000-000000000001"
+      }
+      groupBy: {
+        path: ["content"]
+        groups: 2
+        objectsPerGroup: 2
+      }
+    ){
+      _additional {
+        id
+        group {
+          id
+          count
+          groupedBy { value path }
+          maxDistance
+          minDistance
+          hits{
+            content
+            ofDocument {
+              ... on Document {
+                _additional {
+                  id
+                }
+              }
+            }
+            _additional {
+              id
+              distance
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```

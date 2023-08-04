@@ -1,0 +1,23 @@
+Selected properties only for BM25 scoring in Hybrid Search
+
+You can specify the object `properties` for the `bm25` portion of the search.
+
+The below example performs a `bm25` search for the keyword `food` in the `question` property only, and combines it with vector search results for `food`.
+
+```graphql
+{
+  Get {
+    JeopardyQuestion(
+      limit: 3
+      hybrid: {
+        query: "food"
+        properties: ["question"]
+        alpha: 0.25
+      }
+    ) {
+      question
+      answer
+    }
+  }
+}
+```
