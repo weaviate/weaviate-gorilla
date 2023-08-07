@@ -8,7 +8,7 @@ The following example specifies that the round property must equal "Double Jeopa
 {
   Get {
     JeopardyQuestion(
-      limit: 3
+      limit: 3,
       where: {
         path: ["round"],
         operator: Equal,

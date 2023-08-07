@@ -11,14 +11,14 @@ the points property must be greater than 700, Or, the points property must be le
 {
   Get {
     JeopardyQuestion(
-      limit: 3
+      limit: 3,
       where: {
         operator: And,
         operands: [
           {
             path: ["answer"],
             operator: Like,
-            valueText: "*nest*",
+            valueText: "*nest*"
           },
           {
             operator: Or,
@@ -26,12 +26,12 @@ the points property must be greater than 700, Or, the points property must be le
                 {
                     path: ["points"],
                     operator: GreaterThan,
-                    valueInt: 700,
+                    valueInt: 700
                 },
                 {
                     path: ["points"],
                     operator: LessThan,
-                    valueInt: 300,
+                    valueInt: 300
                 },
             ]
           }

@@ -13,7 +13,7 @@ The example below searches the `JeopardyQuestion` class for objects best match
   Get {
     JeopardyQuestion(
       nearText: {
-        concepts: ["animals in movies"]
+        concepts: ["animals in movies"],
         distance: 0.18
       }
     ) {

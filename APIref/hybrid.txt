@@ -13,7 +13,7 @@ It ranks the results using a combination of the `bm25` and vector search ranki
 {
   Get {
     JeopardyQuestion(
-      limit: 3
+      limit: 3,
       hybrid: {
         query: "food"
       }

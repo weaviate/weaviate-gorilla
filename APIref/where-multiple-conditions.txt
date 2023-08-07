@@ -11,19 +11,19 @@ the points property must be less than 600.
 {
   Get {
     JeopardyQuestion(
-      limit: 3
+      limit: 3,
       where: {
         operator: And,
         operands: [
           {
             path: ["round"],
             operator: Equal,
-            valueText: "Double Jeopardy!",
+            valueText: "Double Jeopardy!"
           },
           {
             path: ["points"],
             operator: LessThan,
-            valueInt: 600,
+            valueInt: 600
           },
         ]
 

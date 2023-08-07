@@ -8,7 +8,7 @@ Using the JeopardyQuestions dataset, let's say we want to find Q&As about flying
     JeopardyQuestion(
       nearText: {
         concepts: "flying"
-      }
+      },
       limit: 10
     ) {
       answer

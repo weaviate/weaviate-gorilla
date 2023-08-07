@@ -8,7 +8,7 @@ The example below uses rerank in a bm25 query to sort the top results for the qu
     JeopardyQuestion(
       bm25: {
         query: "paper"
-      }
+      },
       limit: 10
     ) {
       answer

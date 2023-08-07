@@ -8,9 +8,9 @@ The below example supplies the vector for "italian food", while using "food" as 
 {
   Get {
     JeopardyQuestion(
-      limit: 3
+      limit: 3,
       hybrid: {
-        query: "food"
+        query: "food",
         vector: [0.013085687533020973, -0.00777443777769804, 0.005439540836960077, ...]
       }
     ) {

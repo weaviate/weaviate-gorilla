@@ -10,13 +10,13 @@ The below example searches for objects containing the keyword `food` in any fi
 {
   Get {
     JeopardyQuestion(
-      limit: 3
+      limit: 3,
       bm25: {
         query: "food"
-      }
+      },
       where: {
-        path: ["round"]
-        operator: Equal
+        path: ["round"],
+        operator: Equal,
         valueText: "Double Jeopardy!"
       }
     ) {

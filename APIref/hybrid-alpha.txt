@@ -8,9 +8,9 @@ The following example uses an alpha of `0.25`, favoring keyword search results.
 {
   Get {
     JeopardyQuestion(
-      limit: 3
+      limit: 3,
       hybrid: {
-        query: "food"
+        query: "food",
         alpha: 0.25
       }
     ) {

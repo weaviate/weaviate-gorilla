@@ -8,7 +8,7 @@ Another way to limit the results returned by a similarity search is to use the 
     JeopardyQuestion(
       nearText: {
         concepts: ["animals in movies"]
-      }
+      },
       autocut: 1
     ) {
       question

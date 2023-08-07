@@ -10,9 +10,9 @@ The following example specifies the fusion type of `relativeScoreFusion`.
 {
   Get {
     JeopardyQuestion(
-      limit: 3
+      limit: 3,
       hybrid: {
-        query: "food"
+        query: "food",
         fusionType: relativeScoreFusion
       }
     ) {

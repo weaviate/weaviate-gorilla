@@ -8,9 +8,9 @@ The below example searches for objects containing the keyword `food` in the `
 {
   Get {
     JeopardyQuestion(
-      limit: 3
+      limit: 3,
       bm25: {
-        query: "food"
+        query: "food",
         properties: ["question^2", "answer"]
       }
     ) {

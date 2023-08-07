@@ -10,7 +10,7 @@ It ranks the results using BM25F, and returns the top 3.
 {
   Get {
     JeopardyQuestion(
-      limit: 3
+      limit: 3,
       bm25: {
         query: "food"
       }

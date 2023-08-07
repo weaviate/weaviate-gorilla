@@ -10,7 +10,7 @@ Autocut can be used as follows:
     JeopardyQuestion(
       bm25: {
         query: "safety"
-      }
+      },
       autocut: 1
     ) {
       question

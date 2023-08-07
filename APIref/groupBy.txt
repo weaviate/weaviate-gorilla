@@ -24,13 +24,13 @@ This example:
 {
   Get{
     Passage(
-      limit: 100
+      limit: 100,
       nearObject: {
         id: "00000000-0000-0000-0000-000000000001"
-      }
+      },
       groupBy: {
-        path: ["content"]
-        groups: 2
+        path: ["content"],
+        groups: 2,
         objectsPerGroup: 2
       }
     ){

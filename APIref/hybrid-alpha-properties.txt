@@ -8,10 +8,10 @@ The below example performs a `bm25` search for the keyword `food` in the `q
 {
   Get {
     JeopardyQuestion(
-      limit: 3
+      limit: 3,
       hybrid: {
-        query: "food"
-        properties: ["question"]
+        query: "food",
+        properties: ["question"],
         alpha: 0.25
       }
     ) {

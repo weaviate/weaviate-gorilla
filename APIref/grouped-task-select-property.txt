@@ -10,7 +10,7 @@ In the below example, the prompt will only include the question and answer prope
     JeopardyQuestion (
       nearText: {
         concepts: ["Australian animals"]
-      }
+      },
       limit: 3
     ) {
       question
@@ -20,7 +20,7 @@ In the below example, the prompt will only include the question and answer prope
           groupedResult: {
             task: """
               What do these animals have in common, if anything?
-            """
+            """,
             properties: ["answer", "question"]
           }
         ) {

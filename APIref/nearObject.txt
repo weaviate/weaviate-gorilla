@@ -6,7 +6,7 @@ You can use the `nearObject` operator to find objects most similar to an exist
 {
   Get {
     JeopardyQuestion (
-      limit: 2
+      limit: 2,
       nearObject: {
         id: "56b9449e-65db-5df4-887b-0a4773f52aa7"
       }

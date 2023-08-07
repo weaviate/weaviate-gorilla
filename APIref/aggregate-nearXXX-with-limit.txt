@@ -17,7 +17,7 @@ The below query retrieves the 10 question objects with vectors that are closest 
     JeopardyQuestion(
       nearText: {
         concepts: ["animals in space"]
-      }
+      },
       objectLimit: 10
     ) {
       points {

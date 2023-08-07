@@ -8,13 +8,13 @@ The example below searches the `JeopardyQuestion` class for the top 2 objects 
 {
   Get {
     JeopardyQuestion(
-      limit: 2
+      limit: 2,
       nearText: {
         concepts: ["animals in movies"]
-      }
+      },
       where: {
-        path: ["round"]
-        operator: Equal
+        path: ["round"],
+        operator: Equal,
         valueText: "Double Jeopardy!"
       }
     ) {

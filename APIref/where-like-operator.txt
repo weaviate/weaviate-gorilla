@@ -8,7 +8,7 @@ The following example filters for objects including the text "inter" in any part
 {
   Get {
     JeopardyQuestion(
-      limit: 3
+      limit: 3,
       where: {
         path: ["answer"],
         operator: Like,

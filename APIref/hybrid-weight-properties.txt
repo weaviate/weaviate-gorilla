@@ -8,10 +8,10 @@ The below example searches for objects containing the keyword `food`. The BM25 
 {
   Get {
     JeopardyQuestion(
-      limit: 3
+      limit: 3,
       hybrid: {
-        query: "food"
-        properties: ["question^2", "answer"]
+        query: "food",
+        properties: ["question^2", "answer"],
         alpha: 0.25
       }
     ) {

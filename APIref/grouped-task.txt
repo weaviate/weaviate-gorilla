@@ -20,7 +20,7 @@ Note that the prompt includes information about the type of the animal (from the
     JeopardyQuestion (
       nearText: {
         concepts: ["Cute animals"]
-      }
+      },
       limit: 3
     ) {
       points

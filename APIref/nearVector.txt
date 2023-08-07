@@ -6,7 +6,7 @@ You can use the `nearVector` operator to find objects most similar to an inpu
 {
   Get {
     JeopardyQuestion (
-      limit: 2
+      limit: 2,
       nearVector: {
         vector: [-0.0125526935, -0.021168863, -0.01076519, ...]
       }

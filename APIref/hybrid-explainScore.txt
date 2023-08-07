@@ -10,7 +10,7 @@ The below example adds the two properties to the list of retrieved properties.
 {
   Get {
     JeopardyQuestion(
-      limit: 3
+      limit: 3,
       hybrid: {
         query: "food"
       }

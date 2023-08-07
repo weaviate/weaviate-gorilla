@@ -13,4 +13,5 @@ To retrieve objects from Weaviate, you must use the `Get` function and specify
       question
     }
   }
+}
 ```

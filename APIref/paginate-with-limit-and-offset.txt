@@ -12,7 +12,7 @@ If you want to list and retrieve all objects from a `class`, use the cursor API
 {
   Get {
     JeopardyQuestion (
-      limit: 1
+      limit: 1,
       offset: 1
     ) {
       question

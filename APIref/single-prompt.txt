@@ -15,7 +15,7 @@ Returns the generated text as a part of each object, along with the question pro
     JeopardyQuestion (
       nearText: {
         concepts: ["World history"]
-      }
+      },
       limit: 2
     ) {
       question

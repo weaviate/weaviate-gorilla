@@ -16,7 +16,7 @@ The below query retrieves the 10 question objects with vectors that are within a
   Aggregate {
     JeopardyQuestion(
       nearText: {
-        concepts: ["animals in space"]
+        concepts: ["animals in space"],
         distance: 0.19
       }
     ) {

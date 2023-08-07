@@ -14,9 +14,9 @@ To limit the number of results returned by a `near...` query, add the `limit`
     JeopardyQuestion(
       nearText: {
         concepts: ["animals in movies"]
-      }
-      limit: 2
-      offset: 1
+      },
+      limit: 2,
+      offset: 1 
     ) {
       question
       answer

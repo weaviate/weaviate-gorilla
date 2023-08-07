@@ -18,7 +18,7 @@ Note that the question and answer properties are not retrieved in the query, but
     JeopardyQuestion (
       nearText: {
         concepts: ["World history"]
-      }
+      },
       limit: 2
     ) {
       _additional {

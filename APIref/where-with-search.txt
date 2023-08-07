@@ -8,7 +8,7 @@ The following example adds a points filter to a nearText query, where the points
 {
   Get {
     JeopardyQuestion(
-      limit: 3
+      limit: 3,
       where: {
         path: ["points"],
         operator: GreaterThan,

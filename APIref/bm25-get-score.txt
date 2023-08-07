@@ -10,7 +10,7 @@ The below example adds the `score` property to the list of retrieved propertie
 {
   Get {
     JeopardyQuestion(
-      limit: 3
+      limit: 3,
       bm25: {
         query: "food"
       }

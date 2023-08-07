@@ -10,8 +10,8 @@ The example below searches the `JeopardyQuestion` class for objects best match
     JeopardyQuestion(
       nearText: {
         concepts: ["animals in movies"],
-      }
-      limit: 10
+      },
+      limit: 10,
       groupBy: {
         path: ["round"],
         groups: 2,

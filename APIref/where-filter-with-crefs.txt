@@ -10,7 +10,7 @@ More speficially, the example filters for the title property of JeopardyCategory
 {
   Get {
     JeopardyQuestion(
-      limit: 3
+      limit: 3,
       where: {
         path: ["hasCategory", "JeopardyCategory", "title"],
         operator: Like,
