@@ -30,16 +30,29 @@ Make sure you see a line that says:
 ```
 start listening on 0.0.0.0:8080
 ```
-
+## Accessing the serving endpoint
 By default the serving endpoint is only accessible from within the
-Kubernetes cluster. You can change service type to LoadBalancer
+Kubernetes cluster.
+
+### Option 1: Expose on the internet
+You can change service type to LoadBalancer
 to make it available over the internet by running:
 ```bash
 kubectl patch svc llama-2-7b-weaviate-gorilla-server \
   -p '{"spec": {"type": "LoadBalancer"}}'
 ```
 
-Alternatively you can use local port forwarding to the remote pod:
+Wait for the external IP to get assigned:
+```
+kubectl get svc llama-2-7b-weaviate-gorilla-server -w
+```
+
+Now you can access the serving endpoint by using External IP
+of the Service on port 8080. E.g. acccess it on:
+[http://$EXTERNALIP:8080](http://$EXTERNAL_IP:8080)
+
+### Option 2: Use port forwarding
+You can use local port forwarding to the remote pod:
 ```
 kubectl port-forward service/llama-2-7b-weaviate-gorilla-server 8080:8080
 ```
@@ -57,7 +70,7 @@ curl http://localhost:8080/v1/completions \
   }'
 ```
 
-### Cleanup
+## Cleanup of serving endpoint
 Once you're done with your testing make sure to delete the server
 by running:
 ```
