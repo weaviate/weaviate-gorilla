@@ -1,0 +1,7 @@
+apiVersion: substratus.ai/v1
+kind: Dataset
+metadata:
+  name: weaviate-gorilla
+spec:
+  image: gcr.io/semi-spark-connector/dataset-weaviate-gorilla
+
