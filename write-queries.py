@@ -30,7 +30,7 @@ def generate_query(api_ref, schema):
   %s
   Could you please formulate this query for the following schema?
   %s
-  VERY IMPORTANT! Please only output the GraphQL for the query and nothing else!
+  VERY IMPORTANT! Please only output the GraphQL for the query and nothing else! Please begin the GraphQL query with ```graphql and end it with ```.
   """ % (api_ref, schema)
   return openai_request(prompt_template)
 
