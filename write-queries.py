@@ -1,4 +1,5 @@
 import os
+import random
 import json
 from pathlib import Path
 import openai
@@ -46,34 +47,51 @@ def query_to_command(api_ref, schema, custom_gql_query):
   """ % (api_ref, schema, custom_gql_query)
   return openai_request(prompt_template)
 
+def get_train_test_split_from_filepath(dir, train_pct):
+   train_paths, test_paths = [], []
+   all_files = os.listdir(dir)
+   random.shuffle(all_files)
+   num_train_samples = int(len(all_files) * train_pct / 100)
+   train = all_files[:num_train_samples]
+   test = all_files[num_train_samples:]
+   return train, test
+      
+
 def json_string_from_fopen(file_path):
-  api_ref_fh = open(file_path)
-  api_ref = api_ref_fh.readlines()
-  api_ref_string = ""
-  inside_json = False
-  for line in api_ref:
-    line = line.strip()
-    if line.startswith('{'):
-        inside_json = True
-    elif line.endswith('}'):
-        inside_json = False
-        api_ref_string += line
-        continue
-    if inside_json:
-        api_ref_string += line + '\n'
-  return api_ref_string
+    api_ref_string = ""
+    inside_json = False
+    # Use a context manager to ensure the file gets closed after reading.
+    # Set the encoding explicitly and use 'replace' for error handling.
+    with open(file_path, 'r', encoding='utf-8', errors='replace') as api_ref_fh:
+        for line in api_ref_fh:
+            line = line.strip()
+            if line.startswith('{'):
+                inside_json = True
+            elif line.endswith('}'):
+                inside_json = False
+                api_ref_string += line
+                continue
+            if inside_json:
+                api_ref_string += line + '\n'
+    return api_ref_string
 
+gorillaGQLTrain_SchemaSplit = []
+gorillaGQLTest_SchemaSplit = []
 
-gorilla_gql_training_dataset = []
-gorilla_gql_dataset = []
+gorillaGQLTrain_APISplit = []
+gorillaGQLTest_APISplit = []
+
+train_schemas, test_schemas = get_train_test_split_from_filepath("./APIref/", 80)
+train_apis, test_apis = get_train_test_split_from_filepath("./ToySchemas/", 80)
+
 for api_ref_path in os.listdir("./APIref"):
   for schema_path in os.listdir("./ToySchemas"):
     api_ref = json_string_from_fopen("./APIref/"+api_ref_path)
     schema = json_string_from_fopen("./ToySchemas/"+schema_path)
-    custom_query = generate_query(api_ref, schema)
-    print(f"GENERATED QUERY \n {custom_query} \n")
-    nlcommand = query_to_command(api_ref, schema, custom_query)
-    input = """Your task is to write an API request for a new schema given the API reference and an example.
+    customQuery = generate_query(api_ref, schema)
+    print(f"GENERATED QUERY \n \n \n {customQuery} \n")
+    nlcommand = query_to_command(api_ref, schema, customQuery)
+    inputForGorilla = """Your task is to write an API request for a new schema given the API reference and an example.
     The user command is:
     %s
     Here is the API reference for a query that will help with this command and an example of how to use it:
@@ -82,26 +100,45 @@ for api_ref_path in os.listdir("./APIref"):
     %s
     VERY IMPORTANT! Please only output the GraphQL for the query and nothing else!
     """ % (nlcommand, api_ref, schema)
-    gorilla_gql_training_dataset.append({
-      "input": input.replace("\n", ""),
-      "output": custom_query.replace("\n", "")
-    })
-    gorilla_gql_dataset.append({
-      "input": input.replace("\n", ""),
-      "output": custom_query.replace("\n", ""),
-      "api_reference": api_ref_path.replace(".txt", ""),
-      "schema": schema_path.replace(".json", "")
-    })
-    print(f"{len(gorilla_gql_dataset)} \n")
-    break
-  break
 
-with open('weaviate-gorilla-gql-training-dataset.jsonl', 'w') as f:
-    for entry in gorilla_gql_training_dataset:
+    if schema_path in train_schemas:
+       gorillaGQLTrain_SchemaSplit.append({
+          "input": inputForGorilla,
+          "output": customQuery
+       })
+    else:
+       gorillaGQLTest_SchemaSplit.append({
+          "input": inputForGorilla,
+          "output": customQuery
+       })
+    
+    if api_ref_path in train_apis:
+       gorillaGQLTrain_APISplit.append({
+          "input": inputForGorilla,
+          "output": customQuery
+       })
+    else:
+       gorillaGQLTest_APISplit.append({
+          "input": inputForGorilla,
+          "output": customQuery
+       })
+
+with open('weaviateGorillaTrain-schemaSplit.jsonl', 'w') as f:
+    for entry in gorillaGQLTrain_SchemaSplit:
         json.dump(entry, f)
         f.write('\n')
 
-with open('weaviate-gorilla-gql-dataset.jsonl', 'w') as f:
-    for entry in gorilla_gql_dataset:
+with open('weaviateGorillaTest-schemaSplit.jsonl', 'w') as f:
+    for entry in gorillaGQLTest_SchemaSplit:
+        json.dump(entry, f)
+        f.write('\n')
+
+with open('weaviateGorillaTrain-apiSplit.jsonl', 'w') as f:
+    for entry in gorillaGQLTrain_APISplit:
+        json.dump(entry, f)
+        f.write('\n')
+
+with open('weaviateGorillaTest-apiSplit.jsonl', 'w') as f:
+    for entry in gorillaGQLTest_APISplit:
         json.dump(entry, f)
         f.write('\n')
