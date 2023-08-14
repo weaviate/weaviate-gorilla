@@ -1,5 +1,6 @@
 import os
 import random
+import re
 import json
 from pathlib import Path
 import openai
@@ -31,6 +32,7 @@ def generate_query(api_ref, schema):
   Could you please formulate this query for the following schema?
   %s
   VERY IMPORTANT! Please only output the GraphQL for the query and nothing else!
+  VERY IMPORTANT! Please begin the GraphQL with ```graphql and end it with ``` as shown in the formatting of example queries.
   """ % (api_ref, schema)
   return openai_request(prompt_template)
 
@@ -75,6 +77,32 @@ def json_string_from_fopen(file_path):
                 api_ref_string += line + '\n'
     return api_ref_string
 
+def saveData(data, savePath):
+   with open(savePath, 'w') as f:
+      for entry in data:
+         json.dump(entry, f)
+         f.write('\n')
+
+def extract_graphql(s):
+    pattern = r'```graphql(.*?)```'
+    matches = re.findall(pattern, s, re.DOTALL)
+
+    return matches[0] if matches else None
+
+def ensure_start_with_brace(s):
+    # Remove leading/trailing whitespace
+    s = s.strip()
+    
+    # If the string starts with "query", remove it and strip any extra whitespace
+    if s.startswith("query"):
+        s = s[len("query"):].strip()
+    
+    # If the string doesn't start with "{", prepend it
+    if not s.startswith("{"):
+        s = "{" + s
+
+    return s
+
 gorillaGQLTrain_SchemaSplit = []
 gorillaGQLTest_SchemaSplit = []
 
@@ -84,22 +112,26 @@ gorillaGQLTest_APISplit = []
 train_schemas, test_schemas = get_train_test_split_from_filepath("./APIref/", 80)
 train_apis, test_apis = get_train_test_split_from_filepath("./ToySchemas/", 80)
 
+counter = 0
 for api_ref_path in os.listdir("./APIref"):
   for schema_path in os.listdir("./ToySchemas"):
     api_ref = json_string_from_fopen("./APIref/"+api_ref_path)
     schema = json_string_from_fopen("./ToySchemas/"+schema_path)
-    customQuery = generate_query(api_ref, schema)
+    customQuery = ensure_start_with_brace(extract_graphql(generate_query(api_ref, schema)))
     print(f"GENERATED QUERY \n \n \n {customQuery} \n")
     nlcommand = query_to_command(api_ref, schema, customQuery)
-    inputForGorilla = """Your task is to write an API request for a new schema given the API reference and an example.
-    The user command is:
+    print(f"FOR THE COMMAND: {nlcommand}")
+    print(f"\n COUNTER: {counter} \n")
+    inputForGorilla = """Your task is to translate a user command into an API request for a database schema given the API reference and an example.
+    Here is the API reference and example:
     %s
-    Here is the API reference for a query that will help with this command and an example of how to use it:
+    The user command is:
     %s
     Could you please formulate this query for the following schema?
     %s
     VERY IMPORTANT! Please only output the GraphQL for the query and nothing else!
-    """ % (nlcommand, api_ref, schema)
+    Please begin the GraphQL query with ```graphql and end it with ``` as shown in the formatting of example queries.
+    """ % (api_ref, nlcommand, schema)
 
     if schema_path in train_schemas:
        gorillaGQLTrain_SchemaSplit.append({
@@ -122,6 +154,18 @@ for api_ref_path in os.listdir("./APIref"):
           "input": inputForGorilla,
           "output": customQuery
        })
+    
+    counter += 1
+    if counter % 10 == 9:
+       print(f"Saving at step... {counter}")
+       saveData(gorillaGQLTrain_SchemaSplit, f"weaviateGorillaTrain-schemaSplit-{counter}.jsonl")
+       saveData(gorillaGQLTest_SchemaSplit, f"weaviateGorillaTest-schemaSplit-{counter}.jsonl")
+       saveData(gorillaGQLTrain_APISplit, f"weaviateGorillaTrain-apiSplit-{counter}.jsonl")
+       saveData(gorillaGQLTest_APISplit, f"weaviateGorillaTest-apiSplit-{counter}.jsonl")
+
+
+
+
 
 with open('weaviateGorillaTrain-schemaSplit.jsonl', 'w') as f:
     for entry in gorillaGQLTrain_SchemaSplit:
