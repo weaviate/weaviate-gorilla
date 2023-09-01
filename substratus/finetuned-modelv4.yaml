@@ -1,0 +1,45 @@
+apiVersion: substratus.ai/v1
+kind: Model
+metadata:
+  name: llama-2-7b-weaviate-gorilla-v4
+spec:
+  # image: substratusai/model-trainer-huggingface
+  build:
+    git:
+      url: https://github.com/substratusai/images
+      path: model-trainer-huggingface
+      branch: configurable-truncate
+  baseModel:
+    name: llama-2-7b
+  trainingDataset:
+    name: weaviate-gorilla-full
+  params:
+    # See HuggingFace transformers.TrainingArguments for all parameters
+    # https://huggingface.co/docs/transformers/main_classes/trainer#transformers.TrainingArguments
+    num_train_epochs: 1
+    push_to_hub: substratusai/weaviate-gorilla-v4
+    hugging_face_hub_token: ${HUGGINGFACE_TOKEN}
+    # Save to checkpoint every 5 steps for a dataset with ~70 steps total
+    save_steps: 5
+    prompt_template: |
+      ## Instruction
+      Your task is to write GraphQL for the Natural Language Query provided. Use the provided API reference and Schema to generate the GraphQL. The GraphQL should be valid for Weaviate.
+
+      Only use the API reference to understand the syntax of the request.
+
+      ## Natural Language Query
+      {nlcommand}
+
+      ## Schema
+      {schema}
+
+      ## API reference
+      {apiRef}
+
+      ## Answer
+      {output}
+
+  resources:
+    gpu:
+      count: 1
+      type: nvidia-a100

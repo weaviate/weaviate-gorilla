@@ -1,17 +1,10 @@
-# Gorilla 🦍
-Fine-tuned LLMs to use the Weaviate APIs!
+# Weaviate Gorilla Substratus instructions
+Fine-tuned LLMs to use the Weaviate APIs! Substratus
+is used to serve and finetune Weaviate Gorilla.
 
-## Setup dev env
+## Finetuning Weaviate Gorilla
 
-Create venv
-```
-make install
-```
-
-Source the venv:
-```
-source .venv/bin/activate
-```
+### Load the dataset
 
 ## Serve the finetuned model in Substratus
 

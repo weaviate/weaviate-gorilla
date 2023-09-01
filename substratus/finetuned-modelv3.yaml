@@ -1,9 +1,14 @@
 apiVersion: substratus.ai/v1
 kind: Model
 metadata:
-  name: llama-2-7b-weaviate-gorilla-v2
+  name: llama-2-7b-weaviate-gorilla-v3
 spec:
-  image: substratusai/model-trainer-huggingface
+  # image: substratusai/model-trainer-huggingface
+  build:
+    git:
+      url: https://github.com/substratusai/images
+      path: model-trainer-huggingface
+      branch: configurable-truncate
   baseModel:
     name: llama-2-7b
   trainingDataset:
@@ -12,6 +17,8 @@ spec:
     # See HuggingFace transformers.TrainingArguments for all parameters
     # https://huggingface.co/docs/transformers/main_classes/trainer#transformers.TrainingArguments
     num_train_epochs: 1
+    push_to_hub: substratusai/weaviate-gorilla-v3
+    hugging_face_hub_token: ${HUGGINGFACE_TOKEN}
     # Save to checkpoint every 5 steps for a dataset with ~70 steps total
     save_steps: 5
     prompt_template: |

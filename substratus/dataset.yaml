@@ -3,5 +3,10 @@ kind: Dataset
 metadata:
   name: weaviate-gorilla
 spec:
-  image: gcr.io/semi-spark-connector/dataset-weaviate-gorilla
+  params:
+    urls: https://huggingface.co/datasets/weaviate/WeaviateGraphQLGorilla-APISplit-Train/raw/main/WeaviateGraphQLGorilla-APISplit-Train.json
+  build:
+    git:
+      url: https://github.com/substratusai/images
+      path: dataset-loader-http
 
