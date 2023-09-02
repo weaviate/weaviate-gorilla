@@ -1,10 +1,10 @@
 apiVersion: substratus.ai/v1
 kind: Dataset
 metadata:
-  name: weaviate-gorilla
+  name: weaviate-gorilla-full
 spec:
   params:
-    urls: https://huggingface.co/datasets/weaviate/WeaviateGraphQLGorilla-APISplit-Train/raw/main/WeaviateGraphQLGorilla-APISplit-Train.json
+    urls: https://huggingface.co/datasets/weaviate/WeaviateGraphQLGorilla/resolve/main/WeaviateGorillaDataset.json
   build:
     git:
       url: https://github.com/substratusai/images
