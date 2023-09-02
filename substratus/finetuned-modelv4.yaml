@@ -3,12 +3,7 @@ kind: Model
 metadata:
   name: llama-2-7b-weaviate-gorilla-v4
 spec:
-  # image: substratusai/model-trainer-huggingface
-  build:
-    git:
-      url: https://github.com/substratusai/images
-      path: model-trainer-huggingface
-      branch: configurable-truncate
+  image: substratusai/model-trainer-huggingface
   baseModel:
     name: llama-2-7b
   trainingDataset:
