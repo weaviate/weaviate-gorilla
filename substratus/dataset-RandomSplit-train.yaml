@@ -1,0 +1,13 @@
+apiVersion: substratus.ai/v1
+kind: Dataset
+metadata:
+  name: weaviate-gorilla-randomsplit-train
+spec:
+  # source: https://huggingface.co/datasets/weaviate/WeaviateGraphQLGorilla-RandomSplit-Train
+  params:
+    urls: https://huggingface.co/datasets/weaviate/WeaviateGraphQLGorilla-RandomSplit-Train/resolve/main/WeaviateGorilla-RandomSplit-train.json
+  build:
+    git:
+      url: https://github.com/substratusai/images
+      path: dataset-loader-http
+

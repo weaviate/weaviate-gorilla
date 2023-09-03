@@ -1,0 +1,13 @@
+apiVersion: substratus.ai/v1
+kind: Dataset
+metadata:
+  name: weaviate-gorilla-schemasplit-train
+spec:
+  # source: https://huggingface.co/datasets/weaviate/WeaviateGraphQLGorilla-SchemaSplit-Train
+  params:
+    urls: https://huggingface.co/datasets/weaviate/WeaviateGraphQLGorilla-SchemaSplit-Train/resolve/main/WeaviateGorilla-SchemaSplit-train.json
+  build:
+    git:
+      url: https://github.com/substratusai/images
+      path: dataset-loader-http
+
