@@ -39,5 +39,5 @@ spec:
 
   resources:
     gpu:
-      count: 2
+      count: 4
       type: nvidia-l4
