@@ -3,12 +3,12 @@ kind: Model
 metadata:
   name: wgqlg-withretrieval-random-train-80
 spec:
-  # image: substratusai/model-trainer-huggingface
-  build:
-    git:
-      url: https://github.com/substratusai/images
-      path: model-trainer-huggingface
-      branch: fix-model-trainer-checkpoint-path
+  image: substratusai/model-trainer-huggingface
+  #build:
+  #  git:
+  #    url: https://github.com/substratusai/images
+  #    path: model-trainer-huggingface
+  #    branch: fix-model-trainer-checkpoint-path
   model:
     name: llama-2-7b
   env:
