@@ -1,0 +1,45 @@
+apiVersion: substratus.ai/v1
+kind: Model
+metadata:
+  name: wgqlg-withretrieval-schemasplit-train-80
+spec:
+  # image: substratusai/model-trainer-huggingface
+  build:
+    git:
+      url: https://github.com/substratusai/images
+      path: model-trainer-huggingface
+      branch: fix-model-trainer-checkpoint-path
+  model:
+    name: llama-2-7b
+  env:
+    HUGGING_FACE_HUB_TOKEN: ${{ secrets.ai.HUGGING_FACE_HUB_TOKEN }}
+  params:
+    # See HuggingFace transformers.TrainingArguments for all parameters
+    # https://huggingface.co/docs/transformers/main_classes/trainer#transformers.TrainingArguments
+    num_train_epochs: 1
+    dataset_urls: https://huggingface.co/datasets/weaviate/WithRetrieval-SchemaSplit-Train-80/resolve/main/WithRetrieval-Random-Train-80.json
+    push_to_hub: substratusai/wgql-WithRetrieval-SchemaSplit-Train-80
+    # Save to checkpoint every 5 steps for a dataset with ~70 steps total
+    save_steps: 5
+    prompt_template: |
+      ## Instruction
+      Your task is to write GraphQL for the Natural Language Query provided. Use the provided API reference and Schema to generate the GraphQL. The GraphQL should be valid for Weaviate.
+
+      Only use the API reference to understand the syntax of the request.
+
+      ## Natural Language Query
+      {nlcommand}
+
+      ## Schema
+      {schema}
+
+      ## API reference
+      {apiRef}
+
+      ## Answer
+      {output}
+
+  resources:
+    gpu:
+      count: 4
+      type: nvidia-l4
