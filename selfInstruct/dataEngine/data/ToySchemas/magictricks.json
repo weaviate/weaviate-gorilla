@@ -1,0 +1,50 @@
+{
+    "classes": [
+      {
+        "class": "MagicTrick",
+        "description": "Details about various magic tricks and illusions.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "trickName",
+            "dataType": ["text"],
+            "description": "Name of the magic trick or illusion."
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "A brief description of the trick and how it's performed."
+          },
+          {
+            "name": "difficultyLevel",
+            "dataType": ["text"],
+            "description": "Difficulty level of the trick, e.g., beginner, intermediate, expert."
+          },
+          {
+            "name": "performer",
+            "dataType": ["Magician"],
+            "description": "Famous magician known for performing this trick."
+          }
+        ]
+      },
+      {
+        "class": "Magician",
+        "description": "Details about magicians and illusionists.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "magicianName",
+            "dataType": ["text"],
+            "description": "Full name of the magician."
+          },
+          {
+            "name": "biography",
+            "dataType": ["text"],
+            "description": "Brief biography or background of the magician."
+          }
+        ]
+      }
+    ]
+}

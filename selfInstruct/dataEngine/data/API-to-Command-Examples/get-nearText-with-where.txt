@@ -1,0 +1,28 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book(
+      nearText: {
+        concepts: ["science fiction"]
+      },
+      where: {
+        path: ["pageCount"],
+        operator: GreaterThan,
+        valueInt: 200
+      }
+    ) {
+      title
+      summary
+      isAvailable
+      author {
+        ... on Author {
+          name
+        }
+      }
+    }
+  }
+}
+
+Natural Language Command:
+Get me the books semantically similar to the query 'science fiction' where the pageCount is greater than 200, and show the title, summary, availability, and author's name.

@@ -1,0 +1,12 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book {
+      title
+    }
+  }
+}
+
+Natural Language:
+Show me the title of books.

@@ -1,0 +1,49 @@
+Nested multiple conditions
+
+Conditional filters can be nested in Weaviate. To do so, set the operator of an outer operands value to And or Or. Then, you can provide two or more conditions to the inner operands.
+
+The following example specifies that:
+
+the answer property must contain a substring "nest", And
+the points property must be greater than 700, Or, the points property must be less than 300.
+
+```graphql
+{
+  Get {
+    JeopardyQuestion(
+      limit: 3,
+      where: {
+        operator: And,
+        operands: [
+          {
+            path: ["answer"],
+            operator: Like,
+            valueText: "*nest*"
+          },
+          {
+            operator: Or,
+            operands: [
+                {
+                    path: ["points"],
+                    operator: GreaterThan,
+                    valueInt: 700
+                },
+                {
+                    path: ["points"],
+                    operator: LessThan,
+                    valueInt: 300
+                },
+            ]
+          }
+        ]
+
+      }
+    ) {
+      question
+      answer
+      round
+      points
+    }
+  }
+}
+```

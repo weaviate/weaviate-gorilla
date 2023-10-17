@@ -1,0 +1,21 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book(
+      bm25: {
+        query: "science fiction"
+      },
+      limit: 5
+    ) {
+      title
+      summary
+      _additional {
+        score
+      }
+    }
+  }
+}
+
+Natural Language Command:
+Get me the top 5 books with BM25 keyword scoring to the query 'science fiction', and show the title, summary, availability, and author's name. Please show me the BM25 score for each object returned as well.

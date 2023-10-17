@@ -1,0 +1,55 @@
+{
+    "classes": [
+      {
+        "class": "NonProfit",
+        "description": "An organization that operates for a charitable cause.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the non-profit organization."
+          },
+          {
+            "name": "mission",
+            "dataType": ["text"],
+            "description": "Mission statement of the organization."
+          },
+          {
+            "name": "foundedYear",
+            "dataType": ["int"],
+            "description": "Year the organization was founded."
+          },
+          {
+            "name": "focusArea",
+            "dataType": ["text"],
+            "description": "Primary area of focus, e.g., health, education."
+          },
+          {
+            "name": "founder",
+            "dataType": ["Person"],
+            "description": "Founder or key person of the organization."
+          }
+        ]
+      },
+      {
+        "class": "Person",
+        "description": "Information about individuals.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "fullName",
+            "dataType": ["text"],
+            "description": "Full name of the person."
+          },
+          {
+            "name": "bio",
+            "dataType": ["text"],
+            "description": "Short biography of the person."
+          }
+        ]
+      }
+    ]
+}

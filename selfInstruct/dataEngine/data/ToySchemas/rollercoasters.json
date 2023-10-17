@@ -1,0 +1,55 @@
+{
+    "classes": [
+        {
+            "class": "Rollercoaster",
+            "description": "A rollercoaster in an amusement park.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "name",
+                    "dataType": ["text"],
+                    "description": "Name of the rollercoaster."
+                },
+                {
+                    "name": "description",
+                    "dataType": ["text"],
+                    "description": "Brief description or tagline of the rollercoaster."
+                },
+                {
+                    "name": "height",
+                    "dataType": ["number"],
+                    "description": "Height of the rollercoaster in meters."
+                },
+                {
+                    "name": "isOperating",
+                    "dataType": ["boolean"],
+                    "description": "Is the rollercoaster currently operational?"
+                },
+                {
+                    "name": "park",
+                    "dataType": ["AmusementPark"],
+                    "description": "The amusement park where the rollercoaster is located."
+                }
+            ]
+        },
+        {
+            "class": "AmusementPark",
+            "description": "An amusement park with various attractions.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "name",
+                    "dataType": ["text"],
+                    "description": "Name of the amusement park."
+                },
+                {
+                    "name": "location",
+                    "dataType": ["text"],
+                    "description": "Location or address of the amusement park."
+                }
+            ]
+        }
+    ]
+}

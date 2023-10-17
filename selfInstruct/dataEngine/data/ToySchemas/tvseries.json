@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "TVSeries",
+        "description": "Information about a television series",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "title",
+            "dataType": ["text"],
+            "description": "Title of the series"
+          },
+          {
+            "name": "synopsis",
+            "dataType": ["text"],
+            "description": "Brief synopsis of the series"
+          },
+          {
+            "name": "seasons",
+            "dataType": ["int"],
+            "description": "Number of seasons"
+          },
+          {
+            "name": "isOnAir",
+            "dataType": ["boolean"],
+            "description": "Is the series currently airing?"
+          },
+          {
+            "name": "hasActor",
+            "dataType": ["Actor"],
+            "description": "Actors in the series"
+          }
+        ]
+      },
+      {
+        "class": "Actor",
+        "description": "Actors in various roles",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the actor"
+          },
+          {
+            "name": "age",
+            "dataType": ["int"],
+            "description": "Age of the actor"
+          }
+        ]
+      }
+    ]
+  }
+  

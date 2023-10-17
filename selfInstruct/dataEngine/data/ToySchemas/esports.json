@@ -1,0 +1,70 @@
+{
+    "classes": [
+      {
+        "class": "EsportsTeam",
+        "description": "E-sports teams participating in various tournaments.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "teamName",
+            "dataType": ["text"],
+            "description": "Name of the e-sports team."
+          },
+          {
+            "name": "members",
+            "dataType": ["Player"],
+            "description": "Members or players of the team."
+          },
+          {
+            "name": "gamesPlayed",
+            "dataType": ["text"],
+            "description": "Games or titles the team competes in."
+          },
+          {
+            "name": "tournamentWinsCount",
+            "dataType": ["int"],
+            "description": "Number of tournaments the team has won."
+          },
+          {
+            "name": "isActive",
+            "dataType": ["boolean"],
+            "description": "Whether the team is currently active in competitions."
+          }
+        ]
+      },
+      {
+        "class": "Player",
+        "description": "An individual e-sports player.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "playerName",
+            "dataType": ["text"],
+            "description": "Name of the player."
+          },
+          {
+            "name": "nickname",
+            "dataType": ["text"],
+            "description": "Player's in-game or popularly known nickname."
+          },
+          {
+            "name": "gameSpecialization",
+            "dataType": ["text"],
+            "description": "Main game or title the player is known for."
+          },
+          {
+            "name": "yearsActive",
+            "dataType": ["int"],
+            "description": "Number of years the player has been active."
+          },
+          {
+            "name": "isRetired",
+            "dataType": ["boolean"],
+            "description": "Whether the player is retired or still active."
+          }
+        ]
+      }
+    ]
+}

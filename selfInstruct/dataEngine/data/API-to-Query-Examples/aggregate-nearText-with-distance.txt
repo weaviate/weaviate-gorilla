@@ -1,0 +1,76 @@
+CUSTOM SCHEMA:
+
+{
+    "classes": [
+      {
+        "class": "Book",
+        "description": "A book in the library.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "title",
+            "dataType": ["text"],
+            "description": "The title of the book."
+          },
+          {
+            "name": "summary",
+            "dataType": ["text"],
+            "description": "A summary of the book."
+          },
+          {
+            "name": "pageCount",
+            "dataType": ["int"],
+            "description": "The number of pages in the book."
+          },
+          {
+            "name": "isAvailable",
+            "dataType": ["boolean"],
+            "description": "Availability of the book in the library."
+          },
+          {
+            "name": "author",
+            "dataType": ["Author"],
+            "description": "The author of the book."
+          }
+        ]
+      },
+      {
+        "class": "Author",
+        "description": "An author of books.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "The name of the author."
+          },
+          {
+            "name": "age",
+            "dataType": ["int"],
+            "description": "The age of the author."
+          }
+        ]
+      }
+    ]
+}
+  
+DESIRED OUTPUT FOR AN AGGREGATE NEARTEXT QUERY:
+
+{
+  Aggregate {
+    Books(
+      nearText: {
+        concepts: ["Artificial Intelligence Sci-Fi"],
+        distance: 0.2
+      }
+    ){
+      pageCount {
+        mean
+      }
+    }
+  }
+}
+
+

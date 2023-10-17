@@ -1,0 +1,30 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book(
+      where: {
+        operator: And,
+        operands: [
+          {
+            path: ["title"],
+            operator: Like,
+            valueText: "*robots*"
+          },
+          {
+            path: ["pageCount"],
+            operator: LessThan,
+            valueInt: 150
+          }
+        ]
+      }
+    ) {
+      title
+      summary
+      isAvailable
+    }
+  }
+}
+
+Natural Language Command:
+Show me the title, summary, and availability of books with "robots" exactly contained in the title and a pageCount less than 150.

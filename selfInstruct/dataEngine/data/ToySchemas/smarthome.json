@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "SmartDevice",
+        "description": "A smart home device.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "deviceName",
+            "dataType": ["text"],
+            "description": "Name of the smart device."
+          },
+          {
+            "name": "features",
+            "dataType": ["text"],
+            "description": "List of features."
+          },
+          {
+            "name": "price",
+            "dataType": ["number"],
+            "description": "Price of the device."
+          },
+          {
+            "name": "isWireless",
+            "dataType": ["boolean"],
+            "description": "Whether the device is wireless."
+          },
+          {
+            "name": "manufacturer",
+            "dataType": ["Manufacturer"],
+            "description": "The manufacturer of the device."
+          }
+        ]
+      },
+      {
+        "class": "Manufacturer",
+        "description": "A manufacturer of smart home devices.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "manufacturerName",
+            "dataType": ["text"],
+            "description": "Name of the manufacturer."
+          },
+          {
+            "name": "foundedYear",
+            "dataType": ["int"],
+            "description": "The year the company was founded."
+          }
+        ]
+      }
+    ]
+  }
+  

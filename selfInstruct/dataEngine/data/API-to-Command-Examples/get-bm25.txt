@@ -1,0 +1,23 @@
+Custom Query:
+
+{
+  Get {
+    Book(
+      bm25: {
+        query: "science fiction"
+      }
+    ) {
+      title
+      summary
+      isAvailable
+      author {
+        ... on Author {
+          name
+        }
+      }
+    }
+  }
+}
+
+Natural Language Command:
+Get me the books with BM25 scoring to the query 'science fiction', and show the title, summary, availability, and author's name.

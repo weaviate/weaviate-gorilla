@@ -1,0 +1,61 @@
+{
+    "classes": [
+      {
+        "class": "BoardGame",
+        "description": "A board game suitable for entertainment.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the board game."
+          },
+          {
+            "name": "rules",
+            "dataType": ["text"],
+            "description": "Rules of the board game."
+          },
+          {
+            "name": "minPlayers",
+            "dataType": ["int"],
+            "description": "Minimum number of players."
+          },
+          {
+            "name": "isCooperative",
+            "dataType": ["boolean"],
+            "description": "Is the game cooperative?"
+          },
+          {
+            "name": "createdBy",
+            "dataType": ["GameDesigner"],
+            "description": "Designer of the board game."
+          }
+        ]
+      },
+      {
+        "class": "GameDesigner",
+        "description": "An individual who designs board games.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the game designer."
+          },
+          {
+            "name": "biography",
+            "dataType": ["text"],
+            "description": "Biography of the game designer."
+          },
+          {
+            "name": "yearsActive",
+            "dataType": ["int"],
+            "description": "Years active in game designing."
+          }
+        ]
+      }
+    ]
+  }
+  

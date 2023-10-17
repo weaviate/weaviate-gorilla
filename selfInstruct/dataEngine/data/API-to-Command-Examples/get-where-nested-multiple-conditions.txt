@@ -1,0 +1,39 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book(
+      where: {
+        operator: And,
+        operands: [
+          {
+            path: ["pageCount"],
+            operator: LessThan,
+            valueText: 150
+          },
+          {
+            operator: Or,
+            operands: [
+              {
+                path: ["title"],
+                operator: Like,
+                valueText: "*robots*"
+              },
+              {
+                path: ["title"],
+                operator: Like,
+                valueText: "*aliens*"
+              }
+            ]
+          }
+        ]
+      }
+    ) {
+      title
+      summary
+    }
+  }
+}
+
+Natural Language Command:
+Show me the title and summary of books with less than 150 pages that either exactly contain "robots" or "aliens" in the title.

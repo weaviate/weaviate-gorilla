@@ -1,6 +1,0 @@
-# load queries into memory
-'''
-{
-    
-}
-'''

@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "HistoricalEvent",
+        "description": "Information about historical events",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "eventName",
+            "dataType": ["text"],
+            "description": "Name of the historical event"
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "Detailed description of the event"
+          },
+          {
+            "name": "year",
+            "dataType": ["int"],
+            "description": "Year the event occurred"
+          },
+          {
+            "name": "hadSignificantImpact",
+            "dataType": ["boolean"],
+            "description": "Whether the event had a significant impact"
+          },
+          {
+            "name": "involvedCountries",
+            "dataType": ["Country"],
+            "description": "Countries involved in the event"
+          }
+        ]
+      },
+      {
+        "class": "Country",
+        "description": "Information about countries",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "countryName",
+            "dataType": ["text"],
+            "description": "Name of the country"
+          },
+          {
+            "name": "population",
+            "dataType": ["int"],
+            "description": "Population of the country"
+          }
+        ]
+      }
+    ]
+  }
+  

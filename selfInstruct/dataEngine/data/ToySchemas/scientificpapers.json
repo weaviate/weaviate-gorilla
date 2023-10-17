@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "Paper",
+        "description": "A research paper.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "title",
+            "dataType": ["text"],
+            "description": "Title of the research paper."
+          },
+          {
+            "name": "abstract",
+            "dataType": ["text"],
+            "description": "Abstract of the paper."
+          },
+          {
+            "name": "yearPublished",
+            "dataType": ["int"],
+            "description": "Year the paper was published."
+          },
+          {
+            "name": "isPeerReviewed",
+            "dataType": ["boolean"],
+            "description": "Is the paper peer-reviewed?"
+          },
+          {
+            "name": "presentedAt",
+            "dataType": ["Conference"],
+            "description": "Conference where the paper was presented."
+          }
+        ]
+      },
+      {
+        "class": "Conference",
+        "description": "A scientific conference.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the conference."
+          },
+          {
+            "name": "year",
+            "dataType": ["int"],
+            "description": "Year the conference took place."
+          }
+        ]
+      }
+    ]
+  }
+  

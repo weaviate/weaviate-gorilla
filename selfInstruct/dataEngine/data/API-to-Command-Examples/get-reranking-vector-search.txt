@@ -1,0 +1,25 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book(
+      nearText: {
+        concepts: ["robot police science fiction"]
+      }
+    ) {
+      title
+      summary
+      _additional {
+        rerank(
+          query: "robot police science fiction",
+          property: "title"
+        ){
+          score
+        }
+      }
+    }
+  }
+}
+
+Natural Language Command:
+Please show me the title and summary of books semantically similar to "robot police science fiction", please rerank the search results with the same query on the title property and show the score.

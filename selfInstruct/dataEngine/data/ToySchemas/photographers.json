@@ -1,0 +1,50 @@
+{
+    "classes": [
+        {
+            "class": "Photographer",
+            "description": "An individual who takes photographs.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "fullName",
+                    "dataType": ["text"],
+                    "description": "Full name of the photographer."
+                },
+                {
+                    "name": "bio",
+                    "dataType": ["text"],
+                    "description": "Short biography or description about the photographer."
+                },
+                {
+                    "name": "yearsActive",
+                    "dataType": ["int"],
+                    "description": "Number of years the photographer has been active."
+                },
+                {
+                    "name": "specialization",
+                    "dataType": ["PhotographyGenre"],
+                    "description": "The genre or style of photography the photographer is renowned for."
+                }
+            ]
+        },
+        {
+            "class": "PhotographyGenre",
+            "description": "Different genres or styles of photography.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "name",
+                    "dataType": ["text"],
+                    "description": "Name of the photography genre, e.g., portrait, wildlife, landscape."
+                },
+                {
+                    "name": "description",
+                    "dataType": ["text"],
+                    "description": "Brief description about the photography genre."
+                }
+            ]
+        }
+    ]
+}

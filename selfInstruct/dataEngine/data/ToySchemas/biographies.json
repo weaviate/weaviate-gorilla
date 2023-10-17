@@ -1,0 +1,55 @@
+{
+    "classes": [
+      {
+        "class": "Biography",
+        "description": "A written account of a person's life.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "subjectName",
+            "dataType": ["text"],
+            "description": "Name of the individual whose biography it is."
+          },
+          {
+            "name": "overview",
+            "dataType": ["text"],
+            "description": "A brief summary of the individual's life and achievements."
+          },
+          {
+            "name": "author",
+            "dataType": ["Author"],
+            "description": "Author who wrote the biography."
+          },
+          {
+            "name": "publicationYear",
+            "dataType": ["int"],
+            "description": "Year the biography was published."
+          }
+        ]
+      },
+      {
+        "class": "Author",
+        "description": "Details about the author.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Full name of the author."
+          },
+          {
+            "name": "bio",
+            "dataType": ["text"],
+            "description": "A brief biography of the author."
+          },
+          {
+            "name": "publishedWorksCount",
+            "dataType": ["int"],
+            "description": "Number of works the author has published."
+          }
+        ]
+      }
+    ]
+}

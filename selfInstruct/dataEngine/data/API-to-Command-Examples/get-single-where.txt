@@ -1,0 +1,25 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book(
+      where: {
+        path: ["pageCount"],
+        operator: LessThan,
+        valueInt: 100
+      }
+    ) {
+      title
+      summary
+      isAvailable
+      author {
+        ... on Author {
+          name
+        }
+      }
+    }
+  }
+}
+
+Natural Language Command:
+Show me the title, summary, availability, and linked author's name of books with less than 100 pages.

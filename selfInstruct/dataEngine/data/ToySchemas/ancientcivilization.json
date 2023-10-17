@@ -1,0 +1,55 @@
+{
+    "classes": [
+      {
+        "class": "Civilization",
+        "description": "Details about various ancient civilizations.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "civilizationName",
+            "dataType": ["text"],
+            "description": "Name of the ancient civilization."
+          },
+          {
+            "name": "timePeriod",
+            "dataType": ["text"],
+            "description": "Time period when the civilization thrived."
+          },
+          {
+            "name": "notableTechnologies",
+            "dataType": ["text"],
+            "description": "Technologies or inventions credited to the civilization."
+          },
+          {
+            "name": "languages",
+            "dataType": ["text"],
+            "description": "Languages spoken in the civilization."
+          },
+          {
+            "name": "majorRuins",
+            "dataType": ["Ruins"],
+            "description": "Significant ruins or archaeological sites from the civilization."
+          }
+        ]
+      },
+      {
+        "class": "Ruins",
+        "description": "Details about specific ruins or archaeological sites.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "siteName",
+            "dataType": ["text"],
+            "description": "Name of the ruin or archaeological site."
+          },
+          {
+            "name": "location",
+            "dataType": ["text"],
+            "description": "Geographical location of the site."
+          }
+        ]
+      }
+    ]
+}

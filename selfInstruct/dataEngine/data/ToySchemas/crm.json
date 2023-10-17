@@ -1,0 +1,99 @@
+{
+    "classes": [
+      {
+        "class": "Contact",
+        "description": "Individual contacts managed in the CRM",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "fullName",
+            "dataType": ["text"],
+            "description": "The full name of the contact"
+          },
+          {
+            "name": "email",
+            "dataType": ["text"],
+            "description": "The email address of the contact"
+          },
+          {
+            "name": "phone",
+            "dataType": ["text"],
+            "description": "The phone number of the contact"
+          },
+          {
+            "name": "isLead",
+            "dataType": ["boolean"],
+            "description": "Whether this contact is a sales lead"
+          },
+          {
+            "name": "associatedCompany",
+            "dataType": ["Company"],
+            "description": "The company where this contact works"
+          }
+        ]
+      },
+      {
+        "class": "Company",
+        "description": "Companies managed in the CRM",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "The name of the company"
+          },
+          {
+            "name": "industry",
+            "dataType": ["text"],
+            "description": "The industry in which the company operates"
+          },
+          {
+            "name": "revenue",
+            "dataType": ["int"],
+            "description": "The annual revenue of the company"
+          },
+          {
+            "name": "hasContacts",
+            "dataType": ["Contact"],
+            "description": "Contacts associated with this company"
+          }
+        ]
+      },
+      {
+        "class": "Deal",
+        "description": "Sales deals managed in the CRM",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "title",
+            "dataType": ["text"],
+            "description": "The title of the deal"
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "Description of the deal"
+          },
+          {
+            "name": "value",
+            "dataType": ["int"],
+            "description": "The value of the deal in dollars"
+          },
+          {
+            "name": "isClosed",
+            "dataType": ["boolean"],
+            "description": "Whether the deal is closed or not"
+          },
+          {
+            "name": "associatedCompany",
+            "dataType": ["Company"],
+            "description": "The company associated with this deal"
+          }
+        ]
+      }
+    ]
+  }
+  

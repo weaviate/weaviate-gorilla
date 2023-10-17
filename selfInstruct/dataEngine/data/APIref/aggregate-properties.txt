@@ -1,0 +1,40 @@
+Retrieve aggregated object properties
+
+You can retrieve aggregations of text, number, int, or boolean data types.
+
+The available sub-types vary for each data type, except for type which is available to all, and count which is available to all but cross-references.
+
+Example with text
+The following example retrieves information about the most commonly occurring examples in the question property:
+
+```graphql
+{
+  Aggregate {
+    JeopardyQuestion {
+      answer {
+        count
+        type
+        topOccurrences {
+          occurs
+          value
+        }
+      }
+    }
+  }
+}
+```
+
+Example with int
+
+```graphql
+{
+  Aggregate {
+    JeopardyQuestion {
+      points {
+        count
+        sum
+      }
+    }
+  }
+}
+```

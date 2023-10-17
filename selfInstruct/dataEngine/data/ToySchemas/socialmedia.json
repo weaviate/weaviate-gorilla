@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "Post",
+        "description": "A post on the social media platform.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "content",
+            "dataType": ["text"],
+            "description": "The content of the post."
+          },
+          {
+            "name": "hashtags",
+            "dataType": ["text[]"],
+            "description": "Hashtags associated with the post."
+          },
+          {
+            "name": "likes",
+            "dataType": ["int"],
+            "description": "The number of likes on the post."
+          },
+          {
+            "name": "isPublic",
+            "dataType": ["boolean"],
+            "description": "Whether the post is public or private."
+          },
+          {
+            "name": "comments",
+            "dataType": ["Comment"],
+            "description": "Comments on the post."
+          }
+        ]
+      },
+      {
+        "class": "Comment",
+        "description": "A comment on a post.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "text",
+            "dataType": ["text"],
+            "description": "The text of the comment."
+          },
+          {
+            "name": "likes",
+            "dataType": ["int"],
+            "description": "The number of likes on the comment."
+          }
+        ]
+      }
+    ]
+  }
+  

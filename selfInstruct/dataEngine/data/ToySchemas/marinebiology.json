@@ -1,0 +1,50 @@
+{
+    "classes": [
+      {
+        "class": "MarineSpecies",
+        "description": "Details about various marine species.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "speciesName",
+            "dataType": ["text"],
+            "description": "Name of the marine species."
+          },
+          {
+            "name": "habitat",
+            "dataType": ["text"],
+            "description": "Typical habitat or region where the species can be found."
+          },
+          {
+            "name": "conservationStatus",
+            "dataType": ["text"],
+            "description": "Conservation status, e.g., endangered, vulnerable."
+          },
+          {
+            "name": "researcher",
+            "dataType": ["MarineBiologist"],
+            "description": "Main researcher or biologist studying the species."
+          }
+        ]
+      },
+      {
+        "class": "MarineBiologist",
+        "description": "Details about marine biologists and their research.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "biologistName",
+            "dataType": ["text"],
+            "description": "Full name of the marine biologist."
+          },
+          {
+            "name": "researchArea",
+            "dataType": ["text"],
+            "description": "Primary area of research or focus."
+          }
+        ]
+      }
+    ]
+}

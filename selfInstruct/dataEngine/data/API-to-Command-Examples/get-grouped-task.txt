@@ -1,0 +1,23 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book (limit: 10){
+      title
+      summary
+      _additional {
+        generate(
+          groupedResult: {
+            task: """
+            What do these books have in common?
+            """,
+            properties: ["title", "summary"]
+          }
+        )
+      }
+    }
+  }
+}
+
+Natural Language Command:
+Please get the title and summaries of 10 books and ask a Large Language Model to answer "What do these books have in common?" passing in the title and summary to the Large Language Model.

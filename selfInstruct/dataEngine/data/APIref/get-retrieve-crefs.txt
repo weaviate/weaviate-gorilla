@@ -1,0 +1,27 @@
+Retrieve cross-referenced properties
+
+You can retrieve any properties of cross-referenced objects by specifying:
+
+- The cross-reference property,
+- The target cross-referenced object class, and
+- The desired properties to retrieve (of the cross-referenced objects).
+
+The following example, retrieves for each `JeopardyQuestion` object the cross-referenced `JeopardyCategory` object, and the `JeopardyCategory` object's `title` property is returned. The property is accessed using the GraphQL syntax.
+
+```graphql
+{
+  Get {
+    JeopardyQuestion (
+      limit: 2
+    )
+    {
+      question
+      hasCategory {
+        ... on JeopardyCategory {
+          title
+        }
+      }
+    }
+  }
+}
+```

@@ -1,0 +1,75 @@
+Grouped task
+
+A grouped task works by generating a response for the entire query results set.
+
+When using generative search with a grouped task, the required parameter is the user prompt. By default, the entire set of properties are included in the combined prompt unless specified otherwise.
+
+Example
+
+In the below example, the query:
+
+Retrieves three JeopardyQuestion objects related to cute animals,
+Combines the user prompt with the set of retrieved objects to build the grouped task,
+Retrieves one generated text using the grouped task, and
+Returns the generated text as a part of the first object returned, as well as the requested points property.
+Note that the prompt includes information about the type of the animal (from the answer property), even though the answer property is not explicitly retrieved.
+
+```graphql
+{
+  Get {
+    JeopardyQuestion (
+      nearText: {
+        concepts: ["Cute animals"]
+      },
+      limit: 3
+    ) {
+      points
+      _additional {
+        generate(
+          groupedResult: {
+            task: """
+              What do these animals have in common, if anything?
+            """
+          }
+        ) {
+          groupedResult
+          error
+        }
+      }
+    }
+  }
+}
+```
+
+You can specify which properties will be included in the grouped task prompt. Use this to limit the information provided in the prompt, and to reduce the prompt length.
+
+In the below example, the prompt will only include the question and answer properties. Note that the answer property is not explicitly retrieved in the query, but is used by the prompt.
+
+```graphql
+{
+  Get {
+    JeopardyQuestion (
+      nearText: {
+        concepts: ["Australian animals"]
+      },
+      limit: 3
+    ) {
+      question
+      points
+      _additional {
+        generate(
+          groupedResult: {
+            task: """
+              What do these animals have in common, if anything?
+            """,
+            properties: ["answer", "question"]
+          }
+        ) {
+          groupedResult
+          error
+        }
+      }
+    }
+  }
+}
+```

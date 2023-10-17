@@ -1,0 +1,61 @@
+{
+    "classes": [
+      {
+        "class": "Cryptocurrency",
+        "description": "Information about a particular cryptocurrency",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the cryptocurrency"
+          },
+          {
+            "name": "symbol",
+            "dataType": ["text"],
+            "description": "Symbol of the cryptocurrency"
+          },
+          {
+            "name": "marketCap",
+            "dataType": ["number"],
+            "description": "Market capitalization in USD"
+          },
+          {
+            "name": "isStableCoin",
+            "dataType": ["boolean"],
+            "description": "Indicates if this is a stablecoin"
+          },
+          {
+            "name": "onExchange",
+            "dataType": ["Exchange"],
+            "description": "Exchange where this cryptocurrency is traded"
+          }
+        ]
+      },
+      {
+        "class": "Exchange",
+        "description": "Cryptocurrency exchange platforms",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the exchange"
+          },
+          {
+            "name": "country",
+            "dataType": ["text"],
+            "description": "Country where the exchange is based"
+          },
+          {
+            "name": "foundedYear",
+            "dataType": ["int"],
+            "description": "Year when the exchange was founded"
+          }
+        ]
+      }
+    ]
+  }
+  

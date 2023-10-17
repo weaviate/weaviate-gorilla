@@ -1,0 +1,63 @@
+{
+    "classes": [
+        {
+            "class": "HomeAppliance",
+            "description": "A device or piece of equipment designed to perform specific household tasks.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "applianceName",
+                    "dataType": ["text"],
+                    "description": "The name of the home appliance."
+                },
+                {
+                    "name": "brand",
+                    "dataType": ["text"],
+                    "description": "Brand or manufacturer of the appliance."
+                },
+                {
+                    "name": "type",
+                    "dataType": ["text"],
+                    "description": "Type or category of the appliance (e.g., refrigerator, microwave)."
+                },
+                {
+                    "name": "energyRating",
+                    "dataType": ["int"],
+                    "description": "Energy efficiency rating for the appliance."
+                },
+                {
+                    "name": "isSmartDevice",
+                    "dataType": ["boolean"],
+                    "description": "Whether the appliance can be controlled via smart technologies."
+                },
+                {
+                    "name": "price",
+                    "dataType": ["number"],
+                    "description": "Price of the appliance."
+                },
+                {
+                    "name": "warranty",
+                    "dataType": ["Warranty"],
+                    "description": "Warranty details for the appliance."
+                }
+            ]
+        },
+        {
+            "class": "Warranty",
+            "description": "Warranty details for a product.",
+            "properties": [
+                {
+                    "name": "duration",
+                    "dataType": ["int"],
+                    "description": "Duration of the warranty in months."
+                },
+                {
+                    "name": "coverage",
+                    "dataType": ["text"],
+                    "description": "Details on what is covered under the warranty."
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book {
+      title
+      summary
+      pageCount
+    }
+  }
+}
+
+Natural Language Command:
+Show me the title, summary, and pageCount of the Book objects.

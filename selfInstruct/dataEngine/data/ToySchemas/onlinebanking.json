@@ -1,0 +1,45 @@
+{
+    "classes": [
+      {
+        "class": "BankingService",
+        "description": "An online banking service provided by a bank or financial institution.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "serviceName",
+            "dataType": ["text"],
+            "description": "Name of the online banking service."
+          },
+          {
+            "name": "features",
+            "dataType": ["text"],
+            "description": "Key features of the service, e.g., money transfer, bill payments."
+          },
+          {
+            "name": "bank",
+            "dataType": ["Bank"],
+            "description": "Bank or institution providing the service."
+          }
+        ]
+      },
+      {
+        "class": "Bank",
+        "description": "A financial institution offering banking services.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "bankName",
+            "dataType": ["text"],
+            "description": "Name of the bank."
+          },
+          {
+            "name": "headquarters",
+            "dataType": ["text"],
+            "description": "Location of the bank's main office."
+          }
+        ]
+      }
+    ]
+}

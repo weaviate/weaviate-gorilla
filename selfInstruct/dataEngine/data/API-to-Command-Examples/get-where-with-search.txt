@@ -1,0 +1,22 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book(
+      where: {
+        path: ["pageCount"],
+        operator: GreaterThan,
+        valueInt: 200
+      },
+      nearText: {
+        concepts: ["Police robots"]
+      }
+    ) {
+      title
+      summary
+    }
+  }
+}
+
+Natural Language Command:
+Show me the title and summary of books semantically similar to "Police robots" with a page count greater than 200.

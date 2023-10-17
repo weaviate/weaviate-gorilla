@@ -1,0 +1,24 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book(
+      nearText: {
+        concepts: ["science fiction"]
+      },
+      autocut: 2
+    ) {
+      title
+      summary
+      isAvailable
+      author {
+        ... on Author {
+          name
+        }
+      }
+    }
+  }
+}
+
+Natural Language Command:
+Get me the books semantically similar to the query 'science fiction', cutting at the second steepest drop in vector distance results, and show the title, summary, availability, and author's name for each book.

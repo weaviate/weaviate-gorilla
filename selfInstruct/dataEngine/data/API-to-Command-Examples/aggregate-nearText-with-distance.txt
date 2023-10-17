@@ -1,0 +1,19 @@
+CUSTOM QUERY:
+
+{
+  Aggregate {
+    Books(
+      nearText: {
+        concepts: ["Artificial Intelligence Sci-Fi"],
+        distance: 0.2
+      }
+    ){
+      pageCount {
+        mean
+      }
+    }
+  }
+}
+
+Natural Language Command:
+What is the average pageCount of Books about "Artificial Intelligence Science Fiction" with a maximum distance of 0.2.

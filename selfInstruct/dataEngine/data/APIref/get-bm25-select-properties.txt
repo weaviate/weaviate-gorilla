@@ -1,0 +1,25 @@
+BM25 with Selected properties
+
+You can specify the object `properties` to search in.
+
+The below example searches for objects containing the keyword `food` in the `question` property only, ranks them using BM25F scores of the searched property, and returns the top 3.
+
+```graphql
+{
+  Get {
+    JeopardyQuestion(
+      limit: 3,
+      bm25: {
+        query: "food",
+        properties: ["question"]
+      }
+    ) {
+      question
+      answer
+      _additional {
+        score
+      }
+    }
+  }
+}
+```

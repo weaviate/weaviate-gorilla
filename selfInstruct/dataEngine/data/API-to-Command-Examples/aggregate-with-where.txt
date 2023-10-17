@@ -1,0 +1,20 @@
+CUSTOM QUERY:
+
+{
+  Aggregate {
+    Books(
+      where: {
+        path: ["pageCount"],
+        operator: GreaterThan,
+        valueInt: 200
+      }
+    ){
+      meta {
+        count
+      }
+    }
+  }
+}
+
+Natural Language Command:
+Show me how many books have a pageCount greater than 200.

@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "Patient",
+        "description": "A healthcare patient.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "The name of the patient."
+          },
+          {
+            "name": "diagnosis",
+            "dataType": ["text"],
+            "description": "The medical diagnosis."
+          },
+          {
+            "name": "age",
+            "dataType": ["int"],
+            "description": "The age of the patient."
+          },
+          {
+            "name": "isInsured",
+            "dataType": ["boolean"],
+            "description": "Insurance status of the patient."
+          },
+          {
+            "name": "primaryDoctor",
+            "dataType": ["Doctor"],
+            "description": "The primary doctor treating the patient."
+          }
+        ]
+      },
+      {
+        "class": "Doctor",
+        "description": "A healthcare doctor.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "The name of the doctor."
+          },
+          {
+            "name": "experience",
+            "dataType": ["int"],
+            "description": "The years of experience."
+          }
+        ]
+      }
+    ]
+  }
+  

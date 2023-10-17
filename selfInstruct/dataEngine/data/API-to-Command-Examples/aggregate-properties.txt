@@ -1,0 +1,21 @@
+CUSTOM QUERY:
+
+{
+  Aggregate {
+    Books {
+      title {
+        topOccurrences {
+          occurs
+          value
+        }
+      }
+      pageCount {
+        sum
+      }
+    }
+  }
+}
+```
+
+Natural Language Command:
+Show me the number of unique titles and the sum of pages of the Books in the database.

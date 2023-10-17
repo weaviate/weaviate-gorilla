@@ -1,0 +1,17 @@
+CUSTOM QUERY:
+
+{
+  Aggregate {
+    Books(groupBy: "title") {
+      groupedBy {
+        value
+      }
+      meta {
+        count
+      }
+    }
+  }
+}
+
+Natural Language Command:
+List all distinct titles in the Books class.

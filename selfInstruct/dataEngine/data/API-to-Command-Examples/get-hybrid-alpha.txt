@@ -1,0 +1,25 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book(
+      hybrid: {
+        query: "science fiction",
+        alpha: 0.25
+      },
+      limit: 5
+    ) {
+      title
+      summary
+      isAvailable
+      author {
+        ... on Author {
+          name
+        }
+      }
+    }
+  }
+}
+
+Natural Language Command:
+Get me the books with a hybrid search of 'science fiction', please use an alpha value of 0.25 in the hybrid search, and show the title, summary, availability, and author's name.

@@ -1,0 +1,14 @@
+Custom Query:
+
+{
+  Aggregate {
+    Books {
+      meta {
+        count
+      }
+    }
+  }
+}
+
+Natural Language Command:
+Show me how many objects are in the Books class

@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "Plant",
+        "description": "A plant in a garden.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "species",
+            "dataType": ["text"],
+            "description": "Species of the plant."
+          },
+          {
+            "name": "careInstructions",
+            "dataType": ["text"],
+            "description": "Instructions for care."
+          },
+          {
+            "name": "height",
+            "dataType": ["number"],
+            "description": "Height of the plant in centimeters."
+          },
+          {
+            "name": "isFlowering",
+            "dataType": ["boolean"],
+            "description": "Is the plant currently flowering?"
+          },
+          {
+            "name": "plantedBy",
+            "dataType": ["Gardener"],
+            "description": "Gardener who planted the plant."
+          }
+        ]
+      },
+      {
+        "class": "Gardener",
+        "description": "A person who gardens.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the gardener."
+          },
+          {
+            "name": "yearsExperience",
+            "dataType": ["int"],
+            "description": "Years of gardening experience."
+          }
+        ]
+      }
+    ]
+  }
+  

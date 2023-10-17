@@ -1,0 +1,23 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book(
+      hybrid: {
+        query: "science fiction"
+      },
+      limit: 5
+    ) {
+      title
+      summary
+      isAvailable
+      _additional {
+        score
+        explainScore
+      }
+    }
+  }
+}
+
+Natural Language Command:
+Get me the books with a hybrid search of 'science fiction', please explain how the Hybrid score is calculated and show the title, summary, availability, and author's name.

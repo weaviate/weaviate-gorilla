@@ -1,0 +1,15 @@
+Aggregate, retrieve a meta property
+
+The meta property has only one sub-property (count) available. This returns the count of objects matched by the query.
+
+```graphql
+{
+  Aggregate {
+    JeopardyQuestion {
+      meta {
+        count
+      }
+    }
+  }
+}
+```

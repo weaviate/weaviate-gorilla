@@ -1,0 +1,61 @@
+{
+    "classes": [
+      {
+        "class": "Spa",
+        "description": "A facility for wellness and relaxation.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the spa."
+          },
+          {
+            "name": "services",
+            "dataType": ["text"],
+            "description": "Services offered by the spa."
+          },
+          {
+            "name": "averageRating",
+            "dataType": ["number"],
+            "description": "Average customer rating."
+          },
+          {
+            "name": "isOpen",
+            "dataType": ["boolean"],
+            "description": "Is the spa currently open?"
+          },
+          {
+            "name": "locatedIn",
+            "dataType": ["Location"],
+            "description": "Location where the spa is situated."
+          }
+        ]
+      },
+      {
+        "class": "Location",
+        "description": "A geographical location.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the location."
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "Description of the location."
+          },
+          {
+            "name": "latitude",
+            "dataType": ["number"],
+            "description": "Latitude of the location."
+          }
+        ]
+      }
+    ]
+  }
+  

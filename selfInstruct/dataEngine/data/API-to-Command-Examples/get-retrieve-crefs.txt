@@ -1,0 +1,17 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book {
+      title
+      author {
+        ... on Author {
+          name
+        }
+      }
+    }
+  }
+}
+
+Natural Language Command:
+Show me the titles of books and the name of their linked authors.

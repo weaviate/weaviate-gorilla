@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "Workout",
+        "description": "A fitness workout session.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "The name of the workout."
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "Description of the workout."
+          },
+          {
+            "name": "duration",
+            "dataType": ["int"],
+            "description": "Duration of the workout in minutes."
+          },
+          {
+            "name": "isGroup",
+            "dataType": ["boolean"],
+            "description": "Is it a group workout?"
+          },
+          {
+            "name": "usesEquipment",
+            "dataType": ["Equipment"],
+            "description": "Equipment used in the workout."
+          }
+        ]
+      },
+      {
+        "class": "Equipment",
+        "description": "Fitness equipment.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the equipment."
+          },
+          {
+            "name": "quantity",
+            "dataType": ["int"],
+            "description": "Quantity available."
+          }
+        ]
+      }
+    ]
+  }
+  

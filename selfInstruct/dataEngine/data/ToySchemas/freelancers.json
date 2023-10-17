@@ -1,0 +1,58 @@
+{
+    "classes": [
+        {
+            "class": "Freelancer",
+            "description": "An individual who offers their professional services independently.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "freelancerName",
+                    "dataType": ["text"],
+                    "description": "The name of the freelancer."
+                },
+                {
+                    "name": "skills",
+                    "dataType": ["text"],
+                    "description": "List of skills or services offered by the freelancer."
+                },
+                {
+                    "name": "rate",
+                    "dataType": ["number"],
+                    "description": "The hourly or per-project rate charged by the freelancer."
+                },
+                {
+                    "name": "portfolio",
+                    "dataType": ["text"],
+                    "description": "Link to portfolio or examples of past work."
+                },
+                {
+                    "name": "clientReviews",
+                    "dataType": ["ClientReview"],
+                    "description": "Reviews provided by past clients."
+                }
+            ]
+        },
+        {
+            "class": "ClientReview",
+            "description": "A review or feedback provided by a client for the freelancer's services.",
+            "properties": [
+                {
+                    "name": "clientName",
+                    "dataType": ["text"],
+                    "description": "The name of the client."
+                },
+                {
+                    "name": "reviewText",
+                    "dataType": ["text"],
+                    "description": "Feedback or review text provided by the client."
+                },
+                {
+                    "name": "rating",
+                    "dataType": ["number"],
+                    "description": "Rating given by the client on a scale of 1 to 5."
+                }
+            ]
+        }
+    ]
+}

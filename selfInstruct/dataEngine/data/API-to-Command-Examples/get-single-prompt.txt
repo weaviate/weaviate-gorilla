@@ -1,0 +1,22 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Books (limit: 10) {
+      summary
+      _additional {
+        generate(
+          singleResult: {
+            prompt: """
+            Here is a summary of a book {summary}.
+            Please explain why someone looking for a book about robot police would like this book.
+            """
+          }
+        )
+      }
+    }
+  }
+}
+
+Natural Language Command:
+Please retrieve 10 books and feed it to a Large Language Model to write an explanation of why someone looking for a book about robot police would like this book.

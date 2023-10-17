@@ -1,0 +1,55 @@
+{
+    "classes": [
+      {
+        "class": "EnergySource",
+        "description": "A source of renewable energy.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "sourceType",
+            "dataType": ["text"],
+            "description": "Type of the renewable energy, e.g., solar, wind."
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "Brief about the energy source."
+          },
+          {
+            "name": "annualOutput",
+            "dataType": ["int"],
+            "description": "Average annual energy output in megawatts."
+          },
+          {
+            "name": "isResidential",
+            "dataType": ["boolean"],
+            "description": "Whether it's suitable for residential use."
+          },
+          {
+            "name": "provider",
+            "dataType": ["EnergyProvider"],
+            "description": "The company providing or harnessing this energy source."
+          }
+        ]
+      },
+      {
+        "class": "EnergyProvider",
+        "description": "Companies that provide renewable energy solutions.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "companyName",
+            "dataType": ["text"],
+            "description": "Name of the energy provider company."
+          },
+          {
+            "name": "founded",
+            "dataType": ["int"],
+            "description": "Year the company was founded."
+          }
+        ]
+      }
+    ]
+}

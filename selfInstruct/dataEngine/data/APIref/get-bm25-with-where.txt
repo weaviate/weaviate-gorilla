@@ -1,0 +1,36 @@
+Query API: Combining BM25 and the Where Filter
+
+Please note: This is a compositional API, combining the `where` filter with `bm25`.
+Add a conditional `where` to BM25 search.
+
+You can add a conditional filter to any BM25 search query using the `where` API, which will filter the outputs but not impact the ranking from keyword scoring.
+
+The below example searches for objects containing the keyword `food` in any field and which have the `round` property of `Double Jeopardy!`, ranks them using BM25, and returns the top 3.
+
+```graphql
+{
+  Get {
+    JeopardyQuestion(
+      limit: 3,
+      bm25: {
+        query: "food"
+      },
+      where: {
+        path: ["round"],
+        operator: Equal,
+        valueText: "Double Jeopardy!"
+      }
+    ) {
+      question
+      answer
+      _additional {
+        score
+      }
+    }
+  }
+}
+```
+
+In this example, the query will filter the results where the `round` property equals "Double Jeopardy!" and then rank them based on the keyword scoring algorithm with the query "food".
+
+A Natural Language Command for this example could be: "Show me Jeopardy Questions about food in the Double Jeopardy round, show me the question, answer and Bm25 score."

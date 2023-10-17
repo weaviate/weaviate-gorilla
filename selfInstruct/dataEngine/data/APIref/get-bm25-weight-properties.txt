@@ -1,0 +1,25 @@
+Weight (boost) searched properties
+
+You can specify weighting of object `properties` in how they affect the BM25F score.
+
+The below example searches for objects containing the keyword `food` in the `question` property and the `answer` property. Weaviate then scores the results with `question` property's weighting boosted by 2, and returns the top 3.
+
+```graphql
+{
+  Get {
+    JeopardyQuestion(
+      limit: 3,
+      bm25: {
+        query: "food",
+        properties: ["question^2", "answer"]
+      }
+    ) {
+      question
+      answer
+      _additional {
+        score
+      }
+    }
+  }
+}
+```

@@ -1,0 +1,116 @@
+{
+    "classes": [
+        {
+            "class": "WeddingVenue",
+            "description": "Details about a wedding venue.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "name",
+                    "dataType": ["text"],
+                    "description": "Name of the wedding venue."
+                },
+                {
+                    "name": "location",
+                    "dataType": ["text"],
+                    "description": "Location or address of the venue."
+                },
+                {
+                    "name": "capacity",
+                    "dataType": ["int"],
+                    "description": "Number of people the venue can accommodate."
+                },
+                {
+                    "name": "hasIndoorFacility",
+                    "dataType": ["boolean"],
+                    "description": "Whether the venue offers indoor facilities."
+                },
+                {
+                    "name": "vendors",
+                    "dataType": ["Vendor"],
+                    "description": "List of vendors associated with the venue."
+                }
+            ]
+        },
+        {
+            "class": "Vendor",
+            "description": "Details about vendors offering various wedding services.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "vendorName",
+                    "dataType": ["text"],
+                    "description": "Name of the vendor."
+                },
+                {
+                    "name": "serviceType",
+                    "dataType": ["text"],
+                    "description": "Type of service offered, e.g., catering, photography, decor."
+                },
+                {
+                    "name": "yearsInBusiness",
+                    "dataType": ["int"],
+                    "description": "Number of years the vendor has been in business."
+                },
+                {
+                    "name": "offersDiscount",
+                    "dataType": ["boolean"],
+                    "description": "Whether the vendor offers any discount."
+                }
+            ]
+        },
+        {
+            "class": "Planner",
+            "description": "Details about wedding planners.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "plannerName",
+                    "dataType": ["text"],
+                    "description": "Full name of the wedding planner."
+                },
+                {
+                    "name": "experience",
+                    "dataType": ["int"],
+                    "description": "Number of weddings planned by the individual or company."
+                },
+                {
+                    "name": "isAvailable",
+                    "dataType": ["boolean"],
+                    "description": "Whether the planner is available for booking."
+                }
+            ]
+        },
+        {
+            "class": "Ceremony",
+            "description": "Details about different wedding ceremonies and traditions.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "ceremonyName",
+                    "dataType": ["text"],
+                    "description": "Name or type of the ceremony or tradition."
+                },
+                {
+                    "name": "origin",
+                    "dataType": ["text"],
+                    "description": "Cultural or regional origin of the ceremony."
+                },
+                {
+                    "name": "durationMinutes",
+                    "dataType": ["int"],
+                    "description": "Typical duration of the ceremony in minutes."
+                },
+                {
+                    "name": "requiresSpecialVenue",
+                    "dataType": ["boolean"],
+                    "description": "Whether the ceremony requires a specific type of venue."
+                }
+            ]
+        }
+    ]
+}

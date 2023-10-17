@@ -1,0 +1,28 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book(
+      hybrid: {
+        query: "science fiction"
+      },
+      where: {
+        path: ["pageCount"],
+        operator: GreaterThan,
+        valueInt: 250
+      }
+    ) {
+      title
+      summary
+      isAvailable
+      author {
+        ... on Author {
+          name
+        }
+      }
+    }
+  }
+}
+
+Natural Language Command:
+Get me the books with a hybrid search of 'science fiction' where the books have a page count greater than 250, and show the title, summary, availability, and author's name.

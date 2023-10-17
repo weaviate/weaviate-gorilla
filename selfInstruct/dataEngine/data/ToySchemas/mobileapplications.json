@@ -1,0 +1,60 @@
+{
+    "classes": [
+        {
+            "class": "MobileApp",
+            "description": "Mobile applications and their details.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "appName",
+                    "dataType": ["text"],
+                    "description": "Name of the mobile application."
+                },
+                {
+                    "name": "description",
+                    "dataType": ["text"],
+                    "description": "Brief description of the app."
+                },
+                {
+                    "name": "developer",
+                    "dataType": ["text"],
+                    "description": "Developer or company that created the app."
+                },
+                {
+                    "name": "rating",
+                    "dataType": ["number"],
+                    "description": "Average user rating of the app."
+                },
+                {
+                    "name": "isFree",
+                    "dataType": ["boolean"],
+                    "description": "Whether the app is free or paid."
+                },
+                {
+                    "name": "supportedOS",
+                    "dataType": ["OperatingSystem"],
+                    "description": "Operating systems that support the app."
+                }
+            ]
+        },
+        {
+            "class": "OperatingSystem",
+            "description": "Mobile operating systems.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "osName",
+                    "dataType": ["text"],
+                    "description": "Name of the operating system."
+                },
+                {
+                    "name": "version",
+                    "dataType": ["text"],
+                    "description": "Version of the operating system."
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,50 @@
+{
+    "classes": [
+      {
+        "class": "LiteraryAward",
+        "description": "Details about various literary awards.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "awardName",
+            "dataType": ["text"],
+            "description": "Name of the literary award."
+          },
+          {
+            "name": "yearEstablished",
+            "dataType": ["int"],
+            "description": "Year the award was established."
+          },
+          {
+            "name": "awardingOrganization",
+            "dataType": ["Organization"],
+            "description": "Organization or entity that presents the award."
+          },
+          {
+            "name": "genresCovered",
+            "dataType": ["text"],
+            "description": "Literary genres that the award covers."
+          }
+        ]
+      },
+      {
+        "class": "Organization",
+        "description": "Details about organizations related to literature.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "organizationName",
+            "dataType": ["text"],
+            "description": "Name of the organization."
+          },
+          {
+            "name": "foundedYear",
+            "dataType": ["int"],
+            "description": "Year the organization was founded."
+          }
+        ]
+      }
+    ]
+}

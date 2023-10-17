@@ -1,0 +1,60 @@
+{
+    "classes": [
+      {
+        "class": "SpaceMission",
+        "description": "A mission to explore outer space.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "missionName",
+            "dataType": ["text"],
+            "description": "Name of the space mission."
+          },
+          {
+            "name": "objective",
+            "dataType": ["text"],
+            "description": "Primary objective or goal of the mission."
+          },
+          {
+            "name": "launchYear",
+            "dataType": ["int"],
+            "description": "Year the mission was launched."
+          },
+          {
+            "name": "missionStatus",
+            "dataType": ["text"],
+            "description": "Current status, e.g., ongoing, completed."
+          },
+          {
+            "name": "spaceAgency",
+            "dataType": ["SpaceAgency"],
+            "description": "Space agency responsible for the mission."
+          }
+        ]
+      },
+      {
+        "class": "SpaceAgency",
+        "description": "Organizations responsible for space exploration activities.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "agencyName",
+            "dataType": ["text"],
+            "description": "Name of the space agency."
+          },
+          {
+            "name": "foundedYear",
+            "dataType": ["int"],
+            "description": "Year the agency was founded."
+          },
+          {
+            "name": "headquarters",
+            "dataType": ["text"],
+            "description": "Location of the agency's headquarters."
+          }
+        ]
+      }
+    ]
+}

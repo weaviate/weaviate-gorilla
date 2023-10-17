@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "Event",
+        "description": "An event.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "title",
+            "dataType": ["text"],
+            "description": "Title of the event."
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "Description of the event."
+          },
+          {
+            "name": "startTime",
+            "dataType": ["date"],
+            "description": "Start time of the event."
+          },
+          {
+            "name": "isVirtual",
+            "dataType": ["boolean"],
+            "description": "Is the event virtual?"
+          },
+          {
+            "name": "atVenue",
+            "dataType": ["Venue"],
+            "description": "Venue of the event."
+          }
+        ]
+      },
+      {
+        "class": "Venue",
+        "description": "A venue for events.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the venue."
+          },
+          {
+            "name": "capacity",
+            "dataType": ["int"],
+            "description": "Maximum capacity."
+          }
+        ]
+      }
+    ]
+  }
+  

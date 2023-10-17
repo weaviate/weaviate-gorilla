@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "CraftBeer",
+        "description": "A craft beer.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "beerName",
+            "dataType": ["text"],
+            "description": "Name of the beer."
+          },
+          {
+            "name": "tastingNotes",
+            "dataType": ["text"],
+            "description": "Notes about the taste of the beer."
+          },
+          {
+            "name": "alcoholContent",
+            "dataType": ["number"],
+            "description": "Alcohol content in percentage."
+          },
+          {
+            "name": "isSeasonal",
+            "dataType": ["boolean"],
+            "description": "Whether the beer is seasonal."
+          },
+          {
+            "name": "brewery",
+            "dataType": ["Brewery"],
+            "description": "The brewery that produces this beer."
+          }
+        ]
+      },
+      {
+        "class": "Brewery",
+        "description": "A brewery that produces craft beers.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "breweryName",
+            "dataType": ["text"],
+            "description": "Name of the brewery."
+          },
+          {
+            "name": "foundedYear",
+            "dataType": ["int"],
+            "description": "The year the brewery was founded."
+          }
+        ]
+      }
+    ]
+  }
+  

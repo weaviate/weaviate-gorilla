@@ -1,0 +1,61 @@
+{
+    "classes": [
+      {
+        "class": "YogaPose",
+        "description": "Different yoga poses",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the yoga pose"
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "Description of the yoga pose"
+          },
+          {
+            "name": "complexityLevel",
+            "dataType": ["int"],
+            "description": "Complexity level on a scale of 1-10"
+          },
+          {
+            "name": "isForBeginners",
+            "dataType": ["boolean"],
+            "description": "Whether the pose is suitable for beginners"
+          },
+          {
+            "name": "fromYogaStyle",
+            "dataType": ["YogaStyle"],
+            "description": "The yoga style this pose belongs to"
+          }
+        ]
+      },
+      {
+        "class": "YogaStyle",
+        "description": "Styles of Yoga",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "styleName",
+            "dataType": ["text"],
+            "description": "Name of the yoga style"
+          },
+          {
+            "name": "origin",
+            "dataType": ["text"],
+            "description": "Origin country or tradition"
+          },
+          {
+            "name": "popularity",
+            "dataType": ["int"],
+            "description": "Popularity on a scale of 1-10"
+          }
+        ]
+      }
+    ]
+  }
+  

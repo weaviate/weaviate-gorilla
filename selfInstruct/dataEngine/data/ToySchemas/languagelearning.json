@@ -1,0 +1,50 @@
+{
+    "classes": [
+      {
+        "class": "LanguageCourse",
+        "description": "Details about various language learning courses.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "courseName",
+            "dataType": ["text"],
+            "description": "Name of the language course."
+          },
+          {
+            "name": "languageTaught",
+            "dataType": ["text"],
+            "description": "Language that's being taught in the course."
+          },
+          {
+            "name": "difficultyLevel",
+            "dataType": ["text"],
+            "description": "Difficulty level of the course, e.g., beginner, intermediate, advanced."
+          },
+          {
+            "name": "platform",
+            "dataType": ["LearningPlatform"],
+            "description": "Platform or service offering the language course."
+          }
+        ]
+      },
+      {
+        "class": "LearningPlatform",
+        "description": "Online platforms or services that offer educational courses.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "platformName",
+            "dataType": ["text"],
+            "description": "Name of the learning platform."
+          },
+          {
+            "name": "website",
+            "dataType": ["text"],
+            "description": "Website link to the learning platform."
+          }
+        ]
+      }
+    ]
+}

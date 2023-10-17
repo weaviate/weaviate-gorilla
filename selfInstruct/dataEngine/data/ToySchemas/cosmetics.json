@@ -1,0 +1,65 @@
+{
+    "classes": [
+        {
+            "class": "CosmeticProduct",
+            "description": "A product intended to enhance or beautify the appearance.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "productName",
+                    "dataType": ["text"],
+                    "description": "The name of the cosmetic product."
+                },
+                {
+                    "name": "brand",
+                    "dataType": ["Brand"],
+                    "description": "The brand producing the cosmetic product."
+                },
+                {
+                    "name": "type",
+                    "dataType": ["text"],
+                    "description": "The type of cosmetic product (e.g., lipstick, foundation)."
+                },
+                {
+                    "name": "shade",
+                    "dataType": ["text"],
+                    "description": "The shade or color of the product."
+                },
+                {
+                    "name": "ingredients",
+                    "dataType": ["text[]"],
+                    "description": "List of ingredients used in the product."
+                },
+                {
+                    "name": "isVegan",
+                    "dataType": ["boolean"],
+                    "description": "Whether the product is vegan-friendly."
+                }
+            ]
+        },
+        {
+            "class": "Brand",
+            "description": "A company producing cosmetic products.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "brandName",
+                    "dataType": ["text"],
+                    "description": "The name of the brand."
+                },
+                {
+                    "name": "establishedYear",
+                    "dataType": ["int"],
+                    "description": "Year when the brand was established."
+                },
+                {
+                    "name": "headquarters",
+                    "dataType": ["text"],
+                    "description": "Location of the brand's headquarters."
+                }
+            ]
+        }
+    ]
+}

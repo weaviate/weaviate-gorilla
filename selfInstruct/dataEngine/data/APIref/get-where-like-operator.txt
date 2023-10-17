@@ -1,0 +1,24 @@
+By partial matches (text)
+
+With text data type properties, you can use the Like operator to filter by partial matches.
+
+The following example filters for objects including the text "inter" in any part of a token in the answer property.
+
+```graphql
+{
+  Get {
+    JeopardyQuestion(
+      limit: 3,
+      where: {
+        path: ["answer"],
+        operator: Like,
+        valueText: "*inter*"
+      }
+    ) {
+      question
+      answer
+      round
+    }
+  }
+}
+```

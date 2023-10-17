@@ -1,0 +1,26 @@
+Get score from BM25 search
+
+Score
+
+The `score` sub-property is the BM25F score used to rank the outputs. It can be retrieved under the `_additional` property.
+
+The below example adds the `score` property to the list of retrieved properties.
+
+```graphql
+{
+  Get {
+    JeopardyQuestion(
+      limit: 3,
+      bm25: {
+        query: "food"
+      }
+    ) {
+      question
+      answer
+      _additional {
+        score
+      }
+    }
+  }
+}
+```

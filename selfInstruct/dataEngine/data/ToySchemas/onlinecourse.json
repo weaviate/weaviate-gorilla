@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "Course",
+        "description": "An online course.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "title",
+            "dataType": ["text"],
+            "description": "Title of the course."
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "Description of the course."
+          },
+          {
+            "name": "price",
+            "dataType": ["number"],
+            "description": "Price of the course."
+          },
+          {
+            "name": "isFree",
+            "dataType": ["boolean"],
+            "description": "Is the course free?"
+          },
+          {
+            "name": "taughtBy",
+            "dataType": ["Instructor"],
+            "description": "The instructor of the course."
+          }
+        ]
+      },
+      {
+        "class": "Instructor",
+        "description": "An instructor.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the instructor."
+          },
+          {
+            "name": "yearsOfExperience",
+            "dataType": ["int"],
+            "description": "Years of experience."
+          }
+        ]
+      }
+    ]
+  }
+  

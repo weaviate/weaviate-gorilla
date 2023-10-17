@@ -1,0 +1,65 @@
+{
+    "classes": [
+      {
+        "class": "DigitalArtwork",
+        "description": "A piece of art created using digital tools.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "title",
+            "dataType": ["text"],
+            "description": "Title of the digital artwork."
+          },
+          {
+            "name": "artist",
+            "dataType": ["Artist"],
+            "description": "The creator of the artwork."
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "A brief description or theme of the artwork."
+          },
+          {
+            "name": "year",
+            "dataType": ["int"],
+            "description": "Year the artwork was created."
+          },
+          {
+            "name": "medium",
+            "dataType": ["text"],
+            "description": "Medium used, e.g., digital painting, 3D modeling."
+          },
+          {
+            "name": "isForSale",
+            "dataType": ["boolean"],
+            "description": "Whether the artwork is available for purchase."
+          }
+        ]
+      },
+      {
+        "class": "Artist",
+        "description": "Digital artist details.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Full name of the artist."
+          },
+          {
+            "name": "portfolioLink",
+            "dataType": ["text"],
+            "description": "Link to the artist's online portfolio."
+          },
+          {
+            "name": "experienceYears",
+            "dataType": ["int"],
+            "description": "Number of years the artist has been active."
+          }
+        ]
+      }
+    ]
+}

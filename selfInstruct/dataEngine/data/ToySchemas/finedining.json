@@ -1,0 +1,61 @@
+{
+    "classes": [
+      {
+        "class": "Restaurant",
+        "description": "A fine dining restaurant.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the restaurant."
+          },
+          {
+            "name": "cuisine",
+            "dataType": ["text"],
+            "description": "Type of cuisine served."
+          },
+          {
+            "name": "seatingCapacity",
+            "dataType": ["int"],
+            "description": "Seating capacity of the restaurant."
+          },
+          {
+            "name": "hasMichelinStar",
+            "dataType": ["boolean"],
+            "description": "Does the restaurant have a Michelin Star?"
+          },
+          {
+            "name": "headChef",
+            "dataType": ["Chef"],
+            "description": "Head chef of the restaurant."
+          }
+        ]
+      },
+      {
+        "class": "Chef",
+        "description": "A professional chef.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the chef."
+          },
+          {
+            "name": "specialty",
+            "dataType": ["text"],
+            "description": "Specialty cuisine of the chef."
+          },
+          {
+            "name": "yearsExperience",
+            "dataType": ["int"],
+            "description": "Years of experience as a chef."
+          }
+        ]
+      }
+    ]
+  }
+  

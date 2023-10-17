@@ -1,0 +1,50 @@
+{
+    "classes": [
+      {
+        "class": "TeaShop",
+        "description": "Details about sellers and shops specializing in tea.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "shopName",
+            "dataType": ["text"],
+            "description": "Name of the tea shop or seller."
+          },
+          {
+            "name": "location",
+            "dataType": ["text"],
+            "description": "Location of the shop."
+          },
+          {
+            "name": "bestSellingTeas",
+            "dataType": ["TeaVariety"],
+            "description": "Top-selling teas at the shop."
+          }
+        ]
+      },
+      {
+        "class": "TeaVariety",
+        "description": "Details about various tea varieties.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "teaName",
+            "dataType": ["text"],
+            "description": "Name of the tea variety."
+          },
+          {
+            "name": "origin",
+            "dataType": ["text"],
+            "description": "Place of origin of the tea."
+          },
+          {
+            "name": "flavorProfile",
+            "dataType": ["text"],
+            "description": "Brief description of the tea's flavor profile."
+          }
+        ]
+      }
+    ]
+}

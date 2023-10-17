@@ -1,0 +1,8 @@
+body {
+    display: flex;
+    justify-content: center;
+}
+textarea {
+    height: 60vh;
+    width: 60vw;
+}

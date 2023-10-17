@@ -1,0 +1,25 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book(
+      bm25: {
+        query: "science fiction",
+        properties: ["title^2", "summary"]
+      },
+      limit: 5
+    ) {
+      title
+      summary
+      isAvailable
+      author {
+        ... on Author {
+          name
+        }
+      }
+    }
+  }
+}
+
+Natural Language Command:
+Get me the top 5 books with BM25 keyword scoring to the query 'science fiction' in the title or summary, weighting the title matches twice as high as the summary matches, and show the title, summary, availability, and author's name.

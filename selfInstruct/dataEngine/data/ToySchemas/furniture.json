@@ -1,0 +1,58 @@
+{
+    "classes": [
+        {
+            "class": "Furniture",
+            "description": "Items used in interior spaces to support various activities.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "furnitureName",
+                    "dataType": ["text"],
+                    "description": "The name or type of the furniture piece."
+                },
+                {
+                    "name": "material",
+                    "dataType": ["text"],
+                    "description": "Material used in the construction of the furniture."
+                },
+                {
+                    "name": "dimensions",
+                    "dataType": ["text"],
+                    "description": "Physical dimensions of the furniture piece."
+                },
+                {
+                    "name": "price",
+                    "dataType": ["number"],
+                    "description": "Price of the furniture item."
+                },
+                {
+                    "name": "manufacturer",
+                    "dataType": ["Manufacturer"],
+                    "description": "The company or individual who manufactured the furniture."
+                }
+            ]
+        },
+        {
+            "class": "Manufacturer",
+            "description": "A company or individual producing furniture pieces.",
+            "properties": [
+                {
+                    "name": "manufacturerName",
+                    "dataType": ["text"],
+                    "description": "The name of the manufacturer."
+                },
+                {
+                    "name": "location",
+                    "dataType": ["text"],
+                    "description": "Location or headquarters of the manufacturer."
+                },
+                {
+                    "name": "contact",
+                    "dataType": ["text"],
+                    "description": "Contact details for inquiries or support."
+                }
+            ]
+        }
+    ]
+}

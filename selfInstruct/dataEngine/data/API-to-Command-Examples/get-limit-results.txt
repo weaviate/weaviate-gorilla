@@ -1,0 +1,15 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book(
+      limit: 5
+    ) {
+      title
+      summary
+    }
+  }
+}
+
+Natural Language Command:
+Show me the title and summary of 5 books.

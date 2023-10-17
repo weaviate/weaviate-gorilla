@@ -1,0 +1,24 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book(
+      nearText: {
+        concepts: ["science fiction"]
+      },
+      limit: 5
+    ) {
+      title
+      summary
+      isAvailable
+      author {
+        ... on Author {
+          name
+        }
+      }
+    }
+  }
+}
+
+Natural Language Command:
+Get me the top 5 books semantically similar to the query 'science fiction', and show the title, summary, availability, and author's name.

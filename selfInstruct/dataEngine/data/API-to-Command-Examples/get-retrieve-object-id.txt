@@ -1,0 +1,14 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book {
+      _additional {
+        id
+      }
+    }
+  }
+}
+
+Natural Language Command:
+Get me the ids of the book objects.

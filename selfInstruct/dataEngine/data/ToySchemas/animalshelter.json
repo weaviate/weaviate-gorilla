@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "Animal",
+        "description": "An animal in a shelter.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "The name of the animal."
+          },
+          {
+            "name": "species",
+            "dataType": ["text"],
+            "description": "Species of the animal."
+          },
+          {
+            "name": "age",
+            "dataType": ["int"],
+            "description": "Age of the animal."
+          },
+          {
+            "name": "isAdopted",
+            "dataType": ["boolean"],
+            "description": "Is the animal adopted?"
+          },
+          {
+            "name": "adoptedBy",
+            "dataType": ["Adopter"],
+            "description": "The adopter of the animal."
+          }
+        ]
+      },
+      {
+        "class": "Adopter",
+        "description": "An adopter.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the adopter."
+          },
+          {
+            "name": "age",
+            "dataType": ["int"],
+            "description": "Age of the adopter."
+          }
+        ]
+      }
+    ]
+  }
+  

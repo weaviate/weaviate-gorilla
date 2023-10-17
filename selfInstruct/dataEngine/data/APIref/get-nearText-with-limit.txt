@@ -1,0 +1,29 @@
+nearText with limit
+
+Number of results
+
+You can set the maximum number of results returned with `limit` in the same way as shown in the search basics how-to guide.
+
+Similarly, you can retrieve a maximum `n` objects after the first `m` results by using `limit` with `offset` as shown in the search basics how-to guide.
+
+To limit the number of results returned by a `near...` query, add the `limit` operator. To start at a given offset, add the `offset` operator. For example if we want to obtain the animals in movies #2 and #3 from the `nearText` example above, we'll need to use `offset: 1, limit: 2`. The example below searches the `JeopardyQuestion` class for objects best matching `"animals in movies"`, skips 1 object (`offset`) and returns the next 2 objects:
+
+```graphql
+{
+  Get {
+    JeopardyQuestion(
+      nearText: {
+        concepts: ["animals in movies"]
+      },
+      limit: 2,
+      offset: 1 
+    ) {
+      question
+      answer
+      _additional {
+        distance
+      }
+    }
+  }
+}
+```

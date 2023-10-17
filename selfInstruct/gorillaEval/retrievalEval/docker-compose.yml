@@ -1,0 +1,29 @@
+---
+version: '3.4'
+services:
+  weaviate:
+    command:
+    - --host
+    - 0.0.0.0
+    - --port
+    - '8080'
+    - --scheme
+    - http
+    image: semitechnologies/weaviate:1.21.2
+    ports:
+    - 8080:8080
+    volumes:
+    - weaviate_data:/var/lib/weaviate
+    restart: on-failure:0
+    environment:
+      OPENAI_APIKEY: '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'
+      COHERE_APIKEY: 'cJuzSJQDgzm5vJXoxo77c8DTNPT9CmPdFiYq4EoY'
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      DEFAULT_VECTORIZER_MODULE: 'text2vec-openai'
+      ENABLE_MODULES: 'text2vec-openai,reranker-transformers,text2vec-transformers,generative-openai'
+      CLUSTER_HOSTNAME: 'node1'
+volumes:
+  weaviate_data:
+...

@@ -1,0 +1,23 @@
+Weight (boost) searched properties in Hybrid Search
+
+You can specify weighting of object `properties` in how they affect the BM25F component of hybrid searches.
+
+The below example searches for objects containing the keyword `food`. The BM25 search is done in the `question` property and the `answer` property, with the `question` property's weighting boosted by 2, and returns the top 3.
+
+```graphql
+{
+  Get {
+    JeopardyQuestion(
+      limit: 3,
+      hybrid: {
+        query: "food",
+        properties: ["question^2", "answer"],
+        alpha: 0.25
+      }
+    ) {
+      question
+      answer
+    }
+  }
+}
+```

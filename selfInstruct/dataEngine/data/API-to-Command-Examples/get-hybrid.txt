@@ -1,0 +1,23 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book(
+      hybrid: {
+        query: "science fiction"
+      }
+    ) {
+      title
+      summary
+      isAvailable
+      author {
+        ... on Author {
+          name
+        }
+      }
+    }
+  }
+}
+
+Natural Language Command:
+Get me the books with a hybrid search of 'science fiction', and show the title, summary, availability, and author's name.

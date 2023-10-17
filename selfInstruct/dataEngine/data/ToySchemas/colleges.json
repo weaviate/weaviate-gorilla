@@ -1,0 +1,58 @@
+{
+    "classes": [
+        {
+            "class": "College",
+            "description": "An institution of higher education.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "collegeName",
+                    "dataType": ["text"],
+                    "description": "The name of the college."
+                },
+                {
+                    "name": "location",
+                    "dataType": ["text"],
+                    "description": "The location or address of the college."
+                },
+                {
+                    "name": "establishedYear",
+                    "dataType": ["int"],
+                    "description": "The year the college was established."
+                },
+                {
+                    "name": "description",
+                    "dataType": ["text"],
+                    "description": "A brief overview of the college."
+                },
+                {
+                    "name": "courses",
+                    "dataType": ["Course"],
+                    "description": "Courses offered by the college."
+                }
+            ]
+        },
+        {
+            "class": "Course",
+            "description": "A course of study offered by a college.",
+            "properties": [
+                {
+                    "name": "courseName",
+                    "dataType": ["text"],
+                    "description": "The name of the course."
+                },
+                {
+                    "name": "duration",
+                    "dataType": ["int"],
+                    "description": "Duration of the course in months or years."
+                },
+                {
+                    "name": "description",
+                    "dataType": ["text"],
+                    "description": "A brief overview of the course."
+                }
+            ]
+        }
+    ]
+}

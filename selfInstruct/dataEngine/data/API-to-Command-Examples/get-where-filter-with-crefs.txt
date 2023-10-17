@@ -1,0 +1,25 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book(
+      where: {
+        path: ["author", "Author", "age"],
+        operator: GreaterThan,
+        valueInt: 60
+      }
+    ) {
+      title
+      summary
+      isAvailable
+      author {
+        ... on Author {
+          name
+        }
+      }
+    }
+  }
+}
+
+Natural Language Command:
+Show me the title, summary, availability, and linked author name of books whose linked author is older than 60 years old.

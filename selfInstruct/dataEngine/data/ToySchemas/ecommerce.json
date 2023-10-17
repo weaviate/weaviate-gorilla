@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "Product",
+        "description": "A product in an online shop.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Product name."
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "Product description."
+          },
+          {
+            "name": "price",
+            "dataType": ["number"],
+            "description": "Price of the product."
+          },
+          {
+            "name": "inStock",
+            "dataType": ["boolean"],
+            "description": "Is the product in stock?"
+          },
+          {
+            "name": "hasReview",
+            "dataType": ["Review"],
+            "description": "Product reviews."
+          }
+        ]
+      },
+      {
+        "class": "Review",
+        "description": "A product review.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "content",
+            "dataType": ["text"],
+            "description": "Review content."
+          },
+          {
+            "name": "rating",
+            "dataType": ["int"],
+            "description": "Product rating."
+          }
+        ]
+      }
+    ]
+  }
+  

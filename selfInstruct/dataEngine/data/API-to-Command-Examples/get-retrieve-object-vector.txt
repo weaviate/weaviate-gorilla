@@ -1,0 +1,15 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book {
+      title
+      _additional {
+        vector
+      }
+    }
+  }
+}
+
+Natural Language Command:
+Show me the title and vector representation of books.

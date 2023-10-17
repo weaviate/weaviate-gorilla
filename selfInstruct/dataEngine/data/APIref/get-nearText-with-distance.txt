@@ -1,0 +1,28 @@
+nearText with distance threshold
+
+Distance threshold
+
+You can set a threshold for similarity search by setting a maximum `distance`. The distance indicates how dissimilar two objects are.
+
+Multiple distance metrics are available in Weaviate. You can set it in the schema.
+
+The example below searches the `JeopardyQuestion` class for objects best matching `"animals in movies"`, returning those with a `distance` less than `0.18`:
+
+```graphql
+{
+  Get {
+    JeopardyQuestion(
+      nearText: {
+        concepts: ["animals in movies"],
+        distance: 0.18
+      }
+    ) {
+      question
+      answer
+      _additional {
+        distance
+      }
+    }
+  }
+}
+```

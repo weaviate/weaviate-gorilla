@@ -1,0 +1,45 @@
+{
+    "classes": [
+      {
+        "class": "NanotechApplication",
+        "description": "Specific applications of nanotechnology.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "applicationName",
+            "dataType": ["text"],
+            "description": "Name of the nanotech application."
+          },
+          {
+            "name": "overview",
+            "dataType": ["text"],
+            "description": "Brief description of the application."
+          },
+          {
+            "name": "leadingResearchers",
+            "dataType": ["Researcher"],
+            "description": "Top researchers in this specific application."
+          }
+        ]
+      },
+      {
+        "class": "Researcher",
+        "description": "Details about researchers in the field of nanotechnology.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Full name of the researcher."
+          },
+          {
+            "name": "affiliation",
+            "dataType": ["text"],
+            "description": "Institution or organization the researcher is affiliated with."
+          }
+        ]
+      }
+    ]
+}

@@ -1,0 +1,31 @@
+Limit the results of Hybrid Search
+
+You can limit the number of results returned by a `hybrid` search,
+
+- to a fixed number, using the `limit: <N>` operator
+- to the first N "drops" in `score`, using the `autocut` operator
+
+`autocut` can be combined with `limit: N`, which would limit autocut's input to the first `N` objects.
+
+Limiting the number of results
+
+Use the `limit` argument to specify the maximum number of results that should be returned:
+
+```graphql
+{
+  Get {
+    JeopardyQuestion(
+      hybrid: {
+        query: "safety"
+      },
+      limit: 3
+    ) {
+      question
+      answer
+      _additional {
+        score
+      }
+    }
+  }
+}
+```

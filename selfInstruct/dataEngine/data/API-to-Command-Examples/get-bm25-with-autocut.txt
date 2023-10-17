@@ -1,0 +1,24 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book(
+      bm25: {
+        query: "science fiction"
+      },
+      autocut: 1
+    ) {
+      title
+      summary
+      isAvailable
+      author {
+        ... on Author {
+          name
+        }
+      }
+    }
+  }
+}
+
+Natural Language Command:
+Get me the top 5 books with BM25 scoring to the query 'science fiction', cutting search results at the first steep drop in the BM25 score, and show the title, summary, availability, and author's name.

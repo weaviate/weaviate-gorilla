@@ -1,0 +1,22 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book(
+      limit: 5,
+      offset: 5
+    ) {
+      title
+      summary
+      isAvailable
+      author {
+        ... on Author {
+          name
+        }
+      }
+    }
+  }
+}
+
+Natural Language Command:
+Please show me title, summary, availability, and linked author's name for the 5th through 10th objects in the Books class. 

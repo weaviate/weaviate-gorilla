@@ -1,0 +1,19 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book(
+      where: {
+        path: ["title"],
+        operator: Like,
+        valueText: "*robots*"
+      }
+    ) {
+      title
+      summary
+    }
+  }
+}
+
+Natural Language Command:
+Show me the title and summary of books that contain "robots" in the title.

@@ -1,0 +1,60 @@
+{
+    "classes": [
+      {
+        "class": "PotteryItem",
+        "description": "Details about various pottery items, designs, and creations.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "itemName",
+            "dataType": ["text"],
+            "description": "Name or title of the pottery item."
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "A brief description of the pottery item, its design, and features."
+          },
+          {
+            "name": "type",
+            "dataType": ["text"],
+            "description": "Type or category of pottery, e.g., vase, plate, bowl."
+          },
+          {
+            "name": "dateCreated",
+            "dataType": ["date"],
+            "description": "The date when the pottery item was created."
+          },
+          {
+            "name": "craftsman",
+            "dataType": ["Potter"],
+            "description": "The potter or artist who crafted the item."
+          }
+        ]
+      },
+      {
+        "class": "Potter",
+        "description": "Details about individual potters or ceramic artists.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "potterName",
+            "dataType": ["text"],
+            "description": "Full name of the potter or ceramic artist."
+          },
+          {
+            "name": "biography",
+            "dataType": ["text"],
+            "description": "Brief biography or background of the potter, detailing their style, influences, and notable works."
+          },
+          {
+            "name": "studioLocation",
+            "dataType": ["text"],
+            "description": "Location of the potter's studio or place of work."
+          }
+        ]
+      }
+    ]
+}

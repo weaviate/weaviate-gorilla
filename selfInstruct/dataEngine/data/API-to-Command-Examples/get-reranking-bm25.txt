@@ -1,0 +1,25 @@
+CUSTOM QUERY:
+
+{
+  Get {
+    Book(
+      bm25: {
+        query: "robot police science fiction"
+      }
+    ) {
+      title
+      summary
+      _additional {
+        rerank(
+          query: "robot police science fiction",
+          property: "title"
+        ){
+          score
+        }
+      }
+    }
+  }
+}
+
+Natural Language Command:
+Please show me the title and summary books with BM25 scoring to the query "robot police science fiction", please rerank with this same query on the title property and show the rerank score.

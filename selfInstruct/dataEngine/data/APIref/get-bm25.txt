@@ -1,0 +1,31 @@
+Query API: Basic BM25 search
+
+BM25 Search is a keyword scoring algorithm that looks ranks data objects based on the shared keywords between the data objects and the query.
+
+To use BM25 search, you must provide a search string as a minimum.
+
+The below example uses default settings, looking for objects containing the keyword `food` anywhere in the object.
+
+It ranks the results using BM25, and returns the top 3.
+
+Following is an example for a database schema with the Class name `JeopardyQuestion` with properties `question` and `answer`:
+
+```graphql
+{
+  Get {
+    JeopardyQuestion(
+      bm25: {
+        query: "food"
+      },
+      limit: 3
+    ) {
+      question
+      answer
+    }
+  }
+}
+```
+
+In this example, the query will rank the `JeopardyQuestion` data objects based on the BM25 keyword scoring algorithm with the query "food".
+
+A Natural Language Command for this example could be: "Get me the top 3 JeopardyQuestions that mention food, show the question and answer."
