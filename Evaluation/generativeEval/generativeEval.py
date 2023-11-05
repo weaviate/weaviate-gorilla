@@ -23,7 +23,8 @@ client = weaviate.Client("http://localhost:8080")
 
 def didItExecute(WeaviateClient, schemaPath, modelOutput):
     WeaviateClient.schema.delete_all()
-    schema = json_reader(f'../../dataEngine/data/ToySchemas/{schemaPath}')
+    # Need to test this with folder structure refactor
+    schema = json_reader(f'../DataEngine/dataEngine/data/ToySchemas/{schemaPath}')
     WeaviateClient.schema.create(schema)
     WeaviateResponse = client.query.raw(modelOutput)
     return WeaviateResponse
