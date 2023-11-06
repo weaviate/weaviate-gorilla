@@ -1,16 +1,8 @@
-# Weaviate Gorilla 🦍
-Fine-tuned LLMs to use the Weaviate APIs!
+# `Auto` API Repo
 
-Here is a quick quide to our repo! 🗺️
+One of the most powerful ways to enhance the abilities of Large Language Models is to connect them with external tools! External tools describe things such as calculators, code executors, databases, and more! In order for LLMs to use tools, they need to have the right interface to the tool's APIs. For simple tools such as calculators, this can often be fit in a single JSON dictionary, but for more complex tools the Gorilla framework has shown that Retrieval-Aware fine-tuning is much more effective. `Auto` is a Database Agent that has been fine-tuned on Weaviate's APIs! This repo open-sources the code behind training `Auto`, such as generating synthetic data, as well as training and evaluating LLMs.
 
-## selfInstruct 🖋️
-contains the code to generate training data where Weaviate APIs are formatted for toy schemas. The Weaviate API reference data can be found here as well as the 3 engines for query generation: the initEngine, validator, and retryEngine.</li>
+The `Auto` API project has began with text-to-GraphQL translation. <br />
+-> The code for developing these models can be found under `Gorilla`.
 
-## substratus ⚙️
-contains the code to use the substratus system for training and serving models with kubernetes!</li>
-
-## data 🎁 
-contains the datasets generated from selfInstruct and used for training with substratus.</li>
-
-## legacy 🗄️
-Not sure if ready to delete yet.
+Please see the following GH issue to see and comment on the latest development of `Auto` in Weaviate: https://github.com/weaviate/weaviate/issues/3289.
