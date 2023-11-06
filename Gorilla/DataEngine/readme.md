@@ -1,16 +1,23 @@
-# Weaviate Gorilla 🦍
-Fine-tuned LLMs to use the Weaviate APIs!
+# DataEngine
+The DataEngine is used to store, generate, and verify synthetic training examples to train the Gorilla to translate from natural language text into Weaviate's GraphQL Search APIs.
 
-Here is a quick quide to our repo! 🗺️
+There are 5 main parts to this:
 
-## selfInstruct 🖋️
-contains the code to generate training data where Weaviate APIs are formatted for toy schemas. The Weaviate API reference data can be found here as well as the 3 engines for query generation: the initEngine, validator, and retryEngine.</li>
+- data
+- initEngine
+- retryEngine
+- trainTestSplitter
+- validatorEngine
+- syntheticSchemaWriter
 
-## substratus ⚙️
-contains the code to use the substratus system for training and serving models with kubernetes!</li>
+The Knowledge Base and Task Examples live in the Data Folder.
 
-## data 🎁 
-contains the datasets generated from selfInstruct and used for training with substratus.</li>
+We kick things off with the initEngine, which creates synthetic queries.
 
-## legacy 🗄️
-Not sure if ready to delete yet.
+We test if these queries work in the validatorEngine.
+
+If not, we fix them with the retryEngine.
+
+When we want to increase our dataset size, we use the syntheticSchemaWriter to add more schemas.
+
+When we are ready for modeling, we use the trainTestSplitter.
