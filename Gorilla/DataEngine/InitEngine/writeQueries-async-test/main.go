@@ -4,8 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
+	"os"
 	"sync"
+	"time"
 )
 
 // RequestBody is the structure of the JSON payload to send in the POST request
@@ -21,7 +24,7 @@ type Message struct {
 	Content string `json:"content"`
 }
 
-func makeMockRequest(wg *sync.WaitGroup, id int, apiKey string, ch chan<- string) {
+func sendRequest(wg *sync.WaitGroup, id int, apiKey string, ch chan<- string) {
 	defer wg.Done()
 
 	requestBody := &RequestBody{
@@ -29,10 +32,10 @@ func makeMockRequest(wg *sync.WaitGroup, id int, apiKey string, ch chan<- string
 		Messages: []Message{
 			{
 				Role:    "user",
-				Content: "Say this is a test!",
+				Content: "Please write an overview of Text-to-SQL research.",
 			},
 		},
-		Temperature: 0.7,
+		Temperature: 0,
 	}
 
 	jsonData, err := json.Marshal(requestBody)
@@ -50,40 +53,39 @@ func makeMockRequest(wg *sync.WaitGroup, id int, apiKey string, ch chan<- string
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", "Bearer "+apiKey)
 
-	// Uncomment the lines below to actually send the request
-	// client := &http.Client{}
-	// resp, err := client.Do(req)
-	// if err != nil {
-	//     ch <- fmt.Sprintf("Request %d: Failed to send request - %s", id, err)
-	//     return
-	// }
-	// defer resp.Body.Close()
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		ch <- fmt.Sprintf("Request %d: Failed to send request - %s", id, err)
+		return
+	}
+	defer resp.Body.Close()
 
-	// Uncomment the lines below to read the response body
-	// body, err := ioutil.ReadAll(resp.Body)
-	// if err != nil {
-	//     ch <- fmt.Sprintf("Request %d: Failed to read response body - %s", id, err)
-	//     return
-	// }
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		ch <- fmt.Sprintf("Request %d: Failed to read response body - %s", id, err)
+		return
+	}
 
-	// Mock response message
-	body := fmt.Sprintf("Mock Response %d", id)
-
-	ch <- fmt.Sprintf("Request %d: Success - %s", id, body)
+	ch <- string(body)
 }
 
 func main() {
 	var wg sync.WaitGroup
-	ch := make(chan string, 10)   // Channel to collect responses
-	apiKey := "your-api-key-here" // Replace with your actual API key
+	ch := make(chan string, 100) // Channel to collect responses
+	apiKey := os.Args[1]         // go run main.go api-key
 
-	for i := 1; i <= 10; i++ {
+	start := time.Now()
+	for i := 1; i <= 100; i++ {
 		wg.Add(1)
-		go makeMockRequest(&wg, i, apiKey, ch)
+		go sendRequest(&wg, i, apiKey, ch)
 	}
 
 	wg.Wait()
 	close(ch)
+
+	elapsed := time.Since(start)
+	fmt.Printf("GoAsync - All requests completed in %s\n", elapsed)
 
 	for response := range ch {
 		fmt.Println(response)
