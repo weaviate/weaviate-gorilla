@@ -14,7 +14,7 @@ def saveData(data, savePath):
          f.write('\n')
 
 # read in master
-master = loadDataFromJSON("all-clean-WeaviateGorillaGQLDataset.json")
+master = loadDataFromJSON("../data/all-clean-WeaviateGorillaGQLDataset.json")
 
 withoutRetrievalPromptDataset = []
 

@@ -70,7 +70,7 @@ def openaiRequest(prompt):
           time.sleep(10)
   return response
 
-openai.api_key = "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"
+openai.api_key = "sk-foobar"
 
 # Might be interesting to also ablate this against chain-of-thought where it thinks and then fixes
 
