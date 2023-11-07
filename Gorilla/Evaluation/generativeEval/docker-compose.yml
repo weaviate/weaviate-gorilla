@@ -23,7 +23,7 @@ services:
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
       DEFAULT_VECTORIZER_MODULE: 'text2vec-transformers'
       ENABLE_MODULES: 'text2vec-transformers,reranker-transformers,text2vec-openai,generative-openai'
-      OPENAI_APIKEY: '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'
+      OPENAI_APIKEY: 'sk-foobar'
       CLUSTER_HOSTNAME: 'node1'
       ENABLE_EXPERIMENTAL_BM25: 'true'
   t2v-transformers:
