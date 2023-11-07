@@ -16,8 +16,8 @@ services:
     - weaviate_data:/var/lib/weaviate
     restart: on-failure:0
     environment:
-      OPENAI_APIKEY: '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'
-      COHERE_APIKEY: 'cJuzSJQDgzm5vJXoxo77c8DTNPT9CmPdFiYq4EoY'
+      OPENAI_APIKEY: 'sk-foobar'
+      COHERE_APIKEY: 'co-foobar'
       QUERY_DEFAULTS_LIMIT: 25
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
