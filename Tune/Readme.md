@@ -25,7 +25,7 @@ DocTuner.search(
 	searchers(
 		BM25(properties=["content"]),
 		Vector(),
-		Hybrid(alphas=[0.5])
+		Hybrid(alphas=[0.5], properties=["content"])
 	),
 	metrics(
 		SearchRecall, SearchPrecision, SearchWinsLLM
