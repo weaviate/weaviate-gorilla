@@ -29,6 +29,7 @@ DocTuner.search(
 	],
 	metrics=[
 		SearchRecall, SearchPrecision, SearchWinsLLM
-	]
+	],
+	limits=[100,20,5,1]
 ).do()
 ```
