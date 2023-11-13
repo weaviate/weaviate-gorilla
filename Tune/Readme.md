@@ -22,13 +22,13 @@ DocTuner = Tune(
 )
 
 DocTuner.search(
-	searchers(
+	searchers=[
 		BM25(properties=["content"]),
 		Vector(),
 		Hybrid(alphas=[0.5], properties=["content"])
-	),
-	metrics(
+	],
+	metrics=[
 		SearchRecall, SearchPrecision, SearchWinsLLM
-	)
+	]
 ).do()
 ```
