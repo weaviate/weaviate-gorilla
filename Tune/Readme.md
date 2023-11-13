@@ -17,7 +17,7 @@ from Tune.metrics import SearchRecall, SearchPrecision, SearchWinsLLM
 
 DocTuner = Tune(
   collection="Document",
-  queryCollection="Query",
+  queryCollection="queries.json",
   numQueries=100
 )
 
