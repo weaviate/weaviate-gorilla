@@ -2,6 +2,13 @@
 
 The structure of the code is as follows:
 
+There is a `data` folder containing:
+- `ToySchemas/`
+- `SimpleSyntheticSchemas/`
+- `ComplexSyntheticSchemas/`
+- `SimpleQueries/`
+- `ComplexQueries/`
+
 There are 8 code files:
 - `generate_schemas`: Runs `create` to generate schemas.
 - `generate_queries`: Runs `create` to generate queries.
