@@ -3,7 +3,7 @@ from vectorizer import VectorizerService
 from models import SimpleSyntheticSchema, ComplexSyntheticSchema
 from create import CreateObjects
 
-openai_api_key = "sk-foobar"
+openai_api_key = ""
 
 lm_service = LMService(
     model_provider = "openai",
@@ -26,14 +26,16 @@ example_use_case = "placeholder"
 
 schemas = CreateObjects(
     num_samples = 50,
-    task_instructions = """
+    task_instructions = f"""
     Generate a synthetic database schema.
     Here is an example: {schema_reference}
-    With example use case: {example_use case}
+    With example use case: {example_use_case}
     """,
-    output_model=SimpleSyntheticSchema
+    output_model=SimpleSyntheticSchema,
+    lm_service=lm_service,
+    vectorizer_service=vectorizer_service
 )
 
 import json
-with open("simple-synthetic-schemas.json", "w+"):
+with open("./data/simple-synthetic-schemas.json", "w+"):
     json.dumps(schemas)

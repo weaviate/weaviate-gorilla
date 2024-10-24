@@ -4,10 +4,14 @@ from lm import LMService
 from vectorizer import VectorizerService
 
 def CreateObjects(
+        num_samples: int,
         task_instructions: str, 
         output_model: BaseModel,
+        lm_service: LMService,
+        vectorizer_service: VectorizerService,
         reference_objects: dict[str, list[dict]] = None
     ) -> list[dict]:
+    print("\033[92mCreating Objects:\033[0m")
     objects = []
     
     if reference_objects:
@@ -27,11 +31,14 @@ def CreateObjects(
                     # Add necessary parameters here
                 )
     else:
-        response = LMService.generate(
-            task_instructions,
-            output_model
-        )
-        objects.append(response.model_dump_json())
+        for samples_generated_counter in range(num_samples):
+            response = lm_service.generate(
+                task_instructions,
+                output_model
+            )
+            print(f"\033[92mResponse {samples_generated_counter}\033[0m")
+            print(f"\033[1m{response.model_dump_json()}\033[0m\n")
+            objects.append(response.model_dump_json())
     
     return objects
 
@@ -47,6 +54,12 @@ def _generate_combinations(reference_objects: dict[str, list[dict]]) -> list[dic
         combinations.append(combination)
     
     return combinations
+
+def format_task_instructions_with_reference(task_instructions: str, reference_objects: dict) -> str:
+    return f"""
+    task_instructions: {task_instructions}
+    reference_objects: {reference_objects}
+    """
 
 # Need a dedup `key` in the case of the objects having multiple properties
 def _vector_deduplicator(
