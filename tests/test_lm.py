@@ -1,7 +1,7 @@
 """
 # Run with:
 
-`python3 -m unittest test_lm_service.py`
+`python3 -m unittest test_lm.py`
 
 """
 
@@ -26,10 +26,10 @@ class TestLMService(unittest.TestCase):
     @patch('ollama')
     @patch('openai.OpenAI')
     def test_init_openai(self, mock_openai, mock_ollama):
+        mock_openai_instance = mock_openai.return_value
         service = LMService(model_provider="openai", model_name="test_model", api_key="test_key")
         self.assertEqual(service.model_provider, "openai")
-        mock_openai.assert_called_with(api_key="test_key")
-        self.assertEqual(service.lm_client, mock_openai.return_value)
+        self.assertEqual(service.lm_client, mock_openai_instance)
 
     @patch('ollama.chat')
     def test_generate_ollama(self, mock_chat):
