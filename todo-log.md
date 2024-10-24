@@ -1,12 +1,12 @@
 # ToDo
 
-[ ] Test Create by running `generate_schemas.py`
-[ ] Test `ComplexSyntheticSchema`'s use of `@field_validator` works as an output_model
-[ ] Run Generate Schemas
-[ ] Generate Queries
-[ ] Test Classifier with Function Calling and Zero-Shot Classifier
-[ ] Reflect on results
+- run `generate_schemas.py` with `SimpleSyntheticSchema` and `Create`
+- Test `ComplexSyntheticSchema`'s use of `@field_validator` works as an output_model
+- Finishing running ^
+- run `generate_schemas.py` with `Queries` 
+- Test Classifier with Function Calling and Zero-Shot Classifier
+
 == Consider changing direction based on results, otherwise ==
-[ ] Implement and Test Optimizers
-[ ] Test Optimized Classifiers
-[ ] Reflect on results
+
+- Implement and Test Optimizers
+- Test Optimized Function Calling
