@@ -57,7 +57,6 @@ class LMService():
 
     def connection_test(self) -> None:
         prompt = "Say hello"
-        output_model = TestLMConnectionModel(generic_response="")
-        response = self.generate(prompt, output_model)
-        print("\033[92mConnection test:\033[0m")
+        response = self.generate(prompt, TestLMConnectionModel)
+        print("\033[92mLM Connection test:\033[0m")
         print(response)
