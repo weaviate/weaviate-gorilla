@@ -43,7 +43,7 @@ class LMService():
                 )
                 return response["message"]["content"]
             case "openai":
-                response = self.model.beta.chat.completions.parse(
+                response = self.lm_client.beta.chat.completions.parse(
                     model=self.model_name,
                     messages=[
                         {"role": "system", "content": "You are a helpful assistant. Follow the response format instructions."},
