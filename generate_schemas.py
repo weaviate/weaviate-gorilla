@@ -8,6 +8,8 @@ lm_service = LMService(
     api_key = "sk-foobar"
 )
 
+lm_service.connection_test()
+
 vectorizer_service = VectorizerService(
     model_provider = "openai",
     model_name = "",

@@ -2,6 +2,7 @@ import ollama
 import openai
 from typing import Literal
 from pydantic import BaseModel
+from models import TestLMConnectionModel
 
 LMModelProvider = Literal["ollama", "openai"]
 
@@ -23,7 +24,6 @@ class LMService():
                 )
             case _:
                 raise ValueError(f"Unsupported model provider: {self.model_provider}")
-
 
     def generate(self, prompt: str, output_model: BaseModel) -> str:
         match self.model_provider:
@@ -54,3 +54,10 @@ class LMService():
                 return response.choices[0].message.parsed
             case _:
                 raise ValueError(f"Unsupported model provider: {self.model_provider}")
+
+    def connection_test(self) -> None:
+        prompt = "Say hello"
+        output_model = TestLMConnectionModel(generic_response="")
+        response = self.generate(prompt, output_model)
+        print("\033[92mConnection test:\033[0m")
+        print(response)

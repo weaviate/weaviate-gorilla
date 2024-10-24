@@ -40,3 +40,6 @@ class FunctionClassifierTestResult(BaseModel):
     confusion_matrix: list[PredictionWithGroundTruth]
     misclassified_repsonses: list[PromptWithResponse]
     all_responses: list[PromptWithResponse]
+
+class TestLMConnectionModel(BaseModel):
+    generic_response: str
