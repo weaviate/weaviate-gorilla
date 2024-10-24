@@ -33,7 +33,7 @@ class LMService():
                 prompt += f"\nRespond with the following JSON: {output_model.model_dump_json()}"
                 response = self.lm_client.chat(
                     model="llama3.1:8b",
-                    mesages=[
+                    messages=[
                         {
                             "role": "user",
                             "content": prompt
