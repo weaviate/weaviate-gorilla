@@ -93,7 +93,7 @@ def _vector_deduplicator(
     # if deduplication_strategy = "vector_distance":
     #   Resolve duplicates by keeping the vector with the earliest index.
     #   For example if object 2 is 0.03 distance to object 8,
-    #   => Remove object 8
+    #   => Remove object 8, because 2 < 8
 
     # if deduplication_strategy = "llm_resolver":
     #   Resolve duplicates by sending a prompt to the LLM to output the ids of objects that should be removed
