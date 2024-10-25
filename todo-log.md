@@ -10,7 +10,7 @@
 
 [IN DEVELOPMENT] run `generate_queries.py` to generate 8 x 50 = 400 synthetic queries
 
-- [ ] Add `weaviate_retrieval_functions`
+- [ ] **Note** we will be ablating these schemas -- Add `weaviate_retrieval_functions`
 - [ ] Generate 1 synthetic query per retrieval function per synthetic schema and envisioned use case.
 
 - `ComplexSchema` and `ComplexQueries` to evaluate multi-hop function calling
