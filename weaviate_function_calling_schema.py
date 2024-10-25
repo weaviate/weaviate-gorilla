@@ -40,5 +40,12 @@ weaviate_function_calling_schema = [
                 required=["query"],
             ),
         ),
+    ),
+    Tool(
+        type="function",
+        function=Function(
+            name="get_objects_from_filters",
+        )
     )
 ]
+
