@@ -3,6 +3,7 @@ import openai
 from typing import Literal
 from pydantic import BaseModel
 from models import TestLMConnectionModel
+from weaviate_function_calling_schema import Tool, Function, ParameterProperty, Parameters
 
 LMModelProvider = Literal["ollama", "openai"]
 
@@ -25,7 +26,11 @@ class LMService():
             case _:
                 raise ValueError(f"Unsupported model provider: {self.model_provider}")
 
-    def generate(self, prompt: str, output_model: BaseModel) -> str:
+    def generate(
+        self, 
+        prompt: str, 
+        output_model: BaseModel
+        ) -> str:
         match self.model_provider:
             case "ollama":
                 # Ollama doesn't take a BaseModel as input
@@ -55,8 +60,41 @@ class LMService():
             case _:
                 raise ValueError(f"Unsupported model provider: {self.model_provider}")
 
+    def generate_with_functions(
+        self,
+        prompt: str,
+        output_model: BaseModel,
+        function_calling_schema: dict
+    ):
+        """Generates with a function calling schema"""
+        pass
+
     def connection_test(self) -> None:
         prompt = "Say hello"
         response = self.generate(prompt, TestLMConnectionModel)
         print("\033[92mLM Connection test:\033[0m")
         print(response)
+
+    def connection_test_with_tools(self) -> None:
+        prompt = "What is 18549023948 multiplied by 84392348?"
+        tools = [Tool(
+            type="function",
+            function=Function(
+                name="multiply",
+                description="Multiply two numbers together",
+                parameters=Parameters(
+                    type="object",
+                    properties={
+                        "num1": ParameterProperty(
+                            type="number",
+                            description="The first number to multiply",
+                        ),
+                        "num2": ParameterProperty(
+                            type="number",
+                            description="The second number to multiply",
+                        ),
+                    },
+                    required=["num1", "num2"],
+                ),
+            ),
+        )]
