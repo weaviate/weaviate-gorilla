@@ -1,15 +1,14 @@
 # ToDo
 
-- `SimpleSchema` and `SimpleQueries` test through to evaluate simple function calling.
+[NEXT MILESTONE]
 
-- run `generate_schemas.py` with `SimpleSyntheticSchema`
+`SimpleSchema` and `SimpleQueries` test through to evaluate simple function calling.
 
-### Sub Components
+[CODE IS RUNNING] run `generate_schemas.py` to generate 50 synthetic schemas
 
-- [ ] Add the schema example
-- [ ] If result is bad, consider adding a validator that tries to create a Weaviate Collection with the schema -- if this fails, it should retry the schema generation.
+[DEDUPLICATION IS NEEDED]
 
-- run `generate_queries.py`
+[IN DEVELOPMENT] run `generate_queries.py` to generate 8 x 50 = 400 synthetic queries
 
 - [ ] Add `weaviate_retrieval_functions`
 - [ ] Generate 1 synthetic query per retrieval function per synthetic schema and envisioned use case.
@@ -25,3 +24,7 @@
 
 - Implement and Test Optimizers
 - Test Optimized Function Calling
+
+# Debt
+
+- Revise thinking around `Simple-` and `Complex-` Schema. Both should use the `WeaviateCollectionConfig` model but with different prompts.

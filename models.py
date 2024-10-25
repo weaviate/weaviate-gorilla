@@ -12,6 +12,7 @@ class Property(BaseModel):
 class WeaviateCollectionConfig(BaseModel):
     name: str
     properties: list[Property]
+    envisioned_use_case_overview: str
 
 class SimpleSyntheticSchema(BaseModel):
     envisioned_use_case_description: str
