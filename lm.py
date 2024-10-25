@@ -25,7 +25,11 @@ class LMService():
             case _:
                 raise ValueError(f"Unsupported model provider: {self.model_provider}")
 
-    def generate(self, prompt: str, output_model: BaseModel) -> str:
+    def generate(
+        self, 
+        prompt: str, 
+        output_model: BaseModel
+        ) -> str:
         match self.model_provider:
             case "ollama":
                 # Ollama doesn't take a BaseModel as input
@@ -54,6 +58,15 @@ class LMService():
                 return response.choices[0].message.parsed
             case _:
                 raise ValueError(f"Unsupported model provider: {self.model_provider}")
+
+    def generate_with_functions(
+        self,
+        prompt: str,
+        output_model: BaseModel,
+        function_calling_schema: dict
+    ):
+        """Generates with a function calling schema"""
+        pass
 
     def connection_test(self) -> None:
         prompt = "Say hello"
