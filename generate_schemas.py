@@ -1,6 +1,6 @@
 from lm import LMService
 from vectorizer import VectorizerService
-from models import SimpleSyntheticSchema, ComplexSyntheticSchema
+from models import Property, WeaviateCollectionConfig, SimpleSyntheticSchema, ComplexSyntheticSchema
 from create import CreateObjects
 
 openai_api_key = ""
@@ -21,17 +21,36 @@ vectorizer_service = VectorizerService(
 
 vectorizer_service.connection_test()
 
-schema_reference = "placeholder"
-example_use_case = "placeholder"
+simple_schema_reference = WeaviateCollectionConfig(
+    name="BookStore",
+    properties=[
+        Property(
+            name="title",
+            data_type="TEXT"
+        ),
+        Property(
+            name="price",
+            data_type="NUMBER"
+        ),
+        Property(
+            name="is_available",
+            data_type="BOOLEAN"
+        )
+    ]
+)
+
+example_use_case = "By combining these properties, the bookstore can develop a cohesive AI-driven solution. Customers receive smart recommendations based on title similarities, dynamic pricing strategies powered by price insights, and accurate real-time information on is_available status. This integration ensures efficient inventory management, enhances customer satisfaction, and optimizes sales by leveraging the strengths of each property."
 
 schemas = CreateObjects(
     num_samples = 50,
     task_instructions = f"""
     Generate a synthetic database schema.
-    Here is an example: {schema_reference}
+    Here is an example: {simple_schema_reference}
     With example use case: {example_use_case}
+
+    IMPORTANT!! Please ensure the synthetic schema has exactly 1 TEXT property, 1 NUMBER property, and 1 BOOLEAN property.
     """,
-    output_model=SimpleSyntheticSchema,
+    output_model=WeaviateCollectionConfig,
     lm_service=lm_service,
     vectorizer_service=vectorizer_service
 )

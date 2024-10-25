@@ -5,6 +5,14 @@ class SyntheticQuery(BaseModel):
     query: str
     explanation: str
 
+class Property(BaseModel):
+    name: str
+    data_type: str
+
+class WeaviateCollectionConfig(BaseModel):
+    name: str
+    properties: list[Property]
+
 class SimpleSyntheticSchema(BaseModel):
     envisioned_use_case_description: str
     name: str
