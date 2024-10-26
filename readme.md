@@ -8,9 +8,9 @@ The Weaviate Gorilla project is a collection of research experiments in two core
 
 ## News
 
-Weaviate Gorilla Part 1 GraphQL APIs [link](https://weaviate.io/blog/weaviate-gorilla-part-1)
+Weaviate Gorilla Part 1 GraphQL APIs on the weaviate blog - [link](https://weaviate.io/blog/weaviate-gorilla-part-1)
 
-Shishir Patil and Tianjun Zhang [weaviate podcast](https://www.youtube.com/watch?v=HUtYOLX7HZ4)
+Shishir Patil and Tianjun Zhang on the weaviate podcast - [link](https://www.youtube.com/watch?v=HUtYOLX7HZ4)
 
 ![Weaviate Gorilla](./visuals/weaviate-gorillas/gorilla-9.png)
 
