@@ -11,4 +11,4 @@ The `Auto` API project has began with text-to-GraphQL translation. <br />
 
 Please see the following GH issue to see and comment on the latest development of `Auto` in Weaviate: https://github.com/weaviate/weaviate/issues/3289.
 
-![Weaviate Gorilla](../visuals/weaviate-gorillas/gorilla-58.png)
+![Weaviate Gorilla](../visuals/legacy/gorilla-part-1.png)
