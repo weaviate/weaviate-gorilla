@@ -3,7 +3,7 @@ import os
 import json
 from PIL import Image
 
-# Set the page title
+# Set the page config
 st.set_page_config(page_title="Gorilla Image Gallery", layout="wide")
 
 # Title for the gallery
@@ -15,9 +15,18 @@ image_dir = "weaviate-gorillas/"
 # Get all image files from the directory
 image_files = [f for f in os.listdir(image_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))]
 
-# Initialize scores in session state if not already present
+# Load scores from disk if the file exists, otherwise initialize with zeros
 if 'image_scores' not in st.session_state:
-    st.session_state.image_scores = {image: 0 for image in image_files}
+    if os.path.exists('image_scores.json'):
+        with open('image_scores.json', 'r') as f:
+            st.session_state.image_scores = json.load(f)
+    else:
+        st.session_state.image_scores = {}
+
+# Ensure all image files have a score, if not, initialize with zero
+for image in image_files:
+    if image not in st.session_state.image_scores:
+        st.session_state.image_scores[image] = 0
 
 # Function to update score
 def update_score(image, score):
@@ -30,7 +39,7 @@ def save_scores():
     st.success("Scores saved successfully!")
 
 # Sort images by score
-sorted_images = sorted(image_files, key=lambda x: st.session_state.image_scores[x], reverse=True)
+sorted_images = sorted(image_files, key=lambda x: st.session_state.image_scores.get(x, 0), reverse=True)
 
 # Create a grid layout
 cols = st.columns(3)  # You can adjust the number of columns as needed
@@ -43,10 +52,10 @@ for idx, image_file in enumerate(sorted_images):
         st.image(image, caption=image_file, use_column_width=True)
         
         # Add a slider for scoring
-        score = st.slider(f"Score for {image_file}", 0, 10, st.session_state.image_scores[image_file], key=f"slider_{image_file}")
+        score = st.slider(f"Score for {image_file}", 0, 10, st.session_state.image_scores.get(image_file, 0), key=f"slider_{image_file}")
         
         # Update score when slider value changes
-        if score != st.session_state.image_scores[image_file]:
+        if score != st.session_state.image_scores.get(image_file, 0):
             update_score(image_file, score)
 
 # Add a note about the number of images
