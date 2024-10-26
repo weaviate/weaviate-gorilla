@@ -4,11 +4,13 @@
 
 `SimpleSchema` and `SimpleQueries` test through to evaluate simple function calling.
 
-[CODE IS RUNNING] run `generate_schemas.py` to generate 50 synthetic schemas
+Run `generate_schemas.py` to generate 50 synthetic schemas
 
-[DEDUPLICATION IS NEEDED]
+- Works fairly well, but could benefit from diverse generation and deduplication strategies
 
 [IN DEVELOPMENT] run `generate_queries.py` to generate 8 x 50 = 400 synthetic queries
+
+- Requires re-think of function calling with Weaviate
 
 - [ ] **Note** we will be ablating these schemas -- Add `weaviate_retrieval_functions`
 - [ ] Generate 1 synthetic query per retrieval function per synthetic schema and envisioned use case.
