@@ -15,23 +15,7 @@ def search_blogs(
 This is then interfaced in a function calling JSON schema with the following:
 
 ```python
-class ParameterProperty(BaseModel):
-    type: str
-    description: str
-
-class Parameters(BaseModel):
-    type: Literal["object"]
-    properties: Dict[str, ParameterProperty]
-    required: Optional[List[str]]
-
-class Function(BaseModel):
-    name: str
-    description: str
-    parameters: Parameters
-
-class Tool(BaseModel):
-    type: Literal["function"]
-    function: Function
+from weaviate.function_calling import Tool
 
 search_tool = Tool(
     type="function",
