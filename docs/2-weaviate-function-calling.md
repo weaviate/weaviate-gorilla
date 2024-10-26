@@ -35,5 +35,3 @@ search_tool = Tool(
     )
 )
 ```
-
-This is the standard tool schema that LLM APIs such as OpenAI, Anthropic, Gemini, Ollama, and vLLM use, to name a few.

@@ -1,4 +1,4 @@
-## `/Create`
+## Notes on gfl's `/Create` API while developing the Weaviate Gorilla
 
 General concept of:
 
