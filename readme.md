@@ -12,8 +12,6 @@ The Weaviate Gorilla project is a collection of research experiments in two core
 
 🎙️ Shishir Patil and Tianjun Zhang on the Weaviate Podcast - [link](https://www.youtube.com/watch?v=HUtYOLX7HZ4)
 
-![Weaviate Gorilla](./visuals/create-loops/llm-plus-tools.png)
-
 
 
 
