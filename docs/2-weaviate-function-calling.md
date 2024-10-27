@@ -2,13 +2,18 @@
 
 Today, most agents in production add a fairly simple semantic search to their schema as follows:
 ```python
-def search_blogs(
+def search_database_collection(
     weaviate_client: weaviate.WeaviateClient,
     collection_name: str,
+    query_keys: str,
     search_query: str
     ) -> str:
     search_collection = weaviate_client.collections.get(collection_name)
-    results = search_collection.query.hybrid_search()
+    results = search_collection.query.hybrid_search(
+        query=search_query,
+        query_properties=[query_keys],
+        
+    )
     return results
 ```
 
