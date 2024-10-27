@@ -10,7 +10,7 @@ def search_database_collection(
     limit: int
     ) -> str:
     search_collection = weaviate_client.collections.get(collection_name)
-    results = search_collection.query.hybrid_search(
+    results = search_collection.query.hybrid(
         query=search_query,
         alpha=alpha,
         limit=limit
