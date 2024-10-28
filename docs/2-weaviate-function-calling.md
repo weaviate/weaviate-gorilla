@@ -21,6 +21,7 @@ def search_weaviate_collection(
     import weaviate
     from weaviate.classes.init import Auth
     import os
+
     weaviate_client = weaviate.connect_to_weaviate_cloud(
         cluster_url=os.environ["WEAVIATE_URL"],
         auth_credentials=Auth.api_key(os.environ["WEAVIATE_API_KEY"]),
