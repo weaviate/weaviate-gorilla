@@ -29,7 +29,7 @@ def search_weaviate_collection(
             "X-OpenAI-Api-Key": os.environ["OPENAI_API_KEY"]
         }
     )
-    # Use the collection_name variable
+
     weaviate_collection = weaviate_client.collections.get(collection_name)
     query_result = weaviate_collection.query.hybrid(
         query=search_query,
