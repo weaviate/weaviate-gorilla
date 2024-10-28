@@ -4,11 +4,12 @@ Today, most agents in production add a fairly simple semantic search to their sc
 ```python
 def search_weaviate_collection(
     self,
+    collection_name: str,
     search_query: str,
 ):
     """
     This tool queries an external database collection
-    named by the parameter `collection_name` to find the most semantically similar items to the query.
+    named by the parameter {collection_name} to find the most semantically similar items to the query.
 
     Args: 
         collection_name (str): The name of the database collection
@@ -20,6 +21,7 @@ def search_weaviate_collection(
     import weaviate
     from weaviate.classes.init import Auth
     import os
+
     weaviate_client = weaviate.connect_to_weaviate_cloud(
         cluster_url=os.environ["WEAVIATE_URL"],
         auth_credentials=Auth.api_key(os.environ["WEAVIATE_API_KEY"]),
@@ -27,8 +29,8 @@ def search_weaviate_collection(
             "X-OpenAI-Api-Key": os.environ["OPENAI_API_KEY"]
         }
     )
-    # ToDo, need to figure out how to dynamically create these collections
-    weaviate_collection = weaviate_client.collections.get("WeaviateBlogs")
+    # Use the collection_name variable
+    weaviate_collection = weaviate_client.collections.get(collection_name)
     query_result = weaviate_collection.query.hybrid(
         query=search_query,
         alpha=0.5,
