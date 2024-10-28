@@ -2,20 +2,44 @@
 
 Today, most agents in production add a fairly simple semantic search to their schema as follows:
 ```python
-def search_database_collection(
-    weaviate_client: weaviate.WeaviateClient,
-    collection_name: str,
+def search_weaviate_collection(
+    self,
     search_query: str,
-    alpha: float,
-    limit: int
-    ) -> str:
-    search_collection = weaviate_client.collections.get(collection_name)
-    results = search_collection.query.hybrid(
-        query=search_query,
-        alpha=alpha,
-        limit=limit
+):
+    """
+    This tool queries an external database collection
+    named by the parameter `collection_name` to find the most semantically similar items to the query.
+
+    Args: 
+        collection_name (str): The name of the database collection
+        search_query (str): The search query
+
+    Returns: 
+        search_results (str): The results from the search engine.
+    """
+    import weaviate
+    from weaviate.classes.init import Auth
+    import os
+    weaviate_client = weaviate.connect_to_weaviate_cloud(
+        cluster_url=os.environ["WEAVIATE_URL"],
+        auth_credentials=Auth.api_key(os.environ["WEAVIATE_API_KEY"]),
+        headers={
+            "X-OpenAI-Api-Key": os.environ["OPENAI_API_KEY"]
+        }
     )
-    return results
+    # ToDo, need to figure out how to dynamically create these collections
+    weaviate_collection = weaviate_client.collections.get("WeaviateBlogs")
+    query_result = weaviate_collection.query.hybrid(
+        query=search_query,
+        alpha=0.5,
+        limit=5
+    )
+    weaviate_client.close()
+    results = query_result.objects
+    formatted_results = "\n".join(
+        [f"[Search Result {i+1}] {str(result.properties)}" for i, result in enumerate(results)]
+    )
+    return formatted_results
 ```
 
 
