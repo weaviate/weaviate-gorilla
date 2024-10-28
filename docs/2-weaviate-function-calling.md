@@ -29,7 +29,6 @@ def search_weaviate_collection(
             "X-OpenAI-Api-Key": os.environ["OPENAI_API_KEY"]
         }
     )
-
     weaviate_collection = weaviate_client.collections.get(collection_name)
     query_result = weaviate_collection.query.hybrid(
         query=search_query,
@@ -44,9 +43,14 @@ def search_weaviate_collection(
     return formatted_results
 ```
 
+Then we get the collections from Weaviates `meta` API:
+
+```python
+weaviate_client.collections.list_all()
+```
 
 
-This is then interfaced in a function calling JSON schema with the following:
+And then interfaced the search function with available collections:
 
 ```python
 from weaviate.function_calling import Tool
