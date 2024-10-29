@@ -54,7 +54,9 @@ schemas = CreateObjects(
     """,
     output_model=WeaviateCollectionConfig,
     lm_service=lm_service,
-    vectorizer_service=vectorizer_service
+    vectorizer_service=vectorizer_service,
+    dedup_strategy="brute_force",
+    dedup_params={}
 )
 import json
 with open("./data/simple-synthetic-schemas.json", "w+") as file:
