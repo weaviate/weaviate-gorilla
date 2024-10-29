@@ -32,6 +32,8 @@ def CreateObjects(
                     strategy=dedup_strategy,
                     lm_service=lm_service,
                     vectorizer_service=vectorizer_service,
+                    task_instructions=task_instructions,
+                    reference_objects=reference_objects,
                     **dedup_params or {}
                 )
     else:
@@ -50,6 +52,8 @@ def CreateObjects(
                     strategy=dedup_strategy,
                     lm_service=lm_service,
                     vectorizer_service=vectorizer_service,
+                    task_instructions=task_instructions,
+                    reference_objects=reference_objects,
                     **dedup_params or {}
                 )
     
@@ -79,14 +83,27 @@ def _deduplicate(
         strategy: str,
         lm_service: LMService = None,
         vectorizer_service: VectorizerService = None,
+        task_instructions: str = None,
+        reference_objects: dict = None,
         **kwargs
     ) -> list[dict]:
     
     if strategy == "brute_force":
         # Provide all samples to LLM to identify duplicates
-        prompt = f"""Review these objects and identify any duplicates:
+        prompt = f"""Given the following task and context:
+
+        Original Task Instructions:
+        {task_instructions}
+
+        Reference Objects (if any):
+        {reference_objects if reference_objects else 'None'}
+
+        Previously Generated Samples:
         {objects}
-        Return indices of objects to remove."""
+
+        Please analyze these samples carefully and return only the indices (as space-separated numbers) of objects that should be removed due to being duplicates. Consider semantic similarity rather than exact matches, while keeping in mind the original task and reference objects.
+
+        If there are no duplicates, return an empty response."""
         
         response = lm_service.generate(prompt)
         indices_to_remove = [int(idx) for idx in response.split()]
@@ -98,16 +115,35 @@ def _deduplicate(
         unique_objects = []
         for i, obj in enumerate(objects):
             start_idx = max(0, i - k)
-            is_duplicate = False
-            for prev_obj in objects[start_idx:i]:
-                if obj == prev_obj:
-                    is_duplicate = True
-                    break
-            if not is_duplicate:
+            recent_objects = objects[start_idx:i]
+            
+            if recent_objects:
+                prompt = f"""Given the following task and context:
+
+                Original Task Instructions:
+                {task_instructions}
+
+                Reference Objects (if any):
+                {reference_objects if reference_objects else 'None'}
+
+                Recent {k} Samples:
+                {recent_objects}
+
+                New Sample to Check:
+                {obj}
+
+                Please respond with 'true' if this is a duplicate of any recent sample, or 'false' if it is unique. Consider semantic similarity rather than exact matches, while keeping in mind the original task and reference objects."""
+                                
+                response = lm_service.generate(prompt)
+                if "no" in response.lower():
+                    unique_objects.append(obj)
+            else:
                 unique_objects.append(obj)
+                
         return unique_objects
         
     elif strategy == "GRAD":
+        # NOT TESTED - POC Placeholder
         # Generate, Retrieve and Assess Duplicate (GRAD)
         threshold = kwargs.get('threshold', 0.95)
         vectors = [vectorizer_service.vectorize(obj) for obj in objects]
@@ -126,6 +162,7 @@ def _deduplicate(
         return [obj for i, obj in enumerate(objects) if i not in duplicates]
         
     elif strategy == "clustering":
+        # NOT TESTED - POC Placeholder
         # Clustering-based deduplication
         import numpy as np
         from sklearn.manifold import TSNE
