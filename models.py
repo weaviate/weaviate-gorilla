@@ -7,7 +7,8 @@ class SyntheticQuery(BaseModel):
 
 class Property(BaseModel):
     name: str
-    data_type: str
+    data_type: list[str]
+    description: str
 
 class WeaviateCollectionConfig(BaseModel):
     name: str
