@@ -86,5 +86,5 @@ for reference in schema_references:
     schemas.extend(related_schemas)
 
 import json
-with open("./data/simple-synthetic-schemas.json", "w+") as file:
+with open("./data/simple-3-collection-schemas.json", "w+") as file:
     json.dump(schemas, file, indent=4)
