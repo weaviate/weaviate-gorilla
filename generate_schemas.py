@@ -31,27 +31,27 @@ schema_references = [
     WeaviateCollectionConfig(
         name="Books",
         properties=[
-            Property(name="title", data_type="TEXT"),
-            Property(name="price", data_type="NUMBER"),
-            Property(name="is_available", data_type="BOOLEAN")
+            Property(name="title", data_type=["TEXT"], description="The title of the book"),
+            Property(name="price", data_type=["NUMBER"], description="The retail price of the book in dollars"),
+            Property(name="is_available", data_type=["BOOLEAN"], description="Whether the book is currently in stock")
         ],
         envisioned_use_case_overview="Track book inventory, enable search by title, manage pricing, and monitor availability"
     ),
     WeaviateCollectionConfig(
         name="Authors", 
         properties=[
-            Property(name="name", data_type="TEXT"),
-            Property(name="total_sales", data_type="NUMBER"),
-            Property(name="is_active", data_type="BOOLEAN")
+            Property(name="name", data_type=["TEXT"], description="The full name of the author"),
+            Property(name="total_sales", data_type=["NUMBER"], description="Total number of books sold by this author"),
+            Property(name="is_active", data_type=["BOOLEAN"], description="Whether the author is currently publishing new works")
         ],
         envisioned_use_case_overview="Manage author profiles, track sales performance, and monitor active publishing status"
     ),
     WeaviateCollectionConfig(
         name="Customers",
         properties=[
-            Property(name="name", data_type="TEXT"),
-            Property(name="loyalty_points", data_type="NUMBER"),
-            Property(name="is_premium", data_type="BOOLEAN")
+            Property(name="name", data_type=["TEXT"], description="The full name of the customer"),
+            Property(name="loyalty_points", data_type=["NUMBER"], description="Number of loyalty points accumulated by the customer"),
+            Property(name="is_premium", data_type=["BOOLEAN"], description="Whether the customer has premium membership status")
         ],
         envisioned_use_case_overview="Track customer information, manage loyalty program, and identify premium members"
     )
