@@ -1,6 +1,7 @@
 from lm import LMService
 from vectorizer import VectorizerService
-from models import Property, WeaviateCollectionConfig, SimpleSyntheticSchema, ComplexSyntheticSchema
+from models import Property, WeaviateCollectionConfig, WeaviateCollections 
+from models import SimpleSyntheticSchema, ComplexSyntheticSchema
 from create import CreateObjects
 
 openai_api_key = ""
@@ -57,33 +58,34 @@ schema_references = [
 ]
 
 schemas = []
-for reference in schema_references:
-    related_schemas = CreateObjects(
-        num_samples = 16, # Generate ~16 variations of each schema type to total ~50
-        task_instructions = f"""
-        Generate 3 synthetic database collection schemas for a business domain of your choice (e.g. restaurant, hospital, school etc).
-        
-        For reference, here is an example of 3 related collections for a bookstore:
-        {use_case_overview_example}
-        
-        IMPORTANT!! Your schema should:
-        1. Be for a DIFFERENT business domain than the example
-        2. Have exactly 3 collections that work together
-        3. Each collection must have exactly:
-           - 1 TEXT property (for things like names/titles/descriptions)
-           - 1 NUMBER property (for things like quantities/metrics/scores) 
-           - 1 BOOLEAN property (for things like flags/statuses)
-        4. Include a brief overview explaining how the collections work together
-        
-        The collections should have meaningful relationships and support common business operations in your chosen domain.
-        """,
-        output_model=WeaviateCollectionConfig,
-        lm_service=lm_service,
-        vectorizer_service=vectorizer_service,
-        dedup_strategy="brute_force",
-        dedup_params={}
-    )
-    schemas.extend(related_schemas)
+related_schemas = CreateObjects(
+    num_samples=5,
+    task_instructions=f"""
+    Generate 3 synthetic database collection schemas for a business domain of your choice (e.g. restaurant, hospital, school etc).
+
+    For reference, here is an example of 3 related collections for a bookstore:
+    {use_case_overview_example}
+
+    IMPORTANT!! Your schema should:
+    1. Be for a DIFFERENT business domain than the example
+    2. Have exactly 3 collections that work together
+    3. Each collection must have exactly:
+    - 1 TEXT property (for things like names/titles/descriptions)
+    - 1 NUMBER property (for things like quantities/metrics/scores) 
+    - 1 BOOLEAN property (for things like flags/statuses)
+    4. Include a brief overview explaining how the collections work together
+
+    The collections should have meaningful relationships and support common business operations in your chosen domain.
+
+    IMPORTANT!! Do not include any spaces in collection names. If you want to use something like Travel Agency, please camel case it such as: `TravelAgency`.
+    """,
+    output_model=WeaviateCollections,
+    lm_service=lm_service,
+    vectorizer_service=vectorizer_service,
+    dedup_strategy="brute_force",
+    dedup_params={}
+)
+schemas.extend(related_schemas)
 
 import json
 with open("./data/simple-3-collection-schemas.json", "w+") as file:

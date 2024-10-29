@@ -10,7 +10,8 @@ Run `generate_schemas.py` to generate 50 synthetic schemas
 
 - Works fairly well, but could benefit from diverse generation and deduplication strategies
 
-[ ] Test Brute Force History Deduplication
+[X] Implement Skeleton of Deduplication in `Create`
+[X] Test Brute Force History Deduplication
 [ ] Test Last K History Deduplication
 [ ] Test Generate, Retrieve, and Mark Duplicate Deduplication
 
