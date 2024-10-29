@@ -12,16 +12,16 @@ Run `generate_schemas.py` to generate 50 synthetic schemas
 
 [X] Implement Skeleton of Deduplication in `Create`
 [X] Test Brute Force History Deduplication
-[ ] Test Last K History Deduplication
-[ ] Test Generate, Retrieve, and Mark Duplicate Deduplication
+[--] Test Last K History Deduplication
+[--] Test Generate, Retrieve, and Mark Duplicate Deduplication
 
 [IN DEVELOPMENT] run `generate_queries.py` to generate 8 x 50 = 400 synthetic queries
 
 [X] Get Weaviate Collections from Meta API
 [X] Parse into Collections
 [ ] Parse into Tools per Collection
+[ ] Add Function Calling to LMService
 [ ] Test with 1 query
-[ ] (Optionally) Then abstract this into a connection test for the LLMs
 
 
 - Requires re-think of function calling with Weaviate
