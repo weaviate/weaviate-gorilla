@@ -1,5 +1,4 @@
 ---
-version: '3.4'
 services:
   weaviate:
     command:
@@ -9,12 +8,13 @@ services:
     - '8080'
     - --scheme
     - http
-    image: semitechnologies/weaviate:1.27.0
+    image: cr.weaviate.io/semitechnologies/weaviate:1.27.0
     ports:
     - 8080:8080
-    restart: on-failure:0
+    - 50051:50051
     volumes:
-    - ./backups:/tmp/backups
+    - weaviate_data:/var/lib/weaviate
+    restart: on-failure:0
     environment:
       TRANSFORMERS_INFERENCE_API: 'http://t2v-transformers:8080'
       QUERY_DEFAULTS_LIMIT: 25
@@ -22,11 +22,12 @@ services:
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
       DEFAULT_VECTORIZER_MODULE: 'text2vec-transformers'
       ENABLE_MODULES: 'text2vec-transformers'
-      BACKUP_FILESYSTEM_PATH: '/tmp/backups'
+      ENABLE_API_BASED_MODULES: 'true'
       CLUSTER_HOSTNAME: 'node1'
-      ENABLE_EXPERIMENTAL_BM25: 'true'
   t2v-transformers:
     image: semitechnologies/transformers-inference:sentence-transformers-paraphrase-MiniLM-L6-v2
     environment:
       ENABLE_CUDA: '0'
+volumes:
+  weaviate_data:
 ...
