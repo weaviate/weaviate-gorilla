@@ -33,3 +33,21 @@ gfl.create(
     ]
 )
 ```
+
+## Deduplication of Samples
+
+### Brute Force History
+
+Provide the LLM with all samples generated so far. Perhaps works for long context LLMs and / or small GFL tasks.
+
+### Last K History
+
+Provide the LLM with the last K samples generated.
+
+### Retry with Similarity Search
+
+Generate then provide the new sample with the top K similar examples determined from a search. Task the LLM to mark duplicates with a boolean-valued output.
+
+### Clustering-based Deduplication
+
+Cluster generated samples with vector embeddings. Deduplicate if distance between vectors is less than a threshold, t.
