@@ -12,14 +12,21 @@ services:
     image: semitechnologies/weaviate:1.27.0
     ports:
     - 8080:8080
-    - 50051:50051
     restart: on-failure:0
+    volumes:
+    - ./backups:/tmp/backups
     environment:
-      COHERE_APIKEY: 'cohere-foobar'
+      TRANSFORMERS_INFERENCE_API: 'http://t2v-transformers:8080'
       QUERY_DEFAULTS_LIMIT: 25
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
-      DEFAULT_VECTORIZER_MODULE: 'text2vec-cohere'
-      ENABLE_MODULES: 'text2vec-cohere'
+      DEFAULT_VECTORIZER_MODULE: 'text2vec-transformers'
+      ENABLE_MODULES: 'text2vec-transformers'
+      BACKUP_FILESYSTEM_PATH: '/tmp/backups'
       CLUSTER_HOSTNAME: 'node1'
+      ENABLE_EXPERIMENTAL_BM25: 'true'
+  t2v-transformers:
+    image: semitechnologies/transformers-inference:sentence-transformers-paraphrase-MiniLM-L6-v2
+    environment:
+      ENABLE_CUDA: '0'
 ...

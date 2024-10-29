@@ -1,0 +1,50 @@
+{
+  "classes": [
+    {
+      "class": "Aquarium",
+      "description": "An aquarium containing fish.",
+      "vectorIndexType": "hnsw", 
+      "vectorizer": "text2vec-transformers",
+      "properties": [
+        {
+          "name": "name",
+          "dataType": ["text"],
+          "description": "Name of the aquarium."
+        },
+        {
+          "name": "location",
+          "dataType": ["text"],
+          "description": "Location of the aquarium."
+        },
+        {
+          "name": "waterVolume",
+          "dataType": ["number"],
+          "description": "Water volume of the aquarium in liters."
+        },
+        {
+          "name": "hasMarineFish",
+          "dataType": ["boolean"],
+          "description": "Does the aquarium have marine fish?"
+        }
+      ]
+    },
+    {
+      "class": "Aquarist",
+      "description": "A person who takes care of aquariums.",
+      "vectorIndexType": "hnsw",
+      "vectorizer": "text2vec-transformers", 
+      "properties": [
+        {
+          "name": "name",
+          "dataType": ["text"],
+          "description": "Name of the aquarist."
+        },
+        {
+          "name": "yearsExperience",
+          "dataType": ["int"],
+          "description": "Years of experience as an aquarist."
+        }
+      ]
+    }
+  ]
+}
