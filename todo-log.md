@@ -8,6 +8,8 @@
 
 Run `generate_schemas.py` to generate 50 synthetic schemas
 
+[ ] FIX! these are missing `vectorizer` / `vectorIndexConfig` (which you need to create a class by sending a schema in a post request)
+
 - Works fairly well, but could benefit from diverse generation and deduplication strategies
 
 [X] Implement Skeleton of Deduplication in `Create`
