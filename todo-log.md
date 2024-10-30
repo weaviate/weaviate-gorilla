@@ -8,8 +8,10 @@
 
 Run `generate_schemas.py` to generate 50 synthetic schemas
 
-[ ] FIX! these are missing `vectorizer` / `vectorIndexConfig` (which you need to create a class by sending a schema in a post request)
-[ ] Well... `class` is of course a reserved keyword... so need to rename with file saving
+Then run `clean_up_schemas.py`
+
+[X] FIX! these are missing `vectorizer` / `vectorIndexConfig` (which you need to create a class by sending a schema in a post request)
+[X] Well... `class` is of course a reserved keyword... so need to rename with file saving
 
 - Works fairly well, but could benefit from diverse generation and deduplication strategies
 
@@ -20,40 +22,47 @@ Run `generate_schemas.py` to generate 50 synthetic schemas
 
 [IN DEVELOPMENT] run `generate_queries.py` to generate 8 x 50 = 400 synthetic queries
 
+[Weaviate Function Calling]
+
 [X] Get Weaviate Collections from Meta API
 [X] Parse into Collections
-[ ] Parse into Tools per Collection
+[X] Parse into Tools per Collection
+[X] Test with 1 query
 [ ] Add Function Calling to LMService
-[ ] Test with 1 query
 
+### Weaviate Function Calling
 
-- Requires re-think of function calling with Weaviate
-
-## FINE-GRAINED FUNCTION SET PER COLLECTION`
-1. Parses Weaviate Schemas with a meta API
-2. Creats 8 Specific Tools for each of the collections
-
-8 Specific Tools
-1. Search
-2. Filters (no search)
-3. Search + Filters
-4. Agggregate TEXT
-5. Aggregate NUMBER
-6. Aggregate BOOLEAN
-7. Count Objects
-8. Groupby Property
-
-## FUNCTION SET PER COLLECTION
-1. Parses Weaviate Schemas with a meta API
-2. Creates 1 General Tool for each of the collections
-
-This requires an AST parser for the function calling arguments.
-
-## FUNCTION SET FOR MULTIPLE COLLECTIONS
-1. Add Weaviate Schema to description
-2. 1 Very General Tool for all of Weaviate Search
-
-- [ ] Generate 1 synthetic query per retrieval function per synthetic schema and envisioned use case.
+```
+Tool(
+    type="function",
+    function=Function(
+        name="search_weaviate_collection",
+        description="Optimize me with DSPy",
+        parameters=Parameters(
+            type="object",
+            properties={
+                "collection_name": ParameterProperty(
+                    type="string",
+                    description="Optimize me with DSPy"
+                ),
+                "search_query": ParameterProperty(
+                    type="string",
+                    description="Optimize me with DSPy"
+                ),
+                "filter_string": ParameterProperty(
+                    type="string",
+                    description="{filter_string_dsl} + Optimize me with DSPy"
+                ),
+                "aggregation_string": ParameterProperty(
+                    type="string",
+                    description="{aggregation_string_dsl} + Optimize me with DSPy"
+                )
+            },
+            required=["collection_name"]
+        )
+    )
+)
+```
 
 ===
 - `ComplexSchema` and `ComplexQueries` to evaluate multi-hop function calling

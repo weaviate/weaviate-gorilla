@@ -34,20 +34,30 @@ gfl.create(
 )
 ```
 
-## Deduplication of Samples
+# Deduplication of Samples
 
 ### Brute Force History
 
 Provide the LLM with all samples generated so far. Perhaps works for long context LLMs and / or small GFL tasks.
 
+Each Schema is **500-600 tokens** so this doesn't scale that well.
+
 ### Last K History
 
 Provide the LLM with the last K samples generated.
 
-### Retry with Similarity Search
+### Generate, Retry
 
 Generate then provide the new sample with the top K similar examples determined from a search. Task the LLM to mark duplicates with a boolean-valued output.
 
 ### Clustering-based Deduplication
 
 Cluster generated samples with vector embeddings. Deduplicate if distance between vectors is less than a threshold, t.
+
+Thinking with this that there is something to exploring a particular region of the generated space. I.e. there is a cluster with 5 unique objects -- generate more like these.
+
+# Creating from a previous Collection (Create Checkpointing)
+
+Let's say I generate 50 schemas and then want to generate another 50...
+
+Now the deduplication needs to be more stateful, thinking GRAD (Generate, then Retrieve and Assess Duplicates) is the leading philosophy for this.

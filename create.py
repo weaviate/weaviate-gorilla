@@ -222,20 +222,9 @@ def _deduplicate_last_k(
     ) -> list[dict]:
     # Only check against last K samples
     k = kwargs.get('k', 5)
-    unique_objects = []
-    for i, obj in enumerate(objects):
-        start_idx = max(0, i - k)
-        recent_objects = objects[start_idx:i]
-        
-        if recent_objects:
-            prompt = format_last_k_history_prompt(task_instructions, reference_objects, recent_objects, k, obj)
-            response = lm_service.generate(prompt, output_model)
-            if "no" in response.lower():
-                unique_objects.append(obj)
-        else:
-            unique_objects.append(obj)
-            
-    return unique_objects
+    recent_objects = objects[-k:]
+    prompt = format_last_k_history_prompt(task_instructions, reference_objects, recent_objects, k, objects[-1])
+    return lm_service.generate(prompt, output_model)
 
 def _deduplicate(
         objects: list[dict],
