@@ -52,7 +52,7 @@ Generate then provide the new sample with the top K similar examples determined 
 
 Cluster generated samples with vector embeddings. Deduplicate if distance between vectors is less than a threshold, t.
 
-# Creating from a previous Collection
+# Creating from a previous Collection (Create Checkpointing)
 
 Let's say I generate 50 schemas and then want to generate another 50...
 
