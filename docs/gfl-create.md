@@ -56,4 +56,4 @@ Cluster generated samples with vector embeddings. Deduplicate if distance betwee
 
 Let's say I generate 50 schemas and then want to generate another 50...
 
-Now the deduplication needs to be more stateful, thinking 
+Now the deduplication needs to be more stateful, thinking GRAD (Generate, then Retrieve and Assess Duplicates) is the leading philosophy for this.
