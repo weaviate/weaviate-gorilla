@@ -42,9 +42,23 @@ Tool(
             type="object",
             properties={
                 "collection_name": ParameterProperty(
-                    
+                    type="string",
+                    description="Optimize me with DSPy"
+                ),
+                "search_query": ParameterProperty(
+                    type="string",
+                    description="Optimize me with DSPy"
+                ),
+                "filter_string": ParameterProperty(
+                    type="string",
+                    description="{filter_string_dsl} + Optimize me with DSPy"
+                ),
+                "aggregation_string": ParameterProperty(
+                    type="string",
+                    description="{aggregation_string_dsl} + Optimize me with DSPy"
                 )
-            }
+            },
+            required=["collection_name"]
         )
     )
 )
