@@ -40,6 +40,8 @@ gfl.create(
 
 Provide the LLM with all samples generated so far. Perhaps works for long context LLMs and / or small GFL tasks.
 
+Each Schema is **500 tokens** so this doesn't scale that well.
+
 ### Last K History
 
 Provide the LLM with the last K samples generated.

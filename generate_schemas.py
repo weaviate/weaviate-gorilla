@@ -82,7 +82,7 @@ related_schemas = CreateObjects(
     output_model=WeaviateCollections,
     lm_service=lm_service,
     vectorizer_service=vectorizer_service,
-    dedup_strategy="brute_force",
+    dedup_strategy="last_k",
     dedup_params={}
 )
 schemas.extend(related_schemas)
