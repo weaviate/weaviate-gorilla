@@ -13,9 +13,9 @@ for schema_str in data:
     # For each collection in the schema
     for collection in schema_dict["weaviate_collections"]:
         # Rename 'name' to 'class'
-        # collection["class"] = collection.pop("name")
+        collection["class"] = collection.pop("name")
         # Rename 'envisioned_use_case_overview' to 'description'
-        # collection["description"] = collection.pop("envisioned_use_case_overview")
+        collection["description"] = collection.pop("envisioned_use_case_overview")
         collection["vectorIndexType"] = "hnsw"
         collection["vectorizer"] = "text2vec-transformers"
         

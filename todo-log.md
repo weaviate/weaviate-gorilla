@@ -8,8 +8,10 @@
 
 Run `generate_schemas.py` to generate 50 synthetic schemas
 
-[ ] FIX! these are missing `vectorizer` / `vectorIndexConfig` (which you need to create a class by sending a schema in a post request)
-[ ] Well... `class` is of course a reserved keyword... so need to rename with file saving
+Then run `clean_up_schemas.py`
+
+[X] FIX! these are missing `vectorizer` / `vectorIndexConfig` (which you need to create a class by sending a schema in a post request)
+[X] Well... `class` is of course a reserved keyword... so need to rename with file saving
 
 - Works fairly well, but could benefit from diverse generation and deduplication strategies
 
