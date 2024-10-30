@@ -1,6 +1,7 @@
 # Related Works
 
 1. Gorilla: Large Language Model Connected with Massive APIs. Shishir G. Patil, Tianjun Zhang, Xin Wang, Joseph E. Gonzalez. 2023. [Arxiv Link](https://arxiv.org/abs/2305.15334)
-2. Agentic Information Retrieval. Weinan Zhang, Junwei Liao, Ning Li, Kounianhua Du. 2024. [Arxiv Link](https://arxiv.org/abs/2410.09713)
+2. AvaTaR: Optimizing LLM Agents for Tool-Assisted Knowledge Retrieval. Shirley Wu, Shiyu Zhao, Qian Huang, Kexin Huang, Michihiro Yasunaga, Kaidi Cao, Vassilis N. Ioannidis, Karthik Subbian, Jure Leskovec, James Zou. 2024. [Arxiv Link](https://arxiv.org/pdf/2406.11200)
+3. Agentic Information Retrieval. Weinan Zhang, Junwei Liao, Ning Li, Kounianhua Du. 2024. [Arxiv Link](https://arxiv.org/abs/2410.09713)
 
 ## Text-to-SQL
