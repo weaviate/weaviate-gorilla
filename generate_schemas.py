@@ -59,7 +59,7 @@ schema_references = [
 
 schemas = []
 related_schemas = CreateObjects(
-    num_samples=5,
+    num_samples=50,
     task_instructions=f"""
     Generate 3 synthetic database collection schemas for a business domain of your choice (e.g. restaurant, hospital, school etc).
 
