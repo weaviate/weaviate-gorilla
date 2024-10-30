@@ -40,7 +40,7 @@ gfl.create(
 
 Provide the LLM with all samples generated so far. Perhaps works for long context LLMs and / or small GFL tasks.
 
-Each Schema is **500 tokens** so this doesn't scale that well.
+Each Schema is **500-600 tokens** so this doesn't scale that well.
 
 ### Last K History
 
@@ -53,6 +53,8 @@ Generate then provide the new sample with the top K similar examples determined 
 ### Clustering-based Deduplication
 
 Cluster generated samples with vector embeddings. Deduplicate if distance between vectors is less than a threshold, t.
+
+Thinking with this that there is something to exploring a particular region of the generated space. I.e. there is a cluster with 5 unique objects -- generate more like these.
 
 # Creating from a previous Collection (Create Checkpointing)
 

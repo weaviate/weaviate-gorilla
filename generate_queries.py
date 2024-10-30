@@ -6,12 +6,21 @@ import json
 with open("simple-synthetic-schemas.json", "r") as json_file:
     database_schemas = json.load(json_file)
 
-apis = [
-    {
-        "function_name": "semantic_search",
-        "arguments": dict,
-        "description": "search for semantically related objects given a search query as input",
-    },
+search_apis = [
+    "Semantic saerch through a collection"
+]
+
+filter_apis = [
+    "Filter by an integer-valued property",
+    "Filter by a text-valued property",
+    "Filter by a boolean-valued property"
+]
+
+aggregate_apis = [
+    "Aggregate a integer-valued property",
+    "Aggregate a text-valued property",
+    "Aggregate a boolean-valued property",
+    "Count objects"
 ]
 
 synthetic_queries = CreateObjects(
