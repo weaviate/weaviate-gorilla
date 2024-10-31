@@ -56,8 +56,14 @@ Cluster generated samples with vector embeddings. Deduplicate if distance betwee
 
 Thinking with this that there is something to exploring a particular region of the generated space. I.e. there is a cluster with 5 unique objects -- generate more like these.
 
-# Creating from a previous Collection (Create Checkpointing)
+## Creating from a previous Collection (Create Checkpointing)
 
 Let's say I generate 50 schemas and then want to generate another 50...
 
 Now the deduplication needs to be more stateful, thinking GRAD (Generate, then Retrieve and Assess Duplicates) is the leading philosophy for this.
+
+# Reference Objects
+
+Say we want to pass in reference objects such as `Features` and generate `num_samples` `Tweets` for each?
+
+What if we further want to pass `Features` and `Users` and generate `num_samples` `PersonalizedFeatureOverview` for each?
