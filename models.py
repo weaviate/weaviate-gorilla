@@ -1,5 +1,8 @@
 from pydantic import BaseModel, field_validator
 
+class CollectionRoutingSearchQuery(BaseModel):
+    query: str
+
 class SyntheticSingleAPIQuery(BaseModel):
     query: str
     explanation: str

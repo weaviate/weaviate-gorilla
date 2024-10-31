@@ -97,56 +97,58 @@ def CreateObjects(
                     **dedup_params or {}
                 )
     else:
-        # Only this has been tested!!
         # Generate first object
         response = lm_service.generate(
                 task_instructions,
                 output_model
             )
-        print(f"\033[92mFirst response without deduplication.\033[0m")
-        print(f"\033[1m{response.model_dump_json()}\033[0m\n")
-        objects.append(response.model_dump_json())
-        
-        # Generate remaining objects with deduplication
-        for samples_generated_counter in range(num_samples - 1):
-            if dedup_strategy == "brute_force":
-                # Get a new non-duplicate object
-                response = _deduplicate_brute_force(
-                    objects=objects,
-                    lm_service=lm_service,
-                    task_instructions=task_instructions,
-                    reference_objects=reference_objects,
-                    output_model=output_model
-                )
-                print(f"\033[92mResponse {samples_generated_counter + 1}\033[0m")
-                print(f"\033[1m{response.model_dump_json()}\033[0m\n")
-                objects.append(response.model_dump_json())
+        objects.append(response)
 
-            elif dedup_strategy == "last_k":
-                # Get a new non-duplicate object
-                response = _deduplicate_last_k(
-                    objects=objects,
-                    lm_service=lm_service,
-                    task_instructions=task_instructions,
-                    reference_objects=reference_objects,
-                    output_model=output_model,
-                    **dedup_params or {}
-                )
-                print(f"\033[92mResponse {samples_generated_counter + 1}\033[0m")
-                print(f"\033[1m{response.model_dump_json()}\033[0m\n")
-                objects.append(response.model_dump_json())
-            elif len(objects) % 10 == 9:
-                # Batch deduplication every 10 objects
-                objects = _deduplicate(
-                    objects=objects,
-                    strategy=dedup_strategy,
-                    lm_service=lm_service,
-                    vectorizer_service=vectorizer_service,
-                    task_instructions=task_instructions,
-                    reference_objects=reference_objects,
-                    output_model=output_model,
-                    **dedup_params or {}
-                )
+        if num_samples > 1:
+            print(f"\033[92mFirst response without deduplication.\033[0m")
+            print(f"\033[1m{response.model_dump_json()}\033[0m\n")
+            objects.append(response.model_dump_json())
+            
+            # Generate remaining objects with deduplication
+            for samples_generated_counter in range(num_samples - 1):
+                if dedup_strategy == "brute_force":
+                    # Get a new non-duplicate object
+                    response = _deduplicate_brute_force(
+                        objects=objects,
+                        lm_service=lm_service,
+                        task_instructions=task_instructions,
+                        reference_objects=reference_objects,
+                        output_model=output_model
+                    )
+                    print(f"\033[92mResponse {samples_generated_counter + 1}\033[0m")
+                    print(f"\033[1m{response.model_dump_json()}\033[0m\n")
+                    objects.append(response.model_dump_json())
+
+                elif dedup_strategy == "last_k":
+                    # Get a new non-duplicate object
+                    response = _deduplicate_last_k(
+                        objects=objects,
+                        lm_service=lm_service,
+                        task_instructions=task_instructions,
+                        reference_objects=reference_objects,
+                        output_model=output_model,
+                        **dedup_params or {}
+                    )
+                    print(f"\033[92mResponse {samples_generated_counter + 1}\033[0m")
+                    print(f"\033[1m{response.model_dump_json()}\033[0m\n")
+                    objects.append(response.model_dump_json())
+                elif len(objects) % 10 == 9:
+                    # Batch deduplication every 10 objects
+                    objects = _deduplicate(
+                        objects=objects,
+                        strategy=dedup_strategy,
+                        lm_service=lm_service,
+                        vectorizer_service=vectorizer_service,
+                        task_instructions=task_instructions,
+                        reference_objects=reference_objects,
+                        output_model=output_model,
+                        **dedup_params or {}
+                    )
     
     return objects
 
