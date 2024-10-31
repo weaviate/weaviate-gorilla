@@ -1,9 +1,18 @@
 from pydantic import BaseModel, field_validator
 
-# Also works for MultiHop Query
-class SyntheticQuery(BaseModel):
+class CollectionRoutingSearchQuery(BaseModel):
+    query: str
+
+class SyntheticSingleAPIQuery(BaseModel):
     query: str
     explanation: str
+    api_reference: str
+
+# Note Multi-Hop might have a hierarchical structure to it...
+class SyntheticMultiAPIQuery(BaseModel):
+    query: str
+    explanation: str
+    api_references: list[str]
 
 class Property(BaseModel):
     name: str

@@ -1,6 +1,6 @@
 # ToDo
 
-[IN DEVELOPMENT]
+## Schema Generation
 
 [X] Tested Schema Generation
 
@@ -20,9 +20,16 @@ Then run `clean_up_schemas.py`
 [--] Test Last K History Deduplication
 [--] Test Generate, Retrieve, and Mark Duplicate Deduplication
 
+## Query Generation
+
 [IN DEVELOPMENT] run `generate_queries.py` to generate 8 x 50 = 400 synthetic queries
 
-[Weaviate Function Calling]
+- `ComplexSchema` and `ComplexQueries` to evaluate multi-hop function calling
+
+- Test `ComplexSyntheticSchema`'s use of `@field_validator` works as an output_model
+- Finishing running ^
+
+## Weaviate Function Calling
 
 [X] Get Weaviate Collections from Meta API
 [X] Parse into Collections
@@ -30,9 +37,7 @@ Then run `clean_up_schemas.py`
 [X] Test with 1 query
 [ ] Add Function Calling to LMService
 
-### Weaviate Function Calling
-
-```
+```python
 Tool(
     type="function",
     function=Function(
@@ -64,11 +69,7 @@ Tool(
 )
 ```
 
-===
-- `ComplexSchema` and `ComplexQueries` to evaluate multi-hop function calling
-
-- Test `ComplexSyntheticSchema`'s use of `@field_validator` works as an output_model
-- Finishing running ^
+## Testing Function Calling
 
 - Test Classifier with Function Calling and Zero-Shot Classifier
 
