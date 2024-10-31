@@ -9,11 +9,10 @@ Further, whereas RAG systems typically run a single search before generation, Ag
 The next steps for Agents and Weaviate are to connect Agents to Weaviate's APIs for Select and Aggregate style functionality. This is similar to SQL APIs.
 
 The core steps to implementing Agentic RAG are:
-1. Setup a Weaviate Instance
-2. Define the Function Schema
-3. In the runtime of the LLM, write a mapping from Function name to Function execution
-4. Send the Function Schema in addition to the prompt to the LLM
-5. Loop to check if the Agent selected to finisht the response or call the function.
-
-The easiest way to interface tools to LLMs is through APIs or functions. These functions are typically defined in the runtime of the agent.
+1. Connect to a Weaviate Instance
+2. Define the Search Function
+3. Define the Function Schema
+4. Send the Function Schema, in addition to the prompt, to the LLM
+5. In the runtime of the LLM, write a mapping from Function name to Function execution
+6. Loop to check if the Agent selected to finish the response or call the function.
 
