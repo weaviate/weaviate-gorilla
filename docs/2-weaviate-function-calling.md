@@ -1,6 +1,7 @@
 # Function Calling with Weaviate
 
 Today, most agents in production add a fairly simple semantic search to their schema as follows:
+
 ```python
 def search_weaviate_collection(
     self,
