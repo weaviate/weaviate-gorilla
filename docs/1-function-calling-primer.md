@@ -6,7 +6,7 @@ Agentic RAG offers two quick benefits over standard RAG systems. Whereas a RAG s
 
 Further, whereas RAG systems typically run a single search before generation, Agents can decide to search again. Agents can also parallelize these search queries and corresponding requests. The user asks "Compare the nutritional benefits of quinoa, brown rice, and barley". The Agent can then simultaneously search for the nutritional benefits of quinoa, brown rice, and barley as 3 separate search queries. The Agent then generates a response using the context retrieved from all 3 queries.
 
-The next steps for Agents and Weaviate are to connect Agents to Weaviate's APIs for Select and Aggregate style functionality from SQL.
+The next steps for Agents and Weaviate are to connect Agents to Weaviate's APIs for Select and Aggregate style functionality. This is similar to SQL APIs.
 
 The core steps to implementing Agentic RAG are:
 1. Setup a Weaviate Instance
