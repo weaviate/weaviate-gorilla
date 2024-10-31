@@ -1,4 +1,4 @@
-# Weaviate as a Function
+# 3. Weaviate as a Function
 
 ### Quick References for Weaviate Functions
 

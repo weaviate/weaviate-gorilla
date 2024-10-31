@@ -1,4 +1,4 @@
-# DSPy and Agent Frameworks
+# 5. DSPy and Agent Frameworks
 
 In addition to LLM APIs, such as the OpenAI, Claude, Gemini, Ollama, or vLLM SDKs, it is also common to use LLM frameworks to orchestrate inference. At Weaviate, we have worked with and recommend many of these frameworks such as: DSPy, LangChain, Crew AI, LlamaIndex, and Letta. These frameworks have also made incredible efforts in integration engineering, for example please see this notebook on using [LangChain and DSPy together](https://github.com/stanfordnlp/dspy/blob/main/examples/tweets/compiling_langchain.ipynb).
 

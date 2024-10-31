@@ -1,4 +1,4 @@
-# Evaluating Agents
+# 4. Evaluating Agents
 
 ### How well does GPT-4 use Weaviate to search?
 

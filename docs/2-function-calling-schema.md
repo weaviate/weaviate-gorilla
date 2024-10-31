@@ -1,4 +1,4 @@
-# Function Calling with Weaviate
+# 2. Function Calling with Weaviate
 
 ## Tool Schemas
 
