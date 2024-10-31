@@ -1,6 +1,12 @@
-# Function Calling with Weaviate
+# Weaviate as a Function
 
-Today, most agents in production add a fairly simple semantic search to their schema as follows:
+### Quick References for Weaviate Functions
+
+## Search Hard-Coded Collection
+
+Easier, but requires tighter coupling.
+
+## Collection Name as a Search Argument
 
 ```python
 def search_weaviate_collection(
@@ -98,3 +104,8 @@ get_objects_tool = Tool(
     )
 )
 ```
+
+### Discussion
+- Client-Server Authentication
+- Load Balancers for Agents
+- Task Queues for Agentic Planning
