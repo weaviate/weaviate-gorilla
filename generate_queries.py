@@ -1,13 +1,19 @@
 from models import SyntheticQuery
 from create import CreateObjects
 
-# load schemas from JSON
+# Create Synthetic Queries
+
+# This extends `create` to take a reference as input
+# Such that the new object is linked to the original
+# i.e. HospitalSchema -- (hasSyntheticQuery) --> SyntheticQuery
+
+# load schemas from JSON - update with new schemas
 import json
 with open("simple-synthetic-schemas.json", "r") as json_file:
     database_schemas = json.load(json_file)
 
 search_apis = [
-    "Semantic saerch through a collection"
+    "Semantic search through a collection"
 ]
 
 filter_apis = [
