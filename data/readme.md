@@ -31,3 +31,5 @@ class WeaviateCollectionConfig(BaseModel):
 class WeaviateCollections(BaseModel):
     weaviate_collections: list[WeaviateCollectionConfig]
 ```
+
+![Weaviate Gorilla](../visuals/weaviate-gorillas/gorilla-63.png)

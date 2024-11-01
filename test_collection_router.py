@@ -1,4 +1,5 @@
 from models import CollectionRouterQuery
+from models import Tool, Function, Parameters, ParameterProperty
 from weaviate_fc_utils import get_collections_info
 
 import json
@@ -22,4 +23,32 @@ for collection_router_query in collection_router_queries:
     # build function from schemas
     collections_description, collections_list = get_collections_info(weaviate_client)
 
-    #
+    # Create tool with `collections_list`
+    tools = [Tool(
+        type="function",
+        function=Function(
+            name="search_weaviate_collection",
+            description="Search for the most relevant items to the provided `search_query` in a Weaviate Database Collection.",
+            parameters=Parameters(
+                type="object",
+                properties={
+                    "collection_name": ParameterProperty(
+                        type="string",
+                        description="The Weaviate Collection to search through.",
+                        enum=collections_list
+                    ),
+                    "search_query": ParameterProperty(
+                        type="string",
+                        description="The search query."
+                    )
+                },
+                required=["collection_name", "search_query"]
+            )
+        )
+    )]
+
+    
+
+
+
+    

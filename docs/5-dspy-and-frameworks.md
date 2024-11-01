@@ -45,3 +45,5 @@ Tool(
     input_type: str
 )
 ```
+
+![Weaviate Gorilla](../visuals/weaviate-gorillas/avatar-2.png)
