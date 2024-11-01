@@ -97,8 +97,29 @@ class LMService():
                     required=["num1", "num2"],
                 ),
             ),
-        )]
+        ).model_dump_json()]
         
+    def one_step_function_selection_test(self, prompt: str, tools: list[Tool]):
+        if self.model_provider == "openai":
+            messages = [
+                {
+                    "role": "system",
+                    "content": "You are a helpful assistant. Use the supplied tools to assist the user."
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ]
+            # set `parallel_tool_calls=False` to only call a single tool (defaults true)
+            response = self.lm_client.chat.completions.create(
+                model=self.model_name,
+                messages=messages,
+                tools=tools
+            )
+            return response
+        else:
+            raise ValueError(f"Function calling not yet supporetd for the LMService with {self.model_provider}")
 
 '''
 Note, vLLM function call snippet:

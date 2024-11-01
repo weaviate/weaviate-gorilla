@@ -39,9 +39,11 @@ LlamaIndex has `QueryEngineTool` differentiated from `FunctionTool`. More inform
 from dspy.predict.avatar import Tool, Avatar
 
 Tool(
-    tool: search_docs,
-    name: "Search Code Documentation",
-    desc: "The documentation for the DSPy Python package, contains helpful code references and conceptual explanations.",
-    input_type: str
+    tool=search_docs,
+    name="Search Code Documentation",
+    desc="The documentation for the DSPy Python package, contains helpful code references and conceptual explanations.",
+    input_type=str
 )
 ```
+
+![Weaviate Gorilla](../visuals/avatar/avatar-3.png)

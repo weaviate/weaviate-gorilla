@@ -1,33 +1,12 @@
 # ToDo
 
-## Schema Generation
-
-[X] Tested Schema Generation
-
-`SimpleSchema` and `SimpleQueries` test through to evaluate simple function calling.
-
-Run `generate_schemas.py` to generate 50 synthetic schemas
-
-Then run `clean_up_schemas.py`
-
-[X] FIX! these are missing `vectorizer` / `vectorIndexConfig` (which you need to create a class by sending a schema in a post request)
-[X] Well... `class` is of course a reserved keyword... so need to rename with file saving
-
-- Works fairly well, but could benefit from diverse generation and deduplication strategies
-
-[X] Implement Skeleton of Deduplication in `Create`
-[X] Test Brute Force History Deduplication
-[--] Test Last K History Deduplication
-[--] Test Generate, Retrieve, and Mark Duplicate Deduplication
-
 ## Query Generation
 
-[IN DEVELOPMENT] run `generate_queries.py` to generate 8 x 50 = 400 synthetic queries
+Given 3 collections, generate a query that should be routed to each.
 
-- `ComplexSchema` and `ComplexQueries` to evaluate multi-hop function calling
+GPT-4o vs. Llama 3.2
 
-- Test `ComplexSyntheticSchema`'s use of `@field_validator` works as an output_model
-- Finishing running ^
+
 
 ## Weaviate Function Calling
 
@@ -78,6 +57,28 @@ Tool(
 - Implement and Test Optimizers
 - Test Optimized Function Calling
 
-# Debt
+## Debt
 
 - Revise thinking around `Simple-` and `Complex-` Schema. Both should use the `WeaviateCollectionConfig` model but with different prompts.
+
+# === Somewhat finished ===
+
+## Schema Generation
+
+[X] Tested Schema Generation
+
+`SimpleSchema` and `SimpleQueries` test through to evaluate simple function calling.
+
+Run `generate_schemas.py` to generate 50 synthetic schemas
+
+Then run `clean_up_schemas.py`
+
+[X] FIX! these are missing `vectorizer` / `vectorIndexConfig` (which you need to create a class by sending a schema in a post request)
+[X] Well... `class` is of course a reserved keyword... so need to rename with file saving
+
+- Works fairly well, but could benefit from diverse generation and deduplication strategies
+
+[X] Implement Skeleton of Deduplication in `Create`
+[X] Test Brute Force History Deduplication
+[--] Test Last K History Deduplication
+[--] Test Generate, Retrieve, and Mark Duplicate Deduplication

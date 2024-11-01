@@ -1,6 +1,12 @@
 from pydantic import BaseModel, field_validator
+from typing import Literal, Optional, Dict, List, Union
 
-class CollectionRoutingSearchQuery(BaseModel):
+class CollectionRouterQuery(BaseModel):
+    database_schema: dict
+    gold_collection: str 
+    synthetic_query: str
+
+class SyntheticQuery(BaseModel):
     query: str
 
 class SyntheticSingleAPIQuery(BaseModel):
@@ -65,3 +71,22 @@ class FunctionClassifierTestResult(BaseModel):
 
 class TestLMConnectionModel(BaseModel):
     generic_response: str
+
+class ParameterProperty(BaseModel):
+    type: str
+    description: str
+    enum: Optional[List[str]] = None
+
+class Parameters(BaseModel):
+    type: Literal["object"]
+    properties: Dict[str, ParameterProperty]
+    required: Optional[List[str]]
+
+class Function(BaseModel):
+    name: str
+    description: str
+    parameters: Parameters
+
+class Tool(BaseModel):
+    type: Literal["function"]
+    function: Function

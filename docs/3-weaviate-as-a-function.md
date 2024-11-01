@@ -4,9 +4,23 @@
 
 ## Search Hard-Coded Collection
 
-Easier, but requires tighter coupling.
+```python
+def code_search(query: str) -> str:
+    """Sends a query to Weaviate's Hybrid Search. Parases the response into a {k}:{v} string."""
+    
+    response = code_collection.query.hybrid(query, limit=5)
+    
+    stringified_response = ""
+    for idx, o in enumerate(response.objects):
+        stringified_response += f"Search Result: {idx+1}:\n"
+        for prop in o.properties:
+            stringified_response += f"{prop}:{o.properties[prop]}"
+        stringified_response += "\n"
+    
+    return stringified_response
+```
 
-## Collection Name as a Search Argument
+## (More General) Collection Name as a Search Argument
 
 ```python
 def get_collections_info(client: weaviate.WeaviateClient) -> tuple[str, list[str]]:
@@ -43,7 +57,7 @@ print(info_str)
 
 # Connect to Tool
 
-```
+```python
 from typing import Literal, Optional, Dict, List, Union
 from pydantic import BaseModel
 
