@@ -103,30 +103,6 @@ search_tool = Tool(
         )
     )
 )
-
-# Example of another tool:
-calculate_avg_tool = Tool(
-    type="function", 
-    function=Function(
-        name="calculate_average",
-        description="Calculate the average of a numeric property across collection items",
-        parameters=Parameters(
-            type="object",
-            properties={
-                "collection_name": ParameterProperty(
-                    type="string",
-                    description="The Weaviate Collection to analyze",
-                    enum=collections_list
-                ),
-                "property_name": ParameterProperty(
-                    type="string",
-                    description="The numeric property to average"
-                )
-            },
-            required=["collection_name", "property_name"]
-        )
-    )
-)
 ```
 
 ### Discussion
