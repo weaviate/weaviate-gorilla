@@ -46,4 +46,4 @@ Tool(
 )
 ```
 
-![Weaviate Gorilla](../visuals/avatar/avatar-2.png)
+![Weaviate Gorilla](../visuals/avatar/avatar-1.png)
