@@ -1,6 +1,33 @@
 import weaviate
 from weaviate.classes.query import Filter
 
+def get_collections_info(client: weaviate.WeaviateClient) -> tuple[str, list[str]]:
+    """
+    Get detailed information about all collections in a Weaviate instance.
+    
+    Args:
+        client: A Weaviate client instance
+    
+    Returns:
+        tuple[str, list[str]]: Tuple containing formatted collection details string and list of collection names
+    """
+    
+    collections = client.collections.list_all()
+    
+    # Get collection names as list
+    collection_names = list(collections.keys())
+    
+    # Build output string
+    output = []
+    for collection_name, config in collections.items():
+        output.append(f"\nCollection Name: {collection_name}")
+        output.append(f"Description: {config.description}")
+        output.append("\nProperties:")
+        for prop in config.properties:
+            output.append(f"- {prop.name}: {prop.description} (type: {prop.data_type.value})")
+    
+    return "\n".join(output), collection_names
+
 def _build_weaviate_filter(filter_string: str) -> Filter:
     def _parse_condition(condition: str) -> Filter:
         parts = condition.split(':')

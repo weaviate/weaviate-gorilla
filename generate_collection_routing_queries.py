@@ -1,6 +1,6 @@
 import json
 from create import CreateObjects
-from models import CollectionRoutingSearchQuery
+from models import SyntheticQuery, CollectionRouterQuery
 from lm import LMService
 from vectorizer import VectorizerService
 
@@ -63,22 +63,24 @@ for database_schema in database_schemas:
         synthetic_query = CreateObjects(
             num_samples=1,
             task_instructions=task_instructions,
-            output_model=CollectionRoutingSearchQuery,  # Since the output is a simple string
+            output_model=SyntheticQuery,  # Since the output is a simple string
             lm_service=lm_service,
             vectorizer_service=vectorizer_service,
             dedup_strategy="none"
-        )
+        )[0] # only one sample
         print("\033[32mCreated synthetic query for the collection:\n\033[0m")
         print(collection)
         print("\033[32mSynthetic query:\n\033[0m")
         print(synthetic_query)
-        
-        # Append queries with associated metadata
-        synthetic_queries.append({
-            "database_schema": database_schema,
-            "collection": collection['name'],
-            "synthetic_query": synthetic_query
-        })
+
+        # Append queries with associated metadata using Pydantic model
+        synthetic_queries.append(
+            CollectionRouterQuery(
+                database_schema=database_schema,
+                gold_collection=collection['name'],
+                synthetic_query=synthetic_query.query
+            ).model_dump()
+        )
 
 # Save the synthetic queries to a file
 with open("synthetic_queries.json", "w") as file:

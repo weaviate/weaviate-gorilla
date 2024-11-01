@@ -1,6 +1,11 @@
 from pydantic import BaseModel, field_validator
 
-class CollectionRoutingSearchQuery(BaseModel):
+class CollectionRouterQuery(BaseModel):
+    database_schema: dict
+    gold_collection: str 
+    synthetic_query: str
+
+class SyntheticQuery(BaseModel):
     query: str
 
 class SyntheticSingleAPIQuery(BaseModel):
