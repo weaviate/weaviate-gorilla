@@ -97,7 +97,7 @@ class LMService():
                     required=["num1", "num2"],
                 ),
             ),
-        )]
+        ).model_dump_json()]
         
     def one_step_function_selection_test(self, prompt: str, tools: list[Tool]):
         if self.model_provider == "openai":
@@ -108,7 +108,7 @@ class LMService():
                 },
                 {
                     "role": "user",
-                    "content": {prompt}
+                    "content": prompt
                 }
             ]
             response = self.lm_client.chat.completions.create(
@@ -116,7 +116,7 @@ class LMService():
                 messages=messages,
                 tools=tools
             )
-            return response.choices[0].message.tools_calls[0].function
+            return response
         else:
             raise ValueError(f"Function calling not yet supporetd for the LMService with {self.model_provider}")
 

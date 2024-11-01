@@ -1,0 +1,907 @@
+{
+  "total_queries": 150,
+  "correct_predictions": 79,
+  "accuracy": 0.5266666666666666,
+  "results": [
+    {
+      "query": "\"Affordable vegetarian delights\"",
+      "gold_collection": "RestaurantMenu",
+      "predicted_collection": "RestaurantMenu",
+      "is_correct": true
+    },
+    {
+      "query": "show me orders with high payment for takeaway meals",
+      "gold_collection": "CustomerOrders",
+      "predicted_collection": "RestaurantMenu",
+      "is_correct": false
+    },
+    {
+      "query": "\"Find staff members with extensive experience who are available to work right now.\"",
+      "gold_collection": "StaffMembers",
+      "predicted_collection": "CustomerOrders",
+      "is_correct": false
+    },
+    {
+      "query": "\"Show me a list of elderly patients who need immediate medical attention.\"",
+      "gold_collection": "HospitalPatients",
+      "predicted_collection": "HospitalPatients",
+      "is_correct": true
+    },
+    {
+      "query": "\"Which medical staff are ready to take on additional shifts this week?\"",
+      "gold_collection": "StaffAssignments",
+      "predicted_collection": "HospitalPatients",
+      "is_correct": false
+    },
+    {
+      "query": "\"Where are the available spaces for new patient admissions in the hospital?\"",
+      "gold_collection": "HospitalRooms",
+      "predicted_collection": "HospitalRooms",
+      "is_correct": true
+    },
+    {
+      "query": "Find albums that have epic soundscapes and tell a story through their tracks.",
+      "gold_collection": "MusicAlbums",
+      "predicted_collection": "MusicAlbums",
+      "is_correct": true
+    },
+    {
+      "query": "Who are the contemporary music artists with a prolific discography still performing today?",
+      "gold_collection": "ArtistProfiles",
+      "predicted_collection": "MusicAlbums",
+      "is_correct": false
+    },
+    {
+      "query": "Find concerts that were completely sold out and had a high demand for tickets.",
+      "gold_collection": "ConcertEvents",
+      "predicted_collection": "MusicAlbums",
+      "is_correct": false
+    },
+    {
+      "query": "luxurious beach vacations available this summer",
+      "gold_collection": "TravelPackages",
+      "predicted_collection": "TravelPackages",
+      "is_correct": true
+    },
+    {
+      "query": "\"Find travelers who often fly and have a substantial booking history.\"",
+      "gold_collection": "Travelers",
+      "predicted_collection": "Travelers",
+      "is_correct": true
+    },
+    {
+      "query": "\"Which top travel destinations have seen a recent surge in popularity and visitor numbers?\"",
+      "gold_collection": "CountryDestinations",
+      "predicted_collection": "Travelers",
+      "is_correct": false
+    },
+    {
+      "query": "Looking for affordable event catering options that include vegan meals",
+      "gold_collection": "CateringEventPackages",
+      "predicted_collection": "CateringEventPackages",
+      "is_correct": true
+    },
+    {
+      "query": "Find chefs who have a deep expertise in creating exquisite desserts.",
+      "gold_collection": "Chefs",
+      "predicted_collection": "CateringEventPackages",
+      "is_correct": false
+    },
+    {
+      "query": "Stories of exceptional catering experiences",
+      "gold_collection": "ClientReviews",
+      "predicted_collection": "CateringEventPackages",
+      "is_correct": false
+    },
+    {
+      "query": "\"What are some intense workout sessions due within an hour that I can join right now?\"",
+      "gold_collection": "FitnessClasses",
+      "predicted_collection": "FitnessClasses",
+      "is_correct": true
+    },
+    {
+      "query": "Who are the long-term active members at the gym?",
+      "gold_collection": "GymMembers",
+      "predicted_collection": "GymMembers",
+      "is_correct": true
+    },
+    {
+      "query": "\"experienced fitness trainers certified to handle large groups\"",
+      "gold_collection": "FitnessTrainers",
+      "predicted_collection": "GymMembers",
+      "is_correct": false
+    },
+    {
+      "query": "\"luxurious and high-end accommodations that are currently available\"",
+      "gold_collection": "HotelRooms",
+      "predicted_collection": "HotelRooms",
+      "is_correct": true
+    },
+    {
+      "query": "\"Show me guests who are staying longer than usual and have special privileges\"",
+      "gold_collection": "Guests",
+      "predicted_collection": "Guests",
+      "is_correct": true
+    },
+    {
+      "query": "Find services that are currently very popular among guests.",
+      "gold_collection": "HotelServices",
+      "predicted_collection": "HotelRooms",
+      "is_correct": false
+    },
+    {
+      "query": "Find wards designed for intensive monitoring and specialized treatments with a large number of available beds.",
+      "gold_collection": "HospitalWards",
+      "predicted_collection": "HospitalWards",
+      "is_correct": true
+    },
+    {
+      "query": "\"Find experienced doctors who are available for the night shift.\"",
+      "gold_collection": "MedicalStaff",
+      "predicted_collection": "HospitalWards",
+      "is_correct": false
+    },
+    {
+      "query": "patients who are still undergoing long-term treatment",
+      "gold_collection": "PatientRecords",
+      "predicted_collection": "HospitalWards",
+      "is_correct": false
+    },
+    {
+      "query": "\"Unique art experiences available to the public\"",
+      "gold_collection": "ArtGalleries",
+      "predicted_collection": "ArtGalleries",
+      "is_correct": true
+    },
+    {
+      "query": "\"search for artists whose artwork is being displayed in galleries currently and who have a substantial portfolio of artworks\"",
+      "gold_collection": "Artists",
+      "predicted_collection": "ArtGalleries",
+      "is_correct": false
+    },
+    {
+      "query": "\"Identify frequent visitors who are also art enthusiasts or collectors\"",
+      "gold_collection": "Visitors",
+      "predicted_collection": "Artists",
+      "is_correct": false
+    },
+    {
+      "query": "Find spacious cafes that are currently welcoming guests.",
+      "gold_collection": "Cafes",
+      "predicted_collection": "Cafes",
+      "is_correct": true
+    },
+    {
+      "query": "\"Who are the top performing certified baristas?\"",
+      "gold_collection": "Baristas",
+      "predicted_collection": "Cafes",
+      "is_correct": false
+    },
+    {
+      "query": "Find frequent shoppers who are part of our loyalty program and have accumulated a notable amount of points.",
+      "gold_collection": "Customers",
+      "predicted_collection": "Cafes",
+      "is_correct": false
+    },
+    {
+      "query": "\"Find venues with cozy intimate settings for acoustic sessions\"",
+      "gold_collection": "MusicVenues",
+      "predicted_collection": "MusicVenues",
+      "is_correct": true
+    },
+    {
+      "query": "\"Find popular artists currently touring worldwide.\"",
+      "gold_collection": "Performers",
+      "predicted_collection": "Performers",
+      "is_correct": true
+    },
+    {
+      "query": "\"Show me concerts that have been extremely popular with high ticket sales.\"",
+      "gold_collection": "Concerts",
+      "predicted_collection": "MusicVenues",
+      "is_correct": false
+    },
+    {
+      "query": "\"looking for short digital courses available online that cover the basics of the latest technology trends\"",
+      "gold_collection": "TechCourses",
+      "predicted_collection": "TechCourses",
+      "is_correct": true
+    },
+    {
+      "query": "Find instructors with extensive experience and recognized expertise.",
+      "gold_collection": "Instructors",
+      "predicted_collection": "Instructors",
+      "is_correct": true
+    },
+    {
+      "query": "\"Who are the frequent learners who have taken advantage of special offers?\"",
+      "gold_collection": "Participants",
+      "predicted_collection": "Instructors",
+      "is_correct": false
+    },
+    {
+      "query": "\"Find workouts designed for relaxation that can be done online.\"",
+      "gold_collection": "FitnessClasses",
+      "predicted_collection": "FitnessClasses",
+      "is_correct": true
+    },
+    {
+      "query": "Who are the most experienced certified professionals in fitness training?",
+      "gold_collection": "Trainers",
+      "predicted_collection": "Trainers",
+      "is_correct": true
+    },
+    {
+      "query": "\"Who are the long-term loyal members with premium memberships?\"",
+      "gold_collection": "Members",
+      "predicted_collection": "Trainers",
+      "is_correct": false
+    },
+    {
+      "query": "\"Which food trucks are best suited for busy events or large gatherings?\"",
+      "gold_collection": "FoodTrucks",
+      "predicted_collection": "FoodTrucks",
+      "is_correct": true
+    },
+    {
+      "query": "\"seasonal menus with a wide variety of items\"",
+      "gold_collection": "Menus",
+      "predicted_collection": "Menus",
+      "is_correct": true
+    },
+    {
+      "query": "Where can I find a food truck event with a high number of expected visitors, preferably in an indoor venue?",
+      "gold_collection": "Venues",
+      "predicted_collection": "FoodTrucks",
+      "is_correct": false
+    },
+    {
+      "query": "\"organizers planning numerous live events who are currently active\"",
+      "gold_collection": "EventOrganizersAssociation",
+      "predicted_collection": "EventOrganizersAssociation",
+      "is_correct": true
+    },
+    {
+      "query": "Show me catering options with a wide variety of menus that are certified for food safety.",
+      "gold_collection": "CateringServices",
+      "predicted_collection": "CateringServices",
+      "is_correct": true
+    },
+    {
+      "query": "Looking for venues where I can host a tech conference with a large audience and full audio-visual setup.",
+      "gold_collection": "EventVenues",
+      "predicted_collection": "EventVenues",
+      "is_correct": true
+    },
+    {
+      "query": "\"Find travel spots that are trending and attract a large number of visitors.\"",
+      "gold_collection": "TravelAgency",
+      "predicted_collection": "TravelPackages",
+      "is_correct": false
+    },
+    {
+      "query": "Find experienced travel consultants who are certified and can assist in customizing unique travel itineraries.",
+      "gold_collection": "TravelAgents",
+      "predicted_collection": "TravelAgents",
+      "is_correct": true
+    },
+    {
+      "query": "\"I am looking for affordable travel packages that include flights for a tropical beach vacation.\"",
+      "gold_collection": "TravelPackages",
+      "predicted_collection": "TravelPackages",
+      "is_correct": true
+    },
+    {
+      "query": "\"Find luxurious hotels that prioritize sustainability and have a small, intimate setting.\"",
+      "gold_collection": "BoutiqueHotels",
+      "predicted_collection": "HotelServices",
+      "is_correct": false
+    },
+    {
+      "query": "\"Show me guests who are frequent visitors\"",
+      "gold_collection": "HotelGuests",
+      "predicted_collection": "HotelGuests",
+      "is_correct": true
+    },
+    {
+      "query": "luxury hotel amenities that enhance guest relaxation",
+      "gold_collection": "HotelServices",
+      "predicted_collection": "HotelServices",
+      "is_correct": true
+    },
+    {
+      "query": "Find galleries that are currently showcasing a large number of art pieces and are open for visits.",
+      "gold_collection": "ArtGallery",
+      "predicted_collection": "ArtGallery",
+      "is_correct": true
+    },
+    {
+      "query": "\"artists with a rich history of exhibitions who are showcasing currently\"",
+      "gold_collection": "Artists",
+      "predicted_collection": "Artists",
+      "is_correct": true
+    },
+    {
+      "query": "\"Show me abstract art from the early 20th century that I can buy.\"",
+      "gold_collection": "ArtPieces",
+      "predicted_collection": "ArtGallery",
+      "is_correct": false
+    },
+    {
+      "query": "\"Which independent studios have produced a significant number of films?\"",
+      "gold_collection": "FilmStudios",
+      "predicted_collection": "FilmStudios",
+      "is_correct": true
+    },
+    {
+      "query": "Which recent blockbuster hits are still showing in theaters?",
+      "gold_collection": "Movies",
+      "predicted_collection": "Movies",
+      "is_correct": true
+    },
+    {
+      "query": "Who are the top award-winning directors who are still making movies today?",
+      "gold_collection": "Directors",
+      "predicted_collection": "Movies",
+      "is_correct": false
+    },
+    {
+      "query": "\"Who are the most influential up-and-coming fashion designers known for innovative collections?\"",
+      "gold_collection": "FashionDesigners",
+      "predicted_collection": "FashionDesigners",
+      "is_correct": true
+    },
+    {
+      "query": "\"Show me clothing lines that are perfect for summer vacations.\"",
+      "gold_collection": "ClothingLines",
+      "predicted_collection": "FashionDesigners",
+      "is_correct": false
+    },
+    {
+      "query": "\"Virtual fashion show trends and their audience impact\"",
+      "gold_collection": "FashionShows",
+      "predicted_collection": "FashionDesigners",
+      "is_correct": false
+    },
+    {
+      "query": "\"Show me bands with a massive discography that are actively performing live right now.\"",
+      "gold_collection": "MusicBands",
+      "predicted_collection": "MusicBands",
+      "is_correct": true
+    },
+    {
+      "query": "\"medium-sized indoor venues suitable for jazz concerts\"",
+      "gold_collection": "ConcertVenues",
+      "predicted_collection": "MusicBands",
+      "is_correct": false
+    },
+    {
+      "query": "Can you find me some epic soundtrack pieces that are about 5 minutes long?",
+      "gold_collection": "MusicTracks",
+      "predicted_collection": "MusicBands",
+      "is_correct": false
+    },
+    {
+      "query": "\"Show me farmers who are dedicated to environmentally friendly farming practices, possibly with large operational farms.\"",
+      "gold_collection": "Farmers",
+      "predicted_collection": "Farmers",
+      "is_correct": true
+    },
+    {
+      "query": "Which types of fruits and vegetables have the highest production and are only available during specific times of the year?",
+      "gold_collection": "FarmProduce",
+      "predicted_collection": "Farmers",
+      "is_correct": false
+    },
+    {
+      "query": "busy markets that are always open",
+      "gold_collection": "LocalMarkets",
+      "predicted_collection": "Farmers",
+      "is_correct": false
+    },
+    {
+      "query": "\"farmers leading in sustainable agriculture practices\"",
+      "gold_collection": "Farmers",
+      "predicted_collection": "Farmers",
+      "is_correct": true
+    },
+    {
+      "query": "\"What are the seasonal fruits and vegetables that have the highest yield this year?\"",
+      "gold_collection": "FarmProduce",
+      "predicted_collection": "Farmers",
+      "is_correct": false
+    },
+    {
+      "query": "Which local markets have a bustling atmosphere and are open daily, making them ideal for setting up a temporary food stall?",
+      "gold_collection": "LocalMarkets",
+      "predicted_collection": "FarmProduce",
+      "is_correct": false
+    },
+    {
+      "query": "\"affordable homes that are currently on the market\"",
+      "gold_collection": "RealEstateProperties",
+      "predicted_collection": "RealEstateProperties",
+      "is_correct": true
+    },
+    {
+      "query": "\"Find highly accomplished realtors known for handling a large portfolio of properties and delivering outstanding sales performance.\"",
+      "gold_collection": "RealEstateAgents",
+      "predicted_collection": "RealEstateProperties",
+      "is_correct": false
+    },
+    {
+      "query": "\"Show me potential home buyers who are new to the market and have a budget around $300,000.\"",
+      "gold_collection": "Clients",
+      "predicted_collection": "RealEstateProperties",
+      "is_correct": false
+    },
+    {
+      "query": "\"gym with round-the-clock service for flexible workout schedules\"",
+      "gold_collection": "FitnessCenters",
+      "predicted_collection": "FitnessCenters",
+      "is_correct": true
+    },
+    {
+      "query": "\"Looking for certified trainers with extensive experience to recommend for advanced fitness programs.\"",
+      "gold_collection": "Trainers",
+      "predicted_collection": "FitnessCenters",
+      "is_correct": false
+    },
+    {
+      "query": "Who are the gym's most dedicated visitors that frequently enjoy special treatment?",
+      "gold_collection": "GymMembers",
+      "predicted_collection": "GymMembers",
+      "is_correct": true
+    },
+    {
+      "query": "\"Find pet shops that are always open and have a large variety of animals.\"",
+      "gold_collection": "PetStores",
+      "predicted_collection": "PetStores",
+      "is_correct": true
+    },
+    {
+      "query": "\"What are some unique and exotic pet species that are available and might be more expensive?\"",
+      "gold_collection": "PetTypes",
+      "predicted_collection": "PetTypes",
+      "is_correct": true
+    },
+    {
+      "query": "\"Show me regular pet store customers who are likely to be interested in exclusive offers.\"",
+      "gold_collection": "Customers",
+      "predicted_collection": "PetStores",
+      "is_correct": false
+    },
+    {
+      "query": "\"Looking for 24-hour pet shops with a wide variety of animals available.\"",
+      "gold_collection": "PetStores",
+      "predicted_collection": "PetStores",
+      "is_correct": true
+    },
+    {
+      "query": "\"Can you show me exotic pets that are generally more expensive?\"",
+      "gold_collection": "PetTypes",
+      "predicted_collection": "PetStores",
+      "is_correct": false
+    },
+    {
+      "query": "\"Find customers who frequently purchase large amounts and have a loyalty card.\"",
+      "gold_collection": "Customers",
+      "predicted_collection": "PetStores",
+      "is_correct": false
+    },
+    {
+      "query": "Find music instructors with significant teaching experience who can offer flexible schedules for part-time learners.",
+      "gold_collection": "MusicSchool",
+      "predicted_collection": "MusicSchool",
+      "is_correct": true
+    },
+    {
+      "query": "\"Beginner programs in playing instruments without entry tests\"",
+      "gold_collection": "Courses",
+      "predicted_collection": "Courses",
+      "is_correct": true
+    },
+    {
+      "query": "\"find students actively enrolled and making significant academic progress\"",
+      "gold_collection": "Students",
+      "predicted_collection": "MusicSchool",
+      "is_correct": false
+    },
+    {
+      "query": "Show me top-rated travel agencies with a wide range of exotic destinations.",
+      "gold_collection": "TravelAgencies",
+      "predicted_collection": "TravelAgencies",
+      "is_correct": true
+    },
+    {
+      "query": "\"luxury tours with flight included\"",
+      "gold_collection": "TourPackages",
+      "predicted_collection": "TourPackages",
+      "is_correct": true
+    },
+    {
+      "query": "Show me customers who frequently travel as they might be interested in loyalty rewards or personalized travel experiences.",
+      "gold_collection": "Customers",
+      "predicted_collection": "Customers",
+      "is_correct": true
+    },
+    {
+      "query": "\"Find adventure centers with the widest variety of activities and top-notch safety standards.\"",
+      "gold_collection": "AdventureCenters",
+      "predicted_collection": "AdventureCenters",
+      "is_correct": true
+    },
+    {
+      "query": "\"thrilling experiences that come with expert guidance\"",
+      "gold_collection": "AdventurePackages",
+      "predicted_collection": "AdventureCenters",
+      "is_correct": false
+    },
+    {
+      "query": "\"Find adventure enthusiasts with extensive experience who might be eligible for exclusive membership benefits.\"",
+      "gold_collection": "Participants",
+      "predicted_collection": "AdventureCenters",
+      "is_correct": false
+    },
+    {
+      "query": "Find events where athletes from different countries compete together.",
+      "gold_collection": "SportsEvents",
+      "predicted_collection": "SportsEvents",
+      "is_correct": true
+    },
+    {
+      "query": "\"Who are prize-winning professional athletes with a significant record of success?\"",
+      "gold_collection": "Athletes",
+      "predicted_collection": "SportsEvents",
+      "is_correct": false
+    },
+    {
+      "query": "Find sponsors who have made significant financial contributions and have exclusive partnerships.",
+      "gold_collection": "Sponsors",
+      "predicted_collection": "Sponsors",
+      "is_correct": true
+    },
+    {
+      "query": "\"Where can I find gyms that are open all the time?\"",
+      "gold_collection": "FitnessCenters",
+      "predicted_collection": "FitnessCenters",
+      "is_correct": true
+    },
+    {
+      "query": "\"Find workout programs that offer personal coaching and can be completed in a relatively short timeframe.\"",
+      "gold_collection": "TrainingPrograms",
+      "predicted_collection": "Trainers",
+      "is_correct": false
+    },
+    {
+      "query": "\"Show me experienced trainers who excel in individualized workout programs for beginners.\"",
+      "gold_collection": "Trainers",
+      "predicted_collection": "Trainers",
+      "is_correct": true
+    },
+    {
+      "query": "Show me all the fresh organic fruits and vegetables currently available for purchase.",
+      "gold_collection": "FarmProduceMarket",
+      "predicted_collection": "FarmProduceMarket",
+      "is_correct": true
+    },
+    {
+      "query": "\"Find small-scale organic farmers who prioritize sustainable practices.\"",
+      "gold_collection": "LocalFarmers",
+      "predicted_collection": "FarmProduceMarket",
+      "is_correct": false
+    },
+    {
+      "query": "Show me which customers frequently shop with us and are part of our rewards program.",
+      "gold_collection": "CustomerPurchases",
+      "predicted_collection": "FarmProduceMarket",
+      "is_correct": false
+    },
+    {
+      "query": "Where can I find pet stores that have a large variety of animals and offer grooming?",
+      "gold_collection": "PetStores",
+      "predicted_collection": "PetStores",
+      "is_correct": true
+    },
+    {
+      "query": "\"eco-friendly options for pets\"",
+      "gold_collection": "PetProducts",
+      "predicted_collection": "PetProducts",
+      "is_correct": true
+    },
+    {
+      "query": "\"Find loyal customers who might benefit from exclusive offers or personalized experiences.\"",
+      "gold_collection": "Customers",
+      "predicted_collection": "PetStores",
+      "is_correct": false
+    },
+    {
+      "query": "\"find art spaces where visitors can freely explore a significant collection of art exhibits\"",
+      "gold_collection": "ArtGalleries",
+      "predicted_collection": "Artists",
+      "is_correct": false
+    },
+    {
+      "query": "Contemporary artists with extensive collections who are actively displaying their work.",
+      "gold_collection": "Artists",
+      "predicted_collection": "Artists",
+      "is_correct": true
+    },
+    {
+      "query": "\"Find well-known art enthusiasts with substantial collections who might qualify for VIP experiences.\"",
+      "gold_collection": "ArtCollectors",
+      "predicted_collection": "Artists",
+      "is_correct": false
+    },
+    {
+      "query": "\"concerts with large crowds that completely sold out\"",
+      "gold_collection": "MusicConcerts",
+      "predicted_collection": "MusicConcerts",
+      "is_correct": true
+    },
+    {
+      "query": "\"Show me artists currently rocking the stage with a lot of hit songs.\"",
+      "gold_collection": "Performers",
+      "predicted_collection": "FanClubs",
+      "is_correct": false
+    },
+    {
+      "query": "\"Show me fan clubs that are huge and not officially recognized, possibly operated by super fans or enthusiasts.\"",
+      "gold_collection": "FanClubs",
+      "predicted_collection": "Performers",
+      "is_correct": false
+    },
+    {
+      "query": "\"I\u2019m looking for bustling farmers markets that are only active during certain months of the year.\"",
+      "gold_collection": "FarmersMarkets",
+      "predicted_collection": "FarmersMarkets",
+      "is_correct": true
+    },
+    {
+      "query": "Show me vendors known for sustainable and organic farming practices.",
+      "gold_collection": "ProduceVendors",
+      "predicted_collection": "ProduceVendors",
+      "is_correct": true
+    },
+    {
+      "query": "\"positive feedback from satisfied customers\"",
+      "gold_collection": "CustomerFeedback",
+      "predicted_collection": "FarmersMarkets",
+      "is_correct": false
+    },
+    {
+      "query": "Looking for fitness studios that offer relaxation amenities like saunas and can host large groups.",
+      "gold_collection": "FitnessStudios",
+      "predicted_collection": "FitnessStudios",
+      "is_correct": true
+    },
+    {
+      "query": "\"Looking for highly experienced fitness coaches who are certified and excel in training clients\"",
+      "gold_collection": "Trainers",
+      "predicted_collection": "FitnessStudios",
+      "is_correct": false
+    },
+    {
+      "query": "Who are the most loyal and dedicated members of the studio?",
+      "gold_collection": "Memberships",
+      "predicted_collection": "FitnessStudios",
+      "is_correct": false
+    },
+    {
+      "query": "\"What are the most popular online programming courses available?\"",
+      "gold_collection": "TechCourses",
+      "predicted_collection": "TechCourses",
+      "is_correct": true
+    },
+    {
+      "query": "experienced faculty members with a focus on long-standing professors",
+      "gold_collection": "Instructors",
+      "predicted_collection": "TechCourses",
+      "is_correct": false
+    },
+    {
+      "query": "\"Students recognized for outstanding academic performance\"",
+      "gold_collection": "StudentAchievements",
+      "predicted_collection": "Instructors",
+      "is_correct": false
+    },
+    {
+      "query": "\"Cutting-edge programming courses that are available online\".",
+      "gold_collection": "TechCourses",
+      "predicted_collection": "TechCourses",
+      "is_correct": true
+    },
+    {
+      "query": "\"experienced teachers with a long track record\"",
+      "gold_collection": "Instructors",
+      "predicted_collection": "Instructors",
+      "is_correct": true
+    },
+    {
+      "query": "Show me students who have been recognized for their outstanding academic accomplishments.",
+      "gold_collection": "StudentAchievements",
+      "predicted_collection": "TechCourses",
+      "is_correct": false
+    },
+    {
+      "query": "\"Find events that are frequently organized, attracting large gatherings of professionals.\"",
+      "gold_collection": "ProfessionalConferences",
+      "predicted_collection": "Speakers",
+      "is_correct": false
+    },
+    {
+      "query": "Find prominent conference speakers who have delivered numerous presentations and are known for giving keynote addresses.",
+      "gold_collection": "Speakers",
+      "predicted_collection": "Speakers",
+      "is_correct": true
+    },
+    {
+      "query": "\"Find sponsors who have made large contributions to support the event\"",
+      "gold_collection": "Sponsors",
+      "predicted_collection": "ProfessionalConferences",
+      "is_correct": false
+    },
+    {
+      "query": "\"Find groomers who are highly qualified and experienced in the pet grooming industry.\"",
+      "gold_collection": "PetGroomers",
+      "predicted_collection": "PetGroomers",
+      "is_correct": true
+    },
+    {
+      "query": "\"luxury grooming options for dogs with quick service\"",
+      "gold_collection": "PetServices",
+      "predicted_collection": "PetGroomers",
+      "is_correct": false
+    },
+    {
+      "query": "\"Show me loyal customers who have enrolled their pets in the membership program.\"",
+      "gold_collection": "ClientPets",
+      "predicted_collection": "PetGroomers",
+      "is_correct": false
+    },
+    {
+      "query": "\"famous galleries showcasing contemporary art exhibitions\"",
+      "gold_collection": "ArtGalleries",
+      "predicted_collection": "Artists",
+      "is_correct": false
+    },
+    {
+      "query": "Find artists who are currently exhibiting and have sold a significant number of artworks.",
+      "gold_collection": "Artists",
+      "predicted_collection": "Artists",
+      "is_correct": true
+    },
+    {
+      "query": "Who are the top collectors with exclusive VIP privileges and large collections of artwork?",
+      "gold_collection": "ArtCollectors",
+      "predicted_collection": "Artists",
+      "is_correct": false
+    },
+    {
+      "query": "\"interactive virtual workshops for beginners\"",
+      "gold_collection": "Workshops",
+      "predicted_collection": "Workshops",
+      "is_correct": true
+    },
+    {
+      "query": "Show me experienced and certified instructors who have led multiple workshops.",
+      "gold_collection": "Instructors",
+      "predicted_collection": "Instructors",
+      "is_correct": true
+    },
+    {
+      "query": "\"people who regularly engage in learning activities or sessions\"",
+      "gold_collection": "Attendees",
+      "predicted_collection": "Instructors",
+      "is_correct": false
+    },
+    {
+      "query": "Books that explore themes of ancient myths and legends",
+      "gold_collection": "Library",
+      "predicted_collection": "Library",
+      "is_correct": true
+    },
+    {
+      "query": "\"library members who frequently borrow books and have premium status\"",
+      "gold_collection": "LibraryMembers",
+      "predicted_collection": "Library",
+      "is_correct": false
+    },
+    {
+      "query": "\"Could you show me upcoming library workshops that encourage community involvement and have a large audience?\"",
+      "gold_collection": "LibraryEvents",
+      "predicted_collection": "Library",
+      "is_correct": false
+    },
+    {
+      "query": "\"large-scale festivals happening every year\"",
+      "gold_collection": "MusicFestival",
+      "predicted_collection": "MusicFestival",
+      "is_correct": true
+    },
+    {
+      "query": "\"Find artists that have headlined major music festivals multiple times.\"",
+      "gold_collection": "Performers",
+      "predicted_collection": "Performers",
+      "is_correct": true
+    },
+    {
+      "query": "Who are the key contributors with significant funding in the latest festival?",
+      "gold_collection": "Sponsors",
+      "predicted_collection": "Performers",
+      "is_correct": false
+    },
+    {
+      "query": "\"Easy cooking classes for people who are just starting out\"",
+      "gold_collection": "CookingClasses",
+      "predicted_collection": "CookingClasses",
+      "is_correct": true
+    },
+    {
+      "query": "\"Show me the top chefs with prestigious awards who can teach advanced cooking techniques.\"",
+      "gold_collection": "Chefs",
+      "predicted_collection": "Chefs",
+      "is_correct": true
+    },
+    {
+      "query": "\"Who are the regulars or devoted members frequently engaging in our cooking sessions?\"",
+      "gold_collection": "Participants",
+      "predicted_collection": "Chefs",
+      "is_correct": false
+    },
+    {
+      "query": "\"Find health clubs that have a large membership base and never close for a day, so I can work out anytime.\"",
+      "gold_collection": "FitnessCenters",
+      "predicted_collection": "Members",
+      "is_correct": false
+    },
+    {
+      "query": "\"Find trainers with a proven track record of handling multiple clients successfully.\"",
+      "gold_collection": "Trainers",
+      "predicted_collection": "Trainers",
+      "is_correct": true
+    },
+    {
+      "query": "\"Find members who are consistently active and have recently reached a milestone in their workouts.\"",
+      "gold_collection": "Members",
+      "predicted_collection": "Trainers",
+      "is_correct": false
+    },
+    {
+      "query": "\"Looking for cafes that offer a great outdoor experience.\"",
+      "gold_collection": "Cafes",
+      "predicted_collection": "Cafes",
+      "is_correct": true
+    },
+    {
+      "query": "Can you show me experienced coffee experts who have certification?",
+      "gold_collection": "Baristas",
+      "predicted_collection": "Cafes",
+      "is_correct": false
+    },
+    {
+      "query": "\"Show me feedback from our regulars who weren\u2019t too happy with their experience recently.\"",
+      "gold_collection": "CustomerFeedback",
+      "predicted_collection": "CustomerFeedback",
+      "is_correct": true
+    },
+    {
+      "query": "Where can I find a nearby pet store with a wide selection of animals that's open right now?",
+      "gold_collection": "PetStores",
+      "predicted_collection": "PetStores",
+      "is_correct": true
+    },
+    {
+      "query": "\"Find experienced animal doctors who have been recognized by a certifying board for their skills and knowledge in pet care.\"",
+      "gold_collection": "Veterinarians",
+      "predicted_collection": "Veterinarians",
+      "is_correct": true
+    },
+    {
+      "query": "\"Show me customers who frequently buy pets and are part of the loyalty program.\"",
+      "gold_collection": "Customers",
+      "predicted_collection": "PetStores",
+      "is_correct": false
+    }
+  ]
+}
