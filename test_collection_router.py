@@ -1,6 +1,7 @@
 from models import CollectionRouterQuery
 from models import Tool, Function, Parameters, ParameterProperty
 from weaviate_fc_utils import get_collections_info
+from lm import LMService
 
 import json
 
@@ -14,6 +15,16 @@ print(collection_router_queries[0])
 
 import weaviate
 weaviate_client = weaviate.connect_to_local()
+
+openai_api_key = ""
+
+lm_service = LMService(
+    model_provider = "openai",
+    model_name = "gpt-4o",
+    api_key = openai_api_key
+)
+
+prompt = "Answer the question. Use the provided tools to gain additional context."
 
 for collection_router_query in collection_router_queries:
     weaviate_client.collections.delete_all()
@@ -47,7 +58,18 @@ for collection_router_query in collection_router_queries:
         )
     )]
 
-    
+    function_selected = lm_service.one_step_function_selection_test(
+        prompt=prompt,
+        tools=tools
+    )
+
+    print(function_selected)
+    break
+
+    # parse tool
+
+
+
 
 
 
