@@ -23,5 +23,5 @@ for schema_str in data:
     processed_data.append(json.dumps(schema_dict))
 
 # Write the processed data back to file
-with open("./data/simple-3-collection-schemas.json", "w") as file:
+with open("./data/cleaned-simple-3-collection-schemas.json", "w") as file:
     json.dump(processed_data, file, indent=4)

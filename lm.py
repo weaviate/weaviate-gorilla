@@ -98,3 +98,10 @@ class LMService():
                 ),
             ),
         )]
+        
+
+'''
+Note, vLLM function call snippet:
+
+https://docs.vllm.ai/en/latest/getting_started/examples/offline_chat_with_tools.html
+'''

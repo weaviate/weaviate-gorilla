@@ -9,97 +9,83 @@ Easier, but requires tighter coupling.
 ## Collection Name as a Search Argument
 
 ```python
-def search_weaviate_collection(
-    self,
-    collection_name: str,
-    search_query: str,
-):
+def get_collections_info(client: weaviate.WeaviateClient) -> tuple[str, list[str]]:
     """
-    This tool queries an external database collection
-    named by the parameter {collection_name} to find the most semantically similar items to the query.
-
-    Args: 
-        collection_name (str): The name of the database collection
-        search_query (str): The search query
-
-    Returns: 
-        search_results (str): The results from the search engine.
+    Get detailed information about all collections in a Weaviate instance.
+    
+    Args:
+        client: A Weaviate client instance
+    
+    Returns:
+        tuple[str, list[str]]: Tuple containing formatted collection details string and list of collection names
     """
-    import weaviate
-    from weaviate.classes.init import Auth
-    import os
+    
+    collections = client.collections.list_all()
+    
+    # Get collection names as list
+    collection_names = list(collections.keys())
+    
+    # Build output string
+    output = []
+    for collection_name, config in collections.items():
+        output.append(f"\nCollection Name: {collection_name}")
+        output.append(f"Description: {config.description}")
+        output.append("\nProperties:")
+        for prop in config.properties:
+            output.append(f"- {prop.name}: {prop.description} (type: {prop.data_type.value})")
+    
+    return "\n".join(output), collection_names
 
-    weaviate_client = weaviate.connect_to_weaviate_cloud(
-        cluster_url=os.environ["WEAVIATE_URL"],
-        auth_credentials=Auth.api_key(os.environ["WEAVIATE_API_KEY"]),
-        headers={
-            "X-OpenAI-Api-Key": os.environ["OPENAI_API_KEY"]
-        }
-    )
-    weaviate_collection = weaviate_client.collections.get(collection_name)
-    query_result = weaviate_collection.query.hybrid(
-        query=search_query,
-        alpha=0.5,
-        limit=5
-    )
-    weaviate_client.close()
-    results = query_result.objects
-    formatted_results = "\n".join(
-        [f"[Search Result {i+1}] {str(result.properties)}" for i, result in enumerate(results)]
-    )
-    return formatted_results
+# Call the function with our client and print result
+info_str, collections_list = get_collections_info(weaviate_client)
+print(info_str)
 ```
 
-Then we get the collections from Weaviates `meta` API:
+# Connect to Tool
 
-```python
-weaviate_client.collections.list_all()
 ```
+from typing import Literal, Optional, Dict, List, Union
+from pydantic import BaseModel
 
+class ParameterProperty(BaseModel):
+    type: str
+    description: str
+    enum: Optional[List[str]] = None
 
-And then interfaced the search function with available collections:
+class Parameters(BaseModel):
+    type: Literal["object"]
+    properties: Dict[str, ParameterProperty]
+    required: Optional[List[str]]
 
-```python
-from weaviate.function_calling import Tool
+class Function(BaseModel):
+    name: str
+    description: str
+    parameters: Parameters
 
+class Tool(BaseModel):
+    type: Literal["function"]
+    function: Function
+
+# Example usage:
 search_tool = Tool(
     type="function",
     function=Function(
-        name="search_{collection_name}",
-        description="Search for items in a database collection named {collection_name} determined to be most relevant to the search query.",
+        name="search_weaviate_collection",
+        description="Search for the most relevant items to the provided `search_query` in a Weaviate Database Collection.",
         parameters=Parameters(
             type="object",
             properties={
+                "collection_name": ParameterProperty(
+                    type="string",
+                    description="The Weaviate Collection to search through.",
+                    enum=collections_list
+                ),
                 "search_query": ParameterProperty(
                     type="string",
-                    description="The search query to find relevant blog posts"
+                    description="The search query."
                 )
             },
-            required=["search_query"]
-        )
-    )
-)
-
-
-get_objects_tool = Tool(
-    type="function",
-    function=Function(
-        name="get_objects_{collection_name}",
-        description="Get objects from a database collection named {collection_name} that match specific filter criteria.",
-        parameters=Parameters(
-            type="object",
-            properties={
-                "where_filter": ParameterProperty(
-                    type="object",
-                    description="Filter conditions to match objects against (e.g. {\"path\": [\"property\"], \"operator\": \"Equal\", \"valueText\": \"value\"})"
-                ),
-                "limit": ParameterProperty(
-                    type="integer",
-                    description="Maximum number of objects to return",
-                    default=10
-                )
-            },
-            required=["where_filter"]
+            required=["collection_name", "search_query"]
         )
     )
 )
