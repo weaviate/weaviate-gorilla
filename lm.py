@@ -111,6 +111,7 @@ class LMService():
                     "content": prompt
                 }
             ]
+            # set `parallel_tool_calls=False` to only call a single tool (defaults true)
             response = self.lm_client.chat.completions.create(
                 model=self.model_name,
                 messages=messages,

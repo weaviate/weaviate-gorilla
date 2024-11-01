@@ -88,7 +88,7 @@ for idx, collection_router_query in enumerate(collection_router_queries):
                 properties={
                     "collection_name": ParameterProperty(
                         type="string",
-                        description="The Weaviate Collection to search through.",
+                        description=f"The Weaviate Collection to search through. More detailed information about the particular collections in this database: {collections_description}",
                         enum=collections_list
                     ),
                     "search_query": ParameterProperty(
@@ -118,13 +118,16 @@ for idx, collection_router_query in enumerate(collection_router_queries):
     
     if "tool_calls" in response.model_dump().keys():
         print("\033[96mLLM-selected collection:\033[0m")
-        arguments_json = json.loads(response.tool_calls[0].function.arguments)
-        predicted_collection = arguments_json["collection_name"]
-        print(predicted_collection)
-        if predicted_collection == collection_router_query.gold_collection:
-            correct_counter += 1
-            is_correct = True
-            print(f"\033[92mSuccess! Current success rate: {(correct_counter / (idx + 1)) * 100}\033[0m")
+        print(len(response.tool_calls)) # save this somewhere
+        for tool_call in response.tool_calls:
+            arguments_json = json.loads(tool_call.function.arguments)
+            predicted_collection = arguments_json["collection_name"]
+            print(predicted_collection)
+            if predicted_collection == collection_router_query.gold_collection:
+                correct_counter += 1
+                is_correct = True
+                print(f"\033[92mSuccess! Current success rate: {(correct_counter / (idx + 1)) * 100}\033[0m")
+                break # stop looping through these tool_calls (it might call the same correct collection with 2 or more queries, etc.)
     else:
         print("\033[96mThe LLM didn't call a function.\033[0m")
 
@@ -144,7 +147,7 @@ final_results = ExperimentResults(
 )
 
 # Save results to JSON file
-with open("collection_routing_results.json", "w") as f:
+with open("collection_routing_results_with_descriptions.json", "w") as f:
     json.dump(final_results.model_dump(), f, indent=2)
 
 weaviate_client.close()
