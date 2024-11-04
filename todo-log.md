@@ -8,6 +8,7 @@ Note, each collection contains 1 TEXT property, 1 NUMBER property, and 1 BOOLEAN
 
 Note, evaluation entanglement with collection selection.
 
+## Test Filter DSL as a Function Calling Argument
 
 ## Optimized Function Calling with AvaTaR
 
