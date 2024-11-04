@@ -22,19 +22,19 @@ class IntProperyFilterWithQuery(BaseModel):
     property_name: str
     operator: IntFilterOperator
     value: int | float
-    corresponding_query: str
+    corresponding_natural_language_query: str
 
 class TextPropertyFilterWithQuery(BaseModel):
     property_name: str
     operator: TextFilterOperator
     value: str
-    corresponding_query: str
+    corresponding_natural_language_query: str
 
 class BooleanPropertyFilterWithQuery(BaseModel):
     property_name: str
     operator: BooleanFilterOperator
     value: bool
-    corresponding_query: str
+    corresponding_natural_language_query: str
 
 class SyntheticFilterQueries(BaseModel):
     int_property_filter_query: IntProperyFilterWithQuery
