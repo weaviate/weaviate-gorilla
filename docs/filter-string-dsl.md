@@ -25,28 +25,30 @@ class Tool(BaseModel):
     type: "function"
     function: Function
 
-def create_weaviate_search_tool(collections_description: str, collections_list: List[str]) -> Tool:
-    return Tool(
+tools = [Tool(
         type="function",
         function=Function(
-            name="search_weaviate_collection",
-            description="Search for the most relevant items in a Weaviate Collection with support for complex filters.",
+            name="query_database",
+            description=f"""Query a database.
+
+            Available collections in this database:
+            {collections_description}""",
             parameters=Parameters(
                 type="object",
                 properties={
                     "collection_name": ParameterProperty(
                         type="string",
-                        description=f"The Weaviate Collection to search through. Available collections: {collections_description}",
+                        description="The collection to query",
                         enum=collections_list
                     ),
                     "search_query": ParameterProperty(
                         type="string",
-                        description="The semantic search query to find relevant items."
+                        description="Optional search query to find semantically relevant items."
                     ),
                     "filter_string": ParameterProperty(
                         type="string",
                         description="""
-                        Filter expression using prefix notation to ensure unambiguous order of operations.
+                        Optional filter expression using prefix notation to ensure unambiguous order of operations.
                         
                         Basic condition syntax: property_name:operator:value
                         
@@ -63,12 +65,14 @@ def create_weaviate_search_tool(collections_description: str, collections_list: 
                         
                         Supported operators:
                         - Comparison: =, >, <, >=, <= 
-                        - Text: LIKE, CONTAINS
+                        - Text only: LIKE
+
+                        IMPORTANT!!! Please review the collection schema to make sure the property name is spelled correctly!! THIS IS VERY IMPORTANT!!!
                         """
                     )
                 },
                 required=["collection_name"]
             )
         )
-    )
+)]
 ```
