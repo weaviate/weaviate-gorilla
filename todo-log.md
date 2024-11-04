@@ -1,5 +1,7 @@
 # ToDo
 
+## Test ReAct as a required argument?
+
 ## Where Filter DSL
 
 Given a collection, generate a filter seeking query for each property.

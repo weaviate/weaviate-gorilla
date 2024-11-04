@@ -119,24 +119,27 @@ for idx, filter_query in enumerate(filter_queries):
     tools = [Tool(
         type="function",
         function=Function(
-            name="search_weaviate_collection",
-            description="Search for the most relevant items to the provided `search_query` in a Weaviate Database Collection.",
+            name="query_database",
+            description=f"""Query a database.
+
+            Available collections in this database:
+            {collections_description}""",
             parameters=Parameters(
                 type="object",
                 properties={
                     "collection_name": ParameterProperty(
                         type="string",
-                        description=f"The Weaviate Collection to search through. More detailed information about the particular collections in this database: {collections_description}",
+                        description="The collection to query",
                         enum=collections_list
                     ),
                     "search_query": ParameterProperty(
                         type="string",
-                        description="The search query."
+                        description="Optional search query to find semantically relevant items."
                     ),
                     "filter_string": ParameterProperty(
                         type="string",
                         description="""
-                        Filter expression using prefix notation to ensure unambiguous order of operations.
+                        Optional filter expression using prefix notation to ensure unambiguous order of operations.
                         
                         Basic condition syntax: property_name:operator:value
                         
@@ -153,7 +156,9 @@ for idx, filter_query in enumerate(filter_queries):
                         
                         Supported operators:
                         - Comparison: =, >, <, >=, <= 
-                        - Text: LIKE, CONTAINS
+                        - Text only: LIKE
+
+                        IMPORTANT!!! Please review the collection schema to make sure the property name is spelled correctly!! THIS IS VERY IMPORTANT!!!
                         """
                     )
                 },
@@ -172,6 +177,17 @@ for idx, filter_query in enumerate(filter_queries):
 
     print("\033[96m\nTesting with query:\033[0m")
     print(filter_query.synthetic_query)
+
+    # Convert the gold filter into a filter string based on its type
+    if isinstance(filter_query.gold_filter, IntPropertyFilter):
+        gold_filter_str = f"{filter_query.gold_filter.property_name}:{filter_query.gold_filter.operator}:{filter_query.gold_filter.value}"
+    elif isinstance(filter_query.gold_filter, TextPropertyFilter):
+        gold_filter_str = f"{filter_query.gold_filter.property_name}:{filter_query.gold_filter.operator}:{filter_query.gold_filter.value}"
+    elif isinstance(filter_query.gold_filter, BooleanPropertyFilter):
+        gold_filter_str = f"{filter_query.gold_filter.property_name}:{filter_query.gold_filter.operator}:{str(filter_query.gold_filter.value).lower()}"
+    
+    print("\033[96mGold Filter:\033[0m")
+    print(gold_filter_str)
     print("\033[96mGold collection:\033[0m")
     print(filter_query.gold_collection)
 
@@ -180,21 +196,26 @@ for idx, filter_query in enumerate(filter_queries):
     
     if "tool_calls" in response.model_dump().keys():
         print("\033[96mLLM-selected collection:\033[0m")
-        print(len(response.tool_calls)) # save this somewhere
+        print(f"\033[92mCalling {len(response.tool_calls)} functions.\033[0m") # save this somewhere
         for tool_call in response.tool_calls:
             arguments_json = json.loads(tool_call.function.arguments)
-            print("\033[92mALL ARGUMENTS SELECTED\n\033[0m")
+            print("Function Calling Arguments:")
             print(arguments_json)
-            predicted_collection = arguments_json["collection_name"]
-            print(predicted_collection)
-            if predicted_collection == filter_query.gold_collection:
-                correct_counter += 1
-                is_correct = True
-                print(f"\033[92mSuccess! Current success rate: {(correct_counter / (idx + 1)) * 100}\033[0m")
-                break # stop looping through these tool_calls (it might call the same correct collection with 2 or more queries, etc.)
+            print("With Filter:")
+            if "filter_string" in arguments_json.keys():
+                print(arguments_json["filter_string"])
+                predicted_filters = arguments_json["filter_string"]
+                predicted_filters = predicted_filters[0].upper() + predicted_filters[1:]
+                if predicted_filters == gold_filter_str: 
+                    correct_counter += 1
+                    is_correct = True
+                    break # stop looping through these tool_calls (it might call the same correct collection with 2 or more queries, etc.)
+            else:
+                print("No filter selected.")
     else:
         print("\033[96mThe LLM didn't call a function.\033[0m")
 
+    print(f"\033[92mCurrent success rate: {(correct_counter / (idx + 1)) * 100}\033[0m")
     result = FilterQueryResult(
         query=filter_query.synthetic_query,
         database_schema=filter_query.database_schema,
