@@ -27,26 +27,28 @@ vectorizer_service.connection_test()
 with open("simple-3-collection-schemas.json", "r") as json_file:
     database_schemas = json.load(json_file)
 
-# Define APIs
-search_apis = [
-    "Semantic search through a collection"
-]
+# Describe Filter DSL
 
-filter_apis = [
-    "Filter by an integer-valued property such as =, >, <, >=, or <=",
-    "Filter by a text-valued property such as =, CONTAINS",
-    "Filter by a boolean-valued property such as ="
-]
+description="""
+Filter expression using prefix notation to ensure unambiguous order of operations.
 
-aggregate_apis = [
-    "Aggregate an integer-valued property",
-    "Aggregate a text-valued property",
-    "Aggregate a boolean-valued property",
-    "Count objects"
-]
+Basic condition syntax: property_name:operator:value
 
-# Combine all APIs
-all_apis = search_apis + filter_apis + aggregate_apis
+Compound expressions use prefix AND/OR with parentheses:
+- AND(condition1, condition2)
+- OR(condition1, condition2) 
+- AND(condition1, OR(condition2, condition3))
+
+Examples:
+- Simple: age:>:25
+- Compound: AND(age:>:25, price:<:1000)
+- Complex: OR(AND(age:>:25, price:<:1000), category:=:'electronics')
+- Nested: AND(status:=:'active', OR(price:<:50, AND(rating:>:4, stock:>:100)))
+
+Supported operators:
+- Comparison: =, >, <, >=, <=
+- Text: LIKE, CONTAINS
+"""
 
 # Prepare the prompt template
 create_single_hop_query_prompt = """

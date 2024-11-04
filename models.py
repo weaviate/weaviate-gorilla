@@ -14,6 +14,33 @@ class SyntheticSingleAPIQuery(BaseModel):
     explanation: str
     api_reference: str
 
+IntFilterOperator = Literal["=", "<", ">", "<=", ">="]
+TextFilterOperator = Literal["=", "LIKE"]
+BooleanFilterOperator = Literal["=", "!="]
+
+class IntProperyFilterWithQuery(BaseModel):
+    property_name: str
+    operator: IntFilterOperator
+    value: int | float
+    query: str
+
+class TextPropertyFilterWithQuery(BaseModel):
+    property_name: str
+    operator: TextFilterOperator
+    value: str
+    query: str
+
+class BooleanPropertyFilterWithQuery(BaseModel):
+    property_name: str
+    operator: BooleanFilterOperator
+    value: bool
+    query: str
+
+class SyntheticFilterQueries(BaseModel):
+    int_property_filter_query: IntProperyFilterWithQuery
+    text_property_filter_query: TextPropertyFilterWithQuery
+    boolean_property_filter_query: BooleanPropertyFilterWithQuery
+
 # Note Multi-Hop might have a hierarchical structure to it...
 class SyntheticMultiAPIQuery(BaseModel):
     query: str
