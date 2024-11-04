@@ -39,8 +39,6 @@ lm_service = LMService(
     api_key = openai_api_key
 )
 
-prompt = "Answer the question. Use the provided tools to gain additional context."
-
 correct_counter = 0
 experiment_results = []
 
@@ -101,6 +99,7 @@ for idx, collection_router_query in enumerate(collection_router_queries):
         )
     )]
 
+    prompt = "Answer the question. Use the provided tools to gain additional context."
     prompt += f"\nuser query: {collection_router_query.synthetic_query}"
 
     response = lm_service.one_step_function_selection_test(

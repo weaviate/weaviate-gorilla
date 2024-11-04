@@ -1,9 +1,30 @@
 from pydantic import BaseModel, field_validator
 from typing import Literal, Optional, Dict, List, Union
 
+class IntPropertyFilter(BaseModel):
+    property_name: str
+    operator: Literal["=", "<", ">", "<=", ">="]
+    value: int | float
+
+class TextPropertyFilter(BaseModel):
+    property_name: str
+    operator: Literal["=", "LIKE"]
+    value: str
+
+class BooleanPropertyFilter(BaseModel):
+    property_name: str
+    operator: Literal["=", "!="]
+    value: bool
+
 class CollectionRouterQuery(BaseModel):
     database_schema: dict
     gold_collection: str 
+    synthetic_query: str
+
+class QueryWithFilter(BaseModel):
+    database_schema: dict
+    gold_collection: str
+    gold_filter: IntPropertyFilter | TextPropertyFilter | BooleanPropertyFilter
     synthetic_query: str
 
 class SyntheticQuery(BaseModel):
@@ -13,6 +34,33 @@ class SyntheticSingleAPIQuery(BaseModel):
     query: str
     explanation: str
     api_reference: str
+
+IntFilterOperator = Literal["=", "<", ">", "<=", ">="]
+TextFilterOperator = Literal["=", "LIKE"]
+BooleanFilterOperator = Literal["=", "!="]
+
+class IntProperyFilterWithQuery(BaseModel):
+    property_name: str
+    operator: IntFilterOperator
+    value: int | float
+    corresponding_natural_language_query: str
+
+class TextPropertyFilterWithQuery(BaseModel):
+    property_name: str
+    operator: TextFilterOperator
+    value: str
+    corresponding_natural_language_query: str
+
+class BooleanPropertyFilterWithQuery(BaseModel):
+    property_name: str
+    operator: BooleanFilterOperator
+    value: bool
+    corresponding_natural_language_query: str
+
+class SyntheticFilterQueries(BaseModel):
+    int_property_filter_query: IntProperyFilterWithQuery
+    text_property_filter_query: TextPropertyFilterWithQuery
+    boolean_property_filter_query: BooleanPropertyFilterWithQuery
 
 # Note Multi-Hop might have a hierarchical structure to it...
 class SyntheticMultiAPIQuery(BaseModel):

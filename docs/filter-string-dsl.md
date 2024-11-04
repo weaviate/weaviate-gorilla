@@ -1,4 +1,4 @@
-# Filter Domain-Specific-Language (string type)
+# Filter Domain-Specific Language (string type)
 
 ### Concept (Not Tested)
 

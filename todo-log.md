@@ -1,10 +1,6 @@
 # ToDo
 
-## Collection Routing Evaluation
-
-Given 3 collections, generate a query that should be routed to each.
-
-GPT-4o vs. Llama 3.2
+## Test ReAct as a required argument?
 
 ## Where Filter DSL
 
@@ -14,8 +10,9 @@ Note, each collection contains 1 TEXT property, 1 NUMBER property, and 1 BOOLEAN
 
 Note, evaluation entanglement with collection selection.
 
+## Test Filter DSL as a Function Calling Argument
 
-== Consider changing direction based on results, otherwise ==
+## Optimized Function Calling with AvaTaR
 
 - Implement and Test Optimizers
 - Test Optimized Function Calling
@@ -90,3 +87,11 @@ Tool(
 ## Testing Function Calling
 
 - Test Classifier with Function Calling and Zero-Shot Classifier
+
+with Collection Routing Evaluation:
+
+Given 3 collections, generate a query that should be routed to each.
+
+GPT-4o vs. Llama 3.2 (Llama not tested)
+
+Need to consider how Parallel Function Calling impacts this evaluation methodology.
