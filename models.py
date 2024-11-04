@@ -1,9 +1,30 @@
 from pydantic import BaseModel, field_validator
 from typing import Literal, Optional, Dict, List, Union
 
+class IntPropertyFilter(BaseModel):
+    property_name: str
+    operator: Literal["=", "<", ">", "<=", ">="]
+    value: int | float
+
+class TextPropertyFilter(BaseModel):
+    property_name: str
+    operator: Literal["=", "LIKE"]
+    value: str
+
+class BooleanPropertyFilter(BaseModel):
+    property_name: str
+    operator: Literal["=", "!="]
+    value: bool
+
 class CollectionRouterQuery(BaseModel):
     database_schema: dict
     gold_collection: str 
+    synthetic_query: str
+
+class QueryWithFilter(BaseModel):
+    database_schema: dict
+    gold_collection: str
+    gold_filter: IntPropertyFilter | TextPropertyFilter | BooleanPropertyFilter
     synthetic_query: str
 
 class SyntheticQuery(BaseModel):
