@@ -14,7 +14,9 @@ class CollectionRoutingResult(BaseModel):
     gold_collection: str
     predicted_collection: Optional[str]
     is_correct: bool
-    
+
+# Update model with new filter queries
+
 class ExperimentResults(BaseModel):
     total_queries: int
     correct_predictions: int
@@ -144,6 +146,8 @@ for idx, collection_router_query in enumerate(collection_router_queries):
         print(len(response.tool_calls)) # save this somewhere
         for tool_call in response.tool_calls:
             arguments_json = json.loads(tool_call.function.arguments)
+            print("\033[92mALL ARGUMENTS SELECTED\n\033[0m")
+            print(arguments_json)
             predicted_collection = arguments_json["collection_name"]
             print(predicted_collection)
             if predicted_collection == collection_router_query.gold_collection:
