@@ -1,4 +1,4 @@
-from models import SyntheticQuery
+from models import SyntheticFilterQueries
 from create import CreateObjects
 from lm import LMService
 from vectorizer import VectorizerService
