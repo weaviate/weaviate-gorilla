@@ -3,7 +3,7 @@ from models import Tool, Function, Parameters, ParameterProperty
 from weaviate_fc_utils import get_collections_info
 from lm import LMService
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Any
 
 import json
 import requests
@@ -15,7 +15,7 @@ class FilterQueryResult(BaseModel):
     metadata: str
     property_name: str 
     operator: str
-    value: str
+    value: Any
     predicted_filter: Optional[str]
     is_correct: bool
 
@@ -78,8 +78,6 @@ lm_service = LMService(
     model_name = "gpt-4o",
     api_key = openai_api_key
 )
-
-prompt = "Answer the question. Use the provided tools to gain additional context."
 
 correct_counter = 0
 experiment_results = []
@@ -164,6 +162,7 @@ for idx, filter_query in enumerate(filter_queries):
         )
     )]
 
+    prompt = "Answer the question. Use the provided tools to gain additional context."
     prompt += f"\nuser query: {filter_query.synthetic_query}"
 
     response = lm_service.one_step_function_selection_test(
