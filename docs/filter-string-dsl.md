@@ -1,7 +1,5 @@
 # Filter Domain-Specific Language (string type)
 
-### Concept (Not Tested)
-
 ```python
 from typing import List, Dict, Optional, Literal, Union
 from pydantic import BaseModel
