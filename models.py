@@ -44,28 +44,38 @@ class DateAggregation(BaseModel):
     property_name: str
     metrics: List[Literal["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE"]]
 
+class QueryWithAggregation(BaseModel):
+    database_schema: dict
+    gold_collection: str
+    gold_aggregation: IntAggregation | TextAggregation| BooleanAggregation
+    synthetic_query: str
+
+# GroupBy is not yet used
+
 class GroupBy(BaseModel):
     property_name: str
 
 class AggregateQuery(BaseModel):
-    aggregations: List[IntAggregation | TextAggregation | BooleanAggregation | DateAggregation]]
+    aggregations: List[IntAggregation | TextAggregation | BooleanAggregation | DateAggregation]
     group_by: Optional[GroupBy] = None
     corresponding_natural_language_query: str
 
+# Change `metrics` to list[Literal[...]] to test more than one aggregation...
+
 class IntAggregationWithQuery(BaseModel):
     property_name: str
-    metrics: List[Literal["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]]
+    metrics: Literal["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]
     corresponding_natural_language_query: str
 
 class TextAggregationWithQuery(BaseModel):
     property_name: str
-    metrics: List[Literal["COUNT", "TYPE", "TOP_OCCURRENCES"]]
+    metrics: Literal["COUNT", "TYPE", "TOP_OCCURRENCES"]
     top_occurrences_limit: Optional[int] = None
     corresponding_natural_language_query: str
 
 class BooleanAggregationWithQuery(BaseModel):
     property_name: str
-    metrics: List[Literal["COUNT", "TYPE", "TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]]
+    metrics: Literal["COUNT", "TYPE", "TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]
     corresponding_natural_language_query: str
 
 class SyntheticAggregationQueries(BaseModel):

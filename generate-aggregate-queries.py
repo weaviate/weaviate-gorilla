@@ -129,6 +129,7 @@ for database_schema in database_schemas:
         vectorizer_service=vectorizer_service,
         dedup_strategy="none"  # No deduplication needed for single samples
     )[0]
+    print(queries)
     
     synthetic_queries.append({
         "database_schema": database_schema,
