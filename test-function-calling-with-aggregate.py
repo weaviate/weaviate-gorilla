@@ -282,7 +282,7 @@ for idx, aggregation_query in enumerate(aggregation_queries):
                     is_correct = True
                     break # stop looping through these tool_calls (it might call the same correct collection with 2 or more queries, etc.)
             else:
-                print("No filter selected.")
+                print("No aggregation selected.")
     else:
         print("\033[96mThe LLM didn't call a function.\033[0m")
 
