@@ -27,6 +27,62 @@ class QueryWithFilter(BaseModel):
     gold_filter: IntPropertyFilter | TextPropertyFilter | BooleanPropertyFilter
     synthetic_query: str
 
+class IntAggregation(BaseModel):
+    property_name: str
+    metrics: Literal["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]
+
+class TextAggregation(BaseModel):
+    property_name: str
+    metrics: Literal["COUNT", "TYPE", "TOP_OCCURRENCES"]
+    top_occurrences_limit: Optional[int] = None
+
+class BooleanAggregation(BaseModel):
+    property_name: str
+    metrics: Literal["COUNT", "TYPE", "TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]
+
+class DateAggregation(BaseModel):
+    property_name: str
+    metrics: Literal["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE"]
+
+class QueryWithAggregation(BaseModel):
+    database_schema: dict
+    gold_collection: str
+    gold_aggregation: IntAggregation | TextAggregation| BooleanAggregation
+    synthetic_query: str
+
+# GroupBy is not yet used
+
+class GroupBy(BaseModel):
+    property_name: str
+
+class AggregateQuery(BaseModel):
+    aggregations: List[IntAggregation | TextAggregation | BooleanAggregation | DateAggregation]
+    group_by: Optional[GroupBy] = None
+    corresponding_natural_language_query: str
+
+# Change `metrics` to list[Literal[...]] to test more than one aggregation...
+
+class IntAggregationWithQuery(BaseModel):
+    property_name: str
+    metrics: Literal["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]
+    corresponding_natural_language_query: str
+
+class TextAggregationWithQuery(BaseModel):
+    property_name: str
+    metrics: Literal["COUNT", "TYPE", "TOP_OCCURRENCES"]
+    top_occurrences_limit: Optional[int] = None
+    corresponding_natural_language_query: str
+
+class BooleanAggregationWithQuery(BaseModel):
+    property_name: str
+    metrics: Literal["COUNT", "TYPE", "TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]
+    corresponding_natural_language_query: str
+
+class SyntheticAggregationQueries(BaseModel):
+    int_aggregation_query: IntAggregationWithQuery
+    text_aggregation_query: TextAggregationWithQuery
+    boolean_aggregation_query: BooleanAggregationWithQuery
+
 class SyntheticQuery(BaseModel):
     query: str
 
