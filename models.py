@@ -27,6 +27,31 @@ class QueryWithFilter(BaseModel):
     gold_filter: IntPropertyFilter | TextPropertyFilter | BooleanPropertyFilter
     synthetic_query: str
 
+class IntAggregation(BaseModel):
+    property_name: str
+    metrics: List[Literal["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]]
+
+class TextAggregation(BaseModel):
+    property_name: str
+    metrics: List[Literal["COUNT", "TYPE", "TOP_OCCURRENCES"]]
+    top_occurrences_limit: Optional[int] = None
+
+class BooleanAggregation(BaseModel):
+    property_name: str
+    metrics: List[Literal["COUNT", "TYPE", "TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]]
+
+class DateAggregation(BaseModel):
+    property_name: str
+    metrics: List[Literal["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE"]]
+
+class GroupBy(BaseModel):
+    property_name: str
+
+class AggregateQuery(BaseModel):
+    aggregations: List[IntAggregation | TextAggregation | BooleanAggregation | DateAggregation]]
+    group_by: Optional[GroupBy] = None
+    corresponding_natural_language_query: str
+
 class SyntheticQuery(BaseModel):
     query: str
 
