@@ -4,11 +4,6 @@ from models import SyntheticQuery, CollectionRouterQuery
 from lm import LMService
 from vectorizer import VectorizerService
 
-"""
-class CollectionRoutingSearchQuery(BaseModel):
-    query: str
-"""
-
 openai_api_key = ""
 
 lm_service = LMService(

@@ -2,13 +2,13 @@
 
 ## Cleanup
 
-Standardize how datasets are created.
+Standardize how query datasets are created.
 
 - Collection Router per Collection => Search Query
 - Synthetic Filters
 - Synthetic Aggregations (missing GroupBy)
 
-Combinations:
+Generate query combination datasets:
 - Search + Filters
 - Search + Aggregations
 - Filters + Aggregations
