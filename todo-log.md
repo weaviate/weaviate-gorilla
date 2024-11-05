@@ -1,16 +1,27 @@
 # ToDo
 
-## Test ReAct as a required argument?
+## Cleanup
 
-## Where Filter DSL
+Standardize how datasets are created.
 
-Given a collection, generate a filter seeking query for each property.
+- Collection Router per Collection => Search Query
+- Synthetic Filters
+- Synthetic Aggregations (missing GroupBy)
 
-Note, each collection contains 1 TEXT property, 1 NUMBER property, and 1 BOOLEAN property.
+Combinations:
+- Search + Filters
+- Search + Aggregations
+- Filters + Aggregations
+- Search + Filters + Aggregations
 
-Note, evaluation entanglement with collection selection.
+Get more detailed about evaluation.
+- Binary accuracy -- is everything correct?
+- Abstract Syntax Tree matching -- how does this work?
 
-## Test Filter DSL as a Function Calling Argument
+Ablations
+- GPT-4o vs. Llama 3.2B
+- Parallel Function Calling
+- Rationale as a required argument
 
 ## Optimized Function Calling with AvaTaR
 
@@ -19,7 +30,11 @@ Note, evaluation entanglement with collection selection.
 
 ## Debt
 
+- Need a more compact representation of the collections in Weaviate to optimize the tool description (1024 token limit).
+
 - Revise thinking around `Simple-` and `Complex-` Schema. Both should use the `WeaviateCollectionConfig` model but with different prompts.
+
+- Test ReAct-style thinking and function calling as a required argument
 
 # === Somewhat finished ===
 
@@ -95,3 +110,13 @@ Given 3 collections, generate a query that should be routed to each.
 GPT-4o vs. Llama 3.2 (Llama not tested)
 
 Need to consider how Parallel Function Calling impacts this evaluation methodology.
+
+## Where Filter DSL
+
+Given a collection, generate a filter seeking query for each property.
+
+Note, each collection contains 1 TEXT property, 1 NUMBER property, and 1 BOOLEAN property.
+
+Note, evaluation entanglement with collection selection.
+
+## Test Filter DSL as a Function Calling Argument
