@@ -1,4 +1,4 @@
-from models import SyntheticFilterQueries
+from models import SyntheticAggregationQueries
 from create import CreateObjects
 from lm import LMService
 from vectorizer import VectorizerService
@@ -124,7 +124,7 @@ for database_schema in database_schemas:
     queries = CreateObjects(
         num_samples=1,
         task_instructions=task_instructions,
-        output_model=SyntheticFilterQueries,
+        output_model=SyntheticAggregationQueries,
         lm_service=lm_service,
         vectorizer_service=vectorizer_service,
         dedup_strategy="none"  # No deduplication needed for single samples
@@ -132,31 +132,28 @@ for database_schema in database_schemas:
     
     synthetic_queries.append({
         "database_schema": database_schema,
-        "metadata": "INT PROPERTY FILTER", 
-        "property_name": queries.int_property_filter_query.property_name,
-        "operator": queries.int_property_filter_query.operator,
-        "value": queries.int_property_filter_query.value,
-        "query": queries.int_property_filter_query.corresponding_natural_language_query
+        "metadata": "INT AGGREGATION", 
+        "property_name": queries.int_aggregation_query.property_name,
+        "metrics": queries.int_aggregation_query.metrics,
+        "query": queries.int_aggregation_query.corresponding_natural_language_query
     })
 
     synthetic_queries.append({
         "database_schema": database_schema,
-        "metadata": "TEXT PROPERTY FILTER",
-        "property_name": queries.text_property_filter_query.property_name,
-        "operator": queries.text_property_filter_query.operator,
-        "value": queries.text_property_filter_query.value,
-        "query": queries.text_property_filter_query.corresponding_natural_language_query
+        "metadata": "TEXT AGGREGATION",
+        "property_name": queries.text_aggregation_query.property_name,
+        "metrics": queries.text_aggregation_query.metrics,
+        "query": queries.text_aggregation_query.corresponding_natural_language_query
     })
 
     synthetic_queries.append({
         "database_schema": database_schema,
-        "metadata": "BOOLEAN PROPERTY FILTER",
-        "property_name": queries.boolean_property_filter_query.property_name,
-        "operator": queries.boolean_property_filter_query.operator,
-        "value": queries.boolean_property_filter_query.value,
-        "query": queries.boolean_property_filter_query.corresponding_natural_language_query
+        "metadata": "BOOLEAN AGGREGATION",
+        "property_name": queries.boolean_aggregation_query.property_name,
+        "metrics": queries.boolean_aggregation_query.metrics,
+        "query": queries.boolean_aggregation_query.corresponding_natural_language_query
     })
 
 # Save the synthetic queries to a file
-with open("synthetic-filter-queries.json", "w") as file:
+with open("synthetic-aggregation-queries.json", "w") as file:
     json.dump(synthetic_queries, file, indent=4)

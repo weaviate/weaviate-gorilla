@@ -52,6 +52,27 @@ class AggregateQuery(BaseModel):
     group_by: Optional[GroupBy] = None
     corresponding_natural_language_query: str
 
+class IntAggregationWithQuery(BaseModel):
+    property_name: str
+    metrics: List[Literal["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]]
+    corresponding_natural_language_query: str
+
+class TextAggregationWithQuery(BaseModel):
+    property_name: str
+    metrics: List[Literal["COUNT", "TYPE", "TOP_OCCURRENCES"]]
+    top_occurrences_limit: Optional[int] = None
+    corresponding_natural_language_query: str
+
+class BooleanAggregationWithQuery(BaseModel):
+    property_name: str
+    metrics: List[Literal["COUNT", "TYPE", "TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]]
+    corresponding_natural_language_query: str
+
+class SyntheticAggregationQueries(BaseModel):
+    int_aggregation_query: IntAggregationWithQuery
+    text_aggregation_query: TextAggregationWithQuery
+    boolean_aggregation_query: BooleanAggregationWithQuery
+
 class SyntheticQuery(BaseModel):
     query: str
 
