@@ -29,20 +29,20 @@ class QueryWithFilter(BaseModel):
 
 class IntAggregation(BaseModel):
     property_name: str
-    metrics: List[Literal["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]]
+    metrics: Literal["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]
 
 class TextAggregation(BaseModel):
     property_name: str
-    metrics: List[Literal["COUNT", "TYPE", "TOP_OCCURRENCES"]]
+    metrics: Literal["COUNT", "TYPE", "TOP_OCCURRENCES"]
     top_occurrences_limit: Optional[int] = None
 
 class BooleanAggregation(BaseModel):
     property_name: str
-    metrics: List[Literal["COUNT", "TYPE", "TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]]
+    metrics: Literal["COUNT", "TYPE", "TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]
 
 class DateAggregation(BaseModel):
     property_name: str
-    metrics: List[Literal["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE"]]
+    metrics: Literal["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE"]
 
 class QueryWithAggregation(BaseModel):
     database_schema: dict
