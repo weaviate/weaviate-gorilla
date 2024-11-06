@@ -3,7 +3,7 @@
 import pytest
 from unittest.mock import patch, MagicMock
 from pydantic import BaseModel
-from lm import LMService, LMModelProvider
+from src.lm.lm import LMService, LMModelProvider
 
 class MockOutputModel(BaseModel):
     def model_dump_json(self):

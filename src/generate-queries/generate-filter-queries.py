@@ -1,7 +1,7 @@
-from models import SyntheticFilterQueries
-from create import CreateObjects
-from lm import LMService
-from vectorizer import VectorizerService
+from src.models import SyntheticFilterQueries
+from src.create.create import CreateObjects
+from src.lm.lm import LMService
+from src.vectorizer.vectorizer import VectorizerService
 import json
 
 openai_api_key = ""
