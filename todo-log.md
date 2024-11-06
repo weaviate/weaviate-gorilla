@@ -30,6 +30,8 @@ Ablations
 
 ## Debt
 
+- Make Aggregate syntax description more succinct.
+
 - Bug with Filtering on `date` properties (tries to cast the date to a float with the `>`, etc. operators)
 
 - Need a more compact representation of the collections in Weaviate to optimize the tool description (1024 token limit).
