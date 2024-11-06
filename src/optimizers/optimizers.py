@@ -3,7 +3,7 @@
 class OPRO():
     pass
 
-class Avatar():
+class AvaTaR():
     pass
 
 class BootstrapAgentWorkflowMemory():

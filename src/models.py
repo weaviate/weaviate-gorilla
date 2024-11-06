@@ -1,6 +1,7 @@
 from pydantic import BaseModel, field_validator
 from typing import Literal, Optional, Dict, List, Union
 
+# Basic Property Filter Models
 class IntPropertyFilter(BaseModel):
     property_name: str
     operator: Literal["=", "<", ">", "<=", ">="]
@@ -16,6 +17,7 @@ class BooleanPropertyFilter(BaseModel):
     operator: Literal["=", "!="]
     value: bool
 
+# Basic Query Models
 class CollectionRouterQuery(BaseModel):
     database_schema: dict
     gold_collection: str 
@@ -27,6 +29,7 @@ class QueryWithFilter(BaseModel):
     gold_filter: IntPropertyFilter | TextPropertyFilter | BooleanPropertyFilter
     synthetic_query: str
 
+# Aggregation Models
 class IntAggregation(BaseModel):
     property_name: str
     metrics: Literal["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]
@@ -50,8 +53,7 @@ class QueryWithAggregation(BaseModel):
     gold_aggregation: IntAggregation | TextAggregation| BooleanAggregation
     synthetic_query: str
 
-# GroupBy is not yet used
-
+# Group By Models
 class GroupBy(BaseModel):
     property_name: str
 
@@ -60,8 +62,7 @@ class AggregateQuery(BaseModel):
     group_by: Optional[GroupBy] = None
     corresponding_natural_language_query: str
 
-# Change `metrics` to list[Literal[...]] to test more than one aggregation...
-
+# Aggregation With Query Models
 class IntAggregationWithQuery(BaseModel):
     property_name: str
     metrics: Literal["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]
@@ -83,6 +84,7 @@ class SyntheticAggregationQueries(BaseModel):
     text_aggregation_query: TextAggregationWithQuery
     boolean_aggregation_query: BooleanAggregationWithQuery
 
+# Synthetic Query Models
 class SyntheticQuery(BaseModel):
     query: str
 
@@ -91,10 +93,12 @@ class SyntheticSingleAPIQuery(BaseModel):
     explanation: str
     api_reference: str
 
+# Filter Operator Types
 IntFilterOperator = Literal["=", "<", ">", "<=", ">="]
 TextFilterOperator = Literal["=", "LIKE"]
 BooleanFilterOperator = Literal["=", "!="]
 
+# Property Filter With Query Models
 class IntProperyFilterWithQuery(BaseModel):
     property_name: str
     operator: IntFilterOperator
@@ -118,12 +122,13 @@ class SyntheticFilterQueries(BaseModel):
     text_property_filter_query: TextPropertyFilterWithQuery
     boolean_property_filter_query: BooleanPropertyFilterWithQuery
 
-# Note Multi-Hop might have a hierarchical structure to it...
+# Multi-API Query Models
 class SyntheticMultiAPIQuery(BaseModel):
     query: str
     explanation: str
     api_references: list[str]
 
+# Schema Models
 class Property(BaseModel):
     name: str
     data_type: list[str]
@@ -144,7 +149,6 @@ class SimpleSyntheticSchema(BaseModel):
     int_valued_property_name: str
     boolean_valued_property_name: str
 
-# Not sure if this works
 class ComplexSyntheticSchema(BaseModel):
     envisioned_use_case_description: str
     name: str
@@ -157,6 +161,7 @@ class ComplexSyntheticSchema(BaseModel):
          assert len(v) == 2, f'Must have at least two {v}'
          return v
 
+# Testing and Validation Models
 class PredictionWithGroundTruth(BaseModel):
     prediction: int
     ground_truth: int
@@ -176,6 +181,7 @@ class FunctionClassifierTestResult(BaseModel):
 class TestLMConnectionModel(BaseModel):
     generic_response: str
 
+# Function and Tool Models
 class ParameterProperty(BaseModel):
     type: str
     description: str

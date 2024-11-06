@@ -2,8 +2,8 @@ import ollama
 import openai
 from typing import Literal
 from pydantic import BaseModel
-from models import TestLMConnectionModel
-from weaviate_function_calling_schema import Tool, Function, ParameterProperty, Parameters
+from src.models import TestLMConnectionModel
+from src.utils.weaviate_function_calling_schema import Tool, Function, ParameterProperty, Parameters
 
 LMModelProvider = Literal["ollama", "openai"]
 

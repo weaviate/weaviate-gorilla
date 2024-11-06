@@ -1,8 +1,8 @@
-from lm import LMService
-from vectorizer import VectorizerService
-from models import Property, WeaviateCollectionConfig, WeaviateCollections 
-from models import SimpleSyntheticSchema, ComplexSyntheticSchema
-from create import CreateObjects
+from src.lm.lm import LMService
+from src.vectorizer.vectorizer import VectorizerService
+from src.models import Property, WeaviateCollectionConfig, WeaviateCollections 
+from src.models import SimpleSyntheticSchema, ComplexSyntheticSchema
+from src.create.create import CreateObjects
 
 openai_api_key = ""
 

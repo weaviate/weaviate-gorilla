@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Any
-from lm import LMService
-from vectorizer import VectorizerService
+from src.lm.lm import LMService
+from src.vectorizer.vectorizer import VectorizerService
 
 def CreateObjects(
         num_samples: int,

@@ -1,7 +1,7 @@
-from models import CollectionRouterQuery
-from models import Tool, Function, Parameters, ParameterProperty
-from weaviate_fc_utils import get_collections_info
-from lm import LMService
+from src.models import CollectionRouterQuery
+from src.models import Tool, Function, Parameters, ParameterProperty
+from src.utils.weaviate_fc_utils import get_collections_info
+from src.lm.lm import LMService
 from pydantic import BaseModel
 from typing import Optional
 

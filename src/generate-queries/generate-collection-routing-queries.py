@@ -1,13 +1,8 @@
 import json
-from create import CreateObjects
-from models import SyntheticQuery, CollectionRouterQuery
-from lm import LMService
-from vectorizer import VectorizerService
-
-"""
-class CollectionRoutingSearchQuery(BaseModel):
-    query: str
-"""
+from src.create.create import CreateObjects
+from src.models import SyntheticQuery, CollectionRouterQuery
+from src.lm.lm import LMService
+from src.vectorizer.vectorizer import VectorizerService
 
 openai_api_key = ""
 
