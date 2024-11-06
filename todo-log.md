@@ -30,6 +30,8 @@ Ablations
 
 ## Debt
 
+- Bug with Filtering on `date` properties (tries to cast the date to a float with the `>`, etc. operators)
+
 - Need a more compact representation of the collections in Weaviate to optimize the tool description (1024 token limit).
 
 - Revise thinking around `Simple-` and `Complex-` Schema. Both should use the `WeaviateCollectionConfig` model but with different prompts.
