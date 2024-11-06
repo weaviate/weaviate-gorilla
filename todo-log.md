@@ -30,6 +30,8 @@ Ablations
 
 ## Debt
 
+- NOTE! The `Aggregate` DSL does not suppor GROUPBY.
+
 - Need a more compact representation of the collections in Weaviate to optimize the tool description (1024 token limit).
 
 - Revise thinking around `Simple-` and `Complex-` Schema. Both should use the `WeaviateCollectionConfig` model but with different prompts.
