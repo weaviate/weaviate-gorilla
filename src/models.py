@@ -1,6 +1,8 @@
 from pydantic import BaseModel, field_validator
 from typing import Literal, Optional, Dict, List, Union
 
+# Note, this needs to be cleaned up
+
 # Basic Property Filter Models
 class IntPropertyFilter(BaseModel):
     property_name: str
