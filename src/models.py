@@ -1,6 +1,8 @@
 from pydantic import BaseModel, field_validator
 from typing import Literal, Optional, Dict, List, Union
 
+# Note, this needs to be cleaned up
+
 # Basic Property Filter Models
 class IntPropertyFilter(BaseModel):
     property_name: str
@@ -122,11 +124,18 @@ class SyntheticFilterQueries(BaseModel):
     text_property_filter_query: TextPropertyFilterWithQuery
     boolean_property_filter_query: BooleanPropertyFilterWithQuery
 
-# Multi-API Query Models
-class SyntheticMultiAPIQuery(BaseModel):
-    query: str
-    explanation: str
-    api_references: list[str]
+# Could imagine a more esoteric use case vs. explicit query to this
+class WeaviateQuery(BaseModel):
+    search_query: Optional[str]
+    integer_property_filter: Optional[IntPropertyFilter]
+    text_property_filter: Optional[TextPropertyFilter]
+    boolean_property_filter: Optional[BooleanPropertyFilter]
+    integer_property_aggregation: Optional[IntAggregation]
+    text_property_aggregation: Optional[TextAggregation]
+    boolean_property_aggregation: Optional[BooleanAggregation]
+    groupby_property: Optional[str]
+    corresponding_natural_language_query: str
+
 
 # Schema Models
 class Property(BaseModel):
@@ -142,6 +151,8 @@ class WeaviateCollectionConfig(BaseModel):
 class WeaviateCollections(BaseModel):
     weaviate_collections: list[WeaviateCollectionConfig]
 
+# Pretty sure these two `SimpleSyntheticSchema` / `ComplexSyntheticSchema` aren't used
+# ... but I like the idea of controlling the schema complexity
 class SimpleSyntheticSchema(BaseModel):
     envisioned_use_case_description: str
     name: str
@@ -161,7 +172,7 @@ class ComplexSyntheticSchema(BaseModel):
          assert len(v) == 2, f'Must have at least two {v}'
          return v
 
-# Testing and Validation Models
+# Experimental Models
 class PredictionWithGroundTruth(BaseModel):
     prediction: int
     ground_truth: int
@@ -178,10 +189,7 @@ class FunctionClassifierTestResult(BaseModel):
     misclassified_repsonses: list[PromptWithResponse]
     all_responses: list[PromptWithResponse]
 
-class TestLMConnectionModel(BaseModel):
-    generic_response: str
-
-# Function and Tool Models
+# Function Calling Models
 class ParameterProperty(BaseModel):
     type: str
     description: str
@@ -200,3 +208,7 @@ class Function(BaseModel):
 class Tool(BaseModel):
     type: Literal["function"]
     function: Function
+
+# Helper Models
+class TestLMConnectionModel(BaseModel):
+    generic_response: str
