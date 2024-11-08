@@ -2,7 +2,9 @@
 
 ```python
 class SyntheticAggregationQueries(BaseModel):
-    pass
+    int_aggregation_query: IntAggregationWithQuery
+    text_aggregation_query: TextAggregationWithQuery
+    boolean_aggregation_query: BooleanAggregationWithQuery
 
 class SyntheticFilterQueries(BaseModel):
     int_property_filter_query: IntProperyFilterWithQuery

@@ -9,93 +9,27 @@ def CreateObjects(
         output_model: BaseModel,
         lm_service: LMService,
         vectorizer_service: VectorizerService,
-        reference_objects: dict[str, list[dict]] = None,
+        reference_objects: list[list[str]] = None,
         dedup_strategy: str = "brute_force",
         dedup_params: dict = None
     ) -> list[dict]:
-    """Creates a list of unique objects using a language model, with optional reference objects and deduplication.
-    
-    This function generates objects in two modes:
-    1. With reference objects: Generates combinations of provided reference objects and creates new objects based on those
-    2. Without reference objects: Generates the specified number of new objects from scratch
-    
-    In both modes, the function can apply various deduplication strategies to ensure uniqueness of generated objects.
-    
-    Args:
-        num_samples (int): Number of objects to generate when not using reference objects
-        task_instructions (str): Instructions for the language model on how to generate the objects
-        output_model (BaseModel): Pydantic model defining the structure of generated objects
-        lm_service (LMService): Service for interacting with the language model
-        vectorizer_service (VectorizerService): Service for creating vector embeddings of objects
-        reference_objects (dict[str, list[dict]], optional): Dictionary mapping reference object types to lists of objects.
-            Used to generate combinations of reference objects. Defaults to None.
-        dedup_strategy (str, optional): Strategy to use for deduplication. Options:
-            - "brute_force": Checks each new object against all previous objects using LLM
-            - "last_k": Checks each new object against the k most recent objects using LLM
-            - "GRAD": Uses vector similarity + LLM verification
-            - "clustering": Uses HDBSCAN clustering on vector embeddings
-            Defaults to "brute_force".
-        dedup_params (dict, optional): Parameters for the chosen deduplication strategy:
-            - For "last_k": {"k": int} - number of recent objects to check against
-            - For "GRAD": {"threshold": float} - similarity threshold for duplicate detection
-            Defaults to None.
-    
-    Returns:
-        list[dict]: List of generated objects as dictionaries, with duplicates removed according to the
-            specified deduplication strategy.
-    
-    Prints:
-        Progress messages showing:
-        - Start of object creation
-        - For non-reference mode: Each generated response and its index
-    
-    Deduplication Behavior:
-        - "brute_force" and "last_k" are applied after each new object is generated
-        - Other strategies are applied every 10 objects (when len(objects) % 10 == 9)
-        - If no deduplication is desired, pass a strategy that doesn't match any known options
-    """
     print("\033[92mCreating Objects:\033[0m")
     objects = []
     
     if reference_objects:
-        # Not tested!
         combinations = _generate_combinations(reference_objects)
         for combination in combinations:
             formatted_instructions = format_task_instructions_with_reference(task_instructions, combination)
+            # generate first object
             response = LMService.generate(
                 formatted_instructions,
                 output_model
             )
             objects.append(response.model_dump_json())
             
-            if dedup_strategy == "brute_force":
-                objects = _deduplicate_brute_force(
-                    objects=objects,
-                    lm_service=lm_service,
-                    task_instructions=task_instructions,
-                    reference_objects=reference_objects,
-                    output_model=output_model
-                )
-            elif dedup_strategy == "last_k":
-                objects = _deduplicate_last_k(
-                    objects=objects,
-                    lm_service=lm_service,
-                    task_instructions=task_instructions,
-                    reference_objects=reference_objects,
-                    output_model=output_model,
-                    **dedup_params or {}
-                )
-            elif len(objects) % 10 == 9:
-                objects = _deduplicate(
-                    objects=objects,
-                    strategy=dedup_strategy,
-                    lm_service=lm_service,
-                    vectorizer_service=vectorizer_service,
-                    task_instructions=task_instructions,
-                    reference_objects=reference_objects,
-                    output_model=output_model,
-                    **dedup_params or {}
-                )
+            if num_samples > 1:
+                # dedupication, not implemented yet with reference_objects
+                pass
     else:
         # Generate first object
         response = lm_service.generate(
@@ -152,23 +86,20 @@ def CreateObjects(
     
     return objects
 
-def _generate_combinations(reference_objects: dict[str, list[dict]]) -> list[dict]:
+def _generate_combinations(reference_objects: list[list[str]]) -> list[str]:
     from itertools import product
     
-    keys = list(reference_objects.keys())
-    values = [reference_objects[key] for key in keys]
-    
     combinations = []
-    for combo in product(*values):
-        combination = {keys[i]: combo[i] for i in range(len(keys))}
-        combinations.append(combination)
+    for combo in product(*reference_objects):
+        combinations.append(''.join(combo))
     
     return combinations
 
-def format_task_instructions_with_reference(task_instructions: str, reference_objects: dict) -> str:
+def format_task_instructions_with_reference(task_instructions: str, reference_objects: list[str]) -> str:
+    reference_objects_formatted = "\n".join([f"reference_object #{i+1}: {obj}" for i, obj in enumerate(reference_objects)])
     return f"""
     task_instructions: {task_instructions}
-    reference_objects: {reference_objects}
+    {reference_objects_formatted}
     """
 
 def format_brute_force_history_prompt(task_instructions: str, reference_objects: dict, objects: list[dict]) -> str:
