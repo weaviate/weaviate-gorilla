@@ -4,7 +4,7 @@ from src.lm.lm import LMService
 from src.vectorizer.vectorizer import VectorizerService
 from src.models import WeaviateQuery
 from src.generate_queries.api_descriptions import (
-    search,
+    search_query,
     int_property_filter,
     text_property_filter,
     boolean_property_filter,
@@ -14,7 +14,7 @@ from src.generate_queries.api_descriptions import (
     groupby
 )
 
-searches = [search, ""]
+searches = [search_query, ""]
 filters = [int_property_filter, text_property_filter, boolean_property_filter, ""]
 aggregations = [int_property_aggregation, text_property_aggregation, boolean_property_aggregation, ""]
 groupbys = [groupby, ""]
@@ -47,7 +47,7 @@ Given a user's database schema write a natural language commands simulating case
 [[ query operators that should be used in the query ]]
 """
 
-with open("./data/simple-3-collection-schemas.json", "r") as json_file:
+with open("../../data/simple-3-collection-schemas.json", "r") as json_file:
     database_schemas = json.load(json_file)
 
 def format_schema(schema):
@@ -55,22 +55,38 @@ def format_schema(schema):
 
 weaviate_queries = []
 
-for database_schema in database_schemas:
+import time
+start = time.time()
+
+for idx, database_schema in enumerate(database_schemas):
+    print(f"\n\033[1mRunning for {time.time() - start} seconds.\033[0m\n")
+    print(f"\033[96mWriting queries for database {idx+1}:\033[0m")
+    print(f"{database_schema}\n\n")
     task_instructions = create_query_prompt.format(
         database_schema=format_schema(database_schema)
     )
-    query = CreateObjects(
+    queries = CreateObjects(
         num_samples=1,
         task_instructions=task_instructions,
         output_model=WeaviateQuery,
         reference_objects=[searches, filters, aggregations, groupbys],
-        lm_service=LMService,
-        vectorizer_service=VectorizerService,
+        lm_service=lm_service,
+        vectorizer_service=vectorizer_service,
         dedup_strategy="none"
-    )[0]
-    print(query)
+    )
+    print("\033[93mQueries generated for this schema:\033[0m")
+    for query in queries:
+        # Parse the JSON string into a dict if it's a string
+        if isinstance(query, str):
+            query_dict = json.loads(query)
+        else:
+            query_dict = query
+            
+        query_obj = WeaviateQuery(**query_dict)
+        print(f"\033[93m{query_obj}\033[0m")
+        weaviate_queries.append(query_dict)
 
-    weaviate_queries.append(query.model_dump_json())
+    print(f"\n\033[92mCreated {len(weaviate_queries)} Gorilla queries.\033[0m\n")
 
 # Save the synthetic queries to a file
 with open("synthetic-weaviate-queries.json", "w") as file:

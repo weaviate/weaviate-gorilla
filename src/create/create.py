@@ -12,7 +12,7 @@ def CreateObjects(
         reference_objects: list[list[str]] = None,
         dedup_strategy: str = "brute_force",
         dedup_params: dict = None
-    ) -> list[dict]:
+    ) -> list[str]:
     print("\033[92mCreating Objects:\033[0m")
     objects = []
     
@@ -21,10 +21,12 @@ def CreateObjects(
         for combination in combinations:
             formatted_instructions = format_task_instructions_with_reference(task_instructions, combination)
             # generate first object
-            response = LMService.generate(
-                formatted_instructions,
-                output_model
+            response = lm_service.generate(
+                prompt=formatted_instructions,
+                output_model=output_model
             )
+            print("\033[92mResponse:\033[0m")
+            print(f"{response.model_dump_json()}")
             objects.append(response.model_dump_json())
             
             if num_samples > 1:
@@ -33,9 +35,9 @@ def CreateObjects(
     else:
         # Generate first object
         response = lm_service.generate(
-                task_instructions,
-                output_model
-            )
+            prompt=task_instructions,
+            output_model=output_model
+        )
         objects.append(response)
 
         if num_samples > 1:
