@@ -1,4 +1,4 @@
-semantic_search = """
+search = """
 
 """
 
@@ -23,5 +23,9 @@ int_property_aggregation = """
 """
 
 boolean_property_aggregation = """
+
+"""
+
+groupby = """
 
 """
