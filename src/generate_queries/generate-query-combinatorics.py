@@ -53,6 +53,8 @@ with open("./data/simple-3-collection-schemas.json", "r") as json_file:
 def format_schema(schema):
     return json.dumps(schema, indent=2)
 
+weaviate_queries = []
+
 for database_schema in database_schemas:
     task_instructions = create_query_prompt.format(
         database_schema=format_schema(database_schema)
@@ -61,13 +63,15 @@ for database_schema in database_schemas:
         num_samples=1,
         task_instructions=task_instructions,
         output_model=WeaviateQuery,
-        reference_objects=[searches, filters, aggregations, groupbys]
+        reference_objects=[searches, filters, aggregations, groupbys],
         lm_service=LMService,
         vectorizer_service=VectorizerService,
         dedup_strategy="none"
     )[0]
     print(query)
 
-    # append query
+    weaviate_queries.append(query.model_dump_json())
 
-# save file
+# Save the synthetic queries to a file
+with open("synthetic-weaviate-queries.json", "w") as file:
+    json.dump(weaviate_queries, file, indent=4)
