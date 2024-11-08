@@ -144,6 +144,8 @@ class WeaviateCollectionConfig(BaseModel):
 class WeaviateCollections(BaseModel):
     weaviate_collections: list[WeaviateCollectionConfig]
 
+# Pretty sure these two `SimpleSyntheticSchema` / `ComplexSyntheticSchema` aren't used
+# ... but I like the idea of controlling the schema complexity
 class SimpleSyntheticSchema(BaseModel):
     envisioned_use_case_description: str
     name: str
@@ -163,7 +165,7 @@ class ComplexSyntheticSchema(BaseModel):
          assert len(v) == 2, f'Must have at least two {v}'
          return v
 
-# Testing and Validation Models
+# Experimental Models
 class PredictionWithGroundTruth(BaseModel):
     prediction: int
     ground_truth: int
@@ -179,9 +181,6 @@ class FunctionClassifierTestResult(BaseModel):
     confusion_matrix: list[PredictionWithGroundTruth]
     misclassified_repsonses: list[PromptWithResponse]
     all_responses: list[PromptWithResponse]
-
-class TestLMConnectionModel(BaseModel):
-    generic_response: str
 
 # Function Calling Models
 class ParameterProperty(BaseModel):
@@ -202,3 +201,7 @@ class Function(BaseModel):
 class Tool(BaseModel):
     type: Literal["function"]
     function: Function
+
+# Helper Models
+class TestLMConnectionModel(BaseModel):
+    generic_response: str
