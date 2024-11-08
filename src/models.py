@@ -183,7 +183,7 @@ class FunctionClassifierTestResult(BaseModel):
 class TestLMConnectionModel(BaseModel):
     generic_response: str
 
-# Function and Tool Models
+# Function Calling Models
 class ParameterProperty(BaseModel):
     type: str
     description: str
