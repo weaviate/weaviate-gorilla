@@ -124,11 +124,8 @@ class SyntheticFilterQueries(BaseModel):
     text_property_filter_query: TextPropertyFilterWithQuery
     boolean_property_filter_query: BooleanPropertyFilterWithQuery
 
-# Multi-API Query Models
-class SyntheticMultiAPIQuery(BaseModel):
-    query: str
-    explanation: str
-    api_references: list[str]
+
+
 
 # Schema Models
 class Property(BaseModel):
