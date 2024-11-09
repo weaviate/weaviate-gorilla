@@ -126,6 +126,7 @@ class SyntheticFilterQueries(BaseModel):
 
 # Could imagine a more esoteric use case vs. explicit query to this
 class WeaviateQuery(BaseModel):
+    target_collection: str
     search_query: Optional[str]
     integer_property_filter: Optional[IntPropertyFilter]
     text_property_filter: Optional[TextPropertyFilter]
