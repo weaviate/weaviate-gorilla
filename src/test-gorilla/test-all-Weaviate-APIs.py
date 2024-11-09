@@ -90,3 +90,8 @@ with open("../../data/synthetic-weaviate-queries.json", "r") as json_file:
         weaviate_queries.append(weaviate_query)
 
 pretty_print_weaviate_query(weaviate_queries[0])
+
+def abstract_syntax_tree_match_score(
+        predicted_apis: WeaviateQuery,
+        ground_truth: WeaviateQuery
+    )
