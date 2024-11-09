@@ -48,4 +48,4 @@ class WeaviateCollections(BaseModel):
     weaviate_collections: list[WeaviateCollectionConfig]
 ```
 
-![Weaviate Gorilla](../visuals/weaviate-gorillas/gorilla-63.png)
+![Weaviate Gorilla](../visuals/weaviate-gorillas/gorilla-103.png)

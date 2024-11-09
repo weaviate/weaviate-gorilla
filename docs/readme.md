@@ -28,4 +28,4 @@ Evaluating how well the Weaviate Gorilla works
 
 Using DSPy to optimize the Weaviate Gorilla
 
-![Weaviate Gorilla](../visuals/weaviate-gorillas/gorilla-58.png)
+![Weaviate Gorilla](../visuals/weaviate-gorillas/gorilla-112.png)
