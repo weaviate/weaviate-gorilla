@@ -15,5 +15,7 @@ from pydantic import BaseModel
 from typing import Optional, Any
 import json
 
-with open("../data/synthetic-weaviate-queries.json", "r") as json_file:
+with open("../../data/synthetic-weaviate-queries.json", "r") as json_file:
     weaviate_queries = json.load(json_file)
+
+print(weaviate_queries)
