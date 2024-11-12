@@ -242,12 +242,11 @@ lm_service = LMService(
     api_key = openai_api_key
 )
 
-tools = [build_weaviate_query_tool(
-    collections_description="placeholder",
-    collections_list=["placeholder", "placeholder"]
-)]
+print(f"Running AST test for {len(weaviate_queries)} queries.")
 
 for query in weaviate_queries:
+    
+    
     print(query)
 
     response = lm_service.one_step_function_selection_test(
