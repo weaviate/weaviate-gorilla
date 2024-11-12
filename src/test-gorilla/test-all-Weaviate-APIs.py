@@ -227,6 +227,19 @@ print(abstract_syntax_tree_match_score(
     weaviate_queries[0]
 )) # 1.0
 
+openai_api_key = ""
+
+lm_service = LMService(
+    model_provider = "openai",
+    model_name = "gpt-4o",
+    api_key = openai_api_key
+)
+
 for query in weaviate_queries:
     print(query)
+
+    response = lm_service.one_step_function_selection_test(
+        prompt=query,
+        tools=tools
+    ).choices[0].message
     break
