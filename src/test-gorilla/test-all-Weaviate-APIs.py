@@ -316,6 +316,7 @@ for idx, query in enumerate(weaviate_queries):
 
 
     nl_query = query.corresponding_natural_language_query
+    print(nl_query)
 
     '''
     response = lm_service.one_step_function_selection_test(
