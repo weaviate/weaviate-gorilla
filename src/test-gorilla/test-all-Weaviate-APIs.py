@@ -9,7 +9,7 @@ from src.models import (
     GroupBy
 )
 from src.models import Tool, Function, Parameters, ParameterProperty
-from src.utils.weaviate_fc_utils import get_collections_info
+from src.utils.weaviate_fc_utils import get_collections_info, build_weaviate_query_tool, _build_weaviate_filter_return_model
 from src.lm.lm import LMService
 from pydantic import BaseModel
 from typing import Optional, Any
@@ -103,12 +103,11 @@ def abstract_syntax_tree_match_score(
     
     # Weight definitions for different components
     weights = {
-        'target_collection': 0.15,
+        'target_collection': 0.3,
         'search_query': 0.1,
         'filters': 0.25,
         'aggregations': 0.25,
-        'groupby': 0.1,
-        'natural_language': 0.15
+        'groupby': 0.1
     }
     
     # Check target collection match (exact match required)
@@ -203,10 +202,6 @@ def abstract_syntax_tree_match_score(
     if predicted_apis.groupby_property == ground_truth.groupby_property:
         score += weights['groupby']
     
-    # Check natural language query match
-    if predicted_apis.corresponding_natural_language_query.lower() == ground_truth.corresponding_natural_language_query.lower():
-        score += weights['natural_language']
-    
     return score
 
 print("\033[96m\nAbstract Syntax Tree Score between the first and last query:\033[0m")
@@ -227,3 +222,152 @@ print(abstract_syntax_tree_match_score(
     weaviate_queries[0]
 )) # 1.0
 
+openai_api_key = ""
+
+lm_service = LMService(
+    model_provider = "openai",
+    model_name = "gpt-4o",
+    api_key = openai_api_key
+)
+
+print(f"Running AST test for {len(weaviate_queries)} queries.") # 64 for 6 schemas
+
+with open("../../data/cleaned-simple-3-collection-schemas.json", "r") as json_file:
+    database_schemas = json.load(json_file)
+
+database_schemas = [json.loads(schema) if isinstance(schema, str) else schema for schema in database_schemas]
+
+print("Database Schema:\n")
+print(database_schemas[1])
+print(f"Total Database Schemas: {len(database_schemas)}")
+print(weaviate_queries[64])
+
+database_schema_index = 0
+
+import weaviate
+import requests
+
+weaviate_client = weaviate.connect_to_local()
+url = "http://localhost:8080/v1/schema"
+
+weaviate_client.collections.delete_all()
+
+# init db with database_schemas[0]
+
+for class_schema in database_schemas[0]["weaviate_collections"]:
+    clean_schema = {
+        'class': class_schema['class'],  # Use existing 'class' field
+        'description': class_schema.get('description', ''),
+        'properties': [
+            {
+                'name': prop['name'],
+                'description': prop.get('description', ''),
+                'dataType': prop['data_type']  # Weaviate expects dataType, not data_type
+            }
+            for prop in class_schema.get('properties', [])
+        ],
+        'vectorizer': class_schema.get('vectorizer', 'text2vec-transformers'),
+        'vectorIndexType': class_schema.get('vectorIndexType', 'hnsw'),
+    }
+
+    schema_str = json.dumps(clean_schema)
+    response = requests.post(
+        url=url,
+        data=schema_str,
+        headers={'Content-Type': 'application/json'}
+    )
+
+    print(f"Response status: {response.status_code}")
+
+# Init Weaviate Tool
+collections_description, collections_enum = get_collections_info(weaviate_client)
+
+tools = [
+    build_weaviate_query_tool(
+        collections_description=collections_description,
+        collections_list=collections_enum
+    )
+]
+
+AST_score_total = 0
+
+for idx, query in enumerate(weaviate_queries):
+    if idx > 0 and idx % 64 == 0:
+        # Change DB Collections
+        database_schema_index += 1
+        weaviate_client.collections.delete_all()
+        for class_schema in database_schemas[database_schema_index]["weaviate_collections"]:
+            clean_schema = {
+                'class': class_schema['class'],  # Use existing 'class' field
+                'description': class_schema.get('description', ''),
+                'properties': [
+                    {
+                        'name': prop['name'],
+                        'description': prop.get('description', ''),
+                        'dataType': prop['data_type']  # Weaviate expects dataType, not data_type
+                    }
+                    for prop in class_schema.get('properties', [])
+                ],
+                'vectorizer': class_schema.get('vectorizer', 'text2vec-transformers'),
+                'vectorIndexType': class_schema.get('vectorIndexType', 'hnsw'),
+            }
+
+            schema_str = json.dumps(clean_schema)
+            response = requests.post(
+                url=url,
+                data=schema_str,
+                headers={'Content-Type': 'application/json'}
+            )
+
+            print(f"Response status: {response.status_code}")
+
+            # build new Weaviate Tool
+
+
+    nl_query = query.corresponding_natural_language_query
+    print(nl_query)
+
+    
+    response = lm_service.one_step_function_selection_test(
+        prompt=nl_query,
+        tools=tools
+    ).choices[0].message
+    
+    if not response.tool_calls:
+        print("No functions selected.")
+        AST_score_total += 0
+    else:
+        tool_call_args = json.loads(response.tool_calls[0].function.arguments)
+        search_query = tool_call_args["search_query"] if "search_query" in tool_call_args else None
+        # This returns something like: `{"collection_name":"RestaurantMenu","filter_string":"isVegetarian:=:true"}`
+        if "filter_string" in tool_call_args:
+            print("\nParsing...")
+            print(tool_call_args["filter_string"])
+            filter_model = _build_weaviate_filter_return_model(tool_call_args["filter_string"])
+            print(filter_model)
+            
+        # Parse response into a `WeaviateQuery`
+        predicted_weaviate_query = WeaviateQuery(
+            target_collection=tool_call_args["collection_name"],
+            search_query=search_query,
+            integer_property_filter=filter_model if isinstance(filter_model, IntPropertyFilter) else None,
+            text_property_filter=filter_model if isinstance(filter_model, TextPropertyFilter) else None,
+            boolean_property_filter=filter_model if isinstance(filter_model, BooleanPropertyFilter) else None,
+            integer_property_aggregation=None,
+            text_property_aggregation=None,
+            boolean_property_aggregation=None,
+            groupby_property=None,
+            corresponding_natural_language_query=nl_query
+        )
+        print("Predicted Weaviate Query:")
+        print(predicted_weaviate_query)
+        print("Ground Truth Query:")
+        print(query)
+        print("\033[96m\nAbstract Syntax Tree Score between the ground truth and predicted API:\033[0m")
+        print(abstract_syntax_tree_match_score(
+            query,
+            predicted_weaviate_query
+        ))    
+    break
+
+weaviate_client.close()

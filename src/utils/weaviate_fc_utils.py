@@ -1,5 +1,6 @@
 import weaviate
 from weaviate.classes.query import Filter
+from src.models import IntPropertyFilter, TextPropertyFilter, BooleanPropertyFilter
 
 def get_collections_info(client: weaviate.WeaviateClient) -> tuple[str, list[str]]:
     """
@@ -21,12 +22,107 @@ def get_collections_info(client: weaviate.WeaviateClient) -> tuple[str, list[str
     output = []
     for collection_name, config in collections.items():
         output.append(f"\nCollection Name: {collection_name}")
-        output.append(f"Description: {config.description}")
+        # output.append(f"Description: {config.description}") # 1024 token limit on tool description
         output.append("\nProperties:")
         for prop in config.properties:
             output.append(f"- {prop.name}: {prop.description} (type: {prop.data_type.value})")
     
     return "\n".join(output), collection_names
+
+from pydantic import BaseModel
+from typing import Literal, Dict, List, Optional
+
+class ParameterProperty(BaseModel):
+    type: str
+    description: str
+
+class Parameters(BaseModel):
+    type: Literal["object"]
+    properties: Dict[str, ParameterProperty]
+    required: Optional[List[str]]
+
+class Function(BaseModel):
+    name: str
+    description: str
+    parameters: Parameters
+
+class Tool(BaseModel):
+    type: Literal["function"]
+    function: Function
+    
+def build_weaviate_query_tool(collections_description: str, collections_list: list[str]) -> Tool:
+    return Tool(
+    type="function",
+    function=Function(
+        name="query_database",
+        description=f"""Query a database.
+
+        Available collections in this database:
+        {collections_description}""",
+        parameters=Parameters(
+            type="object",
+            properties={
+                "collection_name": ParameterProperty(
+                    type="string",
+                    description="The collection to query",
+                    enum=collections_list
+                ),
+                "search_query": ParameterProperty(
+                    type="string",
+                    description="Optional search query to find semantically relevant items."
+                ),
+                "filter_string": ParameterProperty(
+                    type="string",
+                    description="""
+                    Optional filter expression using prefix notation to ensure unambiguous order of operations.
+                    
+                    Basic condition syntax: property_name:operator:value
+                    
+                    Compound expressions use prefix AND/OR with parentheses:
+                    - AND(condition1, condition2)
+                    - OR(condition1, condition2)
+                    - AND(condition1, OR(condition2, condition3))
+                    
+                    Examples:
+                    - Simple: age:>:25
+                    - Compound: AND(age:>:25, price:<:1000)
+                    - Complex: OR(AND(age:>:25, price:<:1000), category:=:'electronics')
+                    - Nested: AND(status:=:'active', OR(price:<:50, AND(rating:>:4, stock:>:100)))
+                    
+                    Supported operators:
+                    - Comparison: =, >, <, >=, <= 
+                    - Text only: LIKE
+
+                    IMPORTANT!!! Please review the collection schema to make sure the property name is spelled correctly!! THIS IS VERY IMPORTANT!!!
+                    """
+                ),
+                "aggregate_string": ParameterProperty(
+                    type="string",
+                    description="""
+                    Optional aggregate expression using syntax: property_name:aggregation_type.
+
+                    Group by with: GROUP_BY(property_name) (limited to one property).
+
+                    Aggregation Types by Data Type:
+
+                    Text: COUNT, TYPE, TOP_OCCURRENCES[limit]
+                    Numeric: COUNT, TYPE, MIN, MAX, MEAN, MEDIAN, MODE, SUM
+                    Boolean: COUNT, TYPE, TOTAL_TRUE, TOTAL_FALSE, PERCENTAGE_TRUE, PERCENTAGE_FALSE
+                    Date: COUNT, TYPE, MIN, MAX, MEAN, MEDIAN, MODE
+
+                    Examples:
+
+                    Simple: Article:COUNT, wordCount:COUNT,MEAN,MAX, category:TOP_OCCURRENCES[5]
+                    Grouped: GROUP_BY(publication):COUNT, GROUP_BY(category):COUNT,price:MEAN,MAX
+
+                    Combine with commas: GROUP_BY(publication):COUNT,wordCount:MEAN,category:TOP_OCCURRENCES[5]
+                    """
+                )
+            },
+            required=["collection_name"]
+        )
+    )
+)
 
 def _build_weaviate_filter(filter_string: str) -> Filter:
     def _parse_condition(condition: str) -> Filter:
@@ -67,6 +163,48 @@ def _build_weaviate_filter(filter_string: str) -> Filter:
         elif 'OR' in group:
             conditions = [_parse_group(g.strip()) for g in group.split('OR')]
             return Filter.any_of(conditions)
+        else:
+            return _parse_condition(group)
+
+    # Remove outer parentheses if present
+    filter_string = filter_string.strip()
+    if filter_string.startswith('(') and filter_string.endswith(')'):
+        filter_string = filter_string[1:-1]
+
+    return _parse_group(filter_string)
+
+def _build_weaviate_filter_return_model(filter_string: str):
+    def _parse_condition(condition: str):
+        parts = condition.split(':')
+        if len(parts) < 3:
+            raise ValueError(f"Invalid condition: {condition}")
+        
+        property, operator, value = parts[0], parts[1], ':'.join(parts[2:])
+        
+        if operator in ['>', '<', '>=', '<=']:
+            return IntPropertyFilter(property_name=property, operator=operator, value=float(value))
+        elif operator == '=':
+            if value.lower() in ['true', 'false']:
+                return BooleanPropertyFilter(property_name=property, operator=operator, value=value.lower() == 'true')
+            else:
+                return IntPropertyFilter(property_name=property, operator=operator, value=float(value))
+        elif operator == 'LIKE':
+            return TextPropertyFilter(property_name=property, operator=operator, value=value)
+        elif operator == '!=':
+            if value.lower() in ['true', 'false']:
+                return BooleanPropertyFilter(property_name=property, operator=operator, value=value.lower() == 'true')
+            else:
+                raise ValueError(f"Invalid boolean value: {value}")
+        else:
+            raise ValueError(f"Unsupported operator: {operator}")
+
+    def _parse_group(group: str):
+        if 'AND' in group:
+            conditions = [_parse_group(g.strip()) for g in group.split('AND')]
+            return conditions  # Return list of conditions for AND
+        elif 'OR' in group:
+            conditions = [_parse_group(g.strip()) for g in group.split('OR')]
+            return conditions  # Return list of conditions for OR
         else:
             return _parse_condition(group)
 

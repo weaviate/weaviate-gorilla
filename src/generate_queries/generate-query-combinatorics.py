@@ -1,3 +1,9 @@
+# IMPORTANT!!!
+
+# Update this script to save the source database schemas with the queries!!!
+
+# IMPORTANT!!!
+
 import json
 from src.create.create import CreateObjects
 from src.lm.lm import LMService
