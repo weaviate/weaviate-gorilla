@@ -9,7 +9,7 @@ from src.models import (
     GroupBy
 )
 from src.models import Tool, Function, Parameters, ParameterProperty
-from src.utils.weaviate_fc_utils import get_collections_info
+from src.utils.weaviate_fc_utils import get_collections_info, build_weaviate_query_tool
 from src.lm.lm import LMService
 from pydantic import BaseModel
 from typing import Optional, Any
@@ -235,6 +235,11 @@ lm_service = LMService(
     api_key = openai_api_key
 )
 
+tools = [build_weaviate_query_tool(
+    collections_description="placeholder",
+    collections_list=["placeholder", "placeholder"]
+)]
+
 for query in weaviate_queries:
     print(query)
 
@@ -242,4 +247,5 @@ for query in weaviate_queries:
         prompt=query,
         tools=tools
     ).choices[0].message
-    break
+    
+    print(response)
