@@ -91,13 +91,6 @@ with open("../../data/synthetic-weaviate-queries.json", "r") as json_file:
 
 pretty_print_weaviate_query(weaviate_queries[0])
 
-with open("../../data/simple-3-collection-schemas.json", "r") as json_file:
-    database_schemas = json.load(json_file)
-
-print("Database Schema:\n")
-print(database_schemas[0])
-print(f"Total Database Schemas: {len(database_schemas)}")
-
 def abstract_syntax_tree_match_score(
         predicted_apis: WeaviateQuery,
         ground_truth: WeaviateQuery
@@ -242,16 +235,35 @@ lm_service = LMService(
     api_key = openai_api_key
 )
 
-print(f"Running AST test for {len(weaviate_queries)} queries.")
+print(f"Running AST test for {len(weaviate_queries)} queries.") # 64 for 6 schemas
 
-for query in weaviate_queries:
-    
-    
-    print(query)
+with open("../../data/simple-3-collection-schemas.json", "r") as json_file:
+    database_schemas = json.load(json_file)
 
+print("Database Schema:\n")
+print(database_schemas[1])
+print(f"Total Database Schemas: {len(database_schemas)}")
+print(weaviate_queries[64])
+
+database_schema_index = 0
+
+for idx, query in enumerate(weaviate_queries):
+    if idx > 0 and idx % 64 == 0:
+        print(idx)
+        database_schema_index += 1
+        print("New Test Schema:\n")
+        print(database_schemas[database_schema_index])
+        print("Inspect Query:\n")
+        print(weaviate_queries[idx])
+        break
+    
+    nl_query = query.corresponding_natural_language_query
+
+    '''
     response = lm_service.one_step_function_selection_test(
-        prompt=query,
+        prompt=nl_query,
         tools=tools
     ).choices[0].message
     
     print(response)
+    '''
