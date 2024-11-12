@@ -291,18 +291,18 @@ for idx, query in enumerate(weaviate_queries):
         weaviate_client.collections.delete_all()
         for class_schema in database_schemas[database_schema_index]["weaviate_collections"]:
             clean_schema = {
-                'class': database_schemas[database_schema_index]['class'],  # Use existing 'class' field
-                'description': database_schemas[database_schema_index].get('description', ''),
+                'class': class_schema['class'],  # Use existing 'class' field
+                'description': class_schema.get('description', ''),
                 'properties': [
                     {
                         'name': prop['name'],
                         'description': prop.get('description', ''),
                         'dataType': prop['data_type']  # Weaviate expects dataType, not data_type
                     }
-                    for prop in database_schemas[database_schema_index].get('properties', [])
+                    for prop in class_schema.get('properties', [])
                 ],
-                'vectorizer': database_schemas[database_schema_index].get('vectorizer', 'text2vec-transformers'),
-                'vectorIndexType': database_schemas[database_schema_index].get('vectorIndexType', 'hnsw'),
+                'vectorizer': class_schema.get('vectorizer', 'text2vec-transformers'),
+                'vectorIndexType': class_schema.get('vectorIndexType', 'hnsw'),
             }
 
             schema_str = json.dumps(clean_schema)
