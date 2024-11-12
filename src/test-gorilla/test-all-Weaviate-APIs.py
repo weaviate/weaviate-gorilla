@@ -237,8 +237,10 @@ lm_service = LMService(
 
 print(f"Running AST test for {len(weaviate_queries)} queries.") # 64 for 6 schemas
 
-with open("../../data/simple-3-collection-schemas.json", "r") as json_file:
+with open("../../data/cleaned-simple-3-collection-schemas.json", "r") as json_file:
     database_schemas = json.load(json_file)
+
+database_schemas = [json.loads(schema) if isinstance(schema, str) else schema for schema in database_schemas]
 
 print("Database Schema:\n")
 print(database_schemas[1])
@@ -247,16 +249,72 @@ print(weaviate_queries[64])
 
 database_schema_index = 0
 
+import weaviate
+import requests
+
+weaviate_client = weaviate.connect_to_local()
+url = "http://localhost:8080/v1/schema"
+
+weaviate_client.collections.delete_all()
+
+# init db with database_schemas[0]
+
+for class_schema in database_schemas[0]["weaviate_collections"]:
+    clean_schema = {
+        'class': class_schema['class'],  # Use existing 'class' field
+        'description': class_schema.get('description', ''),
+        'properties': [
+            {
+                'name': prop['name'],
+                'description': prop.get('description', ''),
+                'dataType': prop['data_type']  # Weaviate expects dataType, not data_type
+            }
+            for prop in class_schema.get('properties', [])
+        ],
+        'vectorizer': class_schema.get('vectorizer', 'text2vec-transformers'),
+        'vectorIndexType': class_schema.get('vectorIndexType', 'hnsw'),
+    }
+
+    schema_str = json.dumps(clean_schema)
+    response = requests.post(
+        url=url,
+        data=schema_str,
+        headers={'Content-Type': 'application/json'}
+    )
+
+    print(f"Response status: {response.status_code}")
+
 for idx, query in enumerate(weaviate_queries):
     if idx > 0 and idx % 64 == 0:
-        print(idx)
+        # Change DB Collections
         database_schema_index += 1
-        print("New Test Schema:\n")
-        print(database_schemas[database_schema_index])
-        print("Inspect Query:\n")
-        print(weaviate_queries[idx])
-        break
-    
+        weaviate_client.collections.delete_all()
+        for class_schema in database_schemas[database_schema_index]["weaviate_collections"]:
+            clean_schema = {
+                'class': database_schemas[database_schema_index]['class'],  # Use existing 'class' field
+                'description': database_schemas[database_schema_index].get('description', ''),
+                'properties': [
+                    {
+                        'name': prop['name'],
+                        'description': prop.get('description', ''),
+                        'dataType': prop['data_type']  # Weaviate expects dataType, not data_type
+                    }
+                    for prop in database_schemas[database_schema_index].get('properties', [])
+                ],
+                'vectorizer': database_schemas[database_schema_index].get('vectorizer', 'text2vec-transformers'),
+                'vectorIndexType': database_schemas[database_schema_index].get('vectorIndexType', 'hnsw'),
+            }
+
+            schema_str = json.dumps(clean_schema)
+            response = requests.post(
+                url=url,
+                data=schema_str,
+                headers={'Content-Type': 'application/json'}
+            )
+
+            print(f"Response status: {response.status_code}")
+
+
     nl_query = query.corresponding_natural_language_query
 
     '''
