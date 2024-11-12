@@ -284,6 +284,8 @@ for class_schema in database_schemas[0]["weaviate_collections"]:
 
     print(f"Response status: {response.status_code}")
 
+# Init Weaviate Tool
+
 for idx, query in enumerate(weaviate_queries):
     if idx > 0 and idx % 64 == 0:
         # Change DB Collections
@@ -314,6 +316,8 @@ for idx, query in enumerate(weaviate_queries):
 
             print(f"Response status: {response.status_code}")
 
+            # build new Weaviate Tool
+
 
     nl_query = query.corresponding_natural_language_query
     print(nl_query)
@@ -326,3 +330,5 @@ for idx, query in enumerate(weaviate_queries):
     
     print(response)
     '''
+
+weaviate_client.close()
