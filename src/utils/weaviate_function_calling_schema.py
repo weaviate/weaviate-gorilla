@@ -18,137 +18,127 @@ class Function(BaseModel):
 class Tool(BaseModel):
     type: Literal["function"]
     function: Function
+    
+def build_weaviate_query_tool(collections_description: str, collections_list: list[str]) -> Tool:
+    return Tool(
+    type="function",
+    function=Function(
+        name="query_database",
+        description=f"""Query a database.
 
-# We have 4 Weaviate APIs:
-'''
-All returns a string-valued response
+        Available collections in this database:
+        {collections_description}""",
+        parameters=Parameters(
+            type="object",
+            properties={
+                "collection_name": ParameterProperty(
+                    type="string",
+                    description="The collection to query",
+                    enum=collections_list
+                ),
+                "search_query": ParameterProperty(
+                    type="string",
+                    description="Optional search query to find semantically relevant items."
+                ),
+                "filter_string": ParameterProperty(
+                    type="string",
+                    description="""
+                    Optional filter expression using prefix notation to ensure unambiguous order of operations.
+                    
+                    Basic condition syntax: property_name:operator:value
+                    
+                    Compound expressions use prefix AND/OR with parentheses:
+                    - AND(condition1, condition2)
+                    - OR(condition1, condition2)
+                    - AND(condition1, OR(condition2, condition3))
+                    
+                    Examples:
+                    - Simple: age:>:25
+                    - Compound: AND(age:>:25, price:<:1000)
+                    - Complex: OR(AND(age:>:25, price:<:1000), category:=:'electronics')
+                    - Nested: AND(status:=:'active', OR(price:<:50, AND(rating:>:4, stock:>:100)))
+                    
+                    Supported operators:
+                    - Comparison: =, >, <, >=, <= 
+                    - Text only: LIKE
 
-`get_search_results_with_optional_filters(collection_name: str, search_query: str, filter_string: str | None = None)`
+                    IMPORTANT!!! Please review the collection schema to make sure the property name is spelled correctly!! THIS IS VERY IMPORTANT!!!
+                    """
+                ),
+                "aggregate_string": ParameterProperty(
+                    type="string",
+                    description="""
+                    Optional aggregate expression
 
-`get_objects_with_filters(collection_name: str, filter_string: str)`
+                    Basic property aggregation syntax: property_name:aggregation_type
 
-`aggregate_property(collection_name: str, property_name: str, aggregation_ops: str)`
+                    Group by syntax: GROUP_BY(property_name)
+                    - Note: Currently limited to one property or cross-reference. Nested paths are not supported.
 
-`count_objects(collection_name: str, groupby_property_key: str)`
-'''
+                    Available Aggregation Types
+                    Based on data type:
 
-filter_string_syntax_description = """
-The filter string syntax allows you to create complex filters for querying Weaviate collections. Here's how to use it:
+                    Text Properties
+                    - COUNT
+                    - TYPE
+                    - TOP_OCCURRENCES[limit] - Optional limit parameter for minimum count
 
-1. Basic condition: property:operator:value
-   - Example: name:==:John
-   - Supported operators: ==, !=, >, <, >=, <=, LIKE, CONTAINS_ANY, CONTAINS_ALL, WITHIN
+                    Numeric Properties (Number/Integer)
+                    - COUNT
+                    - TYPE
+                    - MIN
+                    - MAX
+                    - MEAN
+                    - MEDIAN
+                    - MODE
+                    - SUM
 
-2. Multiple conditions can be combined using AND or OR:
-   - Example: age:>:30 AND occupation:==:Engineer
+                    Boolean Properties
+                    - COUNT
+                    - TYPE
+                    - TOTAL_TRUE
+                    - TOTAL_FALSE
+                    - PERCENTAGE_TRUE
+                    - PERCENTAGE_FALSE
 
-3. Use parentheses for grouping:
-   - Example: (age:>:30 AND occupation:==:Engineer) OR (age:<:25 AND student:==:true)
+                    Date Properties
+                    - COUNT
+                    - TYPE
+                    - MIN
+                    - MAX
+                    - MEAN
+                    - MEDIAN
+                    - MODE
 
-4. Special operators:
-   - LIKE: For partial string matching (e.g., name:LIKE:Jo*)
-   - CONTAINS_ANY/CONTAINS_ALL: For array properties, values separated by commas
-     Example: skills:CONTAINS_ANY:Python,JavaScript
-   - WITHIN: For geo-location queries, format is latitude,longitude,distance
-     Example: location:WITHIN:52.366667,4.9,10
+                    Examples
 
-5. Nested conditions are supported to any depth:
-   - Example: (age:>:30 AND (occupation:==:Engineer OR occupation:==:Developer)) OR (age:<:25 AND student:==:true)
+                    Simple Aggregations
 
-Remember to properly encode special characters if passing this string via URL parameters.
-"""
+                    # Count all records in the collection
+                    Article:COUNT
 
-weaviate_function_calling_schema = [
-    Tool(
-        type="function",
-        function=Function(
-            name="get_search_results_with_optional_filters",
-            description="Get search results for a provided query with optional filters.",
-            parameters=Parameters(
-                type="object",
-                properties={
-                    "collection_name": ParameterProperty(
-                        type="string",
-                        description="The name of the collection to search in.",
-                    ),
-                    "search_query": ParameterProperty(
-                        type="string",
-                        description="The search query.",
-                    ),
-                    "filter_string": ParameterProperty(
-                        type="string",
-                        description=filter_string_syntax_description
-                    ),
-                },
-                required=["collection_name", "search_query"],
-            ),
-        ),
-    ),
-    Tool(
-        type="function",
-        function=Function(
-            name="get_objects_with_filters",
-            description="Get objects from a collection using filters.",
-            parameters=Parameters(
-                type="object",
-                properties={
-                    "collection_name": ParameterProperty(
-                        type="string",
-                        description="The name of the collection to get objects from.",
-                    ),
-                    "filter_string": ParameterProperty(
-                        type="string",
-                        description="The filter string to apply when retrieving objects.",
-                    ),
-                },
-                required=["collection_name", "filter_string"],
-            ),
-        ),
-    ),
-    Tool(
-        type="function",
-        function=Function(
-            name="aggregate_property",
-            description="Aggregate a property across objects in a collection.",
-            parameters=Parameters(
-                type="object",
-                properties={
-                    "collection_name": ParameterProperty(
-                        type="string",
-                        description="The name of the collection to aggregate from.",
-                    ),
-                    "property_name": ParameterProperty(
-                        type="string",
-                        description="The name of the property to aggregate.",
-                    ),
-                    "aggregation_ops": ParameterProperty(
-                        type="string",
-                        description="List of aggregation operations to perform.",
-                    ),
-                },
-                required=["collection_name", "property_name", "aggregation_ops"],
-            ),
-        ),
-    ),
-    Tool(
-        type="function",
-        function=Function(
-            name="count_objects",
-            description="Count objects in a collection, optionally grouped by a property.",
-            parameters=Parameters(
-                type="object",
-                properties={
-                    "collection_name": ParameterProperty(
-                        type="string",
-                        description="The name of the collection to count objects in.",
-                    ),
-                    "groupby_property_key": ParameterProperty(
-                        type="string",
-                        description="The property key to group the count by.",
-                    ),
-                },
-                required=["collection_name"],
-            ),
-        ),
-    ),
-]
+                    # Get wordCount (TEXT property) statistics
+                    wordCount:COUNT,wordCount:MEAN,wordCount:MAX
+
+                    # Get top occurrences of categories (TEXT property) with minimum count of 5
+                    category:TOP_OCCURRENCES[5]
+
+                    Grouped Aggregations
+
+                    # Group by publication and get counts
+                    GROUP_BY(publication):COUNT
+
+                    # Group by category with multiple metrics
+                    GROUP_BY(category):COUNT,price:MEAN,price:MAX
+
+                    ## Combining Multiple Aggregations
+                    Multiple aggregations can be combined using comma separation:
+
+                    GROUP_BY(publication):COUNT,wordCount:MEAN,category:TOP_OCCURRENCES[5]
+                    """
+                )
+            },
+            required=["collection_name"]
+        )
+    )
+)]
