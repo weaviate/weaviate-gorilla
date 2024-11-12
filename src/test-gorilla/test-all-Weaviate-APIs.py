@@ -227,3 +227,6 @@ print(abstract_syntax_tree_match_score(
     weaviate_queries[0]
 )) # 1.0
 
+for query in weaviate_queries:
+    print(query)
+    break
