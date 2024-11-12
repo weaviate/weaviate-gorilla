@@ -91,6 +91,13 @@ with open("../../data/synthetic-weaviate-queries.json", "r") as json_file:
 
 pretty_print_weaviate_query(weaviate_queries[0])
 
+with open("../../data/simple-3-collection-schemas.json", "r") as json_file:
+    database_schemas = json.load(json_file)
+
+print("Database Schema:\n")
+print(database_schemas[0])
+print(f"Total Database Schemas: {len(database_schemas)}")
+
 def abstract_syntax_tree_match_score(
         predicted_apis: WeaviateQuery,
         ground_truth: WeaviateQuery
