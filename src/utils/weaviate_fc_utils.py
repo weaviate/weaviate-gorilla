@@ -1,7 +1,7 @@
 import weaviate
 from weaviate.classes.query import Filter, Metrics
 from weaviate.classes.aggregate import GroupByAggregate
-from src.models import IntPropertyFilter, TextPropertyFilter, BooleanPropertyFilter
+from src.models import IntPropertyFilter, TextPropertyFilter, BooleanPropertyFilter, IntAggregation, TextAggregation, BooleanAggregation, GroupBy
 
 def get_collections_info(client: weaviate.WeaviateClient) -> tuple[str, list[str]]:
     """
@@ -216,9 +216,9 @@ def _build_weaviate_filter_return_model(filter_string: str):
 
     return _parse_group(filter_string)
 
-def _build_weaviate_aggregation(agg_string: str) -> Tuple[Optional[GroupByAggregate], List[Metrics]]:
+def _build_weaviate_aggregation_return_model(agg_string: str) -> Tuple[Optional[GroupBy], List[Union[IntAggregation, TextAggregation, BooleanAggregation]]]:
     """
-    Parses an aggregation string into Weaviate GroupByAggregate and Metrics objects.
+    Parses an aggregation string into Weaviate GroupBy and Aggregation models.
     
     Format:
     GROUP_BY(property) METRICS(property:type[metrics], property2:type[metrics])
@@ -229,9 +229,9 @@ def _build_weaviate_aggregation(agg_string: str) -> Tuple[Optional[GroupByAggreg
     - "GROUP_BY(author) METRICS(isPublished:bool[totalTrue,percentageFalse])"
     
     Returns:
-    Tuple of (GroupByAggregate, List[Metrics])
+    Tuple of (GroupBy, List[Aggregation])
     """
-    def _parse_metrics(metrics_str: str) -> List[Metrics]:
+    def _parse_metrics(metrics_str: str) -> List[Union[IntAggregation, TextAggregation, BooleanAggregation]]:
         # Extract content within METRICS(...)
         metrics_list = []
         
@@ -263,29 +263,22 @@ def _build_weaviate_aggregation(agg_string: str) -> Tuple[Optional[GroupByAggreg
             prop_name, data_type, operations = match.groups()
             operations = [op.strip() for op in operations.split(',')]
             
-            # Create appropriate Metrics object based on type
+            # Create appropriate Aggregation object based on type
             if data_type == 'text':
-                metric_obj = Metrics(prop_name).text(
-                    count='count' in operations,
-                    top_occurrences='topOccurrences' in operations
+                metric_obj = TextAggregation(
+                    property_name=prop_name,
+                    metrics=operations,
+                    top_occurrences_limit=None  # Adjust as needed
                 )
             elif data_type in ('int', 'num'):
-                metric_obj = Metrics(prop_name).number(
-                    count='count' in operations,
-                    minimum='min' in operations,
-                    maximum='max' in operations,
-                    mean='mean' in operations,
-                    median='median' in operations,
-                    mode='mode' in operations,
-                    sum_='sum' in operations
+                metric_obj = IntAggregation(
+                    property_name=prop_name,
+                    metrics=operations
                 )
             elif data_type == 'bool':
-                metric_obj = Metrics(prop_name).boolean(
-                    count='count' in operations,
-                    total_true='totalTrue' in operations,
-                    total_false='totalFalse' in operations,
-                    percentage_true='percentageTrue' in operations,
-                    percentage_false='percentageFalse' in operations
+                metric_obj = BooleanAggregation(
+                    property_name=prop_name,
+                    metrics=operations
                 )
             else:
                 raise ValueError(f"Unsupported data type: {data_type}")
@@ -294,13 +287,13 @@ def _build_weaviate_aggregation(agg_string: str) -> Tuple[Optional[GroupByAggreg
         
         return metrics_list
 
-    def _parse_group_by(group_str: str) -> GroupByAggregate:
+    def _parse_group_by(group_str: str) -> GroupBy:
         # Extract property name from GROUP_BY(property)
         match = re.match(r'GROUP_BY\((\w+)\)', group_str)
         if not match:
             raise ValueError(f"Invalid GROUP_BY format: {group_str}")
         
-        return GroupByAggregate(prop=match.group(1))
+        return GroupBy(property_name=match.group(1))
 
     # Initialize return values
     group_by = None
