@@ -312,7 +312,7 @@ openai_api_key = ""
 print("\033[92m=== Initializing LM Service ===\033[0m")
 lm_service = LMService(
     model_provider = "openai",
-    model_name = "gpt-4",
+    model_name = "gpt-4o-mini",
     api_key = openai_api_key
 )
 
@@ -336,6 +336,7 @@ per_schema_scores = {}
 successful_predictions = 0
 failed_predictions = 0
 database_schema_index = 0
+total_ast_score = 0  # Track total AST score
 
 print("\033[92m=== Initializing First Schema ===\033[0m")
 # Initialize first schema
@@ -490,7 +491,9 @@ for idx, query in enumerate(weaviate_queries):
         failed_predictions += 1
     
     detailed_results.append(result)
-    print(f"\033[92mProcessed query {idx+1}/{len(weaviate_queries)}, AST score: {result.ast_score}\033[0m")
+    total_ast_score += result.ast_score
+    current_avg_ast_score = total_ast_score / (idx + 1)
+    print(f"\033[92mProcessed query {idx+1}/{len(weaviate_queries)}, AST score: {result.ast_score}, Running Average AST Score: {current_avg_ast_score:.3f}\033[0m")
 
 # Update scores for final schema
 per_schema_scores[database_schema_index] = sum(r.ast_score for r in detailed_results[-64:]) / 64
@@ -510,7 +513,7 @@ experiment_summary = ExperimentSummary(
 
 print("\033[92m=== Saving Results ===\033[0m")
 # Save results
-with open("experiment_results.json", "w") as f:
+with open("gpt-4o-mini-experiment_results.json", "w") as f:
     f.write(experiment_summary.model_dump_json(indent=2))
 
 print("\n\033[92mExperiment Summary:\033[0m")
