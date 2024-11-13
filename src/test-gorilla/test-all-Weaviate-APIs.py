@@ -349,6 +349,9 @@ for idx, query in enumerate(weaviate_queries):
             print(tool_call_args["filter_string"])
             filter_model = _build_weaviate_filter_return_model(tool_call_args["filter_string"])
             print(filter_model)
+        
+        if "aggregation_string" in tool_call_args:
+            print("\nParsing Aggregation...")
             
         # Parse response into a `WeaviateQuery`
         predicted_weaviate_query = WeaviateQuery(
