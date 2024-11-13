@@ -47,6 +47,10 @@ vectorizer_service.connection_test()
 create_query_prompt = """
 Given a user's database schema write a natural language commands simulating cases where the user would want to use the provided query operators.
 
+Note, it is extremely important that this query is only answerable with ALL OF THE QUERY OPERATORS provided. For example, if the query is "Find me all Vegetarian dishes", you would not need a search query in addition to a Boolean `isVegetarian` filter. Please make sure these natural language queries NEED ALL OF THE REFERENCED APIS to be answered!! This is extremely important!
+
+Please note, another common mistake is to misinerpret what a `search_query` is. For example, if the query is "Show all dishes that include the word 'salad'", you can achieve this with a TEXT PROPERTY FILTER. A query requiring a `search_query` would be "find all dishes similar to arugala salad" and things like this, NOT EXACT KEYWORD MATCHES.
+
 [[ database schema ]]
 {database_schema}
 

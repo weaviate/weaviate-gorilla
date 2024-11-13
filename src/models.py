@@ -126,6 +126,8 @@ class SyntheticFilterQueries(BaseModel):
 
 # Could imagine a more esoteric use case vs. explicit query to this
 class WeaviateQuery(BaseModel):
+    corresponding_natural_language_query: str
+    explanation_of_why_this_query_needs_all_apis_used: str
     target_collection: str
     search_query: Optional[str]
     integer_property_filter: Optional[IntPropertyFilter]
@@ -135,7 +137,6 @@ class WeaviateQuery(BaseModel):
     text_property_aggregation: Optional[TextAggregation]
     boolean_property_aggregation: Optional[BooleanAggregation]
     groupby_property: Optional[str]
-    corresponding_natural_language_query: str
 
 
 # Schema Models
