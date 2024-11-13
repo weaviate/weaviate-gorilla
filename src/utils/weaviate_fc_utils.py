@@ -11,6 +11,7 @@ from src.models import (
     GroupBy
 )
 import re
+from typing import Tuple, Union
 
 def get_collections_info(client: weaviate.WeaviateClient) -> tuple[str, list[str]]:
     """
@@ -193,35 +194,57 @@ def _build_weaviate_filter_return_model(filter_string: str):
         
         if operator in ['>', '<', '>=', '<=']:
             return IntPropertyFilter(property_name=property, operator=operator, value=float(value))
-        elif operator == '=':
+        elif operator in ['=', '==']:  # Handle both = and == operators
             if value.lower() in ['true', 'false']:
                 return BooleanPropertyFilter(property_name=property, operator=operator, value=value.lower() == 'true')
-            else:
+            try:
                 return IntPropertyFilter(property_name=property, operator=operator, value=float(value))
+            except ValueError:
+                return TextPropertyFilter(property_name=property, operator=operator, value=value)
         elif operator == 'LIKE':
             return TextPropertyFilter(property_name=property, operator=operator, value=value)
         elif operator == '!=':
             if value.lower() in ['true', 'false']:
                 return BooleanPropertyFilter(property_name=property, operator=operator, value=value.lower() == 'true')
-            else:
-                raise ValueError(f"Invalid boolean value: {value}")
+            try:
+                return IntPropertyFilter(property_name=property, operator=operator, value=float(value))
+            except ValueError:
+                return TextPropertyFilter(property_name=property, operator=operator, value=value)
         else:
             raise ValueError(f"Unsupported operator: {operator}")
 
     def _parse_group(group: str):
-        if 'AND' in group:
+        # Handle AND/OR groups with parentheses
+        if group.startswith('AND(') or group.startswith('OR('):
+            operator = group[:3] if group.startswith('AND') else group[:2]
+            content = group[group.find('(')+1:group.rfind(')')]
+            conditions = []
+            
+            # Split by comma while respecting nested parentheses
+            current = ''
+            paren_count = 0
+            for char in content:
+                if char == '(':
+                    paren_count += 1
+                elif char == ')':
+                    paren_count -= 1
+                elif char == ',' and paren_count == 0:
+                    conditions.append(_parse_group(current.strip()))
+                    current = ''
+                    continue
+                current += char
+            if current:
+                conditions.append(_parse_group(current.strip()))
+                
+            return conditions
+        elif 'AND' in group:
             conditions = [_parse_group(g.strip()) for g in group.split('AND')]
-            return conditions  # Return list of conditions for AND
+            return conditions
         elif 'OR' in group:
             conditions = [_parse_group(g.strip()) for g in group.split('OR')]
-            return conditions  # Return list of conditions for OR
+            return conditions
         else:
             return _parse_condition(group)
-
-    # Remove outer parentheses if present
-    filter_string = filter_string.strip()
-    if filter_string.startswith('(') and filter_string.endswith(')'):
-        filter_string = filter_string[1:-1]
 
     return _parse_group(filter_string)
 
