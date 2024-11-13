@@ -11,6 +11,7 @@ from src.models import (
     GroupBy
 )
 import re
+from typing import Tuple, Union
 
 def get_collections_info(client: weaviate.WeaviateClient) -> tuple[str, list[str]]:
     """
