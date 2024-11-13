@@ -1,6 +1,4 @@
-# placeholder
-
-# calculate per API binary accuracy from serialized test
+# Calculate per API accuracy from AST scores
 
 import json
 from typing import Dict, List, Optional
@@ -10,41 +8,18 @@ from pydantic import BaseModel
 with open("../gpt-4o-mini-experiment-results.json", "r") as f:
     results = json.load(f)
 
-total_queries = 0
-correct_filters = 0
+total_queries = results["total_queries"]
+successful_predictions = results["successful_predictions"] 
+failed_predictions = results["failed_predictions"]
+average_ast_score = results["average_ast_score"]
 
-# Analyze each query result
-for result in results["detailed_results"]:
-    total_queries += 1
-    
-    # Skip if prediction failed
-    if result["predicted_query"] is None:
-        continue
-        
-    ground_truth = result["ground_truth_query"]
-    prediction = result["predicted_query"]
-    
-    # Compare filters
-    filters_match = True
-    
-    # Check integer filters
-    if ground_truth["integer_property_filter"] != prediction["integer_property_filter"]:
-        filters_match = False
-        
-    # Check text filters    
-    if ground_truth["text_property_filter"] != prediction["text_property_filter"]:
-        filters_match = False
-        
-    # Check boolean filters
-    if ground_truth["boolean_property_filter"] != prediction["boolean_property_filter"]:
-        filters_match = False
-        
-    if filters_match:
-        correct_filters += 1
-
-# Calculate accuracy
-filter_accuracy = correct_filters / total_queries
-
+# Print summary statistics
 print(f"Total queries analyzed: {total_queries}")
-print(f"Queries with correct filters: {correct_filters}")
-print(f"Filter accuracy: {filter_accuracy:.2%}")
+print(f"Successful predictions: {successful_predictions}")
+print(f"Failed predictions: {failed_predictions}")
+print(f"Average AST score: {average_ast_score:.2%}")
+
+# Print per schema scores
+print("\nPer schema scores:")
+for schema_id, score in results["per_schema_scores"].items():
+    print(f"Schema {schema_id}: {score:.2%}")
