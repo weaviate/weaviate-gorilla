@@ -1,7 +1,15 @@
 import weaviate
 from weaviate.classes.query import Filter, Metrics
 from weaviate.classes.aggregate import GroupByAggregate
-from src.models import IntPropertyFilter, TextPropertyFilter, BooleanPropertyFilter, IntAggregation, TextAggregation, BooleanAggregation, GroupBy
+from src.models import (
+    IntPropertyFilter,
+    TextPropertyFilter,
+    BooleanPropertyFilter,
+    IntAggregation,
+    TextAggregation,
+    BooleanAggregation,
+    GroupBy
+)
 
 def get_collections_info(client: weaviate.WeaviateClient) -> tuple[str, list[str]]:
     """
