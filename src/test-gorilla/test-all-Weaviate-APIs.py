@@ -9,7 +9,12 @@ from src.models import (
     GroupBy
 )
 from src.models import Tool, Function, Parameters, ParameterProperty
-from src.utils.weaviate_fc_utils import get_collections_info, build_weaviate_query_tool, _build_weaviate_filter_return_model
+from src.utils.weaviate_fc_utils import (
+    get_collections_info, 
+    build_weaviate_query_tool, 
+    _build_weaviate_filter_return_model,
+    _build_weaviate_aggregation_return_model
+)
 from src.lm.lm import LMService
 from pydantic import BaseModel
 from typing import Optional, Any
@@ -343,8 +348,22 @@ for idx, query in enumerate(weaviate_queries):
         if "filter_string" in tool_call_args:
             print("\nParsing...")
             print(tool_call_args["filter_string"])
-            filter_model = _build_weaviate_filter_return_model(tool_call_args["filter_string"])
+            filter_model = _build_weaviate_filter_return_model(
+                tool_call_args["filter_string"]
+            )
             print(filter_model)
+        
+        if "aggregation_string" in tool_call_args:
+            print("\nParsing Aggregation...")
+            print(tool_call_args["aggregation_string"])
+            group_by_model, metrics_model = _build_weaviate_aggregation_return_model(
+                tool_call_args["aggregation_string"]
+            )
+            print(group_by_model)
+            print(metrics_model) 
+            # metrics_model, could return more than 1 (as can the filter?)
+            # just take the first
+            metrics_model = metrics_model[0]
             
         # Parse response into a `WeaviateQuery`
         predicted_weaviate_query = WeaviateQuery(

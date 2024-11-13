@@ -1,6 +1,16 @@
 import weaviate
-from weaviate.classes.query import Filter
-from src.models import IntPropertyFilter, TextPropertyFilter, BooleanPropertyFilter
+from weaviate.classes.query import Filter, Metrics
+from weaviate.classes.aggregate import GroupByAggregate
+from src.models import (
+    IntPropertyFilter,
+    TextPropertyFilter,
+    BooleanPropertyFilter,
+    IntAggregation,
+    TextAggregation,
+    BooleanAggregation,
+    GroupBy
+)
+import re
 
 def get_collections_info(client: weaviate.WeaviateClient) -> tuple[str, list[str]]:
     """
@@ -214,3 +224,120 @@ def _build_weaviate_filter_return_model(filter_string: str):
         filter_string = filter_string[1:-1]
 
     return _parse_group(filter_string)
+
+def _build_weaviate_aggregation_return_model(agg_string: str) -> Tuple[Optional[GroupBy], List[Union[IntAggregation, TextAggregation, BooleanAggregation]]]:
+    """
+    Parses an aggregation string into Weaviate GroupBy and Aggregation models.
+    
+    Format:
+    GROUP_BY(property) METRICS(property:type[metrics], property2:type[metrics])
+    
+    Examples:
+    - "GROUP_BY(publication) METRICS(wordCount:int[count,mean,max])"
+    - "METRICS(rating:num[mean,sum], title:text[count,topOccurrences])"
+    - "GROUP_BY(author) METRICS(isPublished:bool[totalTrue,percentageFalse])"
+    
+    Returns:
+    Tuple of (GroupBy, List[Aggregation])
+    """
+    def _parse_metrics(metrics_str: str) -> List[Union[IntAggregation, TextAggregation, BooleanAggregation]]:
+        # Extract content within METRICS(...)
+        metrics_list = []
+        
+        # Split multiple metrics definitions by comma, but not within brackets
+        metrics_parts = []
+        current_part = ""
+        bracket_count = 0
+        
+        for char in metrics_str:
+            if char == '[':
+                bracket_count += 1
+            elif char == ']':
+                bracket_count -= 1
+            elif char == ',' and bracket_count == 0:
+                metrics_parts.append(current_part.strip())
+                current_part = ""
+                continue
+            current_part += char
+        if current_part:
+            metrics_parts.append(current_part.strip())
+        
+        # Parse each metric definition
+        for metric in metrics_parts:
+            # Parse property:type[operations]
+            match = re.match(r'(\w+):(text|int|num|bool)\[([\w,]+)\]', metric.strip())
+            if not match:
+                raise ValueError(f"Invalid metrics format: {metric}")
+            
+            prop_name, data_type, operations = match.groups()
+            operations = [op.strip() for op in operations.split(',')]
+            
+            # Create appropriate Aggregation object based on type
+            if data_type == 'text':
+                metric_obj = TextAggregation(
+                    property_name=prop_name,
+                    metrics=operations,
+                    top_occurrences_limit=None  # Adjust as needed
+                )
+            elif data_type in ('int', 'num'):
+                metric_obj = IntAggregation(
+                    property_name=prop_name,
+                    metrics=operations
+                )
+            elif data_type == 'bool':
+                metric_obj = BooleanAggregation(
+                    property_name=prop_name,
+                    metrics=operations
+                )
+            else:
+                raise ValueError(f"Unsupported data type: {data_type}")
+                
+            metrics_list.append(metric_obj)
+        
+        return metrics_list
+
+    def _parse_group_by(group_str: str) -> GroupBy:
+        # Extract property name from GROUP_BY(property)
+        match = re.match(r'GROUP_BY\((\w+)\)', group_str)
+        if not match:
+            raise ValueError(f"Invalid GROUP_BY format: {group_str}")
+        
+        return GroupBy(property_name=match.group(1))
+
+    # Initialize return values
+    group_by = None
+    metrics = []
+    
+    # Split into parts by space, but not within parentheses
+    parts = []
+    current_part = ""
+    paren_count = 0
+    
+    for char in agg_string:
+        if char == '(':
+            paren_count += 1
+        elif char == ')':
+            paren_count -= 1
+        elif char.isspace() and paren_count == 0:
+            if current_part:
+                parts.append(current_part)
+            current_part = ""
+            continue
+        current_part += char
+    if current_part:
+        parts.append(current_part)
+    
+    # Parse each part
+    for part in parts:
+        if part.startswith('GROUP_BY'):
+            if group_by is not None:
+                raise ValueError("Multiple GROUP_BY clauses not allowed")
+            group_by = _parse_group_by(part)
+        elif part.startswith('METRICS'):
+            # Extract content within METRICS(...)
+            match = re.match(r'METRICS\((.*)\)', part)
+            if not match:
+                raise ValueError(f"Invalid METRICS format: {part}")
+            metrics.extend(_parse_metrics(match.group(1)))
+    
+    return group_by, metrics
