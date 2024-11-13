@@ -10,6 +10,7 @@ from src.models import (
     BooleanAggregation,
     GroupBy
 )
+import re
 
 def get_collections_info(client: weaviate.WeaviateClient) -> tuple[str, list[str]]:
     """
