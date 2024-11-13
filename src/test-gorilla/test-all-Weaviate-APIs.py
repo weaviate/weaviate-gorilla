@@ -361,6 +361,9 @@ for idx, query in enumerate(weaviate_queries):
             )
             print(group_by_model)
             print(metrics_model) 
+            # metrics_model, could return more than 1 (as can the filter?)
+            # just take the first
+            metrics_model = metrics_model[0]
             
         # Parse response into a `WeaviateQuery`
         predicted_weaviate_query = WeaviateQuery(
