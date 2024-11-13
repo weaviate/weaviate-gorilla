@@ -346,7 +346,7 @@ for idx, query in enumerate(weaviate_queries):
         search_query = tool_call_args["search_query"] if "search_query" in tool_call_args else None
         # This returns something like: `{"collection_name":"RestaurantMenu","filter_string":"isVegetarian:=:true"}`
         if "filter_string" in tool_call_args:
-            print("\nParsing...")
+            print("\n\033[92mParsing...\033[0m")
             print(tool_call_args["filter_string"])
             filter_model = _build_weaviate_filter_return_model(
                 tool_call_args["filter_string"]
@@ -354,7 +354,7 @@ for idx, query in enumerate(weaviate_queries):
             print(filter_model)
         
         if "aggregation_string" in tool_call_args:
-            print("\nParsing Aggregation...")
+            print("\n\033[92mParsing Aggregation...\033[0m")
             print(tool_call_args["aggregation_string"])
             group_by_model, metrics_model = _build_weaviate_aggregation_return_model(
                 tool_call_args["aggregation_string"]
