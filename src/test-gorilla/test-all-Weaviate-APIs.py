@@ -9,7 +9,11 @@ from src.models import (
     GroupBy
 )
 from src.models import Tool, Function, Parameters, ParameterProperty
-from src.utils.weaviate_fc_utils import get_collections_info, build_weaviate_query_tool, _build_weaviate_filter_return_model
+from src.utils.weaviate_fc_utils import (
+    get_collections_info, 
+    build_weaviate_query_tool, 
+    _build_weaviate_filter_return_model
+)
 from src.lm.lm import LMService
 from pydantic import BaseModel
 from typing import Optional, Any

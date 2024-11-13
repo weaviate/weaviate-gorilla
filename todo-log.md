@@ -1,9 +1,5 @@
 # ToDo
 
-## Search Queries need to reflect their unique application
-
-For example, `Find dishes that are vegetarian and sort them by price` is not a search query.
-
 ## Aggregation String Parser
 
 ## Vector Distance for AST scoring of ground truth and predicted query
