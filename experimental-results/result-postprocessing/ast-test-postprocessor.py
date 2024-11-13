@@ -7,7 +7,7 @@ from typing import Dict, List, Optional
 from pydantic import BaseModel
 
 # Load experiment results
-with open("./gpt-4o-mini-experiment-results.json", "r") as f:
+with open("../gpt-4o-mini-experiment-results.json", "r") as f:
     results = json.load(f)
 
 total_queries = 0
