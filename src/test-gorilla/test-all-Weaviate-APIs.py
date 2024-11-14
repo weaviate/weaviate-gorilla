@@ -174,11 +174,11 @@ def abstract_syntax_tree_match_score(
     
     # Weight definitions for different components
     weights = {
-        'target_collection': 0.3,
-        'search_query': 0.1,
-        'filters': 0.25,
-        'aggregations': 0.25,
-        'groupby': 0.1
+        'target_collection': 0.2,
+        'search_query': 0.2,
+        'filters': 0.2,
+        'aggregations': 0.2,
+        'groupby': 0.2
     }
     
     # Check target collection match (exact match required)
