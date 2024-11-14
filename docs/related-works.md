@@ -12,9 +12,13 @@
 6. Database Gyms. Wan Shen Lim, Matthew Butrovich, William Zhang, Andrew Crotty, Lin Ma, Peijing Xu, Johannes Gehrke, Andrew Pavlo. 2023. [Brown University](https://cs.brown.edu/people/acrotty/pubs/p27-lim.pdf).
 7. Hit the Gym: Accelerating Query Execution to Efficiently Bootstrap Behavior Models for Self-Driving Database Management Systems. Wan Shen Lim, Lin Ma, William Zhang, Matthew Buttrovich, Samuel Arch, Andrew Pavlo. 2024. [CMU](https://www.pdl.cmu.edu/PDL-FTP/Database/p3680-lim.pdf)
 
-## Text-to-SQL
-8. BIRD-SQL
-
 ## Advanced Database Schemas
 9. Lakehouse: A New Generation of Open Platforms that Unify Data Warehousing and Advanced Analytics. Michael Armbrust, Ali Ghodsi, Reynold Xin, Matei Zaharia. 2021. [Semantic Scholar](https://www.semanticscholar.org/paper/Lakehouse%3A-A-New-Generation-of-Open-Platforms-that-Zaharia-Ghodsi/451cf5fc9786ed4f7e1d9877f08d00f8b1262121)
 10. Bringing semantic knowledge graph technology to your data. Bob van Luijt and Micha Verhagen. 2020. [IEEE](https://ieeexplore.ieee.org/abstract/document/8994851)
+
+## Text-to-SQL
+8. BIRD-SQL
+
+## Query Writing
+11. Baleen: Robust Multi-Hop Reasoning at Scale via Condensed Retrieval. Omar Khattab, Christopher Potts, Matei Zaharia. 2022. [Arxiv Link](https://arxiv.org/abs/2101.00436)
+12. Grounding by Trying: LLMs with Reinforcement Learning-Enhanced Retrieval. Sheryl Hsu, Omar Khattab, Chelsea Finn, Archit Sharma. 2024. [Arxiv Link](https://arxiv.org/pdf/2410.23214?)
