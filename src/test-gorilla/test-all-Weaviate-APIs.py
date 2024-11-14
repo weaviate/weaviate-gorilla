@@ -322,7 +322,7 @@ openai_api_key = ""
 print("\033[92m=== Initializing LM Service ===\033[0m")
 lm_service = LMService(
     model_provider = "openai",
-    model_name = "gpt-4o-mini",
+    model_name = "gpt-4o",
     api_key = openai_api_key
 )
 
@@ -528,7 +528,7 @@ experiment_summary = ExperimentSummary(
 
 print("\033[92m=== Saving Results ===\033[0m")
 # Save results
-with open("gpt-4o-mini-experiment_results.json", "w") as f:
+with open("gpt-4o-experiment_results.json", "w") as f:
     f.write(experiment_summary.model_dump_json(indent=2))
 
 print("\n\033[92mExperiment Summary:\033[0m")
