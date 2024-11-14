@@ -124,7 +124,6 @@ class SyntheticFilterQueries(BaseModel):
     text_property_filter_query: TextPropertyFilterWithQuery
     boolean_property_filter_query: BooleanPropertyFilterWithQuery
 
-# Could imagine a more esoteric use case vs. explicit query to this
 class WeaviateQuery(BaseModel):
     corresponding_natural_language_query: str
     target_collection: str
@@ -137,6 +136,8 @@ class WeaviateQuery(BaseModel):
     boolean_property_aggregation: Optional[BooleanAggregation]
     groupby_property: Optional[str]
 
+# Could imagine a more esoteric use case vs. explicit query to this
+# This `explanation_...` is a bad idea, better to just create dynamic models
 class ToDoWeaviateQuery(BaseModel):
     corresponding_natural_language_query: str
     explanation_of_why_this_query_needs_all_apis_used: str

@@ -85,7 +85,7 @@ import time
 start = time.time()
 
 for idx, database_schema in enumerate(database_schemas):
-    if idx > 5:
+    if idx > 0:
         break
     print(f"\n\033[1mRunning for {time.time() - start} seconds.\033[0m\n")
     print(f"\033[96mWriting queries for database {idx+1}:\033[0m")
@@ -144,14 +144,28 @@ for idx, database_schema in enumerate(database_schemas):
         )
         
         query = lm_service.generate(task_instructions, DynamicQueryModel)
+        query_dict = query.dict()
+        
+        # Convert to WeaviateQuery
+        weaviate_query = WeaviateQuery(
+            corresponding_natural_language_query=query_dict["corresponding_natural_language_query"],
+            target_collection=query_dict["target_collection"],
+            search_query=query_dict.get("search_query"),
+            integer_property_filter=query_dict.get("integer_property_filter"),
+            text_property_filter=query_dict.get("text_property_filter"),
+            boolean_property_filter=query_dict.get("boolean_property_filter"),
+            integer_property_aggregation=query_dict.get("integer_property_aggregation"),
+            text_property_aggregation=query_dict.get("text_property_aggregation"),
+            boolean_property_aggregation=query_dict.get("boolean_property_aggregation"),
+            groupby_property=query_dict.get("groupby_property")
+        )
         
         # Store result with schema
         results.append({
             "database_schema": database_schema,
-            "query": query.dict()
+            "query": weaviate_query.model_dump()
         })
-        
-        print(f"\033[93mGenerated query: {query}\033[0m")
+        print(f"\033[96mGenerated query: {weaviate_query}\n\033[0m")
 
     print(f"\n\033[92mCreated {len(results)} queries for this schema.\033[0m\n")
 
