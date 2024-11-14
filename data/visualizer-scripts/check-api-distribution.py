@@ -20,7 +20,7 @@ properties_to_check = [
 counts = {}
 
 for prop in properties_to_check:
-    counts[prop] = sum(d[prop] is not None for d in data)
+    counts[prop] = sum(d['query'][prop] is not None for d in data)
 
 print(json.dumps(counts, indent=4))
 
