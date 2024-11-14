@@ -10,6 +10,14 @@ from src.lm.lm import LMService
 from src.vectorizer.vectorizer import VectorizerService
 from src.models import WeaviateQuery
 # save as `WeaviateQuery` models but generate with custom models created on the fly
+from src.models import (
+    IntPropertyFilter,
+    TextPropertyFilter,
+    BooleanPropertyFilter,
+    IntAggregation,
+    TextAggregation,
+    BooleanAggregation
+)
 
 from src.generate_queries.api_descriptions import (
     search_query,
