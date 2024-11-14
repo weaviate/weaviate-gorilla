@@ -6,7 +6,7 @@
 4. Agent Workflow Memory. Zora Zhiruo Wang, Jiayuan Mao, Daniel Fried, Graham Neubig. 2024. [Arxiv Link](https://arxiv.org/abs/2409.07429)
 
 ## Synthetic Data Creation
-5. Self-Instruct.
+5. Self-Instruct: Aligning Language Models with Self-Generated Instructions. Yizhong Wang, Yeganeh Kordi, Swaroop Mishra, Alisa Liu, Noah A. Smith, Daniel Khashabi, Hannaneh Hajishirzi. 2023. [Arxiv Link](https://arxiv.org/abs/2212.10560)
 
 ## Database API Testing
 6. Database Gyms. Wan Shen Lim, Matthew Butrovich, William Zhang, Andrew Crotty, Lin Ma, Peijing Xu, Johannes Gehrke, Andrew Pavlo. 2023. [Brown University](https://cs.brown.edu/people/acrotty/pubs/p27-lim.pdf).
