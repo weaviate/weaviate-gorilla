@@ -10,5 +10,10 @@
 
 ## Database API Testing
 6. Database Gyms. Wan Shen Lim, Matthew Butrovich, William Zhang, Andrew Crotty, Lin Ma, Peijing Xu, Johannes Gehrke, Andrew Pavlo. 2023. [Brown University](https://cs.brown.edu/people/acrotty/pubs/p27-lim.pdf).
+7. Hit the Gym: Accelerating Query Execution to Efficiently Bootstrap Behavior Models for Self-Driving Database Management Systems. Wan Shen Lim, Lin Ma, William Zhang, Matthew Buttrovich, Samuel Arch, Andrew Pavlo. 2024. [CMU](https://www.pdl.cmu.edu/PDL-FTP/Database/p3680-lim.pdf)
 
 ## Text-to-SQL
+8. BIRD-SQL
+
+## Federated Search and Data Warehouses
+9. Lakehouse: A New Generation of Open Platforms that Unify Data Warehousing and Advanced Analytics. Michael Armbrust, Ali Ghodsi, Reynold Xin, Matei Zaharia. 2021. [Semantic Scholar](https://www.semanticscholar.org/paper/Lakehouse%3A-A-New-Generation-of-Open-Platforms-that-Zaharia-Ghodsi/451cf5fc9786ed4f7e1d9877f08d00f8b1262121)
