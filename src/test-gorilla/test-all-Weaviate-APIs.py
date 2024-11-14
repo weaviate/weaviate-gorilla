@@ -1,4 +1,4 @@
-from src.models import WeaviateQuery
+from src.models import WeaviateQueryWithSchema, WeaviateQuery
 from src.models import (
     IntPropertyFilter,
     TextPropertyFilter,
@@ -27,7 +27,7 @@ class QueryPredictionResult(BaseModel):
     query_index: int
     database_schema_index: int
     natural_language_query: str
-    ground_truth_query: WeaviateQuery
+    ground_truth_query: WeaviateQueryWithSchema
     predicted_query: Optional[WeaviateQuery]
     ast_score: float
     error: Optional[str]
@@ -96,7 +96,7 @@ with open("../../data/synthetic-weaviate-queries-with-schemas.json", "r") as jso
     for query_idx, query_data in enumerate(weaviate_queries_raw):
         print(f"\033[92mProcessing query {query_idx + 1}\033[0m")
         query = query_data["query"]
-        database_schemas.append(query_data["database_schema"])
+        database_schema = query_data["database_schema"]
         
         # Create filter objects if they exist
         int_filter = None
@@ -148,9 +148,9 @@ with open("../../data/synthetic-weaviate-queries-with-schemas.json", "r") as jso
                 bool_agg_data["property_name"] = bool_agg_data["property_name"][0].lower() + bool_agg_data["property_name"][1:]
             bool_agg = BooleanAggregation(**bool_agg_data)
 
-        # Create WeaviateQuery object
-        print(f"\033[92mCreating WeaviateQuery object for query {query_idx + 1}\033[0m")
-        weaviate_query = WeaviateQuery(
+        # Create WeaviateQueryWithSchema object
+        print(f"\033[92mCreating WeaviateQueryWithSchema object for query {query_idx + 1}\033[0m")
+        weaviate_query = WeaviateQueryWithSchema(
             target_collection=query["target_collection"],
             search_query=query["search_query"],
             integer_property_filter=int_filter,
@@ -160,14 +160,15 @@ with open("../../data/synthetic-weaviate-queries-with-schemas.json", "r") as jso
             text_property_aggregation=text_agg,
             boolean_property_aggregation=bool_agg,
             groupby_property=query["groupby_property"][0].lower() + query["groupby_property"][1:] if query["groupby_property"] else None,
-            corresponding_natural_language_query=query["corresponding_natural_language_query"]
+            corresponding_natural_language_query=query["corresponding_natural_language_query"],
+            database_schema=database_schema
         )
         weaviate_queries.append(weaviate_query)
         print(f"\033[92mSuccessfully processed query {query_idx + 1}\033[0m")
 
 def abstract_syntax_tree_match_score(
         predicted_apis: WeaviateQuery,
-        ground_truth: WeaviateQuery
+        ground_truth: WeaviateQueryWithSchema
     ) -> float:
     """
     Calculate a matching score between predicted and ground truth WeaviateQuery objects.
@@ -341,7 +342,9 @@ total_ast_score = 0  # Track total AST score
 print("\033[92m=== Initializing First Schema ===\033[0m")
 # Initialize first schema
 weaviate_client.collections.delete_all()
-for class_schema in database_schemas[0]["weaviate_collections"]:
+
+# Use the database schema from the first query
+for class_schema in weaviate_queries[0].database_schema:
     clean_schema = {
         'class': class_schema['class'],
         'description': class_schema.get('description', ''),
@@ -372,7 +375,7 @@ print("\033[92m=== Starting Query Processing ===\033[0m")
 # Run experiment
 for idx, query in enumerate(weaviate_queries):
     print(f"\n\033[92m=== Processing Query {idx+1}/{len(weaviate_queries)} ===\033[0m")
-    print(query)
+    
     if idx > 0 and idx % 64 == 0:
         # Update per-schema scores
         per_schema_scores[database_schema_index] = sum(r.ast_score for r in detailed_results[-64:]) / 64
@@ -383,7 +386,8 @@ for idx, query in enumerate(weaviate_queries):
         print(f"\033[92m=== Switching to Schema {database_schema_index} ===\033[0m")
         weaviate_client.collections.delete_all()
         
-        for class_schema in database_schemas[database_schema_index]["weaviate_collections"]:
+        # Use the database schema from the current query
+        for class_schema in weaviate_queries[idx].database_schema:
             clean_schema = {
                 'class': class_schema['class'],
                 'description': class_schema.get('description', ''),
@@ -460,12 +464,8 @@ for idx, query in enumerate(weaviate_queries):
                 groupby_property=group_by_model,
                 corresponding_natural_language_query=nl_query
             )
-            print("\033[1;92mPredicted:\033[0m")
-            print(predicted_query)
-            print("\033[1;92mGround truth:\033[0m") 
-            print(query)
 
-            ast_score = abstract_syntax_tree_match_score(query, predicted_query)
+            ast_score = abstract_syntax_tree_match_score(predicted_query, query)
             result = QueryPredictionResult(
                 query_index=idx,
                 database_schema_index=database_schema_index,

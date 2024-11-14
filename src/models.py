@@ -136,6 +136,33 @@ class WeaviateQuery(BaseModel):
     boolean_property_aggregation: Optional[BooleanAggregation]
     groupby_property: Optional[str]
 
+# Schema Models
+class Property(BaseModel):
+    name: str
+    data_type: list[str]
+    description: str
+
+class WeaviateCollectionConfig(BaseModel):
+    name: str
+    properties: list[Property]
+    envisioned_use_case_overview: str
+
+class WeaviateCollections(BaseModel):
+    weaviate_collections: list[WeaviateCollectionConfig]
+
+class WeaviateQueryWithSchema(BaseModel):
+    schema: WeaviateCollections
+    corresponding_natural_language_query: str
+    target_collection: str
+    search_query: Optional[str]
+    integer_property_filter: Optional[IntPropertyFilter]
+    text_property_filter: Optional[TextPropertyFilter]
+    boolean_property_filter: Optional[BooleanPropertyFilter]
+    integer_property_aggregation: Optional[IntAggregation]
+    text_property_aggregation: Optional[TextAggregation]
+    boolean_property_aggregation: Optional[BooleanAggregation]
+    groupby_property: Optional[str]
+
 # Could imagine a more esoteric use case vs. explicit query to this
 # This `explanation_...` is a bad idea, better to just create dynamic models
 class ToDoWeaviateQuery(BaseModel):
@@ -151,20 +178,6 @@ class ToDoWeaviateQuery(BaseModel):
     boolean_property_aggregation: Optional[BooleanAggregation]
     groupby_property: Optional[str]
 
-
-# Schema Models
-class Property(BaseModel):
-    name: str
-    data_type: list[str]
-    description: str
-
-class WeaviateCollectionConfig(BaseModel):
-    name: str
-    properties: list[Property]
-    envisioned_use_case_overview: str
-
-class WeaviateCollections(BaseModel):
-    weaviate_collections: list[WeaviateCollectionConfig]
 
 # Pretty sure these two `SimpleSyntheticSchema` / `ComplexSyntheticSchema` aren't used
 # ... but I like the idea of controlling the schema complexity
