@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from collections import defaultdict
 
 # Load experiment results
-with open("../gpt-4o-experiment-results.json", "r") as f:
+with open("../gpt-4o-mini-experiment-results.json", "r") as f:
     results = json.load(f)
 
 total_queries = results["total_queries"]
