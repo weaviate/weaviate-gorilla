@@ -15,5 +15,6 @@
 ## Text-to-SQL
 8. BIRD-SQL
 
-## Federated Search and Data Warehouses
+## Advanced Database Schemas
 9. Lakehouse: A New Generation of Open Platforms that Unify Data Warehousing and Advanced Analytics. Michael Armbrust, Ali Ghodsi, Reynold Xin, Matei Zaharia. 2021. [Semantic Scholar](https://www.semanticscholar.org/paper/Lakehouse%3A-A-New-Generation-of-Open-Platforms-that-Zaharia-Ghodsi/451cf5fc9786ed4f7e1d9877f08d00f8b1262121)
+10. Bringing semantic knowledge graph technology to your data. Bob van Luijt and Micha Verhagen. 2020. [IEEE](https://ieeexplore.ieee.org/abstract/document/8994851)
