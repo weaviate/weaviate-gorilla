@@ -1,6 +1,6 @@
 import json
 
-with open("../synthetic-weaviate-queries.json", "r") as f:
+with open("../new-synthetic-weaviate-queries-with-schemas.json", "r") as f:
     data = json.load(f)
 
 print(json.dumps(data[0], indent=4))
