@@ -85,7 +85,7 @@ import time
 start = time.time()
 
 for idx, database_schema in enumerate(database_schemas):
-    if idx > 0:
+    if idx > 4:
         break
     print(f"\n\033[1mRunning for {time.time() - start} seconds.\033[0m\n")
     print(f"\033[96mWriting queries for database {idx+1}:\033[0m")
