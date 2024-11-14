@@ -87,13 +87,17 @@ def pretty_print_weaviate_query(query: WeaviateQuery) -> None:
     print(f"  \033[92mNatural Language Query:\033[0m {query.corresponding_natural_language_query}")
 
 print("\033[92m=== Loading Weaviate Queries ===\033[0m")
-with open("../../data/synthetic-weaviate-queries.json", "r") as json_file:
+with open("../../data/synthetic-weaviate-queries-with-schemas.json", "r") as json_file:
     weaviate_queries_raw = json.load(json_file)
     print(f"\033[92mLoaded {len(weaviate_queries_raw)} raw queries\033[0m")
     weaviate_queries = []
+    database_schemas = []
     
-    for query_idx, query in enumerate(weaviate_queries_raw):
+    for query_idx, query_data in enumerate(weaviate_queries_raw):
         print(f"\033[92mProcessing query {query_idx + 1}\033[0m")
+        query = query_data["query"]
+        database_schemas.append(query_data["database_schema"])
+        
         # Create filter objects if they exist
         int_filter = None
         if query["integer_property_filter"]:
@@ -317,11 +321,7 @@ lm_service = LMService(
 )
 
 print("\033[92m=== Loading Database Schemas ===\033[0m")
-with open("../../data/cleaned-simple-3-collection-schemas.json", "r") as json_file:
-    database_schemas = json.load(json_file)
-
-database_schemas = [json.loads(schema) if isinstance(schema, str) else schema for schema in database_schemas]
-print(f"\033[92mLoaded {len(database_schemas)} database schemas\033[0m")
+# No need to load schemas separately since they're now included with queries
 
 import weaviate
 import requests
