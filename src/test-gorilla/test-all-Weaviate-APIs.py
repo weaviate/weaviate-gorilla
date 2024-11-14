@@ -150,6 +150,11 @@ with open("../../data/synthetic-weaviate-queries-with-schemas.json", "r") as jso
 
         # Create WeaviateQueryWithSchema object
         print(f"\033[92mCreating WeaviateQueryWithSchema object for query {query_idx + 1}\033[0m")
+        
+        # Convert database_schema string to dict if needed
+        if isinstance(database_schema, str):
+            database_schema = json.loads(database_schema)
+            
         weaviate_query = WeaviateQueryWithSchema(
             target_collection=query["target_collection"],
             search_query=query["search_query"],
@@ -344,29 +349,34 @@ print("\033[92m=== Initializing First Schema ===\033[0m")
 weaviate_client.collections.delete_all()
 
 # Use the database schema from the first query
-for class_schema in weaviate_queries[0].database_schema:
-    clean_schema = {
-        'class': class_schema['class'],
-        'description': class_schema.get('description', ''),
-        'properties': [
-            {
-                'name': prop['name'],
-                'description': prop.get('description', ''),
-                'dataType': prop['data_type']
-            }
-            for prop in class_schema.get('properties', [])
-        ],
-        'vectorizer': class_schema.get('vectorizer', 'text2vec-transformers'),
-        'vectorIndexType': class_schema.get('vectorIndexType', 'hnsw'),
+class_schemas = weaviate_queries[0].database_schema.weaviate_collections
+for class_schema in class_schemas:
+    # Convert class_schema to dict format expected by Weaviate
+    schema_dict = {
+        'class': class_schema.name,
+        'description': class_schema.envisioned_use_case_overview,
+        'properties': []
     }
+    
+    # Add properties
+    for prop in class_schema.properties:
+        schema_dict['properties'].append({
+            'name': prop.name,
+            'description': prop.description,
+            'dataType': prop.data_type
+        })
 
-    schema_str = json.dumps(clean_schema)
+    # Add vectorizer settings
+    schema_dict['vectorizer'] = 'text2vec-transformers'
+    schema_dict['vectorIndexType'] = 'hnsw'
+
+    schema_str = json.dumps(schema_dict)
     response = requests.post(
         url=url,
         data=schema_str,
         headers={'Content-Type': 'application/json'}
     )
-    print(f"\033[92mCreated collection: {class_schema['class']}\033[0m")
+    print(f"\033[92mCreated collection: {schema_dict['class']}\033[0m")
 
 collections_description, collections_enum = get_collections_info(weaviate_client)
 tools = [build_weaviate_query_tool(collections_description=collections_description, collections_list=collections_enum)]
@@ -387,29 +397,34 @@ for idx, query in enumerate(weaviate_queries):
         weaviate_client.collections.delete_all()
         
         # Use the database schema from the current query
-        for class_schema in weaviate_queries[idx].database_schema:
-            clean_schema = {
-                'class': class_schema['class'],
-                'description': class_schema.get('description', ''),
-                'properties': [
-                    {
-                        'name': prop['name'],
-                        'description': prop.get('description', ''),
-                        'dataType': prop['data_type']
-                    }
-                    for prop in class_schema.get('properties', [])
-                ],
-                'vectorizer': class_schema.get('vectorizer', 'text2vec-transformers'),
-                'vectorIndexType': class_schema.get('vectorIndexType', 'hnsw'),
+        class_schemas = weaviate_queries[idx].database_schema.weaviate_collections
+        for class_schema in class_schemas:
+            # Convert class_schema to dict format expected by Weaviate
+            schema_dict = {
+                'class': class_schema.name,
+                'description': class_schema.envisioned_use_case_overview,
+                'properties': []
             }
+            
+            # Add properties
+            for prop in class_schema.properties:
+                schema_dict['properties'].append({
+                    'name': prop.name,
+                    'description': prop.description,
+                    'dataType': prop.data_type
+                })
 
-            schema_str = json.dumps(clean_schema)
+            # Add vectorizer settings
+            schema_dict['vectorizer'] = 'text2vec-transformers'
+            schema_dict['vectorIndexType'] = 'hnsw'
+
+            schema_str = json.dumps(schema_dict)
             response = requests.post(
                 url=url,
                 data=schema_str,
                 headers={'Content-Type': 'application/json'}
             )
-            print(f"\033[92mCreated collection: {class_schema['class']}\033[0m")
+            print(f"\033[92mCreated collection: {schema_dict['class']}\033[0m")
 
         collections_description, collections_enum = get_collections_info(weaviate_client)
         tools = [build_weaviate_query_tool(collections_description=collections_description, collections_list=collections_enum)]

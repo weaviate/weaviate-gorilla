@@ -151,7 +151,7 @@ class WeaviateCollections(BaseModel):
     weaviate_collections: list[WeaviateCollectionConfig]
 
 class WeaviateQueryWithSchema(BaseModel):
-    schema: WeaviateCollections
+    database_schema: WeaviateCollections
     corresponding_natural_language_query: str
     target_collection: str
     search_query: Optional[str]
