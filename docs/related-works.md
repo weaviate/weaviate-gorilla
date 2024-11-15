@@ -26,7 +26,8 @@
 
 ## Query Writing
 15. Baleen: Robust Multi-Hop Reasoning at Scale via Condensed Retrieval. Omar Khattab, Christopher Potts, Matei Zaharia. 2022. [Arxiv Link](https://arxiv.org/abs/2101.00436)
-16. Grounding by Trying: LLMs with Reinforcement Learning-Enhanced Retrieval. Sheryl Hsu, Omar Khattab, Chelsea Finn, Archit Sharma. 2024. [Arxiv Link](https://arxiv.org/pdf/2410.23214?)
+16. Decomposing Complex Queries for Tip-of-the-tongue Retrieval. Kevin Lin, Kyle Lo, Joseph E. Gonzalez, Dan Klein. 2023. [Arxiv Link](https://arxiv.org/abs/2305.15053)
+17. Grounding by Trying: LLMs with Reinforcement Learning-Enhanced Retrieval. Sheryl Hsu, Omar Khattab, Chelsea Finn, Archit Sharma. 2024. [Arxiv Link](https://arxiv.org/pdf/2410.23214?)
 
 ==
 <br />
