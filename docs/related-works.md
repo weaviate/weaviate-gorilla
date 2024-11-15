@@ -25,6 +25,9 @@
 13. Grounding by Trying: LLMs with Reinforcement Learning-Enhanced Retrieval. Sheryl Hsu, Omar Khattab, Chelsea Finn, Archit Sharma. 2024. [Arxiv Link](https://arxiv.org/pdf/2410.23214?)
 
 ==
+<br />
 Compound AI Systems
+<br />
 Retrieval-Augmented Generation
+<br />
 GPT-4
