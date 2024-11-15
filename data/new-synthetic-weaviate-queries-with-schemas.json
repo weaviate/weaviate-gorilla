@@ -1,0 +1,1299 @@
+[
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find the average price of vegetarian dishes named similarly to 'green salad', grouped by their price range, for all dishes with prices less than $20.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "green salad",
+            "integer_property_filter": {
+                "property_name": "Price",
+                "operator": "<",
+                "value": 20
+            },
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": {
+                "property_name": "Price",
+                "metrics": "MEAN"
+            },
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": "Price"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find dishes on the menu under $15 that are vegetarian-friendly and give me the average price of such vegetarian dishes. Additionally, show dishes that are popular for a romantic dinner setting.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "romantic dinner setting",
+            "integer_property_filter": {
+                "property_name": "Price",
+                "operator": "<",
+                "value": 15
+            },
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": {
+                "property_name": "Price",
+                "metrics": "MEAN"
+            },
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find the 5 most mentioned vegetarian dishes under $20 in the RestaurantMenu collection, grouped by whether they are vegetarian or not, and list the number of each dish occurrence along with their properties.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "vegetarian dishes",
+            "integer_property_filter": {
+                "property_name": "Price",
+                "operator": "<",
+                "value": 20
+            },
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": {
+                "property_name": "DishName",
+                "metrics": "TOP_OCCURRENCES",
+                "top_occurrences_limit": 5
+            },
+            "boolean_property_aggregation": null,
+            "groupby_property": "IsVegetarian"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find all vegetarian dishes priced under $20 from the Restaurant Menu, while providing the total count of vegetarian dishes listed. Additionally, highlight dishes related to 'healthy meals' in the results.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "healthy meals",
+            "integer_property_filter": {
+                "property_name": "Price",
+                "operator": "<",
+                "value": 20
+            },
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": {
+                "property_name": "DishName",
+                "metrics": "COUNT",
+                "top_occurrences_limit": null
+            },
+            "boolean_property_aggregation": null,
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find vegetarian dishes with prices less than $20, and aggregate the results by counting how many of these dishes are vegetarian. Also, group the results by dish name and include a semantic search for dishes related to \"healthy salad\".",
+            "target_collection": "RestaurantMenu",
+            "search_query": "healthy salad",
+            "integer_property_filter": {
+                "property_name": "Price",
+                "operator": "<",
+                "value": 20
+            },
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": {
+                "property_name": "IsVegetarian",
+                "metrics": "COUNT"
+            },
+            "groupby_property": "DishName"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find all vegetarian dishes that cost less than $20 and determine the total number of vegetarian dishes available.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "vegetarian",
+            "integer_property_filter": {
+                "property_name": "Price",
+                "operator": "<",
+                "value": 20
+            },
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": {
+                "property_name": "IsVegetarian",
+                "metrics": "COUNT"
+            },
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find vegetarian dishes from the RestaurantMenu collection that are labeled as 'gourmet' or 'fine dining', have a price tag of less than $20, and group the results by DishName.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "gourmet or fine dining",
+            "integer_property_filter": {
+                "property_name": "Price",
+                "operator": "<",
+                "value": 20
+            },
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": "DishName"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find all vegetarian dishes priced under $15 that are known for being both healthy and delicious.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "healthy and delicious",
+            "integer_property_filter": {
+                "property_name": "Price",
+                "operator": "<",
+                "value": 15
+            },
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find the number of vegetarian dishes per restaurant in the RestaurantMenu collection with 'pizza' in the dish description, and order them by the restaurant that mentions the word 'gourmet' in their description.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "gourmet",
+            "integer_property_filter": null,
+            "text_property_filter": {
+                "property_name": "DishName",
+                "operator": "LIKE",
+                "value": "%pizza%"
+            },
+            "boolean_property_filter": null,
+            "integer_property_aggregation": {
+                "property_name": "Price",
+                "metrics": "COUNT"
+            },
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": "IsVegetarian"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find vegetarian dishes from the restaurant's menu that are the most affordable, and provide a report on the average price of all such vegetarian dishes.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "Find affordable vegetarian dishes",
+            "integer_property_filter": null,
+            "text_property_filter": {
+                "property_name": "IsVegetarian",
+                "operator": "=",
+                "value": "true"
+            },
+            "boolean_property_filter": null,
+            "integer_property_aggregation": {
+                "property_name": "Price",
+                "metrics": "MEAN"
+            },
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find the most popular vegetarian dishes under $15, group them by whether they are vegetarian, and provide a count of how many dishes there are in each group. Also, search for dishes related to 'healthy cuisine' to ensure we incorporate relevant alternatives even if they aren't explicitly labeled as vegetarian.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "healthy cuisine",
+            "integer_property_filter": null,
+            "text_property_filter": {
+                "property_name": "Price",
+                "operator": "=",
+                "value": "< $15"
+            },
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": {
+                "property_name": "DishName",
+                "metrics": "COUNT",
+                "top_occurrences_limit": null
+            },
+            "boolean_property_aggregation": null,
+            "groupby_property": "IsVegetarian"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find dishes on the restaurant menu probably associated with 'comfort food', specifically filtering for those with 'pasta' in their name, and count the number of vegetarian dishes.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "comfort food",
+            "integer_property_filter": null,
+            "text_property_filter": {
+                "property_name": "DishName",
+                "operator": "LIKE",
+                "value": "%pasta%"
+            },
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": {
+                "property_name": "IsVegetarian",
+                "metrics": "COUNT",
+                "top_occurrences_limit": null
+            },
+            "boolean_property_aggregation": null,
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find all vegetarian dishes that include \"pasta\" and show the total count of vegetarian dishes available in different price ranges.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "vegetarian pasta",
+            "integer_property_filter": null,
+            "text_property_filter": {
+                "property_name": "DishName",
+                "operator": "LIKE",
+                "value": "%pasta%"
+            },
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": {
+                "property_name": "IsVegetarian",
+                "metrics": "COUNT"
+            },
+            "groupby_property": "Price"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find vegetarian dishes with the word 'spicy' in their names and provide a count of those that are vegetarian.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "spicy",
+            "integer_property_filter": null,
+            "text_property_filter": {
+                "property_name": "DishName",
+                "operator": "LIKE",
+                "value": "spicy"
+            },
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": {
+                "property_name": "IsVegetarian",
+                "metrics": "COUNT"
+            },
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find vegetarian dishes named 'salad' and their average price.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "salad dishes",
+            "integer_property_filter": null,
+            "text_property_filter": {
+                "property_name": "IsVegetarian",
+                "operator": "=",
+                "value": "true"
+            },
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": "DishName"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find vegetarian dishes under $20 and include popular items known for being spicy.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "popular spicy items",
+            "integer_property_filter": null,
+            "text_property_filter": {
+                "property_name": "IsVegetarian",
+                "operator": "=",
+                "value": "true"
+            },
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find all vegetarian dishes in the menu, calculate the average price of these dishes, and organize the results based on the dish name to ensure we get semantically relevant results, even if the dishes are described using different terms. Also, filter out any dishes that are not currently marked as vegetarian.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "vegetarian options available",
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": {
+                "property_name": "IsVegetarian",
+                "operator": "=",
+                "value": true
+            },
+            "integer_property_aggregation": {
+                "property_name": "Price",
+                "metrics": "MEAN"
+            },
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": "DishName"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find healthy menu items that are vegetarian, what is the average price of these items, and rank them based on customer perceptions.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "healthy menu items",
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": {
+                "property_name": "IsVegetarian",
+                "operator": "=",
+                "value": true
+            },
+            "integer_property_aggregation": {
+                "property_name": "Price",
+                "metrics": "MEAN"
+            },
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find vegetarian dishes from the menu that contain the word 'pasta' in their name. Group the results by price range and identify what are the most common types of vegetarian dishes served.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "pasta",
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": {
+                "property_name": "IsVegetarian",
+                "operator": "=",
+                "value": true
+            },
+            "integer_property_aggregation": null,
+            "text_property_aggregation": {
+                "property_name": "DishName",
+                "metrics": "TYPE",
+                "top_occurrences_limit": 5
+            },
+            "boolean_property_aggregation": null,
+            "groupby_property": "Price"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find the top 5 most mentioned vegetarian dishes in customer reviews of family-friendly restaurants.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "family-friendly restaurants",
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": {
+                "property_name": "IsVegetarian",
+                "operator": "=",
+                "value": true
+            },
+            "integer_property_aggregation": null,
+            "text_property_aggregation": {
+                "property_name": "DishName",
+                "metrics": "TOP_OCCURRENCES",
+                "top_occurrences_limit": 5
+            },
+            "boolean_property_aggregation": null,
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Show me the dishes on the menu that are vegetarian, categorized by name, and tell me how many aren't in this category. Additionally, include dishes that are renowned for being budget-friendly, even if they're not labeled as such.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "budget-friendly dishes",
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": {
+                "property_name": "IsVegetarian",
+                "operator": "=",
+                "value": true
+            },
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": {
+                "property_name": "IsVegetarian",
+                "metrics": "TOTAL_FALSE"
+            },
+            "groupby_property": "DishName"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "List all vegetarian dishes suitable for a romantic dinner and show me how many of these dishes are not vegetarian.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "romantic dinner",
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": {
+                "property_name": "IsVegetarian",
+                "operator": "=",
+                "value": true
+            },
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": {
+                "property_name": "IsVegetarian",
+                "metrics": "TOTAL_FALSE"
+            },
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find all vegetarian dishes, grouped by their names, that are currently on the restaurant menu and are considered healthy options.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "healthy options",
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": {
+                "property_name": "IsVegetarian",
+                "operator": "=",
+                "value": true
+            },
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": "DishName"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find the most popular vegetarian dishes that are affordable and include 'pasta' or 'salad' in their name.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "pasta OR salad",
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": {
+                "property_name": "IsVegetarian",
+                "operator": "=",
+                "value": true
+            },
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "What is the average price of vegetarian dishes across different restaurants, and which restaurant menu items are popular choices for eco-friendly diners?",
+            "target_collection": "RestaurantMenu",
+            "search_query": "eco-friendly",
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": {
+                "property_name": "Price",
+                "metrics": "MEAN"
+            },
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": "DishName"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find the average price of all vegetarian dishes on the menu that are described in a creative way as good for parties and gatherings.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "good for parties and gatherings",
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": {
+                "property_name": "Price",
+                "metrics": "MEAN"
+            },
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Show me the most popular vegetarian dishes on the RestaurantMenu and list the number of dishes available for each price point.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "vegetarian popular dishes",
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": {
+                "property_name": "DishName",
+                "metrics": "COUNT",
+                "top_occurrences_limit": null
+            },
+            "boolean_property_aggregation": null,
+            "groupby_property": "Price"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find the most popular vegetarian dishes from the restaurant menu that are frequently mentioned as 'light meals' or 'healthy options,' and list these dishes along with the number of different price occurrences for each.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "light meals healthy options",
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": {
+                "property_name": "Price",
+                "metrics": "TOP_OCCURRENCES",
+                "top_occurrences_limit": null
+            },
+            "boolean_property_aggregation": null,
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Which vegetarian dishes are mentioned in reviews as 'best meals' and how many of those are available? Group these dishes by their price range.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "best meals",
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": {
+                "property_name": "IsVegetarian",
+                "metrics": "COUNT"
+            },
+            "groupby_property": "Price"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find vegetarian dishes that are similar to 'hearty meals', and show me statistics on how many of these vegetarian dishes are in stock.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "hearty meals",
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": {
+                "property_name": "IsVegetarian",
+                "metrics": "PERCENTAGE_TRUE"
+            },
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find vegetarian dishes that are recognized for their health benefits, grouped by price range, from the menu.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "vegetarian dishes health benefits",
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": "Price"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find vegetarian dishes that cost less than $15 and are considered popular among customers, while also displaying staff members who are currently on duty with more than 5 years of experience.",
+            "target_collection": "RestaurantMenu",
+            "search_query": "popular dishes among customers",
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Provide the average price of vegetarian dishes grouped by whether they are vegetarian or not, only including dishes with a price greater than $20.",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": {
+                "property_name": "Price",
+                "operator": ">",
+                "value": 20
+            },
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": {
+                "property_name": "Price",
+                "metrics": "MEAN"
+            },
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": "IsVegetarian"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find all vegetarian dishes priced below $20, and calculate the average price of these vegetarian dishes.",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": {
+                "property_name": "Price",
+                "operator": "<",
+                "value": 20
+            },
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": {
+                "property_name": "Price",
+                "metrics": "MEAN"
+            },
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "List the number of vegetarian and non-vegetarian dishes for each available price that is less than $10, and group the results by the vegetarian status of the dishes.",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": {
+                "property_name": "Price",
+                "operator": "<",
+                "value": 10
+            },
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": {
+                "property_name": "DishName",
+                "metrics": "COUNT",
+                "top_occurrences_limit": null
+            },
+            "boolean_property_aggregation": null,
+            "groupby_property": "IsVegetarian"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "What are the top 5 most common dish names among those menu items that are priced at 20 dollars or less?",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": {
+                "property_name": "Price",
+                "operator": "<=",
+                "value": 20
+            },
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": {
+                "property_name": "DishName",
+                "metrics": "TOP_OCCURRENCES",
+                "top_occurrences_limit": 5
+            },
+            "boolean_property_aggregation": null,
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find the number of vegetarian dishes grouped by their prices, but only consider dishes that cost more than $10.",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": {
+                "property_name": "Price",
+                "operator": ">",
+                "value": 10
+            },
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": {
+                "property_name": "IsVegetarian",
+                "metrics": "COUNT"
+            },
+            "groupby_property": "Price"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Get a count of vegetarian dishes priced below $10 from the RestaurantMenu collection.",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": {
+                "property_name": "Price",
+                "operator": "<",
+                "value": 10
+            },
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": {
+                "property_name": "IsVegetarian",
+                "metrics": "COUNT"
+            },
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "List all vegetarian dishes priced over $15, grouped by their names.",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": {
+                "property_name": "Price",
+                "operator": ">",
+                "value": 15
+            },
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": "DishName"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find all dishes on the RestaurantMenu that are priced exactly between $10 and $20.",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": {
+                "property_name": "Price",
+                "operator": "<=",
+                "value": 20
+            },
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "What is the average price of dishes that are vegetarian, grouped by dish name?",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": null,
+            "text_property_filter": {
+                "property_name": "IsVegetarian",
+                "operator": "=",
+                "value": "true"
+            },
+            "boolean_property_filter": null,
+            "integer_property_aggregation": {
+                "property_name": "Price",
+                "metrics": "MEAN"
+            },
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": "DishName"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Get the total number of vegetarian dishes and calculate the average price of these vegetarian dishes from the menu.",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": null,
+            "text_property_filter": {
+                "property_name": "IsVegetarian",
+                "operator": "=",
+                "value": "true"
+            },
+            "boolean_property_filter": null,
+            "integer_property_aggregation": {
+                "property_name": "Price",
+                "metrics": "MEAN"
+            },
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "List the total number of vegetarian dishes offered in the restaurant menu, grouped by their dish names, filtering to only include dishes with the name 'Spaghetti Bolognese'.",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": null,
+            "text_property_filter": {
+                "property_name": "DishName",
+                "operator": "=",
+                "value": "Spaghetti Bolognese"
+            },
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": {
+                "property_name": "DishName",
+                "metrics": "COUNT",
+                "top_occurrences_limit": null
+            },
+            "boolean_property_aggregation": null,
+            "groupby_property": "DishName"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Retrieve a count of each vegetarian dish and their occurrences on the menu, but only for dishes with names that begin with the letter 'M'.",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": null,
+            "text_property_filter": {
+                "property_name": "DishName",
+                "operator": "LIKE",
+                "value": "M%"
+            },
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": {
+                "property_name": "DishName",
+                "metrics": "TOP_OCCURRENCES",
+                "top_occurrences_limit": 10
+            },
+            "boolean_property_aggregation": null,
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find the number of vegetarian dishes for each dish category, and exclude all dishes labeled 'Pizza'.",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": null,
+            "text_property_filter": {
+                "property_name": "DishName",
+                "operator": "LIKE",
+                "value": "%Pizza%"
+            },
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": {
+                "property_name": "IsVegetarian",
+                "metrics": "COUNT"
+            },
+            "groupby_property": "DishName"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Retrieve all vegetarian dishes from the restaurant menu and calculate the percentage of these dishes that are currently classified as vegetarian.",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": null,
+            "text_property_filter": {
+                "property_name": "DishName",
+                "operator": "LIKE",
+                "value": ""
+            },
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": {
+                "property_name": "IsVegetarian",
+                "metrics": "PERCENTAGE_TRUE"
+            },
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "List all the dishes in the restaurant menu and group them by whether they are vegetarian or not, only including dishes with the name 'Pasta'.",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": null,
+            "text_property_filter": {
+                "property_name": "DishName",
+                "operator": "=",
+                "value": "Pasta"
+            },
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": "IsVegetarian"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Retrieve all restaurant menu items where the dish name contains the word 'spaghetti'.",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": null,
+            "text_property_filter": {
+                "property_name": "DishName",
+                "operator": "LIKE",
+                "value": "spaghetti"
+            },
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Show me the average price of vegetarian dishes, grouped by their vegetarian status.",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": {
+                "property_name": "IsVegetarian",
+                "operator": "=",
+                "value": true
+            },
+            "integer_property_aggregation": {
+                "property_name": "Price",
+                "metrics": "MEAN"
+            },
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": "IsVegetarian"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find the total sales amount for all takeaway customer orders and filter only the orders that are takeaway.",
+            "target_collection": "CustomerOrders",
+            "search_query": null,
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": {
+                "property_name": "IsTakeaway",
+                "operator": "=",
+                "value": true
+            },
+            "integer_property_aggregation": {
+                "property_name": "TotalAmount",
+                "metrics": "SUM"
+            },
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "For each staff member who is currently on duty, list the number of customers who have placed takeaway orders, grouped by the dish name to see how many times each dish was ordered by takeaway customers.",
+            "target_collection": "CustomerOrders",
+            "search_query": null,
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": {
+                "property_name": "IsOnDuty",
+                "operator": "=",
+                "value": true
+            },
+            "integer_property_aggregation": null,
+            "text_property_aggregation": {
+                "property_name": "CustomerName",
+                "metrics": "COUNT",
+                "top_occurrences_limit": null
+            },
+            "boolean_property_aggregation": null,
+            "groupby_property": "DishName"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "List all vegetarian dishes from the restaurant menu and count how many unique dish names exist.",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": {
+                "property_name": "IsVegetarian",
+                "operator": "=",
+                "value": true
+            },
+            "integer_property_aggregation": null,
+            "text_property_aggregation": {
+                "property_name": "DishName",
+                "metrics": "COUNT",
+                "top_occurrences_limit": null
+            },
+            "boolean_property_aggregation": null,
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Show the total number of dishes that are vegetarian for each price level in the restaurant menu. Also, only include dishes that are actually vegetarian.",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": {
+                "property_name": "IsVegetarian",
+                "operator": "=",
+                "value": true
+            },
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": {
+                "property_name": "IsVegetarian",
+                "metrics": "COUNT"
+            },
+            "groupby_property": "Price"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "For the current shift, find all staff members who are currently on duty, and then determine the total number of staff on duty. Also, calculate what percentage these on-duty staff represent of the overall staff count.",
+            "target_collection": "StaffMembers",
+            "search_query": null,
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": {
+                "property_name": "IsOnDuty",
+                "operator": "=",
+                "value": true
+            },
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": {
+                "property_name": "IsOnDuty",
+                "metrics": "COUNT"
+            },
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "List all vegetarian dishes from the restaurant menu and group them by price.",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": {
+                "property_name": "IsVegetarian",
+                "operator": "=",
+                "value": true
+            },
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": "Price"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find all vegetarian dishes on the restaurant menu.",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": {
+                "property_name": "IsVegetarian",
+                "operator": "=",
+                "value": true
+            },
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "What is the average price of dishes in the restaurant menu grouped by whether they are vegetarian or not?",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": {
+                "property_name": "Price",
+                "metrics": "MEAN"
+            },
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": "IsVegetarian"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "What is the average price of vegetarian dishes on the restaurant menu?",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": {
+                "property_name": "Price",
+                "metrics": "MEAN"
+            },
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Generate a report showing the number of vegetarian and non-vegetarian dishes offered in the restaurant menu, grouped by their vegetarian status.",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": {
+                "property_name": "DishName",
+                "metrics": "COUNT",
+                "top_occurrences_limit": null
+            },
+            "boolean_property_aggregation": null,
+            "groupby_property": "IsVegetarian"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "What are the top three most common vegetarian dish names in the restaurant menu and how many dishes are there in total?",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": {
+                "property_name": "DishName",
+                "metrics": "TOP_OCCURRENCES",
+                "top_occurrences_limit": 3
+            },
+            "boolean_property_aggregation": null,
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "For each dish category in the restaurant menu, determine the percentage of vegetarian dishes.",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": {
+                "property_name": "IsVegetarian",
+                "metrics": "PERCENTAGE_TRUE"
+            },
+            "groupby_property": "DishName"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Give me the percentage of takeaway orders from the CustomerOrders collection.",
+            "target_collection": "CustomerOrders",
+            "search_query": null,
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": {
+                "property_name": "IsTakeaway",
+                "metrics": "PERCENTAGE_TRUE"
+            },
+            "groupby_property": null
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"RestaurantMenu\",\"properties\":[{\"name\":\"DishName\",\"data_type\":[\"string\"],\"description\":\"The name of the dish offered in the restaurant menu.\"},{\"name\":\"Price\",\"data_type\":[\"number\"],\"description\":\"The price of the dish.\"},{\"name\":\"IsVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the dish is vegetarian.\"}],\"envisioned_use_case_overview\":\"The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.\"},{\"name\":\"CustomerOrders\",\"properties\":[{\"name\":\"CustomerName\",\"data_type\":[\"string\"],\"description\":\"The name of the customer who places the order.\"},{\"name\":\"TotalAmount\",\"data_type\":[\"number\"],\"description\":\"The total amount for the customer's order.\"},{\"name\":\"IsTakeaway\",\"data_type\":[\"boolean\"],\"description\":\"Indicates whether the order is for takeaway or dine-in.\"}],\"envisioned_use_case_overview\":\"The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.\"},{\"name\":\"StaffMembers\",\"properties\":[{\"name\":\"StaffName\",\"data_type\":[\"string\"],\"description\":\"The name of the staff member.\"},{\"name\":\"ExperienceYears\",\"data_type\":[\"number\"],\"description\":\"The number of years of experience the staff member has.\"},{\"name\":\"IsOnDuty\",\"data_type\":[\"boolean\"],\"description\":\"Indicates if the staff member is currently on duty.\"}],\"envisioned_use_case_overview\":\"The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find all vegetarian dishes, along with their average price, grouped by whether they are vegetarian or not, and highlight dishes with names starting with 'Veggie'.",
+            "target_collection": "RestaurantMenu",
+            "search_query": null,
+            "integer_property_filter": null,
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": null,
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": "IsVegetarian"
+        }
+    }
+]

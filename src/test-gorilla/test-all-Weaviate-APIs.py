@@ -1,4 +1,4 @@
-from src.models import WeaviateQuery
+from src.models import WeaviateQueryWithSchema, WeaviateQuery
 from src.models import (
     IntPropertyFilter,
     TextPropertyFilter,
@@ -27,7 +27,7 @@ class QueryPredictionResult(BaseModel):
     query_index: int
     database_schema_index: int
     natural_language_query: str
-    ground_truth_query: WeaviateQuery
+    ground_truth_query: WeaviateQueryWithSchema
     predicted_query: Optional[WeaviateQuery]
     ast_score: float
     error: Optional[str]
@@ -87,13 +87,17 @@ def pretty_print_weaviate_query(query: WeaviateQuery) -> None:
     print(f"  \033[92mNatural Language Query:\033[0m {query.corresponding_natural_language_query}")
 
 print("\033[92m=== Loading Weaviate Queries ===\033[0m")
-with open("../../data/synthetic-weaviate-queries.json", "r") as json_file:
+with open("../../data/synthetic-weaviate-queries-with-schemas.json", "r") as json_file:
     weaviate_queries_raw = json.load(json_file)
     print(f"\033[92mLoaded {len(weaviate_queries_raw)} raw queries\033[0m")
     weaviate_queries = []
+    database_schemas = []
     
-    for query_idx, query in enumerate(weaviate_queries_raw):
+    for query_idx, query_data in enumerate(weaviate_queries_raw):
         print(f"\033[92mProcessing query {query_idx + 1}\033[0m")
+        query = query_data["query"]
+        database_schema = query_data["database_schema"]
+        
         # Create filter objects if they exist
         int_filter = None
         if query["integer_property_filter"]:
@@ -144,9 +148,14 @@ with open("../../data/synthetic-weaviate-queries.json", "r") as json_file:
                 bool_agg_data["property_name"] = bool_agg_data["property_name"][0].lower() + bool_agg_data["property_name"][1:]
             bool_agg = BooleanAggregation(**bool_agg_data)
 
-        # Create WeaviateQuery object
-        print(f"\033[92mCreating WeaviateQuery object for query {query_idx + 1}\033[0m")
-        weaviate_query = WeaviateQuery(
+        # Create WeaviateQueryWithSchema object
+        print(f"\033[92mCreating WeaviateQueryWithSchema object for query {query_idx + 1}\033[0m")
+        
+        # Convert database_schema string to dict if needed
+        if isinstance(database_schema, str):
+            database_schema = json.loads(database_schema)
+            
+        weaviate_query = WeaviateQueryWithSchema(
             target_collection=query["target_collection"],
             search_query=query["search_query"],
             integer_property_filter=int_filter,
@@ -156,14 +165,15 @@ with open("../../data/synthetic-weaviate-queries.json", "r") as json_file:
             text_property_aggregation=text_agg,
             boolean_property_aggregation=bool_agg,
             groupby_property=query["groupby_property"][0].lower() + query["groupby_property"][1:] if query["groupby_property"] else None,
-            corresponding_natural_language_query=query["corresponding_natural_language_query"]
+            corresponding_natural_language_query=query["corresponding_natural_language_query"],
+            database_schema=database_schema
         )
         weaviate_queries.append(weaviate_query)
         print(f"\033[92mSuccessfully processed query {query_idx + 1}\033[0m")
 
 def abstract_syntax_tree_match_score(
         predicted_apis: WeaviateQuery,
-        ground_truth: WeaviateQuery
+        ground_truth: WeaviateQueryWithSchema
     ) -> float:
     """
     Calculate a matching score between predicted and ground truth WeaviateQuery objects.
@@ -174,11 +184,11 @@ def abstract_syntax_tree_match_score(
     
     # Weight definitions for different components
     weights = {
-        'target_collection': 0.3,
-        'search_query': 0.1,
-        'filters': 0.25,
-        'aggregations': 0.25,
-        'groupby': 0.1
+        'target_collection': 0.2,
+        'search_query': 0.2,
+        'filters': 0.2,
+        'aggregations': 0.2,
+        'groupby': 0.2
     }
     
     # Check target collection match (exact match required)
@@ -312,16 +322,12 @@ openai_api_key = ""
 print("\033[92m=== Initializing LM Service ===\033[0m")
 lm_service = LMService(
     model_provider = "openai",
-    model_name = "gpt-4o-mini",
+    model_name = "gpt-4o",
     api_key = openai_api_key
 )
 
 print("\033[92m=== Loading Database Schemas ===\033[0m")
-with open("../../data/cleaned-simple-3-collection-schemas.json", "r") as json_file:
-    database_schemas = json.load(json_file)
-
-database_schemas = [json.loads(schema) if isinstance(schema, str) else schema for schema in database_schemas]
-print(f"\033[92mLoaded {len(database_schemas)} database schemas\033[0m")
+# No need to load schemas separately since they're now included with queries
 
 import weaviate
 import requests
@@ -341,29 +347,36 @@ total_ast_score = 0  # Track total AST score
 print("\033[92m=== Initializing First Schema ===\033[0m")
 # Initialize first schema
 weaviate_client.collections.delete_all()
-for class_schema in database_schemas[0]["weaviate_collections"]:
-    clean_schema = {
-        'class': class_schema['class'],
-        'description': class_schema.get('description', ''),
-        'properties': [
-            {
-                'name': prop['name'],
-                'description': prop.get('description', ''),
-                'dataType': prop['data_type']
-            }
-            for prop in class_schema.get('properties', [])
-        ],
-        'vectorizer': class_schema.get('vectorizer', 'text2vec-transformers'),
-        'vectorIndexType': class_schema.get('vectorIndexType', 'hnsw'),
-    }
 
-    schema_str = json.dumps(clean_schema)
+# Use the database schema from the first query
+class_schemas = weaviate_queries[0].database_schema.weaviate_collections
+for class_schema in class_schemas:
+    # Convert class_schema to dict format expected by Weaviate
+    schema_dict = {
+        'class': class_schema.name,
+        'description': class_schema.envisioned_use_case_overview,
+        'properties': []
+    }
+    
+    # Add properties
+    for prop in class_schema.properties:
+        schema_dict['properties'].append({
+            'name': prop.name,
+            'description': prop.description,
+            'dataType': prop.data_type
+        })
+
+    # Add vectorizer settings
+    schema_dict['vectorizer'] = 'text2vec-transformers'
+    schema_dict['vectorIndexType'] = 'hnsw'
+
+    schema_str = json.dumps(schema_dict)
     response = requests.post(
         url=url,
         data=schema_str,
         headers={'Content-Type': 'application/json'}
     )
-    print(f"\033[92mCreated collection: {class_schema['class']}\033[0m")
+    print(f"\033[92mCreated collection: {schema_dict['class']}\033[0m")
 
 collections_description, collections_enum = get_collections_info(weaviate_client)
 tools = [build_weaviate_query_tool(collections_description=collections_description, collections_list=collections_enum)]
@@ -372,7 +385,7 @@ print("\033[92m=== Starting Query Processing ===\033[0m")
 # Run experiment
 for idx, query in enumerate(weaviate_queries):
     print(f"\n\033[92m=== Processing Query {idx+1}/{len(weaviate_queries)} ===\033[0m")
-    print(query)
+    
     if idx > 0 and idx % 64 == 0:
         # Update per-schema scores
         per_schema_scores[database_schema_index] = sum(r.ast_score for r in detailed_results[-64:]) / 64
@@ -383,29 +396,35 @@ for idx, query in enumerate(weaviate_queries):
         print(f"\033[92m=== Switching to Schema {database_schema_index} ===\033[0m")
         weaviate_client.collections.delete_all()
         
-        for class_schema in database_schemas[database_schema_index]["weaviate_collections"]:
-            clean_schema = {
-                'class': class_schema['class'],
-                'description': class_schema.get('description', ''),
-                'properties': [
-                    {
-                        'name': prop['name'],
-                        'description': prop.get('description', ''),
-                        'dataType': prop['data_type']
-                    }
-                    for prop in class_schema.get('properties', [])
-                ],
-                'vectorizer': class_schema.get('vectorizer', 'text2vec-transformers'),
-                'vectorIndexType': class_schema.get('vectorIndexType', 'hnsw'),
+        # Use the database schema from the current query
+        class_schemas = weaviate_queries[idx].database_schema.weaviate_collections
+        for class_schema in class_schemas:
+            # Convert class_schema to dict format expected by Weaviate
+            schema_dict = {
+                'class': class_schema.name,
+                'description': class_schema.envisioned_use_case_overview,
+                'properties': []
             }
+            
+            # Add properties
+            for prop in class_schema.properties:
+                schema_dict['properties'].append({
+                    'name': prop.name,
+                    'description': prop.description,
+                    'dataType': prop.data_type
+                })
 
-            schema_str = json.dumps(clean_schema)
+            # Add vectorizer settings
+            schema_dict['vectorizer'] = 'text2vec-transformers'
+            schema_dict['vectorIndexType'] = 'hnsw'
+
+            schema_str = json.dumps(schema_dict)
             response = requests.post(
                 url=url,
                 data=schema_str,
                 headers={'Content-Type': 'application/json'}
             )
-            print(f"\033[92mCreated collection: {class_schema['class']}\033[0m")
+            print(f"\033[92mCreated collection: {schema_dict['class']}\033[0m")
 
         collections_description, collections_enum = get_collections_info(weaviate_client)
         tools = [build_weaviate_query_tool(collections_description=collections_description, collections_list=collections_enum)]
@@ -460,12 +479,8 @@ for idx, query in enumerate(weaviate_queries):
                 groupby_property=group_by_model,
                 corresponding_natural_language_query=nl_query
             )
-            print("\033[1;92mPredicted:\033[0m")
-            print(predicted_query)
-            print("\033[1;92mGround truth:\033[0m") 
-            print(query)
 
-            ast_score = abstract_syntax_tree_match_score(query, predicted_query)
+            ast_score = abstract_syntax_tree_match_score(predicted_query, query)
             result = QueryPredictionResult(
                 query_index=idx,
                 database_schema_index=database_schema_index,
@@ -513,7 +528,7 @@ experiment_summary = ExperimentSummary(
 
 print("\033[92m=== Saving Results ===\033[0m")
 # Save results
-with open("gpt-4o-mini-experiment_results.json", "w") as f:
+with open("gpt-4o-experiment_results.json", "w") as f:
     f.write(experiment_summary.model_dump_json(indent=2))
 
 print("\n\033[92mExperiment Summary:\033[0m")

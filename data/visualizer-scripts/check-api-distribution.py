@@ -1,6 +1,6 @@
 import json
 
-with open("../synthetic-weaviate-queries.json", "r") as f:
+with open("../new-synthetic-weaviate-queries-with-schemas.json", "r") as f:
     data = json.load(f)
 
 print(json.dumps(data[0], indent=4))
@@ -20,7 +20,7 @@ properties_to_check = [
 counts = {}
 
 for prop in properties_to_check:
-    counts[prop] = sum(d[prop] is not None for d in data)
+    counts[prop] = sum(d['query'][prop] is not None for d in data)
 
 print(json.dumps(counts, indent=4))
 
