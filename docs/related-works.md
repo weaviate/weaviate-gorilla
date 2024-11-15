@@ -24,10 +24,14 @@
 13. LOTUS: Enabling Semantic Queries with LLMs Over Tables of Unstructured and Structured Data. Liana Patel, Siddharth Jha, Carlos Guestrin, Matei Zaharia. 2024. [Arxiv Link](https://arxiv.org/abs/2407.11418)
 14. SUQL: Conversational Search over Structured and Unstructured Data with Large Language Models. Shicheng Liu, Jialiang Xu, Wesley Tjangnaka, Sina J. Semnani, Chen Jie Yu, Monica S. Lam. 2023. [Arxiv Link](https://arxiv.org/abs/2311.09818)
 
+## Structured Outputs
+15. Efficient Guided Generation for Large Language Models. Brandon T. Willard, Remi Louf. 2023. [Arxiv Link](https://arxiv.org/abs/2307.09702)
+16. StructuredRAG: JSON Response Formatting with Large Language Models. Connor Shorten, Charles Pierse, Thomas Benjamin Smith, Erika Cardenas, Akanksha Sharma, John Trengrove, Bob van Luijt. 2024. [Arxiv Link](https://arxiv.org/abs/2408.11061)
+
 ## Query Writing
-15. Baleen: Robust Multi-Hop Reasoning at Scale via Condensed Retrieval. Omar Khattab, Christopher Potts, Matei Zaharia. 2022. [Arxiv Link](https://arxiv.org/abs/2101.00436)
-16. Decomposing Complex Queries for Tip-of-the-tongue Retrieval. Kevin Lin, Kyle Lo, Joseph E. Gonzalez, Dan Klein. 2023. [Arxiv Link](https://arxiv.org/abs/2305.15053)
-17. Grounding by Trying: LLMs with Reinforcement Learning-Enhanced Retrieval. Sheryl Hsu, Omar Khattab, Chelsea Finn, Archit Sharma. 2024. [Arxiv Link](https://arxiv.org/pdf/2410.23214?)
+17. Baleen: Robust Multi-Hop Reasoning at Scale via Condensed Retrieval. Omar Khattab, Christopher Potts, Matei Zaharia. 2022. [Arxiv Link](https://arxiv.org/abs/2101.00436)
+18. Decomposing Complex Queries for Tip-of-the-tongue Retrieval. Kevin Lin, Kyle Lo, Joseph E. Gonzalez, Dan Klein. 2023. [Arxiv Link](https://arxiv.org/abs/2305.15053)
+19. Grounding by Trying: LLMs with Reinforcement Learning-Enhanced Retrieval. Sheryl Hsu, Omar Khattab, Chelsea Finn, Archit Sharma. 2024. [Arxiv Link](https://arxiv.org/pdf/2410.23214?)
 
 ==
 <br />
