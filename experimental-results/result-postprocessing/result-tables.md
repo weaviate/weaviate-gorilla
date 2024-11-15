@@ -31,3 +31,5 @@
 | Text Aggregations | 80 | 74.17% | 66.17% |
 | Boolean Aggregations | 80 | 77.92% | 69.50% |
 | GroupBy Operations | 160 | 66.50% | 58.37% |
+
+![Weaviate Gorilla](./visuals/weaviate-gorillas/gorilla-124.png)
