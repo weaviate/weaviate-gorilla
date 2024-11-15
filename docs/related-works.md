@@ -21,10 +21,12 @@
 
 ## Text-to-SQL
 12. BIRD-SQL
+13. LOTUS: Enabling Semantic Queries with LLMs Over Tables of Unstructured and Structured Data. Liana Patel, Siddharth Jha, Carlos Guestrin, Matei Zaharia. 2024. [Arxiv Link](https://arxiv.org/abs/2407.11418)
+14. SUQL: Conversational Search over Structured and Unstructured Data with Large Language Models. Shicheng Liu, Jialiang Xu, Wesley Tjangnaka, Sina J. Semnani, Chen Jie Yu, Monica S. Lam. 2023. [Arxiv Link](https://arxiv.org/abs/2311.09818)
 
 ## Query Writing
-13. Baleen: Robust Multi-Hop Reasoning at Scale via Condensed Retrieval. Omar Khattab, Christopher Potts, Matei Zaharia. 2022. [Arxiv Link](https://arxiv.org/abs/2101.00436)
-14. Grounding by Trying: LLMs with Reinforcement Learning-Enhanced Retrieval. Sheryl Hsu, Omar Khattab, Chelsea Finn, Archit Sharma. 2024. [Arxiv Link](https://arxiv.org/pdf/2410.23214?)
+15. Baleen: Robust Multi-Hop Reasoning at Scale via Condensed Retrieval. Omar Khattab, Christopher Potts, Matei Zaharia. 2022. [Arxiv Link](https://arxiv.org/abs/2101.00436)
+16. Grounding by Trying: LLMs with Reinforcement Learning-Enhanced Retrieval. Sheryl Hsu, Omar Khattab, Chelsea Finn, Archit Sharma. 2024. [Arxiv Link](https://arxiv.org/pdf/2410.23214?)
 
 ==
 <br />
