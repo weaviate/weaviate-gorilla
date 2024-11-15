@@ -25,22 +25,34 @@ gpt_4o_mini += [gpt_4o_mini[0]]
 angles = np.linspace(0, 2 * np.pi, len(categories), endpoint=True)
 
 # Plotting
-fig, ax = plt.subplots(figsize=(8, 8), subplot_kw=dict(polar=True))
+# Stylized Radar Chart with Semi-Transparent Outer Circle
+fig, ax = plt.subplots(figsize=(10, 10), subplot_kw=dict(polar=True))
 
-ax.plot(angles, gpt_4o, label="gpt-4o", linewidth=2)
-ax.fill(angles, gpt_4o, alpha=0.25)
+# Styling for gpt-4o
+ax.plot(angles, gpt_4o, label="gpt-4o", color=cmap(2), linewidth=3)
+ax.fill(angles, gpt_4o, color=cmap(2), alpha=0.3)
 
-ax.plot(angles, gpt_4o_mini, label="gpt-4o-mini", linewidth=2, linestyle='dashed')
-ax.fill(angles, gpt_4o_mini, alpha=0.25)
+# Styling for gpt-4o-mini
+ax.plot(angles, gpt_4o_mini, label="gpt-4o-mini", color=cmap(1), linewidth=3, linestyle='dashed')
+ax.fill(angles, gpt_4o_mini, color=cmap(1), alpha=0.3)
 
-# Add category labels
+# Enhance axis aesthetics
 ax.set_yticks([0.2, 0.4, 0.6, 0.8])
-ax.set_yticklabels(["0.2", "0.4", "0.6", "0.8"])
+ax.set_yticklabels(["0.2", "0.4", "0.6", "0.8"], color="gray", fontsize=12)
 ax.set_xticks(angles[:-1])
-ax.set_xticklabels(categories[:-1])
+ax.set_xticklabels(categories[:-1], color="darkgreen", fontsize=14)
 
-# Add legend and title
-ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1.1))
-ax.set_title("Radar Chart: Comparison of gpt-4o and gpt-4o-mini", va='bottom')
+# Customize outer circle with transparency
+ax.spines['polar'].set_edgecolor("black")
+ax.spines['polar'].set_alpha(0.5)  # Add transparency to the border
+
+# Add a legend and title
+ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1.1), fontsize=12, frameon=False)
+ax.set_title("gpt-4o vs. gpt-4o-mini", color="darkgreen", fontsize=16, weight="bold")
+
+# Set background color and grid styling
+ax.set_facecolor("#f7fff7")
+ax.grid(color="lightgray", linestyle="--", linewidth=0.5)
 
 plt.show()
+
