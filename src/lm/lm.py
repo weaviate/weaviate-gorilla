@@ -104,7 +104,7 @@ class LMService():
             ),
         ).model_dump_json()]
         
-    def one_step_function_selection_test(self, prompt: str, tools: list[Tool]):
+    def one_step_function_selection_test(self, prompt: str, tools: list[Tool] | list[AnthropicTool]):
         if self.model_provider == "openai":
             messages = [
                 {
@@ -123,6 +123,11 @@ class LMService():
                 tools=tools
             )
             return response
+        if self.model_provider == "anthropic":
+            messages = [
+
+            ]
+
         else:
             raise ValueError(f"Function calling not yet supporetd for the LMService with {self.model_provider}")
 
