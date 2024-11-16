@@ -146,6 +146,7 @@ class AnthropicTool(BaseModel):
     description: str
     input_schema: AnthropicToolInputSchema
 
+# Abstract this to one function that takes the model_provider as an argument
 def build_weaviate_query_tool_for_anthropic(collections_description: str, collections_list: list[str]) -> AnthropicTool:
     return AnthropicTool(
         name="query_database",
