@@ -87,6 +87,7 @@ class LMService():
         print("\033[92mLM Connection test:\033[0m")
         print(response)
 
+    # switch this on `openai` | `anthropic`
     def connection_test_with_tools(self) -> None:
         prompt = "What is 18549023948 multiplied by 84392348?"
         tools = [Tool(
