@@ -133,9 +133,18 @@ class LMService():
             return response
         if self.model_provider == "anthropic":
             messages = [
-
+                {
+                    "role": "user",
+                    "content": prompt
+                }
             ]
-
+            response = self.lm_client.messages.create(
+                model=self.model_name,
+                max_tokens=4096,
+                tools=[tool.model_dump() for tool in tools],
+                messages=messages
+            )
+            return response
         else:
             raise ValueError(f"Function calling not yet supporetd for the LMService with {self.model_provider}")
 
