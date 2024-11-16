@@ -131,6 +131,12 @@ class LMService():
                 messages=messages,
                 tools=tools
             )
+            '''
+            Parse here,
+            if response.tool_calls:
+                response.choices[0].message
+                tool_call_args = json.loads(response.tool_calls[0].function.arguments)
+            '''
             return response
         if self.model_provider == "anthropic":
             messages = [
