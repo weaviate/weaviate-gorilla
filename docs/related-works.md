@@ -5,7 +5,8 @@
 2. Toolformer: Language Models Can Teach Themselves to use Tools. Timo Schick, Jane Dwivedi-Yu, Roberto Dessi, Roberta Raileanu, Maria Lomeli, Luke Zettlemoyer, Niccola Cancedda, Thomas Scialom. 2023. [Arxiv link](https://arxiv.org/abs/2302.04761)
 3. AvaTaR: Optimizing LLM Agents for Tool-Assisted Knowledge Retrieval. Shirley Wu, Shiyu Zhao, Qian Huang, Kexin Huang, Michihiro Yasunaga, Kaidi Cao, Vassilis N. Ioannidis, Karthik Subbian, Jure Leskovec, James Zou. 2024. [Arxiv Link](https://arxiv.org/pdf/2406.11200)
 4. Agentic Information Retrieval. Weinan Zhang, Junwei Liao, Ning Li, Kounianhua Du. 2024. [Arxiv Link](https://arxiv.org/abs/2410.09713)
-5. Agent Workflow Memory. Zora Zhiruo Wang, Jiayuan Mao, Daniel Fried, Graham Neubig. 2024. [Arxiv Link](https://arxiv.org/abs/2409.07429)
+5. WebGPT: Browser-assisted question-answering with human feedback. Reiichiro Nakano et al. 2021. [Arxiv Link](https://arxiv.org/abs/2112.09332)
+6. Agent Workflow Memory. Zora Zhiruo Wang, Jiayuan Mao, Daniel Fried, Graham Neubig. 2024. [Arxiv Link](https://arxiv.org/abs/2409.07429)
 
 ## Synthetic Data Creation
 6. Self-Instruct: Aligning Language Models with Self-Generated Instructions. Yizhong Wang, Yeganeh Kordi, Swaroop Mishra, Alisa Liu, Noah A. Smith, Daniel Khashabi, Hannaneh Hajishirzi. 2023. [Arxiv Link](https://arxiv.org/abs/2212.10560)
