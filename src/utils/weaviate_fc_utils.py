@@ -146,6 +146,76 @@ class AnthropicTool(BaseModel):
     description: str
     input_schema: AnthropicToolInputSchema
 
+def build_weaviate_query_tool_for_anthropic(collections_description: str, collections_list: list[str]) -> AnthropicTool:
+    return AnthropicTool(
+        name="query_database",
+        description=f"""Query a database.
+
+        Available collections in this database:
+        {collections_description}""",
+        input_schema=AnthropicToolInputSchema(
+            type="object",
+            properties={
+                "collection_name": {
+                    "type": "string",
+                    "description": "The collection to query",
+                    "enum": collections_list
+                },
+                "search_query": {
+                    "type": "string",
+                    "description": "Optional search query to find semantically relevant items."
+                },
+                "filter_string": {
+                    "type": "string", 
+                    "description": """
+                    Optional filter expression using prefix notation to ensure unambiguous order of operations.
+                    
+                    Basic condition syntax: property_name:operator:value
+                    
+                    Compound expressions use prefix AND/OR with parentheses:
+                    - AND(condition1, condition2)
+                    - OR(condition1, condition2)
+                    - AND(condition1, OR(condition2, condition3))
+                    
+                    Examples:
+                    - Simple: age:>:25
+                    - Compound: AND(age:>:25, price:<:1000)
+                    - Complex: OR(AND(age:>:25, price:<:1000), category:=:'electronics')
+                    - Nested: AND(status:=:'active', OR(price:<:50, AND(rating:>:4, stock:>:100)))
+                    
+                    Supported operators:
+                    - Comparison: =, >, <, >=, <= 
+                    - Text only: LIKE
+
+                    IMPORTANT!!! Please review the collection schema to make sure the property name is spelled correctly!! THIS IS VERY IMPORTANT!!!
+                    """
+                },
+                "aggregate_string": {
+                    "type": "string",
+                    "description": """
+                    Optional aggregate expression using syntax: property_name:aggregation_type.
+
+                    Group by with: GROUP_BY(property_name) (limited to one property).
+
+                    Aggregation Types by Data Type:
+
+                    Text: COUNT, TYPE, TOP_OCCURRENCES[limit]
+                    Numeric: COUNT, TYPE, MIN, MAX, MEAN, MEDIAN, MODE, SUM
+                    Boolean: COUNT, TYPE, TOTAL_TRUE, TOTAL_FALSE, PERCENTAGE_TRUE, PERCENTAGE_FALSE
+                    Date: COUNT, TYPE, MIN, MAX, MEAN, MEDIAN, MODE
+
+                    Examples:
+
+                    Simple: Article:COUNT, wordCount:COUNT,MEAN,MAX, category:TOP_OCCURRENCES[5]
+                    Grouped: GROUP_BY(publication):COUNT, GROUP_BY(category):COUNT,price:MEAN,MAX
+
+                    Combine with commas: GROUP_BY(publication):COUNT,wordCount:MEAN,category:TOP_OCCURRENCES[5]
+                    """
+                }
+            },
+            required=["collection_name"]
+        )
+    )
 
 def _build_weaviate_filter(filter_string: str) -> Filter:
     def _parse_condition(condition: str) -> Filter:
