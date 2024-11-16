@@ -4,7 +4,14 @@ import anthropic
 from typing import Literal
 from pydantic import BaseModel
 from src.models import TestLMConnectionModel
-from src.utils.weaviate_fc_utils import Tool, Function, ParameterProperty, Parameters, AnthropicTool, AnthropicToolInputSchema
+from src.utils.weaviate_fc_utils import (
+    Tool, 
+    Function, 
+    ParameterProperty, 
+    Parameters, 
+    AnthropicTool, 
+    AnthropicToolInputSchema
+)
 
 LMModelProvider = Literal["ollama", "openai"]
 
