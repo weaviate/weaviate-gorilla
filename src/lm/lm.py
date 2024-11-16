@@ -1,5 +1,6 @@
 import ollama
 import openai
+import anthropic
 from typing import Literal
 from pydantic import BaseModel
 from src.models import TestLMConnectionModel
@@ -21,6 +22,10 @@ class LMService():
                 self.lm_client = ollama
             case "openai":
                 self.lm_client = openai.OpenAI(
+                    api_key=api_key
+                )
+            case "anthropic":
+                self.lm_client = anthropic.Anthropic(
                     api_key=api_key
                 )
             case _:
