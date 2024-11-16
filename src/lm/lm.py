@@ -145,6 +145,11 @@ class LMService():
                 tools=[tool.model_dump() for tool in tools],
                 messages=messages
             )
+            '''
+            if response.stop_reason == "tool_use":
+                tool_use = next(block for block in response.content if block.type == "tool_use)
+                tool_name, tool_input = tool_use.name, tool_use.input
+            '''
             return response
         else:
             raise ValueError(f"Function calling not yet supporetd for the LMService with {self.model_provider}")
