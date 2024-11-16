@@ -11,7 +11,7 @@ from src.models import (
     GroupBy
 )
 import re
-from typing import Tuple, Union
+from typing import Tuple, Union, Any
 
 def get_collections_info(client: weaviate.WeaviateClient) -> tuple[str, list[str]]:
     """
@@ -134,6 +134,18 @@ def build_weaviate_query_tool(collections_description: str, collections_list: li
         )
     )
 )
+
+# Anthropic Tool
+class AnthropicToolInputSchema(BaseModel):
+    type: str
+    properties: dict[str, Any]
+    required: list[str]
+
+class AnthropicTool(BaseModel):
+    name: str
+    description: str
+    input_schema: AnthropicToolInputSchema
+
 
 def _build_weaviate_filter(filter_string: str) -> Filter:
     def _parse_condition(condition: str) -> Filter:
