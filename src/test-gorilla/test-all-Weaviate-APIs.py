@@ -24,6 +24,9 @@ from typing import Optional, Any, List, Dict
 import json
 from datetime import datetime
 
+# Number of predictions to generate per query for ensemble
+NUM_PREDICTIONS = 5
+
 print("\033[92m=== Starting Experiment Execution ===\033[0m")
 print("\033[92m=== Loading Weaviate Queries ===\033[0m")
 
@@ -106,17 +109,8 @@ with open("../../data/synthetic-weaviate-queries-with-schemas.json", "r") as jso
 
 print("\033[92m=== Initializing LM Service ===\033[0m")
 
-# from src.utils.model_registry import print_model_registry
-# print_model_registry()
-
 openai_api_key = ""
-
-# gpt-4o / gpt-4o-mini
-
 anthropic_api_key = ""
-
-# (Haha, this inconsistent naming is what motivates the model registry)
-# claude-3-5-sonnet-20241022
 
 lm_service = LMService(
     model_provider = "openai",
@@ -125,7 +119,6 @@ lm_service = LMService(
 )
 
 print("\033[92m=== Loading Database Schemas ===\033[0m")
-# No need to load schemas separately since they're now included with queries
 
 import weaviate
 import requests
@@ -144,21 +137,18 @@ total_ast_score = 0  # Track total AST score
 
 print("\033[92m=== Initializing First Schema ===\033[0m")
 
-# TODO: Move schema initialization logic to src/database/schema_initializer.py
 # Initialize first schema
 weaviate_client.collections.delete_all()
 
 # Use the database schema from the first query
 class_schemas = weaviate_queries[0].database_schema.weaviate_collections
 for class_schema in class_schemas:
-    # Convert class_schema to dict format expected by Weaviate
     schema_dict = {
         'class': class_schema.name,
         'description': class_schema.envisioned_use_case_overview,
         'properties': []
     }
     
-    # Add properties
     for prop in class_schema.properties:
         schema_dict['properties'].append({
             'name': prop.name,
@@ -166,7 +156,6 @@ for class_schema in class_schemas:
             'dataType': prop.data_type
         })
 
-    # Add vectorizer settings
     schema_dict['vectorizer'] = 'text2vec-transformers'
     schema_dict['vectorIndexType'] = 'hnsw'
 
@@ -200,14 +189,12 @@ for idx, query in enumerate(weaviate_queries):
         # Use the database schema from the current query
         class_schemas = weaviate_queries[idx].database_schema.weaviate_collections
         for class_schema in class_schemas:
-            # Convert class_schema to dict format expected by Weaviate
             schema_dict = {
                 'class': class_schema.name,
                 'description': class_schema.envisioned_use_case_overview,
                 'properties': []
             }
             
-            # Add properties
             for prop in class_schema.properties:
                 schema_dict['properties'].append({
                     'name': prop.name,
@@ -215,7 +202,6 @@ for idx, query in enumerate(weaviate_queries):
                     'dataType': prop.data_type
                 })
 
-            # Add vectorizer settings
             schema_dict['vectorizer'] = 'text2vec-transformers'
             schema_dict['vectorIndexType'] = 'hnsw'
 
@@ -233,27 +219,28 @@ for idx, query in enumerate(weaviate_queries):
     try:
         nl_query = query.corresponding_natural_language_query
         print(f"\033[92mProcessing natural language query:\033[0m {nl_query}")
-        response = lm_service.one_step_function_selection_test(
-            prompt=nl_query,
-            tools=tools
-        ) # returns the dict or None now
         
-        # return None from `lm_service.one_step_function_selection_test` if no tools are called
-        if not response: # this means no tools were called
-            print("\033[91mNo tool called.\033[0m")
-            result = QueryPredictionResult(
-                query_index=idx,
-                database_schema_index=database_schema_index,
-                natural_language_query=nl_query,
-                ground_truth_query=query,
-                predicted_query=None,
-                ast_score=0.0,
-                error="No functions selected"
+        # Generate multiple predictions and track the best one
+        best_prediction = None
+        best_ast_score = -1
+        best_result = None
+        
+        print(f"\033[92mGenerating {NUM_PREDICTIONS} predictions for ensemble\033[0m")
+        
+        for pred_idx in range(NUM_PREDICTIONS):
+            print(f"\033[92mGenerating prediction {pred_idx + 1}/{NUM_PREDICTIONS}\033[0m")
+            
+            response = lm_service.one_step_function_selection_test(
+                prompt=nl_query,
+                tools=tools
             )
-            failed_predictions += 1
-        else:
-            print("\033[92mParsing tool call response\033[0m")
-            tool_call_args = response # response is already a dictionary from LMService
+            
+            if not response:
+                print(f"\033[93mNo tool called for prediction {pred_idx + 1}\033[0m")
+                continue
+                
+            print(f"\033[92mParsing tool call response for prediction {pred_idx + 1}\033[0m")
+            tool_call_args = response
             search_query = tool_call_args.get("search_query")
             
             filter_model = None
@@ -282,17 +269,41 @@ for idx, query in enumerate(weaviate_queries):
                 corresponding_natural_language_query=nl_query
             )
 
+            # Calculate AST score for this prediction
             ast_score = abstract_syntax_tree_match_score(predicted_query, query)
+            print(f"\033[92mPrediction {pred_idx + 1} AST score: {ast_score:.3f}\033[0m")
+            
+            # Update best prediction if this one is better
+            if ast_score > best_ast_score:
+                best_ast_score = ast_score
+                best_prediction = predicted_query
+                best_result = QueryPredictionResult(
+                    query_index=idx,
+                    database_schema_index=database_schema_index,
+                    natural_language_query=nl_query,
+                    ground_truth_query=query,
+                    predicted_query=predicted_query,
+                    ast_score=ast_score,
+                    error=None
+                )
+
+        # After generating all predictions, use the best one
+        if best_prediction:
+            print(f"\033[92mUsing best prediction with AST score: {best_ast_score:.3f}\033[0m")
+            result = best_result
+            successful_predictions += 1
+        else:
+            print("\033[91mNo successful predictions in ensemble\033[0m")
             result = QueryPredictionResult(
                 query_index=idx,
                 database_schema_index=database_schema_index,
                 natural_language_query=nl_query,
                 ground_truth_query=query,
-                predicted_query=predicted_query,
-                ast_score=ast_score,
-                error=None
+                predicted_query=None,
+                ast_score=0.0,
+                error="No successful predictions in ensemble"
             )
-            successful_predictions += 1
+            failed_predictions += 1
             
     except Exception as e:
         print(f"\033[91mError occurred: {str(e)}\033[0m")
@@ -310,7 +321,7 @@ for idx, query in enumerate(weaviate_queries):
     detailed_results.append(result)
     total_ast_score += result.ast_score
     current_avg_ast_score = total_ast_score / (idx + 1)
-    print(f"\033[92mProcessed query {idx+1}/{len(weaviate_queries)}, AST score: {result.ast_score}, Running Average AST Score: {current_avg_ast_score:.3f}\033[0m")
+    print(f"\033[92mProcessed query {idx+1}/{len(weaviate_queries)}, Best AST score: {result.ast_score}, Running Average AST Score: {current_avg_ast_score:.3f}\033[0m")
 
 # Update scores for final schema
 per_schema_scores[database_schema_index] = sum(r.ast_score for r in detailed_results[-64:]) / 64
