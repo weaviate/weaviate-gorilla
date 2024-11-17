@@ -75,9 +75,6 @@ class LMService():
                         messages=messages,
                         response_format=output_model
                     )
-                    print("HERE")
-                    print(response)
-                    print("HERE 2")
                     return response.choices[0].message.parsed
                 else:
                     response = self.lm_client.chat.completions.create(
