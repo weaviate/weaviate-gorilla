@@ -12,6 +12,7 @@ from src.utils.weaviate_fc_utils import (
     AnthropicTool, 
     AnthropicToolInputSchema
 )
+import json
 
 LMModelProvider = Literal["ollama", "openai"]
 
@@ -133,13 +134,13 @@ class LMService():
                 tools=tools
             ).choices[0].message
             
-            '''
-            Parse here,
             if response.tool_calls:
                 response.choices[0].message
                 tool_call_args = json.loads(response.tool_calls[0].function.arguments)
-            '''
-            return response
+                return tool_call_args
+            else:
+                return None
+            
         if self.model_provider == "anthropic":
             messages = [
                 {
