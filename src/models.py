@@ -241,6 +241,7 @@ class Tool(BaseModel):
 class TestLMConnectionModel(BaseModel):
     generic_response: str
 
+# Execution Models
 class QueryPredictionResult(BaseModel):
     query_index: int
     database_schema_index: int
