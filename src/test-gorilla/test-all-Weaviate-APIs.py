@@ -35,14 +35,12 @@ with open("../../data/synthetic-weaviate-queries-with-schemas.json", "r") as jso
     database_schemas = []
     
     for query_idx, query_data in enumerate(weaviate_queries_raw):
-        print(f"\033[92mProcessing query {query_idx + 1}\033[0m")
         query = query_data["query"]
         database_schema = query_data["database_schema"]
         
         # Create filter objects if they exist
         int_filter = None
         if query["integer_property_filter"]:
-            print(f"\033[92mProcessing integer filter for query {query_idx + 1}\033[0m")
             int_filter_data = query["integer_property_filter"].copy()
             if int_filter_data["property_name"]:  # Check if property_name exists and is not empty
                 int_filter_data["property_name"] = int_filter_data["property_name"][0].lower() + int_filter_data["property_name"][1:]
@@ -50,7 +48,6 @@ with open("../../data/synthetic-weaviate-queries-with-schemas.json", "r") as jso
             
         text_filter = None
         if query["text_property_filter"]:
-            print(f"\033[92mProcessing text filter for query {query_idx + 1}\033[0m")
             text_filter_data = query["text_property_filter"].copy()
             if text_filter_data["property_name"]:  # Check if property_name exists and is not empty
                 text_filter_data["property_name"] = text_filter_data["property_name"][0].lower() + text_filter_data["property_name"][1:]
@@ -58,7 +55,6 @@ with open("../../data/synthetic-weaviate-queries-with-schemas.json", "r") as jso
             
         bool_filter = None
         if query["boolean_property_filter"]:
-            print(f"\033[92mProcessing boolean filter for query {query_idx + 1}\033[0m")
             bool_filter_data = query["boolean_property_filter"].copy()
             if bool_filter_data["property_name"]:  # Check if property_name exists and is not empty
                 bool_filter_data["property_name"] = bool_filter_data["property_name"][0].lower() + bool_filter_data["property_name"][1:]
@@ -67,7 +63,6 @@ with open("../../data/synthetic-weaviate-queries-with-schemas.json", "r") as jso
         # Create aggregation objects if they exist
         int_agg = None
         if query["integer_property_aggregation"]:
-            print(f"\033[92mProcessing integer aggregation for query {query_idx + 1}\033[0m")
             int_agg_data = query["integer_property_aggregation"].copy()
             if int_agg_data["property_name"]:  # Check if property_name exists and is not empty
                 int_agg_data["property_name"] = int_agg_data["property_name"][0].lower() + int_agg_data["property_name"][1:]
@@ -75,7 +70,6 @@ with open("../../data/synthetic-weaviate-queries-with-schemas.json", "r") as jso
             
         text_agg = None
         if query["text_property_aggregation"]:
-            print(f"\033[92mProcessing text aggregation for query {query_idx + 1}\033[0m")
             text_agg_data = query["text_property_aggregation"].copy()
             if text_agg_data["property_name"]:  # Check if property_name exists and is not empty
                 text_agg_data["property_name"] = text_agg_data["property_name"][0].lower() + text_agg_data["property_name"][1:]
@@ -83,14 +77,12 @@ with open("../../data/synthetic-weaviate-queries-with-schemas.json", "r") as jso
             
         bool_agg = None
         if query["boolean_property_aggregation"]:
-            print(f"\033[92mProcessing boolean aggregation for query {query_idx + 1}\033[0m")
             bool_agg_data = query["boolean_property_aggregation"].copy()
             if bool_agg_data["property_name"]:  # Check if property_name exists and is not empty
                 bool_agg_data["property_name"] = bool_agg_data["property_name"][0].lower() + bool_agg_data["property_name"][1:]
             bool_agg = BooleanAggregation(**bool_agg_data)
 
         # Create WeaviateQueryWithSchema object
-        print(f"\033[92mCreating WeaviateQueryWithSchema object for query {query_idx + 1}\033[0m")
         
         # Convert database_schema string to dict if needed
         if isinstance(database_schema, str):
@@ -110,7 +102,6 @@ with open("../../data/synthetic-weaviate-queries-with-schemas.json", "r") as jso
             database_schema=database_schema
         )
         weaviate_queries.append(weaviate_query)
-        print(f"\033[92mSuccessfully processed query {query_idx + 1}\033[0m")
 
 
 print("\033[92m=== Initializing LM Service ===\033[0m")
@@ -128,9 +119,9 @@ anthropic_api_key = ""
 # claude-3-5-sonnet-20241022
 
 lm_service = LMService(
-    model_provider = "claude-3-5-sonnet-20241022",
-    model_name = "anthropic",
-    api_key = openai_api_key
+    model_provider = "anthropic",
+    model_name = "claude-3-5-sonnet-20241022",
+    api_key = anthropic_api_key
 )
 
 print("\033[92m=== Loading Database Schemas ===\033[0m")

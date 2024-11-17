@@ -37,39 +37,67 @@ class LMService():
                     api_key=api_key
                 )
             case _:
-                raise ValueError(f"Unsupported model provider: {self.model_provider}")
-
+                raise ValueError(f"Unsupported model provider: {self.model_provider}") 
+        
+        print("Running connection test:")
+        self.connection_test()
     def generate(
         self, 
-        prompt: str, 
-        output_model: BaseModel
-        ) -> str:
+        prompt: str,
+        output_model: BaseModel | None = None
+        ) -> str | dict:
         match self.model_provider:
             case "ollama":
-                # Ollama doesn't take a BaseModel as input
-                # -- so instead we will append this to the prompt
-                prompt += f"\nRespond with the following JSON: {output_model.model_dump_json()}"
+                messages = [{"role": "user", "content": prompt}]
+                # Note, this isn't implemented
+                if output_model:
+                    # Create an instance with default values
+                    model_instance = output_model(generic_response="Hello! This is a test response.")
+                    # Append output format instructions if model provided
+                    messages[0]["content"] += f"\nRespond with the following JSON: {model_instance.model_dump_json()}"
+                
                 response = self.lm_client.chat(
                     model="llama3.1:8b",
-                    messages=[
-                        {
-                            "role": "user",
-                            "content": prompt
-                        }
-                    ],
-                    format="json"
+                    messages=messages,
+                    format="json" if output_model else None
                 )
                 return response["message"]["content"]
+                
             case "openai":
-                response = self.lm_client.beta.chat.completions.parse(
+                messages = [
+                    {"role": "system", "content": "You are a helpful assistant. Follow the response format instructions."},
+                    {"role": "user", "content": prompt}
+                ]
+                
+                if output_model:
+                    response = self.lm_client.beta.chat.completions.parse(
+                        model=self.model_name,
+                        messages=messages,
+                        response_format=output_model
+                    )
+                    return response.choices[0].message.parsed
+                else:
+                    response = self.lm_client.chat.completions.create(
+                        model=self.model_name,
+                        messages=messages
+                    )
+                    return response.choices[0].message.content
+                    
+            case "anthropic":
+                messages = [{"role": "user", "content": prompt}]
+                if output_model:
+                    # Create an instance with default values
+                    model_instance = output_model(generic_response="Hello! This is a test response.")
+                    # Append output format instructions if model provided
+                    messages[0]["content"] += f"\nRespond with the following JSON format: {model_instance.model_dump_json()}"
+                
+                response = self.lm_client.messages.create(
                     model=self.model_name,
-                    messages=[
-                        {"role": "system", "content": "You are a helpful assistant. Follow the response format instructions."},
-                        {"role": "user", "content": prompt}
-                    ],
-                    response_format=output_model
+                    messages=messages,
+                    max_tokens=1024
                 )
-                return response.choices[0].message.parsed
+                return response.content[0].text
+                
             case _:
                 raise ValueError(f"Unsupported model provider: {self.model_provider}")
 
@@ -84,8 +112,10 @@ class LMService():
 
     def connection_test(self) -> None:
         prompt = "Say hello"
-        response = self.generate(prompt, TestLMConnectionModel)
-        print("\033[92mLM Connection test:\033[0m")
+        output_model = TestLMConnectionModel if self.model_provider == "openai" else None
+        print(f"\033[96mPrinting prompt: {prompt}\nwith output model: {output_model}\033[0m")
+        response = self.generate(prompt, output_model)
+        print("\033[92mLM Connection test result:\033[0m")
         print(response)
 
     # switch this on `openai` | `anthropic`
