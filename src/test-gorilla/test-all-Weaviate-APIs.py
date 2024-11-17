@@ -235,6 +235,7 @@ for idx, query in enumerate(weaviate_queries):
             tools=tools
         ).choices[0].message
         
+        # return None from `lm_service.one_step_function_selection_test` if no tools are called
         if not response.tool_calls:
             print("\033[91mNo tool called.\033[0m")
             result = QueryPredictionResult(
