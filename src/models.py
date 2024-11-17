@@ -240,3 +240,23 @@ class Tool(BaseModel):
 # Helper Models
 class TestLMConnectionModel(BaseModel):
     generic_response: str
+
+class QueryPredictionResult(BaseModel):
+    query_index: int
+    database_schema_index: int
+    natural_language_query: str
+    ground_truth_query: WeaviateQueryWithSchema
+    predicted_query: Optional[WeaviateQuery]
+    ast_score: float
+    error: Optional[str]
+
+# TODO: Move to src/models/experiment.py
+class ExperimentSummary(BaseModel):
+    timestamp: str
+    model_name: str
+    total_queries: int
+    successful_predictions: int
+    failed_predictions: int
+    average_ast_score: float
+    per_schema_scores: Dict[int, float]
+    detailed_results: List[QueryPredictionResult]

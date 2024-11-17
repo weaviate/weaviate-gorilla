@@ -1,5 +1,5 @@
 # TODO: Move model classes (QueryPredictionResult, ExperimentSummary) to src/models/experiment.py
-from src.models import WeaviateQueryWithSchema, WeaviateQuery
+from src.models import WeaviateQueryWithSchema, WeaviateQuery, QueryPredictionResult, ExperimentSummary
 from src.models import (
     IntPropertyFilter,
     TextPropertyFilter,
@@ -23,27 +23,6 @@ import json
 from datetime import datetime
 
 print("\033[92m=== Starting Program Execution ===\033[0m")
-
-# TODO: Move to src/models/experiment.py
-class QueryPredictionResult(BaseModel):
-    query_index: int
-    database_schema_index: int
-    natural_language_query: str
-    ground_truth_query: WeaviateQueryWithSchema
-    predicted_query: Optional[WeaviateQuery]
-    ast_score: float
-    error: Optional[str]
-
-# TODO: Move to src/models/experiment.py
-class ExperimentSummary(BaseModel):
-    timestamp: str
-    model_name: str
-    total_queries: int
-    successful_predictions: int
-    failed_predictions: int
-    average_ast_score: float
-    per_schema_scores: Dict[int, float]
-    detailed_results: List[QueryPredictionResult]
 
 # TODO: Move pretty printing utilities to src/utils/printing.py
 def pretty_print_weaviate_query(query: WeaviateQuery) -> None:
