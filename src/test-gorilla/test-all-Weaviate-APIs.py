@@ -1,3 +1,4 @@
+# TODO: Move model classes (QueryPredictionResult, ExperimentSummary) to src/models/experiment.py
 from src.models import WeaviateQueryWithSchema, WeaviateQuery
 from src.models import (
     IntPropertyFilter,
@@ -23,6 +24,7 @@ from datetime import datetime
 
 print("\033[92m=== Starting Program Execution ===\033[0m")
 
+# TODO: Move to src/models/experiment.py
 class QueryPredictionResult(BaseModel):
     query_index: int
     database_schema_index: int
@@ -32,6 +34,7 @@ class QueryPredictionResult(BaseModel):
     ast_score: float
     error: Optional[str]
 
+# TODO: Move to src/models/experiment.py
 class ExperimentSummary(BaseModel):
     timestamp: str
     model_name: str
@@ -42,6 +45,7 @@ class ExperimentSummary(BaseModel):
     per_schema_scores: Dict[int, float]
     detailed_results: List[QueryPredictionResult]
 
+# TODO: Move pretty printing utilities to src/utils/printing.py
 def pretty_print_weaviate_query(query: WeaviateQuery) -> None:
     """Pretty prints a WeaviateQuery object with color and indentation."""
     print("\n\033[92mWeaviate Query Details:\033[0m")
@@ -87,6 +91,8 @@ def pretty_print_weaviate_query(query: WeaviateQuery) -> None:
     print(f"  \033[92mNatural Language Query:\033[0m {query.corresponding_natural_language_query}")
 
 print("\033[92m=== Loading Weaviate Queries ===\033[0m")
+
+# TODO: Move query loading and processing logic to src/data/query_loader.py
 with open("../../data/synthetic-weaviate-queries-with-schemas.json", "r") as json_file:
     weaviate_queries_raw = json.load(json_file)
     print(f"\033[92mLoaded {len(weaviate_queries_raw)} raw queries\033[0m")
@@ -171,6 +177,7 @@ with open("../../data/synthetic-weaviate-queries-with-schemas.json", "r") as jso
         weaviate_queries.append(weaviate_query)
         print(f"\033[92mSuccessfully processed query {query_idx + 1}\033[0m")
 
+# TODO: Move AST matching logic to src/evaluation/ast_matcher.py
 def abstract_syntax_tree_match_score(
         predicted_apis: WeaviateQuery,
         ground_truth: WeaviateQueryWithSchema
@@ -345,6 +352,8 @@ database_schema_index = 0
 total_ast_score = 0  # Track total AST score
 
 print("\033[92m=== Initializing First Schema ===\033[0m")
+
+# TODO: Move schema initialization logic to src/database/schema_initializer.py
 # Initialize first schema
 weaviate_client.collections.delete_all()
 
@@ -382,6 +391,8 @@ collections_description, collections_enum = get_collections_info(weaviate_client
 tools = [build_weaviate_query_tool(collections_description=collections_description, collections_list=collections_enum)]
 
 print("\033[92m=== Starting Query Processing ===\033[0m")
+
+# TODO: Move experiment execution logic to src/experiment/executor.py
 # Run experiment
 for idx, query in enumerate(weaviate_queries):
     print(f"\n\033[92m=== Processing Query {idx+1}/{len(weaviate_queries)} ===\033[0m")
