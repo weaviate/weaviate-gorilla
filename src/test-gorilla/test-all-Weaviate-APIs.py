@@ -12,7 +12,7 @@ from src.models import (
 from src.models import Tool, Function, Parameters, ParameterProperty
 from src.utils.weaviate_fc_utils import (
     get_collections_info, 
-    build_weaviate_query_tool, 
+    build_weaviate_query_tools, # Changed to plural
     _build_weaviate_filter_return_model,
     _build_weaviate_aggregation_return_model
 )
@@ -168,7 +168,7 @@ for class_schema in class_schemas:
     print(f"\033[92mCreated collection: {schema_dict['class']}\033[0m")
 
 collections_description, collections_enum = get_collections_info(weaviate_client)
-tools = [build_weaviate_query_tool(collections_description=collections_description, collections_list=collections_enum)]
+tools = build_weaviate_query_tools(collections_description=collections_description, collections_list=collections_enum, num_tools=NUM_PREDICTIONS)
 
 print("\033[92m=== Starting Query Processing ===\033[0m")
 
@@ -214,7 +214,7 @@ for idx, query in enumerate(weaviate_queries):
             print(f"\033[92mCreated collection: {schema_dict['class']}\033[0m")
 
         collections_description, collections_enum = get_collections_info(weaviate_client)
-        tools = [build_weaviate_query_tool(collections_description=collections_description, collections_list=collections_enum)]
+        tools = build_weaviate_query_tools(collections_description=collections_description, collections_list=collections_enum, num_tools=NUM_PREDICTIONS)
 
     try:
         nl_query = query.corresponding_natural_language_query
@@ -232,7 +232,7 @@ for idx, query in enumerate(weaviate_queries):
             
             response = lm_service.one_step_function_selection_test(
                 prompt=nl_query,
-                tools=tools
+                tools=[tools[pred_idx]] # Use different tool for each prediction
             )
             
             if not response:
