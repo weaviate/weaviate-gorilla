@@ -113,7 +113,7 @@ class LMService():
         ).model_dump_json()]
     
     # This should parse the response here
-    def one_step_function_selection_test(self, prompt: str, tools: list[Tool] | list[AnthropicTool]):
+    def one_step_function_selection_test(self, prompt: str, tools: list[Tool] | list[AnthropicTool]) -> dict | None:
         if self.model_provider == "openai":
             messages = [
                 {
@@ -126,11 +126,13 @@ class LMService():
                 }
             ]
             # set `parallel_tool_calls=False` to only call a single tool (defaults true)
+            # NOTE!!! It could be the case that the model doesn't prioritize the accuracy of a tool call as much when it "knows" (not sure if that's how OpenAI set this up ofc) that it calls multiple functions potentially
             response = self.lm_client.chat.completions.create(
                 model=self.model_name,
                 messages=messages,
                 tools=tools
-            )
+            ).choices[0].message
+            
             '''
             Parse here,
             if response.tool_calls:
