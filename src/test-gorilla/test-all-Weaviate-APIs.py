@@ -112,9 +112,11 @@ with open("../../data/synthetic-weaviate-queries-with-schemas.json", "r") as jso
         weaviate_queries.append(weaviate_query)
         print(f"\033[92mSuccessfully processed query {query_idx + 1}\033[0m")
 
-openai_api_key = ""
 
 print("\033[92m=== Initializing LM Service ===\033[0m")
+
+openai_api_key = ""
+
 lm_service = LMService(
     model_provider = "openai",
     model_name = "gpt-4o",
