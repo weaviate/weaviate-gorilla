@@ -115,11 +115,21 @@ with open("../../data/synthetic-weaviate-queries-with-schemas.json", "r") as jso
 
 print("\033[92m=== Initializing LM Service ===\033[0m")
 
+# from src.utils.model_registry import print_model_registry
+# print_model_registry()
+
 openai_api_key = ""
 
+# gpt-4o / gpt-4o-mini
+
+anthropic_api_key = ""
+
+# (Haha, this inconsistent naming is what motivates the model registry)
+# claude-3-5-sonnet-20241022
+
 lm_service = LMService(
-    model_provider = "openai",
-    model_name = "gpt-4o",
+    model_provider = "claude-3-5-sonnet-20241022",
+    model_name = "anthropic",
     api_key = openai_api_key
 )
 
