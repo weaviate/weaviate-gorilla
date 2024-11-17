@@ -119,9 +119,9 @@ anthropic_api_key = ""
 # claude-3-5-sonnet-20241022
 
 lm_service = LMService(
-    model_provider = "anthropic",
-    model_name = "claude-3-5-sonnet-20241022",
-    api_key = anthropic_api_key
+    model_provider = "openai",
+    model_name = "gpt-4o",
+    api_key = openai_api_key
 )
 
 print("\033[92m=== Loading Database Schemas ===\033[0m")
@@ -236,10 +236,10 @@ for idx, query in enumerate(weaviate_queries):
         response = lm_service.one_step_function_selection_test(
             prompt=nl_query,
             tools=tools
-        ).choices[0].message
+        ) # returns the dict or None now
         
         # return None from `lm_service.one_step_function_selection_test` if no tools are called
-        if not response.tool_calls:
+        if not response: # this means no tools were called
             print("\033[91mNo tool called.\033[0m")
             result = QueryPredictionResult(
                 query_index=idx,
@@ -253,7 +253,7 @@ for idx, query in enumerate(weaviate_queries):
             failed_predictions += 1
         else:
             print("\033[92mParsing tool call response\033[0m")
-            tool_call_args = json.loads(response.tool_calls[0].function.arguments)
+            tool_call_args = response # response is already a dictionary from LMService
             search_query = tool_call_args.get("search_query")
             
             filter_model = None

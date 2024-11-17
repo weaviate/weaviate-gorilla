@@ -75,6 +75,9 @@ class LMService():
                         messages=messages,
                         response_format=output_model
                     )
+                    print("HERE")
+                    print(response)
+                    print("HERE 2")
                     return response.choices[0].message.parsed
                 else:
                     response = self.lm_client.chat.completions.create(
@@ -162,10 +165,12 @@ class LMService():
                 model=self.model_name,
                 messages=messages,
                 tools=tools
-            ).choices[0].message
+            )
+            print(response)
+            
+            response = response.choices[0].message
             
             if response.tool_calls:
-                response.choices[0].message
                 tool_call_args = json.loads(response.tool_calls[0].function.arguments)
                 return tool_call_args
             else:
@@ -192,7 +197,7 @@ class LMService():
             else:
                 return None
         else:
-            raise ValueError(f"Function calling not yet supporetd for the LMService with {self.model_provider}")
+            raise ValueError(f"Function calling not yet supported for the LMService with {self.model_provider}")
 
 '''
 Note, vLLM function call snippet:
