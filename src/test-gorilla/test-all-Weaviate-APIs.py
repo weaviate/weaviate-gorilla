@@ -358,7 +358,7 @@ experiment_summary = ExperimentSummary(
 
 print("\033[92m=== Saving Results ===\033[0m")
 # Save results
-with open("claude-3-5-sonnet-experiment_results.json", "w") as f:
+with open("llama3.1:8b-experiment_results.json", "w") as f:
     f.write(experiment_summary.model_dump_json(indent=2))
 
 print("\n\033[92mExperiment Summary:\033[0m")
