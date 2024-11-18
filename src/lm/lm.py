@@ -10,7 +10,8 @@ from src.utils.weaviate_fc_utils import (
     ParameterProperty, 
     Parameters, 
     AnthropicTool, 
-    AnthropicToolInputSchema
+    AnthropicToolInputSchema,
+    OllamaTool
 )
 import json
 
@@ -144,7 +145,11 @@ class LMService():
         ).model_dump_json()]
     
     # This should parse the response here
-    def one_step_function_selection_test(self, prompt: str, tools: list[Tool] | list[AnthropicTool]) -> dict | None:
+    def one_step_function_selection_test(
+            self, 
+            prompt: str, 
+            tools: list[Tool] | list[AnthropicTool] | list[OllamaTool]
+        ) -> dict | None:
         if self.model_provider == "openai":
             messages = [
                 {
