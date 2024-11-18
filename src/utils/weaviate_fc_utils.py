@@ -61,6 +61,7 @@ class Tool(BaseModel):
     type: Literal["function"]
     function: Function
     
+# This is going to have to either return `OpenAITool | OllamaTool | AnthropicTool`
 def build_weaviate_query_tools(collections_description: str, collections_list: list[str], num_tools: int = 5) -> list[Tool]:
     from src.utils.tool_descriptions import (
         collection_name_descriptions,
