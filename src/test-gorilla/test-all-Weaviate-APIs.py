@@ -176,6 +176,7 @@ if lm_service.model_provider == "ollama":
     tools = [build_weaviate_query_tool_for_ollama(
         collections_description=collections_description, 
         collections_list=collections_enum)]
+    tools = [tool.model_dump() for tool in tools] # quick fix, needs to be cleaned up
 else:
     tools = build_weaviate_query_tools(
         collections_description=collections_description, 
@@ -230,6 +231,7 @@ for idx, query in enumerate(weaviate_queries):
         # Build tools based on model provider
         if lm_service.model_provider == "ollama":
             tools = [build_weaviate_query_tool_for_ollama(collections_description=collections_description, collections_list=collections_enum)]
+            tools = [tool.model_dump() for tool in tools] # quick fix, TODO: clean this up
         else:
             tools = build_weaviate_query_tools(collections_description=collections_description, collections_list=collections_enum, num_tools=NUM_PREDICTIONS)
 
