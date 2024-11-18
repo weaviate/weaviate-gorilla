@@ -115,8 +115,8 @@ anthropic_api_key = ""
 
 # add ollama
 lm_service = LMService(
-    model_provider = "openai",
-    model_name = "gpt-4o",
+    model_provider = "ollama",
+    model_name = "llama3.1:8b",
     api_key = openai_api_key
 )
 
