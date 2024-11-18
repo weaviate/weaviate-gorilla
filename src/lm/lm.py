@@ -163,7 +163,6 @@ class LMService():
                 messages=messages,
                 tools=tools
             )
-            print(response)
             
             response = response.choices[0].message
             

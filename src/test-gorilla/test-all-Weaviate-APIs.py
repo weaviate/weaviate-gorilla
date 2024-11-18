@@ -112,6 +112,7 @@ print("\033[92m=== Initializing LM Service ===\033[0m")
 openai_api_key = ""
 anthropic_api_key = ""
 
+# add ollama
 lm_service = LMService(
     model_provider = "openai",
     model_name = "gpt-4o",
