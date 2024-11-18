@@ -247,6 +247,8 @@ class OllamaTool(BaseModel):
     type: Literal["function"] = "function"
     function: OllamaFunction
 
+'''
+# Leave to ablate DSL / Models later on
 def build_weaviate_query_tool_for_ollama(collections_description: str, collections_list: list[str]) -> OllamaTool:
     return OllamaTool(
         type="function",
@@ -320,7 +322,7 @@ def build_weaviate_query_tool_for_ollama(collections_description: str, collectio
             )
         )
     )
-
+'''
 
 
 def _build_weaviate_filter(filter_string: str) -> Filter:
