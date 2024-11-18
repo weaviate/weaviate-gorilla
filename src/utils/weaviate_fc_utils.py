@@ -11,7 +11,7 @@ from src.models import (
     GroupBy
 )
 import re
-from typing import Tuple, Union
+from typing import Tuple, Union, Any
 
 def get_collections_info(client: weaviate.WeaviateClient) -> tuple[str, list[str]]:
     """
@@ -61,30 +61,86 @@ class Tool(BaseModel):
     type: Literal["function"]
     function: Function
     
-def build_weaviate_query_tool(collections_description: str, collections_list: list[str]) -> Tool:
-    return Tool(
-    type="function",
-    function=Function(
+# This is going to have to either return `OpenAITool | OllamaTool | AnthropicTool`
+def build_weaviate_query_tools(collections_description: str, collections_list: list[str], num_tools: int = 5) -> list[Tool]:
+    from src.utils.tool_descriptions import (
+        collection_name_descriptions,
+        search_query_descriptions, 
+        filter_string_descriptions,
+        aggregation_string_descriptions
+    )
+
+    tools = []
+    for i in range(num_tools):
+        tools.append(Tool(
+            type="function",
+            function=Function(
+                name="query_database",
+                description=f"""Query a database.
+
+                Available collections in this database:
+                {collections_description}""",
+                parameters=Parameters(
+                    type="object",
+                    properties={
+                        "collection_name": ParameterProperty(
+                            type="string",
+                            description=collection_name_descriptions[i],
+                            enum=collections_list
+                        ),
+                        "search_query": ParameterProperty(
+                            type="string",
+                            description=search_query_descriptions[i]
+                        ),
+                        "filter_string": ParameterProperty(
+                            type="string",
+                            description=filter_string_descriptions[i]
+                        ),
+                        "aggregate_string": ParameterProperty(
+                            type="string",
+                            description=aggregation_string_descriptions[i]
+                        )
+                    },
+                    required=["collection_name"]
+                )
+            )
+        ))
+    return tools
+
+# Anthropic Tool
+class AnthropicToolInputSchema(BaseModel):
+    type: str
+    properties: dict[str, Any]
+    required: list[str]
+
+class AnthropicTool(BaseModel):
+    name: str
+    description: str
+    input_schema: AnthropicToolInputSchema
+
+# Abstract this to one function that takes the model_provider as an argument
+def build_weaviate_query_tool_for_anthropic(collections_description: str, collections_list: list[str]) -> AnthropicTool:
+    return AnthropicTool(
         name="query_database",
         description=f"""Query a database.
 
         Available collections in this database:
         {collections_description}""",
-        parameters=Parameters(
+        input_schema=AnthropicToolInputSchema(
             type="object",
             properties={
-                "collection_name": ParameterProperty(
-                    type="string",
-                    description="The collection to query",
-                    enum=collections_list
-                ),
-                "search_query": ParameterProperty(
-                    type="string",
-                    description="Optional search query to find semantically relevant items."
-                ),
-                "filter_string": ParameterProperty(
-                    type="string",
-                    description="""
+                "collection_name": {
+                    "type": "string",
+                    "description": "The collection to query",
+                    "enum": collections_list
+                },
+                "search_query": {
+                    "type": "string",
+                    "description": "Optional search query to find semantically relevant items."
+                },
+                "filter_string": {
+                    "type": "string", 
+                    "description": """
                     Optional filter expression using prefix notation to ensure unambiguous order of operations.
                     
                     Basic condition syntax: property_name:operator:value
@@ -106,10 +162,10 @@ def build_weaviate_query_tool(collections_description: str, collections_list: li
 
                     IMPORTANT!!! Please review the collection schema to make sure the property name is spelled correctly!! THIS IS VERY IMPORTANT!!!
                     """
-                ),
-                "aggregate_string": ParameterProperty(
-                    type="string",
-                    description="""
+                },
+                "aggregate_string": {
+                    "type": "string",
+                    "description": """
                     Optional aggregate expression using syntax: property_name:aggregation_type.
 
                     Group by with: GROUP_BY(property_name) (limited to one property).
@@ -128,12 +184,11 @@ def build_weaviate_query_tool(collections_description: str, collections_list: li
 
                     Combine with commas: GROUP_BY(publication):COUNT,wordCount:MEAN,category:TOP_OCCURRENCES[5]
                     """
-                )
+                }
             },
             required=["collection_name"]
         )
     )
-)
 
 def _build_weaviate_filter(filter_string: str) -> Filter:
     def _parse_condition(condition: str) -> Filter:
