@@ -178,7 +178,22 @@ class LMService():
                 return None
         
         if self.model_provider == "ollama":
-            pass
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ]
+            response = self.lm_client.chat(
+                model=self.model_name,
+                messages=messages,
+                tools=tools
+            )
+            if not response["message"].get("tool_calls"):
+                return None
+            else:
+                tool = response["message"]["tool_calls"][0]
+                return tool["function"]["arguments"]
 
         if self.model_provider == "anthropic":
             messages = [
