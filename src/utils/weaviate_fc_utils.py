@@ -248,7 +248,84 @@ class OllamaTool(BaseModel):
     function: OllamaFunction
 
 def build_weaviate_query_tool_for_ollama(collections_description: str, collections_list: list[str]) -> OllamaTool:
-    pass
+    query_parameters = {
+        "type": "object",
+        "properties": {
+            "target_collection": {
+                "type": "string",
+                "description": "The collection to retrieve objects from."
+            },
+            "search_query": {
+                "type": "string",
+                "description": "A search query to return objects from a search index."                
+            },
+            "integer_property_filter": {
+                "type": "object",
+                "properties": {
+                    "property_name": {"type": "string"},
+                    "operator": {"type": "string", "enum": ["=", "<", ">", "<=", ">="]},
+                    "value": {"type": "number"}
+                },
+                "required": ["property_name", "operator", "value"]
+            },
+            "text_property_filter": {
+                "type": "object", 
+                "properties": {
+                    "property_name": {"type": "string"},
+                    "operator": {"type": "string", "enum": ["=", "LIKE"]},
+                    "value": {"type": "string"}
+                },
+                "required": ["property_name", "operator", "value"]
+            },
+            "boolean_property_filter": {
+                "type": "object",
+                "properties": {
+                    "property_name": {"type": "string"},
+                    "operator": {"type": "string", "enum": ["=", "!="]},
+                    "value": {"type": "boolean"}
+                },
+                "required": ["property_name", "operator", "value"]
+            },
+            "integer_property_aggregation": {
+                "type": "object",
+                "properties": {
+                    "property_name": {"type": "string"},
+                    "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]}
+                },
+                "required": ["property_name", "metrics"]
+            },
+            "text_property_aggregation": {
+                "type": "object",
+                "properties": {
+                    "property_name": {"type": "string"},
+                    "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOP_OCCURRENCES"]},
+                    "top_occurrences_limit": {"type": "integer"}
+                },
+                "required": ["property_name", "metrics"]
+            },
+            "boolean_property_aggregation": {
+                "type": "object",
+                "properties": {
+                    "property_name": {"type": "string"},
+                    "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]}
+                },
+                "required": ["property_name", "metrics"]
+            },
+            "groupby_property": {
+                "type": "string",
+                "description": "Group the results by a property."
+            }
+        },
+        "required": ["target_collection"]
+    }
+    query_function = Function(
+        name="query_database",
+        description="Query a database to retrieve objects.",
+        parameters=query_parameters
+    )
+    return OllamaTool(
+        function=query_function
+    )
 
 
 '''
