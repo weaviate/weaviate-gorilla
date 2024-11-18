@@ -25,7 +25,7 @@ import json
 from datetime import datetime
 
 # Number of predictions to generate per query for ensemble
-NUM_PREDICTIONS = 5
+NUM_PREDICTIONS = 1
 
 print("\033[92m=== Starting Experiment Execution ===\033[0m")
 print("\033[92m=== Loading Weaviate Queries ===\033[0m")
