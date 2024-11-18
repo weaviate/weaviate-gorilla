@@ -108,6 +108,48 @@ def build_weaviate_query_tools(collections_description: str, collections_list: l
         ))
     return tools
 
+def build_weaviate_query_tool(collections_description: str, collections_list: list[str]) -> Tool:
+    from src.utils.tool_descriptions import (
+        collection_name_descriptions,
+        search_query_descriptions,
+        filter_string_descriptions,
+        aggregation_string_descriptions
+    )
+
+    return Tool(
+        type="function",
+        function=Function(
+            name="query_database",
+            description=f"""Query a database.
+
+            Available collections in this database:
+            {collections_description}""",
+            parameters=Parameters(
+                type="object",
+                properties={
+                    "collection_name": ParameterProperty(
+                        type="string",
+                        description=collection_name_descriptions[0],
+                        enum=collections_list
+                    ),
+                    "search_query": ParameterProperty(
+                        type="string",
+                        description=search_query_descriptions[0]
+                    ),
+                    "filter_string": ParameterProperty(
+                        type="string",
+                        description=filter_string_descriptions[0]
+                    ),
+                    "aggregate_string": ParameterProperty(
+                        type="string",
+                        description=aggregation_string_descriptions[0]
+                    )
+                },
+                required=["collection_name"]
+            )
+        )
+    )
+
 # Anthropic Tool
 class AnthropicToolInputSchema(BaseModel):
     type: str
