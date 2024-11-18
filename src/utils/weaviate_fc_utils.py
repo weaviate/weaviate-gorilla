@@ -251,9 +251,10 @@ def build_weaviate_query_tool_for_ollama(collections_description: str, collectio
     query_parameters = {
         "type": "object",
         "properties": {
-            "target_collection": {
+            "collection_name": {
                 "type": "string",
-                "description": "The collection to retrieve objects from."
+                "description": "The collection to retrieve objects from.",
+                "enum": collections_list
             },
             "search_query": {
                 "type": "string",
@@ -322,7 +323,7 @@ def build_weaviate_query_tool_for_ollama(collections_description: str, collectio
                 "description": "Group the results by a property."
             }
         },
-        "required": ["target_collection"]
+        "required": ["collection_name"]
     }
     query_function = OllamaFunction(
         name="query_database",
