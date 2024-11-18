@@ -261,6 +261,7 @@ def build_weaviate_query_tool_for_ollama(collections_description: str, collectio
             },
             "integer_property_filter": {
                 "type": "object",
+                "description": "Filter numeric properties using comparison operators",
                 "properties": {
                     "property_name": {"type": "string"},
                     "operator": {"type": "string", "enum": ["=", "<", ">", "<=", ">="]},
@@ -269,7 +270,8 @@ def build_weaviate_query_tool_for_ollama(collections_description: str, collectio
                 "required": ["property_name", "operator", "value"]
             },
             "text_property_filter": {
-                "type": "object", 
+                "type": "object",
+                "description": "Filter text properties using equality or LIKE operators",
                 "properties": {
                     "property_name": {"type": "string"},
                     "operator": {"type": "string", "enum": ["=", "LIKE"]},
@@ -279,6 +281,7 @@ def build_weaviate_query_tool_for_ollama(collections_description: str, collectio
             },
             "boolean_property_filter": {
                 "type": "object",
+                "description": "Filter boolean properties using equality operators",
                 "properties": {
                     "property_name": {"type": "string"},
                     "operator": {"type": "string", "enum": ["=", "!="]},
@@ -288,6 +291,7 @@ def build_weaviate_query_tool_for_ollama(collections_description: str, collectio
             },
             "integer_property_aggregation": {
                 "type": "object",
+                "description": "Aggregate numeric properties using statistical functions",
                 "properties": {
                     "property_name": {"type": "string"},
                     "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]}
@@ -296,6 +300,7 @@ def build_weaviate_query_tool_for_ollama(collections_description: str, collectio
             },
             "text_property_aggregation": {
                 "type": "object",
+                "description": "Aggregate text properties using frequency analysis",
                 "properties": {
                     "property_name": {"type": "string"},
                     "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOP_OCCURRENCES"]},
@@ -305,6 +310,7 @@ def build_weaviate_query_tool_for_ollama(collections_description: str, collectio
             },
             "boolean_property_aggregation": {
                 "type": "object",
+                "description": "Aggregate boolean properties using statistical functions",
                 "properties": {
                     "property_name": {"type": "string"},
                     "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]}
