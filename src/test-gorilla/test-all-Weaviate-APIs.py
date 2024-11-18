@@ -116,7 +116,7 @@ anthropic_api_key = ""
 # add ollama
 lm_service = LMService(
     model_provider = "ollama",
-    model_name = "llama3.1:8b",
+    model_name = "llama3.2:1b",
     api_key = openai_api_key
 )
 
@@ -349,7 +349,7 @@ print("\033[92m=== Creating Experiment Summary ===\033[0m")
 # Create experiment summary
 experiment_summary = ExperimentSummary(
     timestamp=datetime.now().isoformat(),
-    model_name="gpt-4",
+    model_name="llama3.2:1b", # get this from somewhere else..
     total_queries=len(weaviate_queries),
     successful_predictions=successful_predictions,
     failed_predictions=failed_predictions,
@@ -360,7 +360,7 @@ experiment_summary = ExperimentSummary(
 
 print("\033[92m=== Saving Results ===\033[0m")
 # Save results
-with open("llama3.1:8b-experiment_results.json", "w") as f:
+with open("llama3.2:1b-experiment_results.json", "w") as f:
     f.write(experiment_summary.model_dump_json(indent=2))
 
 print("\n\033[92mExperiment Summary:\033[0m")
