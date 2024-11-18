@@ -192,6 +192,7 @@ class LMService():
             if not response["message"].get("tool_calls"):
                 return None
             else:
+                # maybe also worth looking into how parallel fc is interfaced with ollama for this
                 tool = response["message"]["tool_calls"][0]
                 return tool["function"]["arguments"]
 
