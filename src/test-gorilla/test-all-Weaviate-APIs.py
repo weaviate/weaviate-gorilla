@@ -32,7 +32,7 @@ NUM_PREDICTIONS = 1
 print("\033[92m=== Starting Experiment Execution ===\033[0m")
 print("\033[92m=== Loading Weaviate Queries ===\033[0m")
 
-weaviate_queries = load_queries()
+weaviate_queries = load_queries("../../data/synthetic-weaviate-queries-with-schemas.json")
 
 print("\033[92m=== Initializing LM Service ===\033[0m")
 
@@ -42,7 +42,7 @@ anthropic_api_key = ""
 # add ollama
 lm_service = LMService(
     model_provider = "ollama",
-    model_name = "llama3.2:1b",
+    model_name = "llama3.1:8b",
     api_key = openai_api_key
 )
 
