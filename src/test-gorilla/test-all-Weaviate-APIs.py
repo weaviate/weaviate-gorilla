@@ -63,6 +63,7 @@ failed_predictions = 0
 database_schema_index = 0
 total_ast_score = 0  # Track total AST score
 
+# Clean up, don't build the first schema outside of the experiment loop...
 print("\033[92m=== Initializing First Schema ===\033[0m")
 
 # Initialize first schema
