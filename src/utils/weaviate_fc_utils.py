@@ -324,7 +324,7 @@ def build_weaviate_query_tool_for_ollama(collections_description: str, collectio
         },
         "required": ["target_collection"]
     }
-    query_function = Function(
+    query_function = OllamaFunction(
         name="query_database",
         description="Query a database to retrieve objects.",
         parameters=query_parameters
