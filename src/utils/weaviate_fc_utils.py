@@ -247,6 +247,10 @@ class OllamaTool(BaseModel):
     type: Literal["function"] = "function"
     function: OllamaFunction
 
+def build_weaviate_query_tool_for_ollama(collections_description: str, collections_list: list[str]) -> OllamaTool:
+    pass
+
+
 '''
 # Leave to ablate DSL / Models later on
 def build_weaviate_query_tool_for_ollama(collections_description: str, collections_list: list[str]) -> OllamaTool:
