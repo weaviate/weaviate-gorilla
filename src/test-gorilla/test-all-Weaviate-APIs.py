@@ -32,7 +32,7 @@ NUM_PREDICTIONS = 1
 print("\033[92m=== Starting Experiment Execution ===\033[0m")
 print("\033[92m=== Loading Weaviate Queries ===\033[0m")
 
-weavuate_queries = load_queries()
+weaviate_queries = load_queries()
 
 print("\033[92m=== Initializing LM Service ===\033[0m")
 
