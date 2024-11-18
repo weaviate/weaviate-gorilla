@@ -176,7 +176,10 @@ class LMService():
                 return tool_call_args
             else:
                 return None
-            
+        
+        if self.model_provider == "ollama":
+            pass
+
         if self.model_provider == "anthropic":
             messages = [
                 {
