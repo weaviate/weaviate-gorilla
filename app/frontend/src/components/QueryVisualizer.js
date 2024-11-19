@@ -1,122 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Database, Search, Check, X } from 'lucide-react';
-
-// Schema data structure
-const schema = {
-  weaviate_collections: [
-    {
-      name: "RestaurantMenu",
-      properties: [
-        {
-          name: "DishName",
-          data_type: ["string"],
-          description: "The name of the dish offered in the restaurant menu."
-        },
-        {
-          name: "Price",
-          data_type: ["number"],
-          description: "The price of the dish."
-        },
-        {
-          name: "IsVegetarian",
-          data_type: ["boolean"],
-          description: "Indicates if the dish is vegetarian."
-        }
-      ],
-      envisioned_use_case_overview: "The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status."
-    },
-    {
-      name: "CustomerOrders",
-      properties: [
-        {
-          name: "CustomerName",
-          data_type: ["string"],
-          description: "The name of the customer who places the order."
-        },
-        {
-          name: "TotalAmount",
-          data_type: ["number"],
-          description: "The total amount for the customer's order."
-        },
-        {
-          name: "IsTakeaway",
-          data_type: ["boolean"],
-          description: "Indicates whether the order is for takeaway or dine-in."
-        }
-      ],
-      envisioned_use_case_overview: "The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway."
-    },
-    {
-      name: "StaffMembers",
-      properties: [
-        {
-          name: "StaffName",
-          data_type: ["string"],
-          description: "The name of the staff member."
-        },
-        {
-          name: "ExperienceYears",
-          data_type: ["number"],
-          description: "The number of years of experience the staff member has."
-        },
-        {
-          name: "IsOnDuty",
-          data_type: ["boolean"],
-          description: "Indicates if the staff member is currently on duty."
-        }
-      ],
-      envisioned_use_case_overview: "The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status."
-    }
-  ]
-};
-
-const data = [
-  {
-    query_index: 0,
-    database_schema_index: 0,
-    natural_language_query: "Find average and maximum prices of vegetarian dishes that mention \"spicy\" in their name or description and group the results by dish category.",
-    ground_truth_query: {
-      target_collection: "RestaurantMenu",
-      search_query: "vegetarian spicy",
-      integer_property_filter: {
-        property_name: "isVegetarian",
-        operator: "=",
-        value: 1
-      },
-      integer_property_aggregation: {
-        property_name: "price",
-        metrics: "MIN"
-      },
-      groupby_property: "category"
-    },
-    predicted_query: {
-      target_collection: "RestaurantMenu"
-    },
-    ast_score: 0.6
-  },
-  {
-    query_index: 1,
-    database_schema_index: 0,
-    natural_language_query: "Find vegan dishes under $20, understanding 'vegan' in context, and calculate the average price of these dishes.",
-    ground_truth_query: {
-      target_collection: "RestaurantMenu",
-      search_query: "vegan dishes",
-      integer_property_filter: {
-        property_name: "price",
-        operator: "<",
-        value: 20
-      },
-      integer_property_aggregation: {
-        property_name: "price",
-        metrics: "MEAN"
-      }
-    },
-    predicted_query: {
-      target_collection: "RestaurantMenu"
-    },
-    ast_score: 0.8
-  }
-];
 
 const SchemaVisualizer = ({ collection }) => (
   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
@@ -143,8 +26,44 @@ const SchemaVisualizer = ({ collection }) => (
 
 export default function QueryVisualizer() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const currentItem = data[currentIndex];
+  const [data, setData] = useState([]);
   const [showSchema, setShowSchema] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/data');
+        const jsonData = await response.json();
+        setData(jsonData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (!data.length) {
+    return <div>Loading...</div>;
+  }
+
+  const currentItem = data[currentIndex];
+
+  // Add logging to help debug
+  console.log('Current item:', currentItem);
+  console.log('Current index:', currentIndex);
+  console.log('Data length:', data.length);
+
+  // Add null checks
+  if (!currentItem) {
+    console.error('Current item is null');
+    return <div>Error: Invalid data</div>;
+  }
+
+  if (!currentItem.ground_truth_query) {
+    console.error('Missing ground truth query data:', currentItem);
+    return <div>Error: Invalid query data</div>;
+  }
 
   const handlePrevious = () => {
     setCurrentIndex((prev) => (prev > 0 ? prev - 1 : data.length - 1));
@@ -152,6 +71,20 @@ export default function QueryVisualizer() {
 
   const handleNext = () => {
     setCurrentIndex((prev) => (prev < data.length - 1 ? prev + 1 : 0));
+  };
+
+  const handleNextSchema = () => {
+    setCurrentIndex((prev) => {
+      const nextIndex = prev + 64;
+      return nextIndex < data.length ? nextIndex : prev;
+    });
+  };
+
+  const handlePrevSchema = () => {
+    setCurrentIndex((prev) => {
+      const prevIndex = prev - 64;
+      return prevIndex >= 0 ? prevIndex : prev;
+    });
   };
 
   return (
@@ -167,13 +100,22 @@ export default function QueryVisualizer() {
           <span className="text-lg font-semibold">
             Query {currentIndex + 1} of {data.length}
           </span>
-          <button
-            onClick={() => setShowSchema(!showSchema)}
-            className="flex items-center gap-2 px-4 py-2 rounded bg-gray-100 hover:bg-gray-200"
-          >
-            <Database size={16} />
-            {showSchema ? "Hide Schema" : "Show Schema"}
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={handlePrevSchema}
+              className="flex items-center gap-2 px-4 py-2 rounded bg-gray-100 hover:bg-gray-200"
+            >
+              <Database size={16} />
+              Prev Schema
+            </button>
+            <button
+              onClick={handleNextSchema}
+              className="flex items-center gap-2 px-4 py-2 rounded bg-gray-100 hover:bg-gray-200"
+            >
+              <Database size={16} />
+              Next Schema
+            </button>
+          </div>
         </div>
         <button
           onClick={handleNext}
@@ -193,9 +135,9 @@ export default function QueryVisualizer() {
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-bold mb-3">Ground Truth Query</h2>
             <div className="space-y-2">
-              <p><span className="font-semibold">Collection:</span> {currentItem.ground_truth_query.target_collection}</p>
-              <p><span className="font-semibold">Search Query:</span> {currentItem.ground_truth_query.search_query}</p>
-              {currentItem.ground_truth_query.integer_property_filter && (
+              <p><span className="font-semibold">Collection:</span> {currentItem.ground_truth_query?.target_collection || 'N/A'}</p>
+              <p><span className="font-semibold">Search Query:</span> {currentItem.ground_truth_query?.search_query || 'N/A'}</p>
+              {currentItem.ground_truth_query?.integer_property_filter && (
                 <p>
                   <span className="font-semibold">Filter:</span>{' '}
                   {currentItem.ground_truth_query.integer_property_filter.property_name}{' '}
@@ -203,14 +145,14 @@ export default function QueryVisualizer() {
                   {currentItem.ground_truth_query.integer_property_filter.value}
                 </p>
               )}
-              {currentItem.ground_truth_query.integer_property_aggregation && (
+              {currentItem.ground_truth_query?.integer_property_aggregation && (
                 <p>
                   <span className="font-semibold">Aggregation:</span>{' '}
                   {currentItem.ground_truth_query.integer_property_aggregation.metrics} of{' '}
                   {currentItem.ground_truth_query.integer_property_aggregation.property_name}
                 </p>
               )}
-              {currentItem.ground_truth_query.groupby_property && (
+              {currentItem.ground_truth_query?.groupby_property && (
                 <p><span className="font-semibold">Group By:</span> {currentItem.ground_truth_query.groupby_property}</p>
               )}
             </div>
@@ -218,9 +160,32 @@ export default function QueryVisualizer() {
 
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-bold mb-3">Predicted Query</h2>
-            <div className="space-y-2">
-              <p><span className="font-semibold">Collection:</span> {currentItem.predicted_query.target_collection}</p>
-            </div>
+            {currentItem.predicted_query ? (
+              <div className="space-y-2">
+                <p><span className="font-semibold">Collection:</span> {currentItem.predicted_query.target_collection || 'N/A'}</p>
+                <p><span className="font-semibold">Search Query:</span> {currentItem.predicted_query.search_query || 'N/A'}</p>
+                {currentItem.predicted_query.integer_property_filter && (
+                  <p>
+                    <span className="font-semibold">Filter:</span>{' '}
+                    {currentItem.predicted_query.integer_property_filter.property_name}{' '}
+                    {currentItem.predicted_query.integer_property_filter.operator}{' '}
+                    {currentItem.predicted_query.integer_property_filter.value}
+                  </p>
+                )}
+                {currentItem.predicted_query.integer_property_aggregation && (
+                  <p>
+                    <span className="font-semibold">Aggregation:</span>{' '}
+                    {currentItem.predicted_query.integer_property_aggregation.metrics} of{' '}
+                    {currentItem.predicted_query.integer_property_aggregation.property_name}
+                  </p>
+                )}
+                {currentItem.predicted_query.groupby_property && (
+                  <p><span className="font-semibold">Group By:</span> {currentItem.predicted_query.groupby_property}</p>
+                )}
+              </div>
+            ) : (
+              <div className="text-red-500">No tool called.</div>
+            )}
           </div>
 
           <div className="bg-white p-6 rounded-lg shadow-md">
@@ -228,24 +193,22 @@ export default function QueryVisualizer() {
             <div className="relative pt-1">
               <div className="overflow-hidden h-6 text-xs flex rounded bg-blue-100">
                 <div
-                  style={{ width: `${currentItem.ast_score * 100}%` }}
+                  style={{ width: `${(currentItem.ast_score || 0) * 100}%` }}
                   className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"
                 >
-                  {(currentItem.ast_score * 100).toFixed(1)}%
+                  {((currentItem.ast_score || 0) * 100).toFixed(1)}%
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {showSchema && (
-          <div className="space-y-6">
-            <h2 className="text-xl font-bold">Database Schema</h2>
-            {schema.weaviate_collections.map((collection, idx) => (
-              <SchemaVisualizer key={idx} collection={collection} />
-            ))}
-          </div>
-        )}
+        <div className="space-y-6">
+          <h2 className="text-xl font-bold">Database Schema</h2>
+          {currentItem.ground_truth_query.database_schema.weaviate_collections.map((collection, idx) => (
+            <SchemaVisualizer key={idx} collection={collection} />
+          ))}
+        </div>
       </div>
     </div>
   );
