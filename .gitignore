@@ -1,0 +1,13 @@
+echo "# Dependencies
+**/node_modules/
+
+# Build
+**/build/
+**/dist/
+
+# Environment
+**/.env*
+
+# System
+.DS_Store
+*.log" > .gitignore
