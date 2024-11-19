@@ -1,1 +1,0 @@
-Gorilla visualization app
