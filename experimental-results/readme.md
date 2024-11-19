@@ -29,6 +29,7 @@ class QueryPredictionResult(BaseModel):
 class ExperimentSummary(BaseModel):
     timestamp: str
     model_name: str
+    generate_with_models: bool
     total_queries: int
     successful_predictions: int
     failed_predictions: int
