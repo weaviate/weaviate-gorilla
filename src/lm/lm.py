@@ -5,12 +5,8 @@ from typing import Literal
 from pydantic import BaseModel
 from src.models import TestLMConnectionModel
 from src.utils.weaviate_fc_utils import (
-    Tool, 
-    Function, 
-    ParameterProperty, 
-    Parameters, 
-    AnthropicTool, 
-    AnthropicToolInputSchema,
+    OpenAITool,
+    AnthropicTool,
     OllamaTool
 )
 import json
@@ -102,15 +98,6 @@ class LMService():
             case _:
                 raise ValueError(f"Unsupported model provider: {self.model_provider}")
 
-    def generate_with_functions(
-        self,
-        prompt: str,
-        output_model: BaseModel,
-        function_calling_schema: dict
-    ):
-        """Generates with a function calling schema"""
-        pass
-
     def connection_test(self) -> None:
         prompt = "Say hello"
         output_model = TestLMConnectionModel if self.model_provider == "openai" else None
@@ -118,37 +105,11 @@ class LMService():
         response = self.generate(prompt, output_model)
         print("\033[92mLM Connection test result:\033[0m")
         print(response)
-
-    # switch this on `openai` | `anthropic`
-    def connection_test_with_tools(self) -> None:
-        prompt = "What is 18549023948 multiplied by 84392348?"
-        tools = [Tool(
-            type="function",
-            function=Function(
-                name="multiply",
-                description="Multiply two numbers together",
-                parameters=Parameters(
-                    type="object",
-                    properties={
-                        "num1": ParameterProperty(
-                            type="number",
-                            description="The first number to multiply",
-                        ),
-                        "num2": ParameterProperty(
-                            type="number",
-                            description="The second number to multiply",
-                        ),
-                    },
-                    required=["num1", "num2"],
-                ),
-            ),
-        ).model_dump_json()]
     
-    # This should parse the response here
     def one_step_function_selection_test(
             self, 
             prompt: str, 
-            tools: list[Tool] | list[AnthropicTool] | list[OllamaTool]
+            tools: list[OpenAITool] | list[AnthropicTool] | list[OllamaTool]
         ) -> dict | None:
         if self.model_provider == "openai":
             messages = [

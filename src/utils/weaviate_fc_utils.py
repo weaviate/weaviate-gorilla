@@ -12,6 +12,8 @@ from src.models import (
 )
 import re
 from typing import Tuple, Union, Any
+from pydantic import BaseModel
+from typing import Literal, Dict, List, Optional
 
 def get_collections_info(client: weaviate.WeaviateClient) -> tuple[str, list[str]]:
     """
@@ -40,117 +42,20 @@ def get_collections_info(client: weaviate.WeaviateClient) -> tuple[str, list[str
     
     return "\n".join(output), collection_names
 
-from pydantic import BaseModel
-from typing import Literal, Dict, List, Optional
-
-class ParameterProperty(BaseModel):
-    type: str
-    description: str
-
-class Parameters(BaseModel):
+class OpenAIParameters(BaseModel):
     type: Literal["object"]
-    properties: Dict[str, ParameterProperty]
+    properties: Dict[str, Dict[str, Any]]
     required: Optional[List[str]]
 
-class Function(BaseModel):
+class OpenAIFunction(BaseModel):
     name: str
     description: str
-    parameters: Parameters
+    parameters: OpenAIParameters
 
-class Tool(BaseModel):
+class OpenAITool(BaseModel):
     type: Literal["function"]
-    function: Function
-    
-# This is going to have to either return `OpenAITool | OllamaTool | AnthropicTool`
-# or I can add a type cast type of thing on top of the OpenAITool
-def build_weaviate_query_tools(collections_description: str, collections_list: list[str], num_tools: int = 5) -> list[Tool]:
-    from src.utils.tool_descriptions import (
-        collection_name_descriptions,
-        search_query_descriptions, 
-        filter_string_descriptions,
-        aggregation_string_descriptions
-    )
+    function: OpenAIFunction
 
-    tools = []
-    for i in range(num_tools):
-        tools.append(Tool(
-            type="function",
-            function=Function(
-                name="query_database",
-                description=f"""Query a database.
-
-                Available collections in this database:
-                {collections_description}""",
-                parameters=Parameters(
-                    type="object",
-                    properties={
-                        "collection_name": ParameterProperty(
-                            type="string",
-                            description=collection_name_descriptions[i],
-                            enum=collections_list
-                        ),
-                        "search_query": ParameterProperty(
-                            type="string",
-                            description=search_query_descriptions[i]
-                        ),
-                        "filter_string": ParameterProperty(
-                            type="string",
-                            description=filter_string_descriptions[i]
-                        ),
-                        "aggregate_string": ParameterProperty(
-                            type="string",
-                            description=aggregation_string_descriptions[i]
-                        )
-                    },
-                    required=["collection_name"]
-                )
-            )
-        ))
-    return tools
-
-def build_weaviate_query_tool(collections_description: str, collections_list: list[str]) -> Tool:
-    from src.utils.tool_descriptions import (
-        collection_name_descriptions,
-        search_query_descriptions,
-        filter_string_descriptions,
-        aggregation_string_descriptions
-    )
-
-    return Tool(
-        type="function",
-        function=Function(
-            name="query_database",
-            description=f"""Query a database.
-
-            Available collections in this database:
-            {collections_description}""",
-            parameters=Parameters(
-                type="object",
-                properties={
-                    "collection_name": ParameterProperty(
-                        type="string",
-                        description=collection_name_descriptions[0],
-                        enum=collections_list
-                    ),
-                    "search_query": ParameterProperty(
-                        type="string",
-                        description=search_query_descriptions[0]
-                    ),
-                    "filter_string": ParameterProperty(
-                        type="string",
-                        description=filter_string_descriptions[0]
-                    ),
-                    "aggregate_string": ParameterProperty(
-                        type="string",
-                        description=aggregation_string_descriptions[0]
-                    )
-                },
-                required=["collection_name"]
-            )
-        )
-    )
-
-# Anthropic Tool
 class AnthropicToolInputSchema(BaseModel):
     type: str
     properties: dict[str, Any]
@@ -161,8 +66,256 @@ class AnthropicTool(BaseModel):
     description: str
     input_schema: AnthropicToolInputSchema
 
-# Abstract this to one function that takes the model_provider as an argument
-def build_weaviate_query_tool_for_anthropic(collections_description: str, collections_list: list[str]) -> AnthropicTool:
+class OllamaFunctionParameters(BaseModel):
+    type: Literal["object"] = "object"
+    properties: dict[str, dict[str, Any]]
+    required: list[str]
+
+class OllamaFunction(BaseModel):
+    name: str
+    description: str
+    parameters: OllamaFunctionParameters
+
+class OllamaTool(BaseModel):
+    type: Literal["function"] = "function"
+    function: OllamaFunction
+
+def build_weaviate_query_tool_for_openai(collections_description: str, collections_list: list[str], generate_with_models: bool = False) -> OpenAITool:
+
+    if generate_with_models:
+        properties = {
+            "collection_name": {
+                "type": "string",
+                "description": "The collection to query. Has a boolean-valued property `inBoston` that you can use to filter queries on if useful.",
+                "enum": collections_list
+            },
+            "search_query": {
+                "type": "string",
+                "description": "A search query to return objects from a search index."
+            },
+            "integer_property_filter": {
+                "type": "object",
+                "description": "Filter numeric properties using comparison operators",
+                "properties": {
+                    "property_name": {"type": "string"},
+                    "operator": {"type": "string", "enum": ["=", "<", ">", "<=", ">="]},
+                    "value": {"type": "number"}
+                }
+            },
+            "text_property_filter": {
+                "type": "object", 
+                "description": "Filter text properties using equality or LIKE operators",
+                "properties": {
+                    "property_name": {"type": "string"},
+                    "operator": {"type": "string", "enum": ["=", "LIKE"]},
+                    "value": {"type": "string"}
+                }
+            },
+            "boolean_property_filter": {
+                "type": "object",
+                "description": "Filter boolean properties using equality operators",
+                "properties": {
+                    "property_name": {"type": "string"},
+                    "operator": {"type": "string", "enum": ["=", "!="]},
+                    "value": {"type": "boolean"}
+                }
+            },
+            "integer_property_aggregation": {
+                "type": "object",
+                "description": "Aggregate numeric properties using statistical functions",
+                "properties": {
+                    "property_name": {"type": "string"},
+                    "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]}
+                }
+            },
+            "text_property_aggregation": {
+                "type": "object",
+                "description": "Aggregate text properties using frequency analysis",
+                "properties": {
+                    "property_name": {"type": "string"},
+                    "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOP_OCCURRENCES"]},
+                    "top_occurrences_limit": {"type": "integer"}
+                }
+            },
+            "boolean_property_aggregation": {
+                "type": "object",
+                "description": "Aggregate boolean properties using statistical functions",
+                "properties": {
+                    "property_name": {"type": "string"},
+                    "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]}
+                }
+            },
+            "groupby_property": {
+                "type": "string",
+                "description": "Group the results by a property."
+            }
+        }
+    else:
+        properties = {
+            "collection_name": {
+                "type": "string",
+                "description": "A collection to search through.",
+                "enum": collections_list
+            },
+            "search_query": {
+                "type": "string",
+                "description": "A search query"
+            },
+            "filter_string": {
+                "type": "string",
+                "description": "A filter to apply to the search results."
+            },
+            "aggregate_string": {
+                "type": "string",
+                "description": "An aggregation to apply to the search results."
+            }
+        }
+
+    return OpenAITool(
+        type="function",
+        function=OpenAIFunction(
+            name="query_database",
+            description=f"""Query a database.
+
+            Available collections in this database:
+            {collections_description}""",
+            parameters=OpenAIParameters(
+                type="object",
+                properties=properties,
+                required=["collection_name"]
+            )
+        )
+    )
+
+def build_weaviate_query_tool_for_anthropic(collections_description: str, collections_list: list[str], generate_with_models: bool = False) -> AnthropicTool:
+    if generate_with_models:
+        properties = {
+            "collection_name": {
+                "type": "string",
+                "description": "The collection to query",
+                "enum": collections_list
+            },
+            "search_query": {
+                "type": "string",
+                "description": "A search query to return objects from a search index."
+            },
+            "integer_property_filter": {
+                "type": "object",
+                "description": "Filter numeric properties using comparison operators",
+                "properties": {
+                    "property_name": {"type": "string"},
+                    "operator": {"type": "string", "enum": ["=", "<", ">", "<=", ">="]},
+                    "value": {"type": "number"}
+                }
+            },
+            "text_property_filter": {
+                "type": "object",
+                "description": "Filter text properties using equality or LIKE operators",
+                "properties": {
+                    "property_name": {"type": "string"},
+                    "operator": {"type": "string", "enum": ["=", "LIKE"]},
+                    "value": {"type": "string"}
+                }
+            },
+            "boolean_property_filter": {
+                "type": "object",
+                "description": "Filter boolean properties using equality operators",
+                "properties": {
+                    "property_name": {"type": "string"},
+                    "operator": {"type": "string", "enum": ["=", "!="]},
+                    "value": {"type": "boolean"}
+                }
+            },
+            "integer_property_aggregation": {
+                "type": "object",
+                "description": "Aggregate numeric properties using statistical functions",
+                "properties": {
+                    "property_name": {"type": "string"},
+                    "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]}
+                }
+            },
+            "text_property_aggregation": {
+                "type": "object",
+                "description": "Aggregate text properties using frequency analysis",
+                "properties": {
+                    "property_name": {"type": "string"},
+                    "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOP_OCCURRENCES"]},
+                    "top_occurrences_limit": {"type": "integer"}
+                }
+            },
+            "boolean_property_aggregation": {
+                "type": "object",
+                "description": "Aggregate boolean properties using statistical functions",
+                "properties": {
+                    "property_name": {"type": "string"},
+                    "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]}
+                }
+            },
+            "groupby_property": {
+                "type": "string",
+                "description": "Group the results by a property."
+            }
+        }
+    else:
+        properties = {
+            "collection_name": {
+                "type": "string",
+                "description": "The collection to query",
+                "enum": collections_list
+            },
+            "search_query": {
+                "type": "string",
+                "description": "Optional search query to find semantically relevant items."
+            },
+            "filter_string": {
+                "type": "string",
+                "description": """
+                Optional filter expression using prefix notation to ensure unambiguous order of operations.
+                
+                Basic condition syntax: property_name:operator:value
+                
+                Compound expressions use prefix AND/OR with parentheses:
+                - AND(condition1, condition2)
+                - OR(condition1, condition2)
+                - AND(condition1, OR(condition2, condition3))
+                
+                Examples:
+                - Simple: age:>:25
+                - Compound: AND(age:>:25, price:<:1000)
+                - Complex: OR(AND(age:>:25, price:<:1000), category:=:'electronics')
+                - Nested: AND(status:=:'active', OR(price:<:50, AND(rating:>:4, stock:>:100)))
+                
+                Supported operators:
+                - Comparison: =, >, <, >=, <= 
+                - Text only: LIKE
+
+                IMPORTANT!!! Please review the collection schema to make sure the property name is spelled correctly!! THIS IS VERY IMPORTANT!!!
+                """
+            },
+            "aggregate_string": {
+                "type": "string",
+                "description": """
+                Optional aggregate expression using syntax: property_name:aggregation_type.
+
+                Group by with: GROUP_BY(property_name) (limited to one property).
+
+                Aggregation Types by Data Type:
+
+                Text: COUNT, TYPE, TOP_OCCURRENCES[limit]
+                Numeric: COUNT, TYPE, MIN, MAX, MEAN, MEDIAN, MODE, SUM
+                Boolean: COUNT, TYPE, TOTAL_TRUE, TOTAL_FALSE, PERCENTAGE_TRUE, PERCENTAGE_FALSE
+                Date: COUNT, TYPE, MIN, MAX, MEAN, MEDIAN, MODE
+
+                Examples:
+
+                Simple: Article:COUNT, wordCount:COUNT,MEAN,MAX, category:TOP_OCCURRENCES[5]
+                Grouped: GROUP_BY(publication):COUNT, GROUP_BY(category):COUNT,price:MEAN,MAX
+
+                Combine with commas: GROUP_BY(publication):COUNT,wordCount:MEAN,category:TOP_OCCURRENCES[5]
+                """
+            }
+        }
+
     return AnthropicTool(
         name="query_database",
         description=f"""Query a database.
@@ -171,7 +324,94 @@ def build_weaviate_query_tool_for_anthropic(collections_description: str, collec
         {collections_description}""",
         input_schema=AnthropicToolInputSchema(
             type="object",
-            properties={
+            properties=properties,
+            required=["collection_name"]
+        )
+    )
+
+def build_weaviate_query_tool_for_ollama(collections_description: str, collections_list: list[str], generate_with_models: bool = False) -> OllamaTool:
+    if generate_with_models:
+        query_parameters = {
+            "type": "object",
+            "properties": {
+                "collection_name": {
+                    "type": "string",
+                    "description": "The collection to retrieve objects from.",
+                    "enum": collections_list
+                },
+                "search_query": {
+                    "type": "string",
+                    "description": "A search query to return objects from a search index."                
+                },
+                "integer_property_filter": {
+                    "type": "object",
+                    "description": "Filter numeric properties using comparison operators",
+                    "properties": {
+                        "property_name": {"type": "string"},
+                        "operator": {"type": "string", "enum": ["=", "<", ">", "<=", ">="]},
+                        "value": {"type": "number"}
+                    },
+                    "required": ["property_name", "operator", "value"]
+                },
+                "text_property_filter": {
+                    "type": "object",
+                    "description": "Filter text properties using equality or LIKE operators",
+                    "properties": {
+                        "property_name": {"type": "string"},
+                        "operator": {"type": "string", "enum": ["=", "LIKE"]},
+                        "value": {"type": "string"}
+                    },
+                    "required": ["property_name", "operator", "value"]
+                },
+                "boolean_property_filter": {
+                    "type": "object",
+                    "description": "Filter boolean properties using equality operators",
+                    "properties": {
+                        "property_name": {"type": "string"},
+                        "operator": {"type": "string", "enum": ["=", "!="]},
+                        "value": {"type": "boolean"}
+                    },
+                    "required": ["property_name", "operator", "value"]
+                },
+                "integer_property_aggregation": {
+                    "type": "object",
+                    "description": "Aggregate numeric properties using statistical functions",
+                    "properties": {
+                        "property_name": {"type": "string"},
+                        "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]}
+                    },
+                    "required": ["property_name", "metrics"]
+                },
+                "text_property_aggregation": {
+                    "type": "object",
+                    "description": "Aggregate text properties using frequency analysis",
+                    "properties": {
+                        "property_name": {"type": "string"},
+                        "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOP_OCCURRENCES"]},
+                        "top_occurrences_limit": {"type": "integer"}
+                    },
+                    "required": ["property_name", "metrics"]
+                },
+                "boolean_property_aggregation": {
+                    "type": "object",
+                    "description": "Aggregate boolean properties using statistical functions",
+                    "properties": {
+                        "property_name": {"type": "string"},
+                        "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]}
+                    },
+                    "required": ["property_name", "metrics"]
+                },
+                "groupby_property": {
+                    "type": "string",
+                    "description": "Group the results by a property."
+                }
+            },
+            "required": ["collection_name"]
+        }
+    else:
+        query_parameters = {
+            "type": "object",
+            "properties": {
                 "collection_name": {
                     "type": "string",
                     "description": "The collection to query",
@@ -182,7 +422,7 @@ def build_weaviate_query_tool_for_anthropic(collections_description: str, collec
                     "description": "Optional search query to find semantically relevant items."
                 },
                 "filter_string": {
-                    "type": "string", 
+                    "type": "string",
                     "description": """
                     Optional filter expression using prefix notation to ensure unambiguous order of operations.
                     
@@ -229,189 +469,20 @@ def build_weaviate_query_tool_for_anthropic(collections_description: str, collec
                     """
                 }
             },
-            required=["collection_name"]
-        )
-    )
+            "required": ["collection_name"]
+        }
 
-class OllamaFunctionParameters(BaseModel):
-    type: Literal["object"] = "object"
-    properties: dict[str, dict[str, Any]]
-    required: list[str]
-
-class OllamaFunction(BaseModel):
-    name: str
-    description: str
-    parameters: OllamaFunctionParameters
-
-class OllamaTool(BaseModel):
-    type: Literal["function"] = "function"
-    function: OllamaFunction
-
-def build_weaviate_query_tool_for_ollama(collections_description: str, collections_list: list[str]) -> OllamaTool:
-    query_parameters = {
-        "type": "object",
-        "properties": {
-            "collection_name": {
-                "type": "string",
-                "description": "The collection to retrieve objects from.",
-                "enum": collections_list
-            },
-            "search_query": {
-                "type": "string",
-                "description": "A search query to return objects from a search index."                
-            },
-            "integer_property_filter": {
-                "type": "object",
-                "description": "Filter numeric properties using comparison operators",
-                "properties": {
-                    "property_name": {"type": "string"},
-                    "operator": {"type": "string", "enum": ["=", "<", ">", "<=", ">="]},
-                    "value": {"type": "number"}
-                },
-                "required": ["property_name", "operator", "value"]
-            },
-            "text_property_filter": {
-                "type": "object",
-                "description": "Filter text properties using equality or LIKE operators",
-                "properties": {
-                    "property_name": {"type": "string"},
-                    "operator": {"type": "string", "enum": ["=", "LIKE"]},
-                    "value": {"type": "string"}
-                },
-                "required": ["property_name", "operator", "value"]
-            },
-            "boolean_property_filter": {
-                "type": "object",
-                "description": "Filter boolean properties using equality operators",
-                "properties": {
-                    "property_name": {"type": "string"},
-                    "operator": {"type": "string", "enum": ["=", "!="]},
-                    "value": {"type": "boolean"}
-                },
-                "required": ["property_name", "operator", "value"]
-            },
-            "integer_property_aggregation": {
-                "type": "object",
-                "description": "Aggregate numeric properties using statistical functions",
-                "properties": {
-                    "property_name": {"type": "string"},
-                    "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]}
-                },
-                "required": ["property_name", "metrics"]
-            },
-            "text_property_aggregation": {
-                "type": "object",
-                "description": "Aggregate text properties using frequency analysis",
-                "properties": {
-                    "property_name": {"type": "string"},
-                    "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOP_OCCURRENCES"]},
-                    "top_occurrences_limit": {"type": "integer"}
-                },
-                "required": ["property_name", "metrics"]
-            },
-            "boolean_property_aggregation": {
-                "type": "object",
-                "description": "Aggregate boolean properties using statistical functions",
-                "properties": {
-                    "property_name": {"type": "string"},
-                    "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]}
-                },
-                "required": ["property_name", "metrics"]
-            },
-            "groupby_property": {
-                "type": "string",
-                "description": "Group the results by a property."
-            }
-        },
-        "required": ["collection_name"]
-    }
     query_function = OllamaFunction(
         name="query_database",
-        description="Query a database to retrieve objects.",
+        description=f"""Query a database.
+
+        Available collections in this database:
+        {collections_description}""",
         parameters=query_parameters
     )
     return OllamaTool(
         function=query_function
     )
-
-
-'''
-# Leave to ablate DSL / Models later on
-def build_weaviate_query_tool_for_ollama(collections_description: str, collections_list: list[str]) -> OllamaTool:
-    return OllamaTool(
-        type="function",
-        function=OllamaFunction(
-            name="query_database",
-            description=f"""Query a database.
-
-            Available collections in this database:
-            {collections_description}""",
-            parameters=OllamaFunctionParameters(
-                type="object",
-                properties={
-                    "collection_name": {
-                        "type": "string",
-                        "description": "The collection to query",
-                        "enum": collections_list
-                    },
-                    "search_query": {
-                        "type": "string",
-                        "description": "Optional search query to find semantically relevant items."
-                    },
-                    "filter_string": {
-                        "type": "string",
-                        "description": """
-                        Optional filter expression using prefix notation to ensure unambiguous order of operations.
-                        
-                        Basic condition syntax: property_name:operator:value
-                        
-                        Compound expressions use prefix AND/OR with parentheses:
-                        - AND(condition1, condition2)
-                        - OR(condition1, condition2)
-                        - AND(condition1, OR(condition2, condition3))
-                        
-                        Examples:
-                        - Simple: age:>:25
-                        - Compound: AND(age:>:25, price:<:1000)
-                        - Complex: OR(AND(age:>:25, price:<:1000), category:=:'electronics')
-                        - Nested: AND(status:=:'active', OR(price:<:50, AND(rating:>:4, stock:>:100)))
-                        
-                        Supported operators:
-                        - Comparison: =, >, <, >=, <= 
-                        - Text only: LIKE
-
-                        IMPORTANT!!! Please review the collection schema to make sure the property name is spelled correctly!! THIS IS VERY IMPORTANT!!!
-                        """
-                    },
-                    "aggregate_string": {
-                        "type": "string",
-                        "description": """
-                        Optional aggregate expression using syntax: property_name:aggregation_type.
-
-                        Group by with: GROUP_BY(property_name) (limited to one property).
-
-                        Aggregation Types by Data Type:
-
-                        Text: COUNT, TYPE, TOP_OCCURRENCES[limit]
-                        Numeric: COUNT, TYPE, MIN, MAX, MEAN, MEDIAN, MODE, SUM
-                        Boolean: COUNT, TYPE, TOTAL_TRUE, TOTAL_FALSE, PERCENTAGE_TRUE, PERCENTAGE_FALSE
-                        Date: COUNT, TYPE, MIN, MAX, MEAN, MEDIAN, MODE
-
-                        Examples:
-
-                        Simple: Article:COUNT, wordCount:COUNT,MEAN,MAX, category:TOP_OCCURRENCES[5]
-                        Grouped: GROUP_BY(publication):COUNT, GROUP_BY(category):COUNT,price:MEAN,MAX
-
-                        Combine with commas: GROUP_BY(publication):COUNT,wordCount:MEAN,category:TOP_OCCURRENCES[5]
-                        """
-                    }
-                },
-                required=["collection_name"]
-            )
-        )
-    )
-'''
-
 
 def _build_weaviate_filter(filter_string: str) -> Filter:
     def _parse_condition(condition: str) -> Filter:
