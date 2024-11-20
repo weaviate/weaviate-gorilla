@@ -38,7 +38,7 @@ def CreateObjects(
             prompt=task_instructions,
             output_model=output_model
         )
-        objects.append(response)
+        objects.append(response.model_dump_json())
 
         if num_samples > 1:
             print(f"\033[92mFirst response without deduplication.\033[0m")

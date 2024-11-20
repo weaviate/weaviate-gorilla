@@ -24,6 +24,7 @@ from src.generate_queries.api_descriptions import (
     boolean_property_aggregation,
     groupby
 )
+from src.utils.util import pretty_print_weaviate_query
 
 openai_api_key = ""
 
@@ -44,11 +45,11 @@ vectorizer_service = VectorizerService(
 vectorizer_service.connection_test()
 
 create_query_prompt = """
-Given a user's database schema write a natural language command that requires using ALL of the following query operators to be answered correctly:
+Given a user's database schema write a natural language command that requires using ALL of the following query operators provided to be answered correctly:
 
 {operator_description}
 
-The query must require ALL of these operators - do not include operators that aren't strictly necessary.
+The query must require ALL of these provided query operators - do not include operators that aren't strictly necessary.
 For search queries, remember these are for semantic similarity search, not exact text matching which can be done with text property filters.
 
 [[ database schema ]]
@@ -87,9 +88,8 @@ start = time.time()
 for idx, database_schema in enumerate(database_schemas):
     if idx > 4:
         break
+    print(f"Creating queries for database schema: {idx}")
     print(f"\n\033[1mRunning for {time.time() - start} seconds.\033[0m\n")
-    print(f"\033[96mWriting queries for database {idx+1}:\033[0m")
-    print(f"{database_schema}\n\n")
     
     # Generate all combinations of operators
     for search, filter_, agg, group in itertools.product(
@@ -101,8 +101,8 @@ for idx, database_schema in enumerate(database_schemas):
             
         # Build properties dict for dynamic model
         properties = {
-            "corresponding_natural_language_query": (str, ...),
-            "target_collection": (str, ...)
+            "target_collection": (str, Field(..., description="The name of the Weaviate collection to query")),
+            "reflection_of_APIs_that_will_be_used_in_this_query": (str, Field(..., description="A description of which Weaviate APIs will be needed to execute this query")),
         }
         
         # Build operator description for prompt
@@ -134,9 +134,21 @@ for idx, database_schema in enumerate(database_schemas):
             properties[group[0]] = (group[1], ...)
             operator_desc.append(groupby)
 
+        '''
+        # Future work, would like to wait until there is data in the collections to better ground this.
+        properties["scenario_that_specifically_requires_this_exact_information"] = (
+            str,
+            Field(..., description="A real-world use case that would require this specific combination of query operators and their values. This should describe a concrete business scenario or analytical need that would specifically require using these exact query parameters together, including any specific numeric thresholds or values. For example, if the query uses a price filter of $20, explain why that exact price point is significant rather than just describing a general need for price filtering. The scenario should demonstrate why these precise parameters were chosen and why different values or simpler query combinations would not suffice for this specific use case.")
+        )
+        '''
+
+        properties["corresponding_natural_language_query"] = (
+            str, 
+            Field(..., description="The natural language question that this query is designed to answer. The question MUST be phrased in a way that explicitly requires using all of the specified query operators - it should not be answerable without using every operator that was selected")
+        )
+
         # Create dynamic model
         DynamicQueryModel = create_model('DynamicQueryModel', **properties)
-        print(DynamicQueryModel)
         
         # Generate query using LM
         task_instructions = create_query_prompt.format(
@@ -145,7 +157,7 @@ for idx, database_schema in enumerate(database_schemas):
         )
         
         query = lm_service.generate(task_instructions, DynamicQueryModel)
-        query_dict = query.dict()
+        query_dict = query.model_dump()
         
         # Convert to WeaviateQuery
         weaviate_query = WeaviateQuery(
@@ -166,10 +178,44 @@ for idx, database_schema in enumerate(database_schemas):
             "database_schema": database_schema,
             "query": weaviate_query.model_dump()
         })
-        print(f"\033[96mGenerated query: {weaviate_query}\n\033[0m")
-
+        print("\n\033[96mQuery Parameters Used:\033[0m")
+        print(f"  \033[96mSearch:\033[0m {search}")
+        print(f"  \033[96mFilter:\033[0m {filter_}")
+        print(f"  \033[96mAggregation:\033[0m {agg}")
+        print(f"  \033[96mGroup By:\033[0m {group}")
+        print("="*50)
+        print(f"\033[96mGenerated query:\033[0m")
+        pretty_print_weaviate_query(weaviate_query)
+        print("\033[96mMore abstract scenario:\033[0m")
+        '''
+        print(query_dict["scenario_that_specifically_requires_this_exact_information"])
+        '''
+        
     print(f"\n\033[92mCreated {len(results)} queries for this schema.\033[0m\n")
 
 # Save results with schemas
 with open("synthetic-weaviate-queries-with-schemas.json", "w") as file:
     json.dump(results, file, indent=4)
+
+# Generate table rows from results
+markdown_table = '''
+| Search Query | Filter | Aggregation | Group By | Natural Language Command |
+|-------------|--------|-------------|----------|-------------------------|
+'''
+
+# Get first schema's results
+first_schema_results = [r for r in results if r["database_schema"] == results[0]["database_schema"]]
+
+for result in first_schema_results:
+    query = result["query"]
+    search = "✓" if query.get("search_query") else ""
+    filter_type = next((k.replace("_property_filter","") for k in ["integer_property_filter", "text_property_filter", "boolean_property_filter"] if query.get(k)), "")
+    agg_type = next((k.replace("_property_aggregation","") for k in ["integer_property_aggregation", "text_property_aggregation", "boolean_property_aggregation"] if query.get(k)), "")
+    group = "✓" if query.get("groupby_property") else ""
+    nl_command = query.get("corresponding_natural_language_query", "").replace("|","/")[:100] + "..."
+    
+    markdown_table += f"| {search} | {filter_type} | {agg_type} | {group} | {nl_command} |\n"
+
+# Save markdown table to file
+with open("query_summary_table_single_collection.md", "w") as f:
+    f.write(markdown_table)
