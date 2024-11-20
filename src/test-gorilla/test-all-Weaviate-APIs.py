@@ -35,7 +35,8 @@ weaviate_queries = load_queries("../../data/synthetic-weaviate-queries-with-sche
 print("\033[92m=== Initializing LM Service ===\033[0m")
 
 # Configuration
-MODEL_NAME = "llama3.1:8b"
+MODEL_PROVIDER = "openai"
+MODEL_NAME = "gpt-4o-mini"
 generate_with_models = True
 
 openai_api_key = ""
@@ -43,7 +44,7 @@ anthropic_api_key = ""
 
 # add ollama
 lm_service = LMService(
-    model_provider = "ollama",
+    model_provider = MODEL_PROVIDER,
     model_name = MODEL_NAME,
     api_key = openai_api_key
 )
@@ -205,20 +206,29 @@ for idx, query in enumerate(weaviate_queries):
             )
             failed_predictions += 1
         else:
-            print("\033[92mParsing tool call response\033[0m")
+            print("\033[92mParsing tool call response\n\n\033[0m")
+            print(response)
+            print("\n\n\n")
             tool_call_args = response
 
             if generate_with_models:
                 # Parse response directly into models when generate_with_models is True
+                integer_property_filter = IntPropertyFilter(**tool_call_args["integer_property_filter"]) if "integer_property_filter" in tool_call_args else None
+                text_property_filter = TextPropertyFilter(**tool_call_args["text_property_filter"]) if "text_property_filter" in tool_call_args else None
+                boolean_property_filter = BooleanPropertyFilter(**tool_call_args["boolean_property_filter"]) if "boolean_property_filter" in tool_call_args else None
+                integer_property_aggregation = IntAggregation(**tool_call_args["integer_property_aggregation"]) if "integer_property_aggregation" in tool_call_args else None
+                text_property_aggregation = TextAggregation(**tool_call_args["text_property_aggregation"]) if "text_property_aggregation" in tool_call_args else None
+                boolean_property_aggregation = BooleanAggregation(**tool_call_args["boolean_property_aggregation"]) if "boolean_property_aggregation" in tool_call_args else None
+
                 predicted_query = WeaviateQuery(
                     target_collection=tool_call_args["collection_name"],
                     search_query=tool_call_args.get("search_query"),
-                    integer_property_filter=tool_call_args.get("integer_property_filter"),
-                    text_property_filter=tool_call_args.get("text_property_filter"),
-                    boolean_property_filter=tool_call_args.get("boolean_property_filter"),
-                    integer_property_aggregation=tool_call_args.get("integer_property_aggregation"),
-                    text_property_aggregation=tool_call_args.get("text_property_aggregation"),
-                    boolean_property_aggregation=tool_call_args.get("boolean_property_aggregation"),
+                    integer_property_filter=integer_property_filter,
+                    text_property_filter=text_property_filter,
+                    boolean_property_filter=boolean_property_filter,
+                    integer_property_aggregation=integer_property_aggregation,
+                    text_property_aggregation=text_property_aggregation,
+                    boolean_property_aggregation=boolean_property_aggregation,
                     groupby_property=tool_call_args.get("groupby_property"),
                     corresponding_natural_language_query=nl_query
                 )

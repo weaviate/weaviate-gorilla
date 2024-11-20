@@ -336,26 +336,22 @@ def build_weaviate_query_tool_for_ollama(collections_description: str, collectio
             "properties": {
                 "collection_name": {
                     "type": "string",
-                    "description": "The collection to retrieve objects from.",
                     "enum": collections_list
                 },
                 "search_query": {
-                    "type": "string",
-                    "description": "A search query to return objects from a search index."                
+                    "type": "string"
                 },
                 "integer_property_filter": {
                     "type": "object",
-                    "description": "Filter numeric properties using comparison operators",
                     "properties": {
                         "property_name": {"type": "string"},
                         "operator": {"type": "string", "enum": ["=", "<", ">", "<=", ">="]},
-                        "value": {"type": "number"}
+                        "value": {"type": "integer"}
                     },
                     "required": ["property_name", "operator", "value"]
                 },
                 "text_property_filter": {
-                    "type": "object",
-                    "description": "Filter text properties using equality or LIKE operators",
+                    "type": "object", 
                     "properties": {
                         "property_name": {"type": "string"},
                         "operator": {"type": "string", "enum": ["=", "LIKE"]},
@@ -365,17 +361,15 @@ def build_weaviate_query_tool_for_ollama(collections_description: str, collectio
                 },
                 "boolean_property_filter": {
                     "type": "object",
-                    "description": "Filter boolean properties using equality operators",
                     "properties": {
                         "property_name": {"type": "string"},
-                        "operator": {"type": "string", "enum": ["=", "!="]},
+                        "operator": {"type": "string", "enum": ["="]},
                         "value": {"type": "boolean"}
                     },
                     "required": ["property_name", "operator", "value"]
                 },
                 "integer_property_aggregation": {
                     "type": "object",
-                    "description": "Aggregate numeric properties using statistical functions",
                     "properties": {
                         "property_name": {"type": "string"},
                         "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]}
@@ -384,7 +378,6 @@ def build_weaviate_query_tool_for_ollama(collections_description: str, collectio
                 },
                 "text_property_aggregation": {
                     "type": "object",
-                    "description": "Aggregate text properties using frequency analysis",
                     "properties": {
                         "property_name": {"type": "string"},
                         "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOP_OCCURRENCES"]},
@@ -394,7 +387,6 @@ def build_weaviate_query_tool_for_ollama(collections_description: str, collectio
                 },
                 "boolean_property_aggregation": {
                     "type": "object",
-                    "description": "Aggregate boolean properties using statistical functions",
                     "properties": {
                         "property_name": {"type": "string"},
                         "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]}
@@ -402,8 +394,7 @@ def build_weaviate_query_tool_for_ollama(collections_description: str, collectio
                     "required": ["property_name", "metrics"]
                 },
                 "groupby_property": {
-                    "type": "string",
-                    "description": "Group the results by a property."
+                    "type": "string"
                 }
             },
             "required": ["collection_name"]
