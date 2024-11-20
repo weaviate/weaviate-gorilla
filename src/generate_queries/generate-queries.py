@@ -105,8 +105,9 @@ results = []
 import time
 start = time.time()
 
+query_count = 0
 for idx, database_schema in enumerate(database_schemas):
-    if idx > 4:
+    if idx > 0:  # Only process first schema
         break
     print(f"Creating queries for database schema: {idx}")
     print(f"\n\033[1mRunning for {time.time() - start} seconds.\033[0m\n")
@@ -211,6 +212,13 @@ for idx, database_schema in enumerate(database_schemas):
         print(query_dict["scenario_that_specifically_requires_this_exact_information"])
         '''
         
+        query_count += 1
+        if query_count >= 2:  # Break after 2 queries
+            break
+            
+    if query_count >= 2:  # Break outer loop too
+        break
+            
     print(f"\n\033[92mCreated {len(results)} queries for this schema.\033[0m\n")
 
 # Save results with schemas
@@ -232,7 +240,7 @@ for result in first_schema_results:
     filter_type = next((k.replace("_property_filter","") for k in ["integer_property_filter", "text_property_filter", "boolean_property_filter"] if query.get(k)), "")
     agg_type = next((k.replace("_property_aggregation","") for k in ["integer_property_aggregation", "text_property_aggregation", "boolean_property_aggregation"] if query.get(k)), "")
     group = "✓" if query.get("groupby_property") else ""
-    nl_command = query.get("corresponding_natural_language_query", "").replace("|","/")[:100] + "..."
+    nl_command = query.get("corresponding_natural_language_query")
     
     markdown_table += f"| {search} | {filter_type} | {agg_type} | {group} | {nl_command} |\n"
 

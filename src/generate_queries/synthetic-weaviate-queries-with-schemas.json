@@ -1,0 +1,46 @@
+[
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "Find family-friendly restaurants that have a great atmosphere and an average rating above 4. Additionally, group these restaurants by cuisine type and compute the average rating for each group to see which cuisine type has the highest mean rating.",
+            "target_collection": "Restaurants",
+            "search_query": "family-friendly restaurants with a great atmosphere",
+            "integer_property_filter": {
+                "property_name": "averageRating",
+                "operator": ">",
+                "value": 4
+            },
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": {
+                "property_name": "averageRating",
+                "metrics": "MEAN"
+            },
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": "description"
+        }
+    },
+    {
+        "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
+        "query": {
+            "corresponding_natural_language_query": "What is the average rating of restaurants suitable for business meetings, that have an average rating greater than 4?",
+            "target_collection": "Restaurants",
+            "search_query": "business meeting",
+            "integer_property_filter": {
+                "property_name": "averageRating",
+                "operator": ">",
+                "value": 4
+            },
+            "text_property_filter": null,
+            "boolean_property_filter": null,
+            "integer_property_aggregation": {
+                "property_name": "averageRating",
+                "metrics": "MEAN"
+            },
+            "text_property_aggregation": null,
+            "boolean_property_aggregation": null,
+            "groupby_property": null
+        }
+    }
+]
