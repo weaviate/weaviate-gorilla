@@ -35,18 +35,17 @@ weaviate_queries = load_queries("../../data/synthetic-weaviate-queries-with-sche
 print("\033[92m=== Initializing LM Service ===\033[0m")
 
 # Configuration
-MODEL_PROVIDER = "openai"
-MODEL_NAME = "gpt-4o-mini"
+MODEL_PROVIDER = "anthropic"
+MODEL_NAME = "claude-3-5-sonnet-20241022"
 generate_with_models = True
 
-openai_api_key = ""
-anthropic_api_key = ""
+api_key = ""
 
 # add ollama
 lm_service = LMService(
     model_provider = MODEL_PROVIDER,
     model_name = MODEL_NAME,
-    api_key = openai_api_key
+    api_key = api_key
 )
 
 print("\033[92m=== Loading Database Schemas ===\033[0m")
@@ -185,7 +184,7 @@ for idx, query in enumerate(weaviate_queries):
     try:
         nl_query = query.corresponding_natural_language_query
         print(f"\033[92mProcessing natural language query:\033[0m {nl_query}")
-        print("\033[92mGround truth query:\033[0m")
+        print("\033[96mGROUND TRUTH QUERY:\033[0m")
         pretty_print_weaviate_query(query)
         
         response = lm_service.one_step_function_selection_test(
@@ -206,9 +205,6 @@ for idx, query in enumerate(weaviate_queries):
             )
             failed_predictions += 1
         else:
-            print("\033[92mParsing tool call response\n\n\033[0m")
-            print(response)
-            print("\n\n\n")
             tool_call_args = response
 
             if generate_with_models:
@@ -260,7 +256,7 @@ for idx, query in enumerate(weaviate_queries):
                     corresponding_natural_language_query=nl_query
                 )
 
-            print("\033[92mPredicted query:\033[0m")
+            print("\033[96mPREDICTED QUERY:\033[0m")
             pretty_print_weaviate_query(predicted_query)
 
             # Calculate AST score

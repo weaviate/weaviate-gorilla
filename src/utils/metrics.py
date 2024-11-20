@@ -8,23 +8,55 @@ def abstract_syntax_tree_match_score(
         ground_truth: WeaviateQueryWithSchema
     ) -> float:
     """
-    Calculate a matching score between predicted and ground truth WeaviateQuery objects.
-    Returns a float between 0.0 and 1.0, where 1.0 indicates a perfect match.
+    Calculate a matching score between predicted and ground truth WeaviateQuery objects using
+    Abstract Syntax Tree (AST) matching principles.
+
+    AST matching evaluates structural similarity between two trees by comparing nodes in a 
+    hierarchical manner. For Weaviate queries, this means:
+
+    1. Root Node (Collection) - The target_collection is the root node and must match first.
+       If collections don't match, the entire tree is considered invalid (score of 0).
+    
+    2. Primary Branches - If root matches, we evaluate primary query components:
+       - Search query (text match)
+       - Filters (property name, operator, value match)
+       - Aggregations (property name, metrics match) 
+       - Group by (property name match)
+
+    The weighting is intentionally biased toward correct collection selection:
+    - target_collection: 0.4 (required for any other points)
+    - search_query: 0.15
+    - filters: 0.15  
+    - aggregations: 0.15
+    - groupby: 0.15
+
+    Args:
+        predicted_apis: The WeaviateQuery predicted by the model
+        ground_truth: The known correct WeaviateQueryWithSchema to compare against
+
+    Returns:
+        float: Score between 0.0 and 1.0, where:
+            0.0 = Complete mismatch starting at root (collection)
+            1.0 = Perfect structural match across all nodes
     """
     score = 0.0
     
     # Weight definitions for different components
     weights = {
-        'target_collection': 0.2,
-        'search_query': 0.2,
-        'filters': 0.2,
-        'aggregations': 0.2,
-        'groupby': 0.2
+        'target_collection': 0.4,  # Increased weight for collection
+        'search_query': 0.15,
+        'filters': 0.15,
+        'aggregations': 0.15,
+        'groupby': 0.15
     }
     
     # Check target collection match (exact match required)
-    if predicted_apis.target_collection == ground_truth.target_collection:
-        score += weights['target_collection']
+    # If this fails, return 0 as the AST root node is incorrect
+    if predicted_apis.target_collection != ground_truth.target_collection:
+        print(f"\033[92mFinal AST Match Score: 0.000 (Collection mismatch)\033[0m")
+        return 0.0
+    
+    score += weights['target_collection']
     
     # Check search query match (if both have search queries)
     if predicted_apis.search_query and ground_truth.search_query:
