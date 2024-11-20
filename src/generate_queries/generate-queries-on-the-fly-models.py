@@ -136,6 +136,7 @@ for idx, database_schema in enumerate(database_schemas):
 
         # Create dynamic model
         DynamicQueryModel = create_model('DynamicQueryModel', **properties)
+        print(DynamicQueryModel)
         
         # Generate query using LM
         task_instructions = create_query_prompt.format(
