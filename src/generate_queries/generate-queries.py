@@ -58,7 +58,7 @@ For search queries, remember these are for semantic similarity search, not exact
 Please respond with a natural language query that requires all the specified operators.
 """
 
-with open("../../data/simple-3-collection-schemas.json", "r") as json_file:
+with open("../../data/3-collection-schemas-with-search-property.json", "r") as json_file:
     database_schemas = json.load(json_file)
 
 def format_schema(schema):
