@@ -35,7 +35,7 @@ weaviate_queries = load_queries("../../data/synthetic-weaviate-queries-with-sche
 print("\033[92m=== Initializing LM Service ===\033[0m")
 
 # Configuration
-MODEL_NAME = "gpt-4o"
+MODEL_NAME = "llama3.1:8b"
 generate_with_models = True
 
 openai_api_key = ""
@@ -43,7 +43,7 @@ anthropic_api_key = ""
 
 # add ollama
 lm_service = LMService(
-    model_provider = "openai",
+    model_provider = "ollama",
     model_name = MODEL_NAME,
     api_key = openai_api_key
 )
