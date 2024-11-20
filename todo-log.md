@@ -1,6 +1,7 @@
 # ToDo
 
 [ ] Improve Synthetic Query Quality (make sure each query only uses the APIs provided)
+[ ] Develop interface to manually correct queries
 ==
 [ ] Ablate DSL vs. Models for Filters and Aggregations
 [ ] Error Analysis

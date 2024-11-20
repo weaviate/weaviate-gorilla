@@ -105,10 +105,7 @@ results = []
 import time
 start = time.time()
 
-query_count = 0
 for idx, database_schema in enumerate(database_schemas):
-    if idx > 0:  # Only process first schema
-        break
     print(f"Creating queries for database schema: {idx}")
     print(f"\n\033[1mRunning for {time.time() - start} seconds.\033[0m\n")
     
@@ -211,13 +208,6 @@ for idx, database_schema in enumerate(database_schemas):
         '''
         print(query_dict["scenario_that_specifically_requires_this_exact_information"])
         '''
-        
-        query_count += 1
-        if query_count >= 2:  # Break after 2 queries
-            break
-            
-    if query_count >= 2:  # Break outer loop too
-        break
             
     print(f"\n\033[92mCreated {len(results)} queries for this schema.\033[0m\n")
 
@@ -226,6 +216,7 @@ with open("synthetic-weaviate-queries-with-schemas.json", "w") as file:
     json.dump(results, file, indent=4)
 
 # Generate table rows from results
+# Whoops -- this will only save the results for the first schema.. :)
 markdown_table = '''
 | Search Query | Filter | Aggregation | Group By | Natural Language Command |
 |-------------|--------|-------------|----------|-------------------------|
