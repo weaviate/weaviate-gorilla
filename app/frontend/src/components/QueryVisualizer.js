@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight, Database, Search, Check, X } from 'lucide-re
 const SchemaVisualizer = ({ collection }) => (
   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
     <div className="flex items-center gap-2 mb-4">
-      <Database className="text-blue-500" size={20} />
+      <Database className="text-[#1c1468]" size={20} />
       <h3 className="text-lg font-semibold">{collection.name}</h3>
     </div>
     <p className="text-sm text-gray-600 mb-4">{collection.envisioned_use_case_overview}</p>
@@ -15,7 +15,7 @@ const SchemaVisualizer = ({ collection }) => (
             <p className="font-medium">{prop.name}</p>
             <p className="text-sm text-gray-500">{prop.description}</p>
           </div>
-          <div className="text-sm px-2 py-1 rounded bg-blue-100 text-blue-700">
+          <div className="text-sm px-2 py-1 rounded bg-[#e8fae3] text-[#1c1468]">
             {prop.data_type[0]}
           </div>
         </div>
@@ -92,7 +92,7 @@ export default function QueryVisualizer() {
       <div className="flex items-center justify-between mb-6">
         <button
           onClick={handlePrevious}
-          className="p-2 rounded bg-blue-500 text-white hover:bg-blue-600"
+          className="p-2 rounded bg-[#1c1468] text-white hover:bg-[#130e4a]"
         >
           <ChevronLeft size={24} />
         </button>
@@ -119,7 +119,7 @@ export default function QueryVisualizer() {
         </div>
         <button
           onClick={handleNext}
-          className="p-2 rounded bg-blue-500 text-white hover:bg-blue-600"
+          className="p-2 rounded bg-[#1c1468] text-white hover:bg-[#130e4a]"
         >
           <ChevronRight size={24} />
         </button>
@@ -191,10 +191,10 @@ export default function QueryVisualizer() {
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-bold mb-3">AST Score</h2>
             <div className="relative pt-1">
-              <div className="overflow-hidden h-6 text-xs flex rounded bg-blue-100">
+              <div className="overflow-hidden h-6 text-xs flex rounded bg-[#e8fae3]">
                 <div
                   style={{ width: `${(currentItem.ast_score || 0) * 100}%` }}
-                  className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"
+                  className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-[#1c1468]"
                 >
                   {((currentItem.ast_score || 0) * 100).toFixed(1)}%
                 </div>
