@@ -21,7 +21,6 @@ The Weaviate tool is created differently for each LLM provider (OpenAI, Anthropi
 2. Build tool schema based on provider:
    - OpenAI: Creates `OpenAITool` with function name "query_database"
    - Anthropic: Creates `AnthropicTool` with similar schema
-   - Ollama: Creates `OllamaTool` with similar schema
 
 3. Tool parameters include:
    - Required: collection_name (enum of available collections)
