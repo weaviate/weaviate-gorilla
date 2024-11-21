@@ -1,6 +1,30 @@
 # Related Works
 
 ## LLM Tool Use
+
+Tool use is one of the most promising opportunities to improve the capabilities of LLMs. There are two common design patterns for interfacing tool use in these systems: agentic function calling and flow engineering. Agentic function calling entails equipping the LLM with a set of functions described in the prompt. The LLM inference is then orchestrated in a function calling loop. At each step the LLM either chooses to complete the response, or call one or multiple functions and wait for their respective responses to continue the next iteration of the loop. Contrastively, flow engineering describes a pre-determined flow of inferences and external tools calls. This abstraction helps clarify how tools are interfaced to LLMs. However, there is a significant overlap and this is a constantly evolving area of AI research. For example, an engineered LLM and tool calling flow could be itself abstracted and interfaced as a function for the agent to call. In a similar analog, a flow could implement the open-ended looping core to the definition of an agent. Understanding these distinctions is important for the evolution of prior works on interfacing search and database querying as an LLM tool.
+
+Gorilla
+Structured Outputs
+
+## Search as a Tool
+
+Search has been one of the most commonly used tools for LLMs. Most commonly, this has taken the shape of RAG, a flow of retrieval with the user input as query, followed by response generation. RAG flows were further pioneered with architectures such as Baleen RAG, in which the user input is first translated into search queries with an LLM inference, sent to a retrieval engine, and passed into a final response generation. One of the early efforts to expand search to the agentic function calling interface was WebGPT, in which the LLM can format search queries to send to the web, as well as paginate through the results. Zhang et al. debuted the term “Agentic Information Retrieval” to capture the intersection of learning to search with the agent function calling interface.
+
+## Database as a Tool
+
+Developing mostly in parallel to search as a tool, AI researchers and practitioners have been exploring the use of database APIs as a tool. Even before breakthrough capabilities in LLMs, Text-to-SQL research has been a heavily studied discipline. Text-to-SQL research has mostly targeted the application of making it easier for humans to learn how to query databases. Now that most databases are evolving to support search indexes and integration with LLMs, additional query languages are emerging to expand SQL. [LOTUS is this]. [SUQL is this].
+
+LOTUS, SUQL
+
+In order to study machine learning for databases, we need new benchmarks and datasets reflective of the challenges of database systems. [Database Gyms are this]. [We generate schemas]. Future - [Lakehouses are this]. [Ontologies are this].
+
+Database Gyms and Self-Instruct
+Lakehouses and Ontologies
+
+# Bibliography
+
+## LLM Tool Use
 1. Gorilla: Large Language Model Connected with Massive APIs. Shishir G. Patil, Tianjun Zhang, Xin Wang, Joseph E. Gonzalez. 2023. [Arxiv Link](https://arxiv.org/abs/2305.15334)
 2. Toolformer: Language Models Can Teach Themselves to use Tools. Timo Schick, Jane Dwivedi-Yu, Roberto Dessi, Roberta Raileanu, Maria Lomeli, Luke Zettlemoyer, Niccola Cancedda, Thomas Scialom. 2023. [Arxiv link](https://arxiv.org/abs/2302.04761)
 3. AvaTaR: Optimizing LLM Agents for Tool-Assisted Knowledge Retrieval. Shirley Wu, Shiyu Zhao, Qian Huang, Kexin Huang, Michihiro Yasunaga, Kaidi Cao, Vassilis N. Ioannidis, Karthik Subbian, Jure Leskovec, James Zou. 2024. [Arxiv Link](https://arxiv.org/pdf/2406.11200)

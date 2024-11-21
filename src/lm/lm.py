@@ -10,6 +10,7 @@ from src.utils.weaviate_fc_utils import (
     OllamaTool
 )
 import json
+import time
 
 LMModelProvider = Literal["ollama", "openai"]
 
@@ -81,19 +82,33 @@ class LMService():
                     return response.choices[0].message.content
                     
             case "anthropic":
-                messages = [{"role": "user", "content": prompt}]
-                if output_model:
-                    # Create an instance with default values
-                    model_instance = output_model(generic_response="Hello! This is a test response.")
-                    # Append output format instructions if model provided
-                    messages[0]["content"] += f"\nRespond with the following JSON format: {model_instance.model_dump_json()}"
+                max_retries = 5
+                base_delay = 10  # Initial delay in seconds
                 
-                response = self.lm_client.messages.create(
-                    model=self.model_name,
-                    messages=messages,
-                    max_tokens=1024
-                )
-                return response.content[0].text
+                for attempt in range(max_retries):
+                    try:
+                        messages = [{"role": "user", "content": prompt}]
+                        if output_model:
+                            # Create an instance with default values
+                            model_instance = output_model(generic_response="Hello! This is a test response.")
+                            # Append output format instructions if model provided
+                            messages[0]["content"] += f"\nRespond with the following JSON format: {model_instance.model_dump_json()}"
+                        
+                        response = self.lm_client.messages.create(
+                            model=self.model_name,
+                            messages=messages,
+                            max_tokens=1024
+                        )
+                        return response.content[0].text
+                        
+                    except Exception as e:
+                        if attempt == max_retries - 1:  # Last attempt
+                            raise e
+                        
+                        # Calculate exponential backoff delay
+                        delay = base_delay * (2 ** attempt)  # 10, 20, 40, 80, 160 seconds
+                        print(f"Anthropic API call failed, retrying in {delay} seconds... (Attempt {attempt + 1}/{max_retries})")
+                        time.sleep(delay)
                 
             case _:
                 raise ValueError(f"Unsupported model provider: {self.model_provider}")
@@ -158,25 +173,39 @@ class LMService():
                 return tool["function"]["arguments"]
 
         if self.model_provider == "anthropic":
-            messages = [
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ]
-            response = self.lm_client.messages.create(
-                model=self.model_name,
-                max_tokens=4096,
-                tools=[tool.model_dump() for tool in tools],
-                messages=messages
-            )
-            if response.stop_reason == "tool_use":
-                tool_use = next(block for block in response.content if block.type == "tool_use")
-                tool_name, tool_input = tool_use.name, tool_use.input
-                # future work will need to parse the name as well
-                return tool_input
-            else:
-                return None
+            max_retries = 5
+            base_delay = 10  # Initial delay in seconds
+            
+            for attempt in range(max_retries):
+                try:
+                    messages = [
+                        {
+                            "role": "user",
+                            "content": prompt
+                        }
+                    ]
+                    response = self.lm_client.messages.create(
+                        model=self.model_name,
+                        max_tokens=4096,
+                        tools=[tool.model_dump() for tool in tools],
+                        messages=messages
+                    )
+                    if response.stop_reason == "tool_use":
+                        tool_use = next(block for block in response.content if block.type == "tool_use")
+                        tool_name, tool_input = tool_use.name, tool_use.input
+                        # future work will need to parse the name as well
+                        return tool_input
+                    else:
+                        return None
+                        
+                except Exception as e:
+                    if attempt == max_retries - 1:  # Last attempt
+                        raise e
+                    
+                    # Calculate exponential backoff delay
+                    delay = base_delay * (2 ** attempt)  # 10, 20, 40, 80, 160 seconds
+                    print(f"Anthropic API call failed, retrying in {delay} seconds... (Attempt {attempt + 1}/{max_retries})")
+                    time.sleep(delay)
         else:
             raise ValueError(f"Function calling not yet supported for the LMService with {self.model_provider}")
 

@@ -1,27 +1,11 @@
 # Experimental Results
 
-# !! MAYBE NEEDS TO BE UPDATED !!
-
-# AST Test Schema
-
 ```python
-class WeaviateQuery(BaseModel):
-    corresponding_natural_language_query: str
-    target_collection: str
-    search_query: Optional[str]
-    integer_property_filter: Optional[IntPropertyFilter]
-    text_property_filter: Optional[TextPropertyFilter]
-    boolean_property_filter: Optional[BooleanPropertyFilter]
-    integer_property_aggregation: Optional[IntAggregation]
-    text_property_aggregation: Optional[TextAggregation]
-    boolean_property_aggregation: Optional[BooleanAggregation]
-    groupby_property: Optional[str]
-
 class QueryPredictionResult(BaseModel):
     query_index: int
     database_schema_index: int
     natural_language_query: str
-    ground_truth_query: WeaviateQuery
+    ground_truth_query: WeaviateQueryWithSchema
     predicted_query: Optional[WeaviateQuery]
     ast_score: float
     error: Optional[str]
@@ -37,5 +21,7 @@ class ExperimentSummary(BaseModel):
     per_schema_scores: Dict[int, float]
     detailed_results: List[QueryPredictionResult]
 ```
+### Note, would be good to break up `models` into multiple folders -- explained by these folders.
+
 
 ![Weaviate Gorilla](../visuals/weaviate-gorillas/gorilla-96.png)

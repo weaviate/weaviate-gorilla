@@ -38,8 +38,10 @@ def get_collections_info(client: weaviate.WeaviateClient) -> tuple[str, list[str
         # output.append(f"Description: {config.description}") # 1024 token limit on tool description
         output.append("\nProperties:")
         for prop in config.properties:
-            output.append(f"- {prop.name}: {prop.description} (type: {prop.data_type.value})")
-    
+            # output.append(f"- {prop.name}: {prop.description} (type: {prop.data_type.value})")
+            # because of 1024 token limit :(
+            output.append(f"- {prop.name}: (type: {prop.data_type.value})")
+
     return "\n".join(output), collection_names
 
 class OpenAIParameters(BaseModel):
