@@ -8,8 +8,6 @@ Most examples of LLMs and database access as a tool follow an architecture inspi
 
 We compare the gpt-4o and gpt-4o-mini LLMs on the task of choosing the correct database query API given a hypothetical information need as input. Some queries only require a single API, such as "How many unique menu items are there in the restaurant menus that are priced under $20?". This can be answered with an integer filter that sets the price less than $20. Contrastively, the user query: "What is the average price of seasonal specialty menu items under $20, grouped by whether they are vegetarian or not?" requires routing the query to the Menu collection, formatting a search query for "seasonal specialties", setting a price filter of less than $20, calculating the average price of the results, and grouping them by the isVegetarian boolean property.
 
-
-
 ## Methodology
 
 The Weaviate tool schema is implemented differently for OpenAI and Anthropic through dedicated builder functions. The process begins by calling `get_collections_info()` which connects to a Weaviate instance to retrieve metadata about available collections and their properties. This returns both a formatted description string detailing the collections and their properties, as well as a list of collection names that can be used as an enumeration. Due to token limits in function calling APIs, the description is carefully constructed to fit within 1024 tokens while maintaining all essential information about the schema.
