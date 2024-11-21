@@ -18,7 +18,7 @@ def abstract_syntax_tree_match_score(
        If collections don't match, the entire tree is considered invalid (score of 0).
     
     2. Primary Branches - If root matches, we evaluate primary query components:
-       - Search query (text match)
+       - Search query (presence match only)
        - Filters (property name, operator, value match)
        - Aggregations (property name, metrics match) 
        - Group by (property name match)
@@ -60,8 +60,7 @@ def abstract_syntax_tree_match_score(
     
     # Check search query match (if both have search queries)
     if predicted_apis.search_query and ground_truth.search_query:
-        if predicted_apis.search_query.lower() == ground_truth.search_query.lower():
-            score += weights['search_query']
+        score += weights['search_query']  # Award points if both have a search query, regardless of content
     elif predicted_apis.search_query is None and ground_truth.search_query is None:
         score += weights['search_query']  # Both None is also a match
     
