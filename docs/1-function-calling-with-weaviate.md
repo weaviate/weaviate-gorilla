@@ -10,4 +10,38 @@ We compare the GPT-4o and GPT-4o mini LLMs on the task of choosing the correct d
 
 ## Methodology
 
+- Tool Schema per Model
+
+The Weaviate tool is created differently for each LLM provider (OpenAI, Anthropic, Ollama) using builder functions. The core steps are:
+
+1. Get collection info from Weaviate:
+   - Retrieve collection names and properties using `get_collections_info()`
+   - Returns formatted description string and list of collection names
+
+2. Build tool schema based on provider:
+   - OpenAI: Creates `OpenAITool` with function name "query_database"
+   - Anthropic: Creates `AnthropicTool` with similar schema
+   - Ollama: Creates `OllamaTool` with similar schema
+
+3. Tool parameters include:
+   - Required: collection_name (enum of available collections)
+   - Optional: 
+     - search_query: For semantic search
+     - filter_string: For filtering results
+     - aggregate_string: For aggregating results
+
+4. Two parameter modes:
+   - Model-based (generate_with_models=True):
+     - Structured parameters for filters and aggregations
+     - Uses Pydantic models like IntPropertyFilter, TextPropertyFilter etc.
+   
+   - String-based (generate_with_models=False): 
+     - Takes filter/aggregation as strings
+     - Parses strings into models internally
+
+The tool schema enables LLMs to construct valid Weaviate queries by providing:
+- Available collections and their properties
+- Search, filter and aggregation capabilities
+- Type validation through parameter constraints
+
 ## Future
