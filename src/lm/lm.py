@@ -27,9 +27,15 @@ class LMService():
             case "ollama":
                 self.lm_client = ollama
             case "openai":
-                self.lm_client = openai.OpenAI(
-                    api_key=api_key
-                )
+                if self.model_name == "gemini-1.5-pro" | self.model_name == "gemini-1.5-flash":
+                    self.lm_client = openai.OpenAI(
+                        api_key=api_key,
+                        base_url="https://generativelanguage.googleapis.com/v1beta/"
+                    )
+                else:
+                    self.lm_client = openai.OpenAI(
+                        api_key=api_key
+                    )
             case "anthropic":
                 self.lm_client = anthropic.Anthropic(
                     api_key=api_key
