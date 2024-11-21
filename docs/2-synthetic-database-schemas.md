@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The synthetic database schemas were generated to create realistic test cases for evaluating LLM query capabilities. Each schema set represents a different business domain with three interconnected collections, carefully designed to enable semantic search and complex querying patterns. The schemas provide a foundation for testing how well LLMs can understand database structures and generate appropriate queries based on natural language requests.
+To evaluate LLMs' ability to interface with search-enabled databases, we developed a suite of synthetic database schemas. Each schema represents a distinct business domain and consists of three interrelated collections. Every collection is carefully designed with a searchable text property and three additional properties, one numeric, one textual, and one boolean, to enable comprehensive testing of different query patterns. This structured approach allows us to systematically assess how well LLMs can interpret database schemas and translate natural language requests into appropriate database operations.
 
 ## Methodology
 

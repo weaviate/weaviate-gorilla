@@ -35,8 +35,9 @@ weaviate_queries = load_queries("../../data/synthetic-weaviate-queries-with-sche
 print("\033[92m=== Initializing LM Service ===\033[0m")
 
 # Configuration
+
 MODEL_PROVIDER = "openai"
-MODEL_NAME = "gpt-4o"
+MODEL_NAME = "gemini-1.5-pro"
 generate_with_models = True
 
 api_key = ""

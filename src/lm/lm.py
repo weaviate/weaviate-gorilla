@@ -27,9 +27,15 @@ class LMService():
             case "ollama":
                 self.lm_client = ollama
             case "openai":
-                self.lm_client = openai.OpenAI(
-                    api_key=api_key
-                )
+                if self.model_name in ["gemini-1.5-pro", "gemini-1.5-flash"]:
+                    self.lm_client = openai.OpenAI(
+                        api_key=api_key,
+                        base_url="https://generativelanguage.googleapis.com/v1beta/"
+                    )
+                else:
+                    self.lm_client = openai.OpenAI(
+                        api_key=api_key
+                    )
             case "anthropic":
                 self.lm_client = anthropic.Anthropic(
                     api_key=api_key
@@ -83,7 +89,7 @@ class LMService():
                     
             case "anthropic":
                 max_retries = 5
-                base_delay = 10  # Initial delay in seconds
+                base_delay = 15
                 
                 for attempt in range(max_retries):
                     try:
@@ -174,7 +180,7 @@ class LMService():
 
         if self.model_provider == "anthropic":
             max_retries = 5
-            base_delay = 10  # Initial delay in seconds
+            base_delay = 15
             
             for attempt in range(max_retries):
                 try:

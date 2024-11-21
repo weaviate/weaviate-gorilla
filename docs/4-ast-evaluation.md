@@ -2,9 +2,9 @@
 
 ## Introduction
 
-Abstract Syntax Tree (AST) evaluation is a technique used to assess the structural similarity between predicted and ground truth Weaviate queries in our experiments. Rather than using exact string matching, AST evaluation compares queries by analyzing their hierarchical components and structure. This approach is particularly valuable for evaluating language model outputs because it can capture semantic equivalence even when the surface syntax differs.
+When evaluating how well language models translate natural language into database queries, a simple boolean metric assessing if the predicted query is identical to the ground truth query provides limited insight into partial successes. We need an evaluation approach that can measure how much of the query structure was correctly generated, even if some components were incorrect. We use Abstract Syntax Tree (AST) evaluation to assess the structural matching between predicted and ground truth queries in our experiments. The AST approach breaks down queries into their hierarchical components - starting with the target collection as the root node, followed by branches for search queries, filters, aggregations, and grouping operations. Each component is evaluated for exact matches, with the collection match being required for any points to be awarded.
 
-In our experiments, AST evaluation helps measure how well language models can translate natural language queries into structured Weaviate API calls. The scoring system prioritizes getting fundamental elements correct (like the target collection) while also considering the accuracy of more detailed query components like filters, aggregations, and grouping.
+In our experiments, AST evaluation helps measure how well language models can translate natural language queries into structured Weaviate API calls through a weighted scoring system. The scoring heavily weights getting the target collection correct (40% of total score), as this is fundamental to query correctness. The remaining score is evenly distributed (15% each) across matching the search query text, filter specifications, aggregation operations, and grouping property. This hierarchical scoring approach allows us to quantify partial successes in query generation and identify specific areas where models struggle.
 
 ## Methodology
 

@@ -1,25 +1,3 @@
 # Experimental Results and Takeaways
 
-Our experiments evaluated the performance of GPT-4o and GPT-4o-mini models on translating natural language queries into structured Weaviate API calls across diverse database schemas. The evaluation used AST scoring to assess structural similarity between predicted and ground truth queries, providing insights into how well these models understand and generate database queries.
 
-## Analysis
-
-The results demonstrate strong overall performance from both models, with success rates above 96% (304/315 for GPT-4o and 308/315 for GPT-4o-mini) in generating valid queries. GPT-4o achieved a slightly higher average AST score of 85.66% compared to GPT-4o-mini's 83.43%, suggesting marginally better query structure understanding.
-
-Looking at per-schema performance, both models showed consistent capabilities across different database contexts, with scores generally ranging from 79% to 88%. This consistency indicates good generalization abilities across varying database schemas and domain contexts.
-
-The component analysis reveals interesting patterns in how the models handle different query elements:
-
-1. Both models performed exceptionally well with boolean filters (GPT-4o: 91.44%, GPT-4o-mini: 88.13%)
-2. Search queries proved most challenging (GPT-4o: 76.77%, GPT-4o-mini: 72.48%)
-3. Complex operations like GroupBy showed solid performance (GPT-4o: 83.53%, GPT-4o-mini: 80.03%)
-
-## Key Takeaways
-
-1. **Model Size vs Performance Trade-off**: Despite being a smaller model, GPT-4o-mini demonstrated comparable and sometimes superior performance to GPT-4o, particularly in successful prediction rate (308 vs 304). This suggests that for specialized tasks like database query generation, smaller, well-trained models can be highly effective.
-
-2. **Query Component Hierarchy**: Both models showed a clear pattern in their handling of different query components, performing best with boolean filters and struggling most with semantic search queries. This hierarchy of performance suggests that concrete, rule-based operations are easier for models to learn compared to more nuanced semantic matching tasks.
-
-3. **Consistent Cross-Schema Performance**: The relatively stable performance across different schemas (standard deviation of ~2.5% for GPT-4o and ~1.9% for GPT-4o-mini) indicates strong generalization capabilities. This suggests that both models have effectively learned the underlying patterns of database querying rather than memorizing schema-specific patterns.
-
-These results demonstrate the viability of using LLMs for database query generation while highlighting areas for potential improvement, particularly in handling semantic search queries.
