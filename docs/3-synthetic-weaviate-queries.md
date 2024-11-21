@@ -6,33 +6,9 @@ To evaluate the ability of large language models (LLMs) to translate natural lan
 
 ## Methodology
 
-The query generation process follows these key steps:
+The query generation process follows a systematic approach to create comprehensive test cases. We begin by loading database schemas from JSON files that define collections with their properties and data types. Next, we generate all valid combinations of query operators, including options for semantic search, filters (integer, text, boolean), aggregations, and grouping operations. For each operator combination, we create a Pydantic model that specifies required fields and includes descriptions of how each operator should be used, ensuring that the natural language query necessitates all selected operators.
 
-1. **Schema Loading**: We load a set of database schemas from JSON files, where each schema defines collections with their properties and data types.
-
-2. **Operator Combinations**: We generate all valid combinations of query operators:
-   - Search options (semantic search or none)
-   - Filter options (integer, text, boolean filters, or none) 
-   - Aggregation options (integer, text, boolean aggregations, or none)
-   - Grouping options (groupby or none)
-
-3. **Dynamic Model Creation**: For each operator combination, we:
-   - Create a Pydantic model specifying required fields
-   - Include descriptions of how each operator should be used
-   - Require a natural language query that necessitates all selected operators
-
-4. **LLM Query Generation**: Using GPT-4, we:
-   - Provide the database schema and operator requirements
-   - Generate natural language queries that require using all specified operators
-   - Validate that queries can't be answered without using every selected operator
-
-5. **Result Storage**: The generated queries are saved with:
-   - The full database schema context
-   - Structured Weaviate query parameters
-   - Corresponding natural language questions
-   - Metadata about which operators are used
-
-This process generates 64 queries per schema, systematically covering different operator combinations while ensuring each query has a clear semantic purpose.
+Using GPT-4, we then generate natural language queries by providing the database schema and operator requirements, validating that each query requires all specified operators to be answered correctly. The generated queries are stored along with their full database schema context, structured Weaviate query parameters, corresponding natural language questions, and metadata about which operators are used. This process yields 64 queries per schema, methodically covering different operator combinations while maintaining clear semantic purpose for each query.
 
 ## Future
 

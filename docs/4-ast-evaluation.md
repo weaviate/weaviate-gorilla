@@ -8,35 +8,7 @@ In our experiments, AST evaluation helps measure how well language models can tr
 
 ## Methodology
 
-The AST evaluation methodology assigns weighted scores to different components of the Weaviate query structure:
-
-1. Root Node (Collection) - 40% of total score
-   - The target_collection must match exactly
-   - If collections don't match, the entire score is 0 since this represents a fundamental misunderstanding
-
-2. Search Query - 15% of total score
-   - Exact text match of search queries (case-insensitive)
-   - Full points if both queries have matching search terms or both have no search terms
-
-3. Filters - 15% of total score
-   - Evaluates matches across integer, text, and boolean filters
-   - For each filter type, checks:
-     - Property name match
-     - Operator match
-     - Value match
-   - Score is averaged across all filter types present
-
-4. Aggregations - 15% of total score
-   - Evaluates matches across integer, text, and boolean aggregations
-   - For each aggregation type, checks:
-     - Property name match
-     - Metrics match
-   - Score is averaged across all aggregation types present
-
-5. Group By - 15% of total score
-   - Exact match of groupby property names
-
-The final score ranges from 0.0 to 1.0, where 1.0 represents a perfect structural match across all components.
+The AST evaluation methodology employs a comprehensive weighted scoring system to assess query similarity. The largest weight (40%) is assigned to correctly matching the target collection, which is considered fundamental - mismatching collections results in a score of 0. The remaining 60% is evenly distributed (15% each) across four components: search queries, which require exact case-insensitive text matches; filters, which evaluate property names, operators and values across integer, text and boolean types; aggregations, which check property names and metrics across different types; and group by operations, which require exact property name matches. Each component's score is averaged across its subtypes when present, and the final score ranges from 0.0 to 1.0, with 1.0 indicating perfect structural alignment across all elements.
 
 ## Future Work
 
