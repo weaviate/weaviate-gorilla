@@ -2,7 +2,7 @@
 
 ## Introduction
 
-To evaluate the ability of large language models (LLMs) to translate natural language queries into structured Weaviate API calls, we needed a comprehensive test dataset that covered diverse combinations of Weaviate's core query capabilities. These capabilities include semantic search queries for finding relevant results based on natural language understanding, property filters for exact matching on integer, text, and boolean fields, aggregations for computing statistics over integer, text, and boolean properties, and grouping operations to segment results by property values. Rather than manually writing test cases, we developed a systematic approach to generate synthetic queries that exercise these capabilities across different database schemas. This systematic approach allowed us to test the full range of Weaviate's query functionality, evaluate LLM performance across different query complexity levels, assess generalization across multiple database schemas, and create a large enough dataset for meaningful statistical analysis.
+To evaluate the ability of large language models (LLMs) to translate natural language queries into search database API calls, we present a comprehensive test dataset that covers a diverse combinations of query APIs. These capabilities include search queries for finding relevant results based on scoring algorithms, property filters for matching on integer, text, and boolean fields, aggregations for computing statistics over integer, text, and boolean properties, and grouping operations to segment results by property values. Similarly to the Gorilla LLM, we use the Self-Instruct technique to generate synthetic queries that exercise these capabilities across different database schemas.
 
 ## Methodology
 
