@@ -83,7 +83,7 @@ class LMService():
                     
             case "anthropic":
                 max_retries = 5
-                base_delay = 10  # Initial delay in seconds
+                base_delay = 15
                 
                 for attempt in range(max_retries):
                     try:
@@ -174,7 +174,7 @@ class LMService():
 
         if self.model_provider == "anthropic":
             max_retries = 5
-            base_delay = 10  # Initial delay in seconds
+            base_delay = 15
             
             for attempt in range(max_retries):
                 try:
