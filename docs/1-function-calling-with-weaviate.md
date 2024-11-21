@@ -20,18 +20,6 @@ This structured approach ensures that LLMs can only construct valid Weaviate que
 
 ## Future
 
-Several promising directions could extend this work:
+This work opens up several promising avenues for future research and development in the integration of LLMs with database systems. One key direction is the implementation of local deployment options through Ollama integration, which would address important concerns around latency, costs, and privacy while potentially leveraging specialized models for database operations. The system could also be enhanced through investigations into query generation approaches - comparing DSL string generation versus structured model objects - and expanding capabilities to handle multi-step queries and cross-collection joins.
 
-1. **Ollama Integration**: The `OllamaTool` implementation would enable local deployment of database query translation, reducing latency and costs while maintaining privacy. This could leverage smaller, specialized models trained specifically for database operations.
-
-2. **DSL vs Structured Models**: Comparing the effectiveness of generating Domain Specific Language (DSL) strings versus structured model objects could reveal tradeoffs in accuracy and flexibility. DSL generation might be more natural for LLMs but could introduce more errors, while structured models provide stronger guarantees but may be more constraining.
-
-3. **Multi-Step Query Planning**: Extending the system to handle complex queries requiring multiple steps or joins between collections. This would involve teaching LLMs to break down complex information needs into sequences of simpler queries.
-
-4. **Schema-Aware Fine-Tuning**: Creating specialized models fine-tuned on specific database schemas could improve accuracy for domain-specific applications while reducing model size and inference costs.
-
-5. **Query Optimization**: Incorporating query performance metrics to train models to generate not just correct but efficient queries, considering factors like index usage and execution plans.
-
-6. **Cross-Database Compatibility**: Expanding beyond Weaviate to support multiple database systems, potentially creating a unified query interface that can target different backends.
-
-These developments would push forward the integration of LLMs with database systems, making natural language interfaces to databases more powerful and practical for real-world applications.
+Further improvements could come from schema-aware fine-tuning and query optimization strategies. Creating specialized models trained on specific database schemas could improve accuracy while reducing model size and costs, while incorporating performance metrics could help models generate not just correct but efficient queries. Additionally, expanding beyond Weaviate to support multiple database systems could create a unified natural language interface across different database backends. These developments would significantly advance the practical application of natural language interfaces to databases, making them more powerful and accessible for real-world use cases.
