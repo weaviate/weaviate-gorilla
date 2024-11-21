@@ -1,0 +1,44 @@
+# Experimental Results and Takeaways
+
+# No context Claude assessment
+
+## Overall Performance
+
+The experimental results demonstrate strong performance from both GPT-4o and GPT-4o-mini models in generating Weaviate queries:
+
+- Both models achieved high success rates, with GPT-4o successfully handling 304/315 queries (96.5%) and GPT-4o-mini slightly higher at 308/315 queries (97.8%)
+- Average AST scores were strong, with GPT-4o at 85.66% and GPT-4o-mini at 83.43%
+- The performance difference between models was relatively small (~2.2%), suggesting GPT-4o-mini provides comparable capabilities with potentially better efficiency
+
+## Schema-Specific Analysis
+
+Performance across different schemas showed some variation:
+
+- GPT-4o performed best on Schema 0 (87.97%) and worst on Schema 3 (81.45%)
+- GPT-4o-mini was most consistent, with scores ranging from 79.18% to 84.14%
+- Both models maintained >79% accuracy across all schemas, demonstrating robust generalization
+
+## Component-Level Insights
+
+Breaking down performance by query component types reveals:
+
+1. Strongest Areas:
+   - Boolean filters (GPT-4o: 91.44%, GPT-4o-mini: 88.13%)
+   - Boolean aggregations (GPT-4o: 87.03%, GPT-4o-mini: 84.59%)
+   - Text filters (GPT-4o: 84.53%, GPT-4o-mini: 85.16%)
+
+2. Areas for Improvement:
+   - Search queries (GPT-4o: 76.77%, GPT-4o-mini: 72.48%)
+   - Integer filters (GPT-4o: 79.28%, GPT-4o-mini: 76.31%)
+
+3. Complex Operations:
+   - GroupBy operations maintained good performance (GPT-4o: 83.53%, GPT-4o-mini: 80.03%)
+   - Aggregations across all types averaged above 80% for both models
+
+## Key Takeaways
+
+1. Both models demonstrate production-ready capabilities for generating Weaviate queries, with success rates >96%
+2. The smaller GPT-4o-mini model provides comparable performance, making it a cost-effective choice
+3. Boolean operations are handled exceptionally well, while semantic search queries present the biggest challenge
+4. Performance is consistent across different schemas, indicating good generalization abilities
+5. Complex operations like GroupBy and aggregations are handled reliably, suggesting suitability for advanced use cases
