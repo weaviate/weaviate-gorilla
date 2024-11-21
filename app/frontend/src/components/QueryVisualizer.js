@@ -145,7 +145,9 @@ export default function QueryVisualizer() {
             <h2 className="text-xl font-bold mb-3">Ground Truth Query</h2>
             <div className="space-y-2">
               <p><span className="font-semibold">Collection:</span> {currentItem.ground_truth_query?.target_collection || 'N/A'}</p>
-              <p><span className="font-semibold">Search Query:</span> {currentItem.ground_truth_query?.search_query || 'N/A'}</p>
+              {currentItem.ground_truth_query?.search_query && currentItem.ground_truth_query.search_query !== 'N/A' && (
+                <p><span className="font-semibold">Search Query:</span> {currentItem.ground_truth_query.search_query}</p>
+              )}
               {currentItem.ground_truth_query?.integer_property_filter && (
                 <p>
                   <span className="font-semibold">Filter:</span>{' '}
@@ -172,7 +174,9 @@ export default function QueryVisualizer() {
             {currentItem.predicted_query ? (
               <div className="space-y-2">
                 <p><span className="font-semibold">Collection:</span> {currentItem.predicted_query.target_collection || 'N/A'}</p>
-                <p><span className="font-semibold">Search Query:</span> {currentItem.predicted_query.search_query || 'N/A'}</p>
+                {currentItem.predicted_query.search_query && currentItem.predicted_query.search_query !== 'N/A' && (
+                  <p><span className="font-semibold">Search Query:</span> {currentItem.predicted_query.search_query}</p>
+                )}
                 {currentItem.predicted_query.integer_property_filter && (
                   <p>
                     <span className="font-semibold">Filter:</span>{' '}
