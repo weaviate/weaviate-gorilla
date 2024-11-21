@@ -88,7 +88,16 @@ export default function QueryVisualizer() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
+    <div className="w-full p-6">
+      <div className="flex items-center mb-8 relative">
+        <h1 className="text-3xl font-bold text-[#1c1468] absolute left-1/2 -translate-x-1/2">Weaviate Gorilla Dataset</h1>
+        <div className="ml-auto">
+          <button className="px-6 py-2 bg-[#1c1468] text-white rounded-lg hover:bg-[#130e4a] transition-colors">
+            Try with your data
+          </button>
+        </div>
+      </div>
+
       <div className="flex items-center justify-between mb-6">
         <button
           onClick={handlePrevious}
