@@ -4,6 +4,30 @@
 
 # NEW DATA
 
+## GPT-4o mini
+
+Total queries analyzed: 315
+Successful predictions: 308
+Failed predictions: 7
+Average AST score: 83.43%
+
+Per schema scores:
+Schema 0: 84.14%
+Schema 1: 84.10%
+Schema 2: 82.30%
+Schema 3: 82.23%
+Schema 4: 79.18%
+
+Per component analysis:
+Queries with search (160): 72.48%
+Queries with integer filters (80): 76.31%
+Queries with text filters (80): 85.16%
+Queries with boolean filters (80): 88.13%
+Queries with integer aggregations (80): 82.69%
+Queries with text aggregations (80): 78.78%
+Queries with boolean aggregations (80): 84.59%
+Queries with groupby (160): 80.03%
+
 
 # OLD DATA
 
