@@ -28,6 +28,30 @@ Queries with text aggregations (80): 78.78%
 Queries with boolean aggregations (80): 84.59%
 Queries with groupby (160): 80.03%
 
+## GPT-4o
+
+Total queries analyzed: 315
+Successful predictions: 304
+Failed predictions: 11
+Average AST score: 85.66%
+
+Per schema scores:
+Schema 0: 87.97%
+Schema 1: 85.59%
+Schema 2: 85.08%
+Schema 3: 81.45%
+Schema 4: 82.62%
+
+Per component analysis:
+Queries with search (160): 76.77%
+Queries with integer filters (80): 79.28%
+Queries with text filters (80): 84.53%
+Queries with boolean filters (80): 91.44%
+Queries with integer aggregations (80): 82.38%
+Queries with text aggregations (80): 83.16%
+Queries with boolean aggregations (80): 87.03%
+Queries with groupby (160): 83.53%
+
 
 # OLD DATA
 
