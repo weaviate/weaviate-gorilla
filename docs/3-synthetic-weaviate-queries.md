@@ -2,19 +2,7 @@
 
 ## Introduction
 
-To evaluate the ability of large language models (LLMs) to translate natural language queries into structured Weaviate API calls, we needed a comprehensive test dataset. This dataset needed to cover diverse combinations of Weaviate's core query capabilities:
-
-- Semantic search queries for finding relevant results based on natural language understanding
-- Property filters for exact matching on integer, text, and boolean fields
-- Aggregations for computing statistics over integer, text, and boolean properties 
-- Grouping operations to segment results by property values
-
-Rather than manually writing test cases, we developed a systematic approach to generate synthetic queries that exercise these capabilities across different database schemas. This allowed us to:
-
-1. Test the full range of Weaviate's query functionality
-2. Evaluate LLM performance across different query complexity levels
-3. Assess generalization across multiple database schemas
-4. Create a large enough dataset for meaningful statistical analysis
+To evaluate the ability of large language models (LLMs) to translate natural language queries into structured Weaviate API calls, we needed a comprehensive test dataset that covered diverse combinations of Weaviate's core query capabilities. These capabilities include semantic search queries for finding relevant results based on natural language understanding, property filters for exact matching on integer, text, and boolean fields, aggregations for computing statistics over integer, text, and boolean properties, and grouping operations to segment results by property values. Rather than manually writing test cases, we developed a systematic approach to generate synthetic queries that exercise these capabilities across different database schemas. This systematic approach allowed us to test the full range of Weaviate's query functionality, evaluate LLM performance across different query complexity levels, assess generalization across multiple database schemas, and create a large enough dataset for meaningful statistical analysis.
 
 ## Methodology
 
