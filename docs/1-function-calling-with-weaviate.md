@@ -6,11 +6,9 @@ The capabilities of Large Language Models (LLMs) are advancing quickly largely t
 
 Most examples of LLMs and database access as a tool follow an architecture inspired by Retrieval-Augmented Generation (RAG) [4]. This describes a retrieve-augment-generate pipeline that conventionally entails first sending the prompt as the search query to retrieve from a search index. The search results are then passed to an LLM to answer a question, or complete tasks more broadly. In our work, we expand the capabilities of standard RAG systems to navigate multiple data collections and utilize filters, result aggregations, and groupby operations, in addition to search queries.
 
-We compare the gpt-4o and gpt-4o-mini LLMs on the task of choosing the correct database query API given a hypothetical information need as input. 
+We compare the gpt-4o and gpt-4o-mini LLMs on the task of choosing the correct database query API given a hypothetical information need as input. Some queries only require a single API, such as "How many unique menu items are there in the restaurant menus that are priced under $20?". This can be answered with an integer filter that sets the price less than $20. Contrastively, the user query: "What is the average price of seasonal specialty menu items under $20, grouped by whether they are vegetarian or not?" requires routing the query to the Menu collection, formatting a search query for "seasonal specialties", setting a price filter of less than $20, calculating the average price of the results, and grouping them by the isVegetarian boolean property.
 
-[Update these examples with actual cases from the UI]
 
-For example, the user query: "How many restaurants in Boston serve vegetarian dishes?" requires a boolean isVegetarian filter, a text valued "Boston" filter and a "count" aggregation on the result. Contrastively, the user query: "restaurants with seafood pasta" is sent as a search query "seafood pasta" on a text-valued description property with an associated search index. The LLM is tasked with determining which database querying APIs are necessary to answer the user query.
 
 ## Methodology
 
