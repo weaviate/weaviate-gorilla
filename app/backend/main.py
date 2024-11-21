@@ -17,7 +17,7 @@ app.add_middleware(
 import json
 import os
 
-with open("llama3.1:8b-experiment_results-with-models.json", 'r') as f:
+with open("gpt-4o-experiment-results-with-models.json", 'r') as f:
     sample_data = json.load(f)
 
 print(sample_data["detailed_results"][0])
