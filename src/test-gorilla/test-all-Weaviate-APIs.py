@@ -36,8 +36,8 @@ print("\033[92m=== Initializing LM Service ===\033[0m")
 
 # Configuration
 
-MODEL_PROVIDER = "openai"
-MODEL_NAME = "gemini-1.5-pro"
+MODEL_PROVIDER = "anthropic"
+MODEL_NAME = "claude-3-5-sonnet-20241022"
 generate_with_models = True
 
 api_key = ""
