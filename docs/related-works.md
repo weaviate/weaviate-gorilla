@@ -53,12 +53,13 @@ Lakehouses and Ontologies
 
 ## Structured Outputs
 19. Efficient Guided Generation for Large Language Models. Brandon T. Willard, Remi Louf. 2023. [Arxiv Link](https://arxiv.org/abs/2307.09702)
-20. StructuredRAG: JSON Response Formatting with Large Language Models. Connor Shorten, Charles Pierse, Thomas Benjamin Smith, Erika Cardenas, Akanksha Sharma, John Trengrove, Bob van Luijt. 2024. [Arxiv Link](https://arxiv.org/abs/2408.11061)
+20. Let Me Speak Freely? A Study on the Impact of Format Restrictions on Performance of Large Language Models. Zhi Rui Tam, Cheng-Kuang Wu, Yi-Lin Tsai, Chieh-Yen Lin, Hung-yi Lee, Yun-Nung Chen. 2024. [Arxiv Link](https://arxiv.org/abs/2408.02442)
+21. StructuredRAG: JSON Response Formatting with Large Language Models. Connor Shorten, Charles Pierse, Thomas Benjamin Smith, Erika Cardenas, Akanksha Sharma, John Trengrove, Bob van Luijt. 2024. [Arxiv Link](https://arxiv.org/abs/2408.11061)
 
 ## Query Writing
-21. Baleen: Robust Multi-Hop Reasoning at Scale via Condensed Retrieval. Omar Khattab, Christopher Potts, Matei Zaharia. 2022. [Arxiv Link](https://arxiv.org/abs/2101.00436)
-22. Decomposing Complex Queries for Tip-of-the-tongue Retrieval. Kevin Lin, Kyle Lo, Joseph E. Gonzalez, Dan Klein. 2023. [Arxiv Link](https://arxiv.org/abs/2305.15053)
-23. Grounding by Trying: LLMs with Reinforcement Learning-Enhanced Retrieval. Sheryl Hsu, Omar Khattab, Chelsea Finn, Archit Sharma. 2024. [Arxiv Link](https://arxiv.org/pdf/2410.23214?)
+22. Baleen: Robust Multi-Hop Reasoning at Scale via Condensed Retrieval. Omar Khattab, Christopher Potts, Matei Zaharia. 2022. [Arxiv Link](https://arxiv.org/abs/2101.00436)
+23. Decomposing Complex Queries for Tip-of-the-tongue Retrieval. Kevin Lin, Kyle Lo, Joseph E. Gonzalez, Dan Klein. 2023. [Arxiv Link](https://arxiv.org/abs/2305.15053)
+24. Grounding by Trying: LLMs with Reinforcement Learning-Enhanced Retrieval. Sheryl Hsu, Omar Khattab, Chelsea Finn, Archit Sharma. 2024. [Arxiv Link](https://arxiv.org/pdf/2410.23214?)
 
 ==
 <br />
