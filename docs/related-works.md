@@ -26,7 +26,6 @@ Lakehouses and Ontologies
 
 ## LLM Tool Use
 1. Gorilla: Large Language Model Connected with Massive APIs. Shishir G. Patil, Tianjun Zhang, Xin Wang, Joseph E. Gonzalez. 2023. [Arxiv Link](https://arxiv.org/abs/2305.15334)
-2. Toolformer: Language Models Can Teach Themselves to use Tools. Timo Schick, Jane Dwivedi-Yu, Roberto Dessi, Roberta Raileanu, Maria Lomeli, Luke Zettlemoyer, Niccola Cancedda, Thomas Scialom. 2023. [Arxiv link](https://arxiv.org/abs/2302.04761)
 3. AvaTaR: Optimizing LLM Agents for Tool-Assisted Knowledge Retrieval. Shirley Wu, Shiyu Zhao, Qian Huang, Kexin Huang, Michihiro Yasunaga, Kaidi Cao, Vassilis N. Ioannidis, Karthik Subbian, Jure Leskovec, James Zou. 2024. [Arxiv Link](https://arxiv.org/pdf/2406.11200)
 4. Agentic Information Retrieval. Weinan Zhang, Junwei Liao, Ning Li, Kounianhua Du. 2024. [Arxiv Link](https://arxiv.org/abs/2410.09713)
 5. WebGPT: Browser-assisted question-answering with human feedback. Reiichiro Nakano et al. 2021. [Arxiv Link](https://arxiv.org/abs/2112.09332)
@@ -48,7 +47,7 @@ Lakehouses and Ontologies
 15. Bringing semantic knowledge graph technology to your data. Bob van Luijt and Micha Verhagen. 2020. [IEEE](https://ieeexplore.ieee.org/abstract/document/8994851)
 
 ## Text-to-SQL
-16. BIRD-SQL
+16. Can LLM Already Serve as A Database Interface? A BIg Bench for Large-Scale Database Grounded Text-to-SQLs. Jinyang Li et al. 2023. [Arxiv Link](https://arxiv.org/pdf/2305.03111) [Web Page](https://bird-bench.github.io/)
 17. LOTUS: Enabling Semantic Queries with LLMs Over Tables of Unstructured and Structured Data. Liana Patel, Siddharth Jha, Carlos Guestrin, Matei Zaharia. 2024. [Arxiv Link](https://arxiv.org/abs/2407.11418)
 18. SUQL: Conversational Search over Structured and Unstructured Data with Large Language Models. Shicheng Liu, Jialiang Xu, Wesley Tjangnaka, Sina J. Semnani, Chen Jie Yu, Monica S. Lam. 2023. [Arxiv Link](https://arxiv.org/abs/2311.09818)
 
