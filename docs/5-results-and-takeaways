@@ -1,3 +1,82 @@
 # Experimental Results and Takeaways
 
+Claude Sonnet Prompt
+
+```text
+I need your help developing an analysis of experimental results.
+
+For an introduction to the experiments please read the folllowing Introduction.
+{{ Introduction }}
+
+For more concrete details of the experiment, please see the following Methodology explanation.
+{{ Methodology }}
+
+I have the following 3 data tables:
+
+\begin{table}[h]
+\centering
+\setlength{\tabcolsep}{12pt} % Increase column spacing for clarity
+\renewcommand{\arraystretch}{1.5} % Increase row height for readability
+\resizebox{0.8\textwidth}{!}{ % Scale table to 80% of text width
+\begin{tabular}{lrr}
+\toprule
+\textbf{\large Metric} & \textbf{\large GPT-4o} & \textbf{\large GPT-4o-mini} \\
+\midrule
+Successful Predictions & 96.5\%     & 97.8\%    \\
+Average AST Score    & 92.16\%  & 89.93\%     \\
+\bottomrule
+\end{tabular}
+}
+\vspace{1em}
+\caption{Overall Performance Metrics}
+\label{tab:overall-performance}
+\end{table}
+
+\begin{table}[h]
+\centering
+\setlength{\tabcolsep}{6pt} % Reduce column spacing slightly
+\renewcommand{\arraystretch}{1.1} % Slightly reduce row height
+\resizebox{0.6\textwidth}{!}{ % Resize table to fit within 70% of text width
+\begin{tabular}{lrr}
+\toprule
+\textbf{Component Type} & \textbf{GPT-4o} & \textbf{GPT-4o-mini} \\
+\midrule
+Search Queries          & 89.77\% & 85.48\% \\
+Integer Filters         & 85.78\% & 82.81\% \\
+Text Filters            & 91.03\% & 91.66\% \\
+Boolean Filters         & 97.94\% & 94.63\% \\
+Integer Aggregations    & 88.88\% & 89.19\% \\
+Text Aggregations       & 89.66\% & 85.28\% \\
+Boolean Aggregations    & 93.53\% & 91.09\% \\
+GroupBy Operations      & 90.03\% & 86.53\% \\
+\bottomrule
+\end{tabular}
+}
+\vspace{1em}
+\caption{Performance Analysis by Component Type}
+\label{tab:component-analysis}
+\end{table}
+
+\begin{table}[h]
+\centering
+\setlength{\tabcolsep}{10pt} % Adjust column spacing
+\renewcommand{\arraystretch}{1.2} % Adjust row height for readability
+\resizebox{0.6\textwidth}{!}{ % Resize table to fit within 60% of text width
+\begin{tabular}{lrr}
+\toprule
+\textbf{Schema} & \textbf{GPT-4o} & \textbf{GPT-4o-mini} \\
+\midrule
+Restaurants & 94.47\% & 84.14\% \\
+Health Clinics & 92.09\% & 90.6\% \\
+Courses & 91.58\% & 88.8\% \\
+Travel Planning & 87.95\% & 88.73\% \\
+Visual Art & 89.12\% & 85.68\% \\
+\bottomrule
+\end{tabular}
+}
+\vspace{1em}
+\caption{Performance Across Different Schemas}
+\label{tab:schema-performance}
+\end{table}
+```
 
