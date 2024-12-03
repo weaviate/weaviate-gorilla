@@ -1,0 +1,76 @@
+{
+    "classes": [
+      {
+        "class": "Wine",
+        "description": "Information about different types of wine",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "The name of the wine variety"
+          },
+          {
+            "name": "origin",
+            "dataType": ["text"],
+            "description": "The geographical origin of the wine"
+          },
+          {
+            "name": "grapeVariety",
+            "dataType": ["text"],
+            "description": "The type of grape used to make the wine"
+          },
+          {
+            "name": "tastingNotes",
+            "dataType": ["text"],
+            "description": "The tasting notes often associated with the wine"
+          },
+          {
+            "name": "vintageYear",
+            "dataType": ["int"],
+            "description": "The vintage year of the wine"
+          },
+          {
+            "name": "isRed",
+            "dataType": ["boolean"],
+            "description": "Whether the wine is a red wine"
+          },
+          {
+            "name": "relatedWinery",
+            "dataType": ["Winery"],
+            "description": "The winery that produces this wine"
+          }
+        ]
+      },
+      {
+        "class": "Winery",
+        "description": "Information about wineries",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "The name of the winery"
+          },
+          {
+            "name": "location",
+            "dataType": ["text"],
+            "description": "The geographical location of the winery"
+          },
+          {
+            "name": "foundedYear",
+            "dataType": ["int"],
+            "description": "The year the winery was founded"
+          },
+          {
+            "name": "producesWine",
+            "dataType": ["Wine"],
+            "description": "The wines produced by this winery"
+          }
+        ]
+      }
+    ]
+  }
+  

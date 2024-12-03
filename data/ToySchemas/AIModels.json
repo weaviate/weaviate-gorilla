@@ -1,0 +1,61 @@
+{
+    "classes": [
+      {
+        "class": "AIModel",
+        "description": "A machine learning model.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "modelName",
+            "dataType": ["text"],
+            "description": "Name of the machine learning model."
+          },
+          {
+            "name": "application",
+            "dataType": ["text"],
+            "description": "Application area of the machine learning model."
+          },
+          {
+            "name": "accuracy",
+            "dataType": ["number"],
+            "description": "Model's accuracy score."
+          },
+          {
+            "name": "isSupervised",
+            "dataType": ["boolean"],
+            "description": "Is this a supervised learning model?"
+          },
+          {
+            "name": "basedOn",
+            "dataType": ["Algorithm"],
+            "description": "Algorithm the model is based on."
+          }
+        ]
+      },
+      {
+        "class": "Algorithm",
+        "description": "An algorithm used for machine learning.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the algorithm."
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "Description of the algorithm."
+          },
+          {
+            "name": "yearDeveloped",
+            "dataType": ["int"],
+            "description": "Year the algorithm was developed."
+          }
+        ]
+      }
+    ]
+  }
+  

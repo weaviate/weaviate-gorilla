@@ -1,0 +1,50 @@
+{
+    "classes": [
+      {
+        "class": "ARApplication",
+        "description": "An augmented reality application or experience.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "appName",
+            "dataType": ["text"],
+            "description": "Name of the AR application."
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "Overview of the AR experience provided by the app."
+          },
+          {
+            "name": "platform",
+            "dataType": ["text"],
+            "description": "Platform the AR app is available on, e.g., iOS, Android."
+          },
+          {
+            "name": "developer",
+            "dataType": ["SoftwareCompany"],
+            "description": "Company or developer that created the AR app."
+          }
+        ]
+      },
+      {
+        "class": "SoftwareCompany",
+        "description": "A company that develops software applications.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "companyName",
+            "dataType": ["text"],
+            "description": "Name of the software company."
+          },
+          {
+            "name": "foundedYear",
+            "dataType": ["int"],
+            "description": "Year the company was established."
+          }
+        ]
+      }
+    ]
+}

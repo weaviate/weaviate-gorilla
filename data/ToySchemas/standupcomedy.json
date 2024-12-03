@@ -1,0 +1,50 @@
+{
+    "classes": [
+      {
+        "class": "ComedySpecial",
+        "description": "Details about various stand-up comedy specials and performances.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "specialTitle",
+            "dataType": ["text"],
+            "description": "Name of the comedy special or performance."
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "A brief description of the comedic themes or topics covered."
+          },
+          {
+            "name": "duration",
+            "dataType": ["text"],
+            "description": "Duration of the special, e.g., '1 hour 30 minutes'."
+          },
+          {
+            "name": "comedian",
+            "dataType": ["Comedian"],
+            "description": "Comedian who performed the special."
+          }
+        ]
+      },
+      {
+        "class": "Comedian",
+        "description": "Details about stand-up comedians.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "comedianName",
+            "dataType": ["text"],
+            "description": "Full name of the comedian."
+          },
+          {
+            "name": "biography",
+            "dataType": ["text"],
+            "description": "Brief biography or background of the comedian."
+          }
+        ]
+      }
+    ]
+}

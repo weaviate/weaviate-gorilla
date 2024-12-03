@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "Movie",
+        "description": "A movie in the database.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "title",
+            "dataType": ["text"],
+            "description": "The title of the movie."
+          },
+          {
+            "name": "genre",
+            "dataType": ["text"],
+            "description": "The genre of the movie."
+          },
+          {
+            "name": "duration",
+            "dataType": ["int"],
+            "description": "The duration of the movie in minutes."
+          },
+          {
+            "name": "isAvailable",
+            "dataType": ["boolean"],
+            "description": "Availability for streaming."
+          },
+          {
+            "name": "leadActor",
+            "dataType": ["Actor"],
+            "description": "The lead actor in the movie."
+          }
+        ]
+      },
+      {
+        "class": "Actor",
+        "description": "An actor in movies.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "The name of the actor."
+          },
+          {
+            "name": "awardsWon",
+            "dataType": ["int"],
+            "description": "The number of awards won."
+          }
+        ]
+      }
+    ]
+  }
+  

@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "DietPlan",
+        "description": "Information about different diet plans",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the diet plan"
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "Detailed description of the diet plan"
+          },
+          {
+            "name": "durationDays",
+            "dataType": ["int"],
+            "description": "Duration of the diet plan in days"
+          },
+          {
+            "name": "isVegetarian",
+            "dataType": ["boolean"],
+            "description": "Whether the diet plan is vegetarian"
+          },
+          {
+            "name": "contains",
+            "dataType": ["FoodItem"],
+            "description": "List of food items in the diet plan"
+          }
+        ]
+      },
+      {
+        "class": "FoodItem",
+        "description": "Information about food items",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "itemName",
+            "dataType": ["text"],
+            "description": "Name of the food item"
+          },
+          {
+            "name": "calories",
+            "dataType": ["int"],
+            "description": "Calories per serving"
+          }
+        ]
+      }
+    ]
+  }
+  

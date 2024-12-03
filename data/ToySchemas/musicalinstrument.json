@@ -1,0 +1,61 @@
+{
+    "classes": [
+      {
+        "class": "Instrument",
+        "description": "A musical instrument.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the instrument."
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "Description of the instrument."
+          },
+          {
+            "name": "yearIntroduced",
+            "dataType": ["int"],
+            "description": "Year the instrument was introduced."
+          },
+          {
+            "name": "isString",
+            "dataType": ["boolean"],
+            "description": "Is it a string instrument?"
+          },
+          {
+            "name": "playedBy",
+            "dataType": ["Musician"],
+            "description": "Musicians who play this instrument."
+          }
+        ]
+      },
+      {
+        "class": "Musician",
+        "description": "An individual who plays a musical instrument.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the musician."
+          },
+          {
+            "name": "genre",
+            "dataType": ["text"],
+            "description": "Genre of music the musician specializes in."
+          },
+          {
+            "name": "yearsActive",
+            "dataType": ["int"],
+            "description": "Years active in music."
+          }
+        ]
+      }
+    ]
+  }
+  

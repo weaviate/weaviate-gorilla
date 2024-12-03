@@ -1,0 +1,55 @@
+{
+    "classes": [
+      {
+        "class": "ResearchInstitute",
+        "description": "An organization dedicated to research in specific areas.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "instituteName",
+            "dataType": ["text"],
+            "description": "Name of the research institute."
+          },
+          {
+            "name": "overview",
+            "dataType": ["text"],
+            "description": "A brief description of the institute's objectives and areas of study."
+          },
+          {
+            "name": "location",
+            "dataType": ["text"],
+            "description": "Physical location of the research institute."
+          },
+          {
+            "name": "affiliatedUniversity",
+            "dataType": ["University"],
+            "description": "University affiliated with the research institute."
+          }
+        ]
+      },
+      {
+        "class": "University",
+        "description": "Details about the university.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the university."
+          },
+          {
+            "name": "campusLocation",
+            "dataType": ["text"],
+            "description": "Location of the university's main campus."
+          },
+          {
+            "name": "establishmentYear",
+            "dataType": ["int"],
+            "description": "Year the university was established."
+          }
+        ]
+      }
+    ]
+}

@@ -1,0 +1,55 @@
+{
+    "classes": [
+      {
+        "class": "HikingTrail",
+        "description": "Details about hiking trails around the world.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "trailName",
+            "dataType": ["text"],
+            "description": "Name of the hiking trail."
+          },
+          {
+            "name": "location",
+            "dataType": ["text"],
+            "description": "Geographical location or region where the trail is situated."
+          },
+          {
+            "name": "lengthKm",
+            "dataType": ["number"],
+            "description": "Length of the trail in kilometers."
+          },
+          {
+            "name": "difficultyLevel",
+            "dataType": ["text"],
+            "description": "Difficulty level of the trail, e.g., easy, moderate, hard."
+          },
+          {
+            "name": "nearestTown",
+            "dataType": ["Town"],
+            "description": "Nearest town or city to the trail."
+          }
+        ]
+      },
+      {
+        "class": "Town",
+        "description": "Details about towns or cities near hiking trails.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "townName",
+            "dataType": ["text"],
+            "description": "Name of the town or city."
+          },
+          {
+            "name": "population",
+            "dataType": ["int"],
+            "description": "Population of the town."
+          }
+        ]
+      }
+    ]
+}

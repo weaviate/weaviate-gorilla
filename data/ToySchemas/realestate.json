@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "House",
+        "description": "A residential property.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "address",
+            "dataType": ["text"],
+            "description": "The address of the house."
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "A description of the house."
+          },
+          {
+            "name": "price",
+            "dataType": ["number"],
+            "description": "The selling price of the house."
+          },
+          {
+            "name": "isSold",
+            "dataType": ["boolean"],
+            "description": "Whether the house has been sold."
+          },
+          {
+            "name": "listedBy",
+            "dataType": ["Agent"],
+            "description": "The agent who listed the house."
+          }
+        ]
+      },
+      {
+        "class": "Agent",
+        "description": "A real estate agent.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "The name of the agent."
+          },
+          {
+            "name": "experience",
+            "dataType": ["int"],
+            "description": "The number of years of experience the agent has."
+          }
+        ]
+      }
+    ]
+  }
+  

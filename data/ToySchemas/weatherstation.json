@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "WeatherStation",
+        "description": "A weather monitoring station.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "location",
+            "dataType": ["text"],
+            "description": "Location of the weather station."
+          },
+          {
+            "name": "equipment",
+            "dataType": ["text"],
+            "description": "Equipment used for weather monitoring."
+          },
+          {
+            "name": "altitude",
+            "dataType": ["number"],
+            "description": "Altitude of the weather station."
+          },
+          {
+            "name": "isActive",
+            "dataType": ["boolean"],
+            "description": "Is the station currently active?"
+          },
+          {
+            "name": "managedBy",
+            "dataType": ["Meteorologist"],
+            "description": "Meteorologist managing the station."
+          }
+        ]
+      },
+      {
+        "class": "Meteorologist",
+        "description": "A person specialized in meteorology.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the meteorologist."
+          },
+          {
+            "name": "yearsExperience",
+            "dataType": ["int"],
+            "description": "Years of experience in meteorology."
+          }
+        ]
+      }
+    ]
+  }
+  

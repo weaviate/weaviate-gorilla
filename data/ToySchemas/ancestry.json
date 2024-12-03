@@ -1,0 +1,65 @@
+{
+    "classes": [
+        {
+            "class": "Person",
+            "description": "Details about an individual within a family tree.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "fullName",
+                    "dataType": ["text"],
+                    "description": "Full name of the individual."
+                },
+                {
+                    "name": "birthYear",
+                    "dataType": ["int"],
+                    "description": "Year of birth."
+                },
+                {
+                    "name": "isDeceased",
+                    "dataType": ["boolean"],
+                    "description": "Whether the person is deceased."
+                },
+                {
+                    "name": "parents",
+                    "dataType": ["Person"],
+                    "description": "References to the individual's parents."
+                },
+                {
+                    "name": "dnatest",
+                    "dataType": ["DNATestResult"],
+                    "description": "Reference to DNA test results for the individual, if available."
+                }
+            ]
+        },
+        {
+            "class": "DNATestResult",
+            "description": "Details about the DNA test results of an individual.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "testProvider",
+                    "dataType": ["text"],
+                    "description": "Company or provider that conducted the DNA test."
+                },
+                {
+                    "name": "matchPercentage",
+                    "dataType": ["int"],
+                    "description": "Percentage of DNA match with a certain ethnicity or region, if such data is available."
+                },
+                {
+                    "name": "isMaternalLineTested",
+                    "dataType": ["boolean"],
+                    "description": "Whether the maternal lineage was tested."
+                },
+                {
+                    "name": "isPaternalLineTested",
+                    "dataType": ["boolean"],
+                    "description": "Whether the paternal lineage was tested."
+                }
+            ]
+        }
+    ]
+}

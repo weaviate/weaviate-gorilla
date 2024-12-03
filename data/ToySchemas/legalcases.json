@@ -1,0 +1,61 @@
+{
+    "classes": [
+      {
+        "class": "LegalCase",
+        "description": "Details about a legal case",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "caseTitle",
+            "dataType": ["text"],
+            "description": "Title of the legal case"
+          },
+          {
+            "name": "caseSummary",
+            "dataType": ["text"],
+            "description": "Summary of the legal case"
+          },
+          {
+            "name": "year",
+            "dataType": ["int"],
+            "description": "Year the case was filed"
+          },
+          {
+            "name": "isOngoing",
+            "dataType": ["boolean"],
+            "description": "Whether the case is ongoing or not"
+          },
+          {
+            "name": "involvedParty",
+            "dataType": ["Party"],
+            "description": "Parties involved in the case"
+          }
+        ]
+      },
+      {
+        "class": "Party",
+        "description": "Entities involved in a legal case",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the party"
+          },
+          {
+            "name": "role",
+            "dataType": ["text"],
+            "description": "Role in the case, e.g., Plaintiff, Defendant"
+          },
+          {
+            "name": "numberOfCases",
+            "dataType": ["int"],
+            "description": "Number of cases this party has been involved in"
+          }
+        ]
+      }
+    ]
+  }
+  

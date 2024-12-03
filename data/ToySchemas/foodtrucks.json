@@ -1,0 +1,50 @@
+{
+    "classes": [
+      {
+        "class": "FoodTruck",
+        "description": "Details about food trucks and their specialties.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "truckName",
+            "dataType": ["text"],
+            "description": "Name of the food truck."
+          },
+          {
+            "name": "cuisineType",
+            "dataType": ["text"],
+            "description": "Type of cuisine or dishes served by the truck."
+          },
+          {
+            "name": "location",
+            "dataType": ["text"],
+            "description": "Current or common location where the truck is stationed."
+          },
+          {
+            "name": "owner",
+            "dataType": ["FoodEntrepreneur"],
+            "description": "Owner or operator of the food truck."
+          }
+        ]
+      },
+      {
+        "class": "FoodEntrepreneur",
+        "description": "Details about individuals who own or operate food businesses.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "entrepreneurName",
+            "dataType": ["text"],
+            "description": "Full name of the food entrepreneur."
+          },
+          {
+            "name": "otherVentures",
+            "dataType": ["text"],
+            "description": "Other food ventures or businesses owned by the entrepreneur."
+          }
+        ]
+      }
+    ]
+}

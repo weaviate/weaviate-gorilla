@@ -1,0 +1,63 @@
+{
+    "classes": [
+        {
+            "class": "Gym",
+            "description": "A facility equipped for physical exercise.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "gymName",
+                    "dataType": ["text"],
+                    "description": "The name of the gym."
+                },
+                {
+                    "name": "location",
+                    "dataType": ["text"],
+                    "description": "The physical address of the gym."
+                },
+                {
+                    "name": "equipment",
+                    "dataType": ["text"],
+                    "description": "List of equipment available at the gym."
+                },
+                {
+                    "name": "membershipPrice",
+                    "dataType": ["number"],
+                    "description": "Monthly or annual membership price."
+                },
+                {
+                    "name": "classesOffered",
+                    "dataType": ["FitnessClass"],
+                    "description": "Classes or training sessions provided by the gym."
+                }
+            ]
+        },
+        {
+            "class": "FitnessClass",
+            "description": "A structured form of exercise offered by the gym.",
+            "properties": [
+                {
+                    "name": "className",
+                    "dataType": ["text"],
+                    "description": "The name of the fitness class."
+                },
+                {
+                    "name": "duration",
+                    "dataType": ["number"],
+                    "description": "Duration of the fitness class in minutes."
+                },
+                {
+                    "name": "instructor",
+                    "dataType": ["text"],
+                    "description": "The instructor leading the class."
+                },
+                {
+                    "name": "description",
+                    "dataType": ["text"],
+                    "description": "Brief overview of what the class entails."
+                }
+            ]
+        }
+    ]
+}

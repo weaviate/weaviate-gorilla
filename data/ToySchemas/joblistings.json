@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "JobListing",
+        "description": "A job listing on the portal.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "title",
+            "dataType": ["text"],
+            "description": "The job title."
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "A detailed description of the job."
+          },
+          {
+            "name": "salary",
+            "dataType": ["number"],
+            "description": "The salary offered for the job."
+          },
+          {
+            "name": "isRemote",
+            "dataType": ["boolean"],
+            "description": "Whether the job is remote."
+          },
+          {
+            "name": "postedBy",
+            "dataType": ["Company"],
+            "description": "The company that posted the job listing."
+          }
+        ]
+      },
+      {
+        "class": "Company",
+        "description": "A company that posts job listings.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "The name of the company."
+          },
+          {
+            "name": "foundedYear",
+            "dataType": ["int"],
+            "description": "The year the company was founded."
+          }
+        ]
+      }
+    ]
+  }
+  

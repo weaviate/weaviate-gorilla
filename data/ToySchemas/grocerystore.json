@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "Product",
+        "description": "A product available in the grocery store.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "The name of the product."
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "A description of the product."
+          },
+          {
+            "name": "price",
+            "dataType": ["number"],
+            "description": "The price of the product."
+          },
+          {
+            "name": "isOrganic",
+            "dataType": ["boolean"],
+            "description": "Whether the product is organic."
+          },
+          {
+            "name": "category",
+            "dataType": ["Category"],
+            "description": "The category of the product."
+          }
+        ]
+      },
+      {
+        "class": "Category",
+        "description": "A category of products.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "The name of the category."
+          },
+          {
+            "name": "productCount",
+            "dataType": ["int"],
+            "description": "The number of products in this category."
+          }
+        ]
+      }
+    ]
+  }
+  

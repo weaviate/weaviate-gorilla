@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "Car",
+        "description": "A car in for repair.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "make",
+            "dataType": ["text"],
+            "description": "The make of the car."
+          },
+          {
+            "name": "model",
+            "dataType": ["text"],
+            "description": "The model of the car."
+          },
+          {
+            "name": "year",
+            "dataType": ["int"],
+            "description": "The year the car was made."
+          },
+          {
+            "name": "isRepaired",
+            "dataType": ["boolean"],
+            "description": "Whether the car has been repaired."
+          },
+          {
+            "name": "ownedBy",
+            "dataType": ["Owner"],
+            "description": "The owner of the car."
+          }
+        ]
+      },
+      {
+        "class": "Owner",
+        "description": "An owner of a car.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "The name of the car owner."
+          },
+          {
+            "name": "ownedCars",
+            "dataType": ["int"],
+            "description": "The number of cars owned."
+          }
+        ]
+      }
+    ]
+  }
+  

@@ -1,0 +1,63 @@
+{
+    "classes": [
+        {
+            "class": "LocalBusiness",
+            "description": "A local business in a specific area.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "businessName",
+                    "dataType": ["text"],
+                    "description": "The name of the business."
+                },
+                {
+                    "name": "description",
+                    "dataType": ["text"],
+                    "description": "A brief description of the business."
+                },
+                {
+                    "name": "address",
+                    "dataType": ["text"],
+                    "description": "The physical address of the business."
+                },
+                {
+                    "name": "contactNumber",
+                    "dataType": ["text"],
+                    "description": "The contact phone number for the business."
+                },
+                {
+                    "name": "isOpen",
+                    "dataType": ["boolean"],
+                    "description": "Whether the business is currently open or not."
+                },
+                {
+                    "name": "rating",
+                    "dataType": ["number"],
+                    "description": "The average user rating for the business out of 5."
+                },
+                {
+                    "name": "services",
+                    "dataType": ["Service"],
+                    "description": "Services provided by the business."
+                }
+            ]
+        },
+        {
+            "class": "Service",
+            "description": "A service provided by a local business.",
+            "properties": [
+                {
+                    "name": "serviceName",
+                    "dataType": ["text"],
+                    "description": "The name of the service."
+                },
+                {
+                    "name": "price",
+                    "dataType": ["number"],
+                    "description": "The price for the service."
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,58 @@
+{
+    "classes": [
+        {
+            "class": "Firework",
+            "description": "A device containing explosive or combustible chemicals that produce light, sound, and smoke.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "fireworkName",
+                    "dataType": ["text"],
+                    "description": "The name or type of the firework."
+                },
+                {
+                    "name": "effects",
+                    "dataType": ["text"],
+                    "description": "Description of visual and auditory effects produced by the firework."
+                },
+                {
+                    "name": "duration",
+                    "dataType": ["number"],
+                    "description": "Duration in seconds for which the firework displays its effects."
+                },
+                {
+                    "name": "safetyGuidelines",
+                    "dataType": ["text"],
+                    "description": "Safety precautions and guidelines for use."
+                },
+                {
+                    "name": "manufacturer",
+                    "dataType": ["Manufacturer"],
+                    "description": "The company or individual who manufactured the firework."
+                }
+            ]
+        },
+        {
+            "class": "Manufacturer",
+            "description": "A company or individual producing fireworks.",
+            "properties": [
+                {
+                    "name": "manufacturerName",
+                    "dataType": ["text"],
+                    "description": "The name of the manufacturer."
+                },
+                {
+                    "name": "location",
+                    "dataType": ["text"],
+                    "description": "Location or headquarters of the manufacturer."
+                },
+                {
+                    "name": "contact",
+                    "dataType": ["text"],
+                    "description": "Contact details for inquiries or support."
+                }
+            ]
+        }
+    ]
+}

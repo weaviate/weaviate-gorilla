@@ -1,0 +1,58 @@
+{
+    "classes": [
+        {
+            "class": "Doctor",
+            "description": "A qualified practitioner of medicine.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "doctorName",
+                    "dataType": ["text"],
+                    "description": "The name of the doctor."
+                },
+                {
+                    "name": "specialization",
+                    "dataType": ["text"],
+                    "description": "The specific field or area of practice for the doctor (e.g., Cardiologist, Orthopedic)."
+                },
+                {
+                    "name": "yearsOfExperience",
+                    "dataType": ["int"],
+                    "description": "The number of years the doctor has been practicing."
+                },
+                {
+                    "name": "clinic",
+                    "dataType": ["Clinic"],
+                    "description": "The clinic or hospital where the doctor practices."
+                },
+                {
+                    "name": "education",
+                    "dataType": ["text"],
+                    "description": "Educational qualifications of the doctor."
+                }
+            ]
+        },
+        {
+            "class": "Clinic",
+            "description": "A healthcare facility where patients receive treatment.",
+            "properties": [
+                {
+                    "name": "clinicName",
+                    "dataType": ["text"],
+                    "description": "The name of the clinic or hospital."
+                },
+                {
+                    "name": "location",
+                    "dataType": ["text"],
+                    "description": "The location or address of the clinic."
+                },
+                {
+                    "name": "operationalHours",
+                    "dataType": ["text"],
+                    "description": "The hours during which the clinic is operational."
+                }
+            ]
+        }
+    ]
+}

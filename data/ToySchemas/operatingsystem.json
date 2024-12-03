@@ -1,0 +1,50 @@
+{
+    "classes": [
+      {
+        "class": "OperatingSystem",
+        "description": "Details about various computer operating systems.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "osName",
+            "dataType": ["text"],
+            "description": "Name of the operating system."
+          },
+          {
+            "name": "version",
+            "dataType": ["text"],
+            "description": "Version or release number."
+          },
+          {
+            "name": "supportedDevices",
+            "dataType": ["text"],
+            "description": "Types of devices the OS supports, e.g., desktop, mobile, server."
+          },
+          {
+            "name": "parentCompany",
+            "dataType": ["Company"],
+            "description": "The company or entity that developed the OS."
+          }
+        ]
+      },
+      {
+        "class": "Company",
+        "description": "Details about tech companies or entities.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "companyName",
+            "dataType": ["text"],
+            "description": "Name of the company or entity."
+          },
+          {
+            "name": "foundedYear",
+            "dataType": ["int"],
+            "description": "Year the company was founded."
+          }
+        ]
+      }
+    ]
+}

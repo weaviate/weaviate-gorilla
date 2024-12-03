@@ -1,0 +1,63 @@
+{
+    "classes": [
+        {
+            "class": "Toy",
+            "description": "An object for children to play with.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "toyName",
+                    "dataType": ["text"],
+                    "description": "The name of the toy."
+                },
+                {
+                    "name": "brand",
+                    "dataType": ["text"],
+                    "description": "The brand or manufacturer of the toy."
+                },
+                {
+                    "name": "recommendedAge",
+                    "dataType": ["int"],
+                    "description": "The recommended age for using the toy."
+                },
+                {
+                    "name": "isBatteryOperated",
+                    "dataType": ["boolean"],
+                    "description": "Whether the toy requires batteries."
+                },
+                {
+                    "name": "price",
+                    "dataType": ["number"],
+                    "description": "Price of the toy."
+                },
+                {
+                    "name": "relatedGame",
+                    "dataType": ["BoardGame"],
+                    "description": "Related board game, if applicable."
+                }
+            ]
+        },
+        {
+            "class": "BoardGame",
+            "description": "A game that involves counters or pieces being placed on a board.",
+            "properties": [
+                {
+                    "name": "gameName",
+                    "dataType": ["text"],
+                    "description": "The name of the board game."
+                },
+                {
+                    "name": "description",
+                    "dataType": ["text"],
+                    "description": "A brief description of the game."
+                },
+                {
+                    "name": "numberOfPlayers",
+                    "dataType": ["int"],
+                    "description": "Recommended number of players for the game."
+                }
+            ]
+        }
+    ]
+}

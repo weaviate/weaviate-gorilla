@@ -1,0 +1,61 @@
+{
+    "classes": [
+      {
+        "class": "FashionBrand",
+        "description": "A brand that produces fashion items.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the fashion brand."
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "Description of the fashion brand."
+          },
+          {
+            "name": "foundingYear",
+            "dataType": ["int"],
+            "description": "Year the brand was founded."
+          },
+          {
+            "name": "isLuxury",
+            "dataType": ["boolean"],
+            "description": "Is this a luxury brand?"
+          },
+          {
+            "name": "designedBy",
+            "dataType": ["Designer"],
+            "description": "Designers associated with this brand."
+          }
+        ]
+      },
+      {
+        "class": "Designer",
+        "description": "An individual who designs fashion items.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the designer."
+          },
+          {
+            "name": "biography",
+            "dataType": ["text"],
+            "description": "Biography of the designer."
+          },
+          {
+            "name": "yearsActive",
+            "dataType": ["int"],
+            "description": "Number of active years in fashion."
+          }
+        ]
+      }
+    ]
+  }
+  

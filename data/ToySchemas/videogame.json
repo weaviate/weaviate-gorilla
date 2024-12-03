@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "Game",
+        "description": "A video game.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "title",
+            "dataType": ["text"],
+            "description": "The title of the game."
+          },
+          {
+            "name": "genre",
+            "dataType": ["text"],
+            "description": "The genre of the game."
+          },
+          {
+            "name": "rating",
+            "dataType": ["int"],
+            "description": "The ESRB rating score."
+          },
+          {
+            "name": "isMultiplayer",
+            "dataType": ["boolean"],
+            "description": "Whether the game has multiplayer functionality."
+          },
+          {
+            "name": "developedBy",
+            "dataType": ["Developer"],
+            "description": "The developer of the game."
+          }
+        ]
+      },
+      {
+        "class": "Developer",
+        "description": "A video game developer.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "The name of the developer."
+          },
+          {
+            "name": "foundedYear",
+            "dataType": ["int"],
+            "description": "The year the developer was founded."
+          }
+        ]
+      }
+    ]
+  }
+  

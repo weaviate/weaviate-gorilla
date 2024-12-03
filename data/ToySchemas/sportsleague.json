@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "Team",
+        "description": "A sports team.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "The name of the team."
+          },
+          {
+            "name": "city",
+            "dataType": ["text"],
+            "description": "The city the team represents."
+          },
+          {
+            "name": "wins",
+            "dataType": ["int"],
+            "description": "The number of wins."
+          },
+          {
+            "name": "isChampion",
+            "dataType": ["boolean"],
+            "description": "Whether the team has won a championship."
+          },
+          {
+            "name": "inLeague",
+            "dataType": ["League"],
+            "description": "The league to which the team belongs."
+          }
+        ]
+      },
+      {
+        "class": "League",
+        "description": "A sports league.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "The name of the league."
+          },
+          {
+            "name": "teams",
+            "dataType": ["int"],
+            "description": "The number of teams in the league."
+          }
+        ]
+      }
+    ]
+  }
+  

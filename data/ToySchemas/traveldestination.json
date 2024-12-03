@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "Destination",
+        "description": "A travel destination.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the destination."
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "Description of the destination."
+          },
+          {
+            "name": "averageTemperature",
+            "dataType": ["number"],
+            "description": "Average temperature."
+          },
+          {
+            "name": "isPopular",
+            "dataType": ["boolean"],
+            "description": "Is it a popular destination?"
+          },
+          {
+            "name": "visitedBy",
+            "dataType": ["Traveler"],
+            "description": "Travelers who visited this destination."
+          }
+        ]
+      },
+      {
+        "class": "Traveler",
+        "description": "A person who travels.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the traveler."
+          },
+          {
+            "name": "age",
+            "dataType": ["int"],
+            "description": "Age of the traveler."
+          }
+        ]
+      }
+    ]
+  }
+  

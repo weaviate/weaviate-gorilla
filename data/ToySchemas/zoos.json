@@ -1,0 +1,53 @@
+{
+    "classes": [
+        {
+            "class": "Zoo",
+            "description": "A facility where animals are displayed to the public.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "zooName",
+                    "dataType": ["text"],
+                    "description": "The name of the zoo."
+                },
+                {
+                    "name": "location",
+                    "dataType": ["text"],
+                    "description": "The physical address of the zoo."
+                },
+                {
+                    "name": "animalsHoused",
+                    "dataType": ["Animal"],
+                    "description": "List of animals housed in the zoo."
+                },
+                {
+                    "name": "openingHours",
+                    "dataType": ["text"],
+                    "description": "Operating hours for the zoo."
+                }
+            ]
+        },
+        {
+            "class": "Animal",
+            "description": "An animal species that is housed in the zoo.",
+            "properties": [
+                {
+                    "name": "species",
+                    "dataType": ["text"],
+                    "description": "The species of the animal."
+                },
+                {
+                    "name": "habitat",
+                    "dataType": ["text"],
+                    "description": "The natural habitat of the animal."
+                },
+                {
+                    "name": "diet",
+                    "dataType": ["text"],
+                    "description": "Dietary preferences or needs of the animal."
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,61 @@
+{
+    "classes": [
+      {
+        "class": "CodeRepository",
+        "description": "Information about a code repository",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "repositoryName",
+            "dataType": ["text"],
+            "description": "Name of the code repository"
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "Description of what the repository contains or achieves"
+          },
+          {
+            "name": "stars",
+            "dataType": ["int"],
+            "description": "Number of stars the repository has received"
+          },
+          {
+            "name": "isFork",
+            "dataType": ["boolean"],
+            "description": "Indicates if this repository is a fork of another repository"
+          },
+          {
+            "name": "maintainedBy",
+            "dataType": ["Developer"],
+            "description": "Developers who maintain this repository"
+          }
+        ]
+      },
+      {
+        "class": "Developer",
+        "description": "Developers who contribute to code repositories",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "username",
+            "dataType": ["text"],
+            "description": "Developer's username or handle"
+          },
+          {
+            "name": "realName",
+            "dataType": ["text"],
+            "description": "Developer's real name, if available"
+          },
+          {
+            "name": "contributions",
+            "dataType": ["int"],
+            "description": "Number of contributions the developer has made across repositories"
+          }
+        ]
+      }
+    ]
+  }
+  

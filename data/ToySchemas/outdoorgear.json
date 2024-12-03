@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "OutdoorGear",
+        "description": "An outdoor gear item.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "gearName",
+            "dataType": ["text"],
+            "description": "Name of the gear."
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "Description of the gear."
+          },
+          {
+            "name": "weight",
+            "dataType": ["number"],
+            "description": "Weight of the gear in grams."
+          },
+          {
+            "name": "isWaterproof",
+            "dataType": ["boolean"],
+            "description": "Whether the gear is waterproof."
+          },
+          {
+            "name": "supplier",
+            "dataType": ["Supplier"],
+            "description": "The supplier of the gear."
+          }
+        ]
+      },
+      {
+        "class": "Supplier",
+        "description": "A supplier of outdoor gear.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "supplierName",
+            "dataType": ["text"],
+            "description": "Name of the supplier."
+          },
+          {
+            "name": "establishedYear",
+            "dataType": ["int"],
+            "description": "The year the supplier was established."
+          }
+        ]
+      }
+    ]
+  }
+  

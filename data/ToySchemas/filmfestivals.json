@@ -1,0 +1,50 @@
+{
+    "classes": [
+      {
+        "class": "FilmFestival",
+        "description": "Details about various international and regional film festivals.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "festivalName",
+            "dataType": ["text"],
+            "description": "Name of the film festival."
+          },
+          {
+            "name": "location",
+            "dataType": ["text"],
+            "description": "City or location where the festival takes place."
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "Brief description or history of the film festival."
+          },
+          {
+            "name": "featuredFilm",
+            "dataType": ["Film"],
+            "description": "A film that has been notably featured or awarded in the festival."
+          }
+        ]
+      },
+      {
+        "class": "Film",
+        "description": "Details about various films and movies.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "filmTitle",
+            "dataType": ["text"],
+            "description": "Title of the film."
+          },
+          {
+            "name": "director",
+            "dataType": ["text"],
+            "description": "Director of the film."
+          }
+        ]
+      }
+    ]
+}

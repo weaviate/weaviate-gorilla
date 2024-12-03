@@ -1,0 +1,51 @@
+{
+    "classes": [
+      {
+        "class": "NewsOutlet",
+        "description": "A media organization that publishes news.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the news outlet."
+          },
+          {
+            "name": "foundingYear",
+            "dataType": ["int"],
+            "description": "The year the news outlet was founded."
+          },
+          {
+            "name": "isOnline",
+            "dataType": ["boolean"],
+            "description": "Whether the outlet operates online."
+          },
+          {
+            "name": "hasJournalist",
+            "dataType": ["Journalist"],
+            "description": "Journalists working for the outlet."
+          }
+        ]
+      },
+      {
+        "class": "Journalist",
+        "description": "An individual who reports and writes news stories.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the journalist."
+          },
+          {
+            "name": "yearsExperience",
+            "dataType": ["int"],
+            "description": "Number of years the journalist has been working."
+          }
+        ]
+      }
+    ]
+  }
+  

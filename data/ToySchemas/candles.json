@@ -1,0 +1,58 @@
+{
+    "classes": [
+        {
+            "class": "Candle",
+            "description": "A block of wax with a wick that is lit to produce light.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "candleName",
+                    "dataType": ["text"],
+                    "description": "The name or type of the candle."
+                },
+                {
+                    "name": "scent",
+                    "dataType": ["text"],
+                    "description": "The aroma or scent of the candle."
+                },
+                {
+                    "name": "burnTime",
+                    "dataType": ["number"],
+                    "description": "Estimated time the candle will burn in hours."
+                },
+                {
+                    "name": "price",
+                    "dataType": ["number"],
+                    "description": "Price of the candle."
+                },
+                {
+                    "name": "manufacturer",
+                    "dataType": ["Manufacturer"],
+                    "description": "The company or individual who produced the candle."
+                }
+            ]
+        },
+        {
+            "class": "Manufacturer",
+            "description": "A company or individual producing candles.",
+            "properties": [
+                {
+                    "name": "manufacturerName",
+                    "dataType": ["text"],
+                    "description": "The name of the manufacturer."
+                },
+                {
+                    "name": "location",
+                    "dataType": ["text"],
+                    "description": "Location or headquarters of the manufacturer."
+                },
+                {
+                    "name": "contact",
+                    "dataType": ["text"],
+                    "description": "Contact details for inquiries or support."
+                }
+            ]
+        }
+    ]
+}

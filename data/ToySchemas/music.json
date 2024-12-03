@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "Song",
+        "description": "A song.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "title",
+            "dataType": ["text"],
+            "description": "Title of the song."
+          },
+          {
+            "name": "lyrics",
+            "dataType": ["text"],
+            "description": "Lyrics of the song."
+          },
+          {
+            "name": "duration",
+            "dataType": ["int"],
+            "description": "Duration of the song in seconds."
+          },
+          {
+            "name": "isExplicit",
+            "dataType": ["boolean"],
+            "description": "Is the song explicit?"
+          },
+          {
+            "name": "inAlbum",
+            "dataType": ["Album"],
+            "description": "Album containing the song."
+          }
+        ]
+      },
+      {
+        "class": "Album",
+        "description": "A music album.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "title",
+            "dataType": ["text"],
+            "description": "Title of the album."
+          },
+          {
+            "name": "releaseYear",
+            "dataType": ["int"],
+            "description": "The year the album was released."
+          }
+        ]
+      }
+    ]
+  }
+  

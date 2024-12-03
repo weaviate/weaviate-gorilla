@@ -1,0 +1,65 @@
+{
+    "classes": [
+      {
+        "class": "StreamingPlatform",
+        "description": "A digital service offering streaming of video or audio content.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "platformName",
+            "dataType": ["text"],
+            "description": "Name of the streaming platform."
+          },
+          {
+            "name": "overview",
+            "dataType": ["text"],
+            "description": "Brief description of the platform and its features."
+          },
+          {
+            "name": "subscriptionCost",
+            "dataType": ["text"],
+            "description": "Monthly or yearly subscription fee for the platform."
+          },
+          {
+            "name": "availableRegions",
+            "dataType": ["text"],
+            "description": "Regions where the platform is accessible."
+          },
+          {
+            "name": "topShows",
+            "dataType": ["Show"],
+            "description": "Popular shows available on the platform."
+          }
+        ]
+      },
+      {
+        "class": "Show",
+        "description": "Details about a specific show.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "title",
+            "dataType": ["text"],
+            "description": "Title of the show."
+          },
+          {
+            "name": "genre",
+            "dataType": ["text"],
+            "description": "Genre of the show."
+          },
+          {
+            "name": "releaseYear",
+            "dataType": ["int"],
+            "description": "Year the show was first aired."
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "Brief description or synopsis of the show."
+          }
+        ]
+      }
+    ]
+}

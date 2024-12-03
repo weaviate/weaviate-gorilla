@@ -1,0 +1,61 @@
+{
+    "classes": [
+      {
+        "class": "Startup",
+        "description": "A tech startup company.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the startup."
+          },
+          {
+            "name": "product",
+            "dataType": ["text"],
+            "description": "Product or service offered."
+          },
+          {
+            "name": "funding",
+            "dataType": ["number"],
+            "description": "Funding received in USD."
+          },
+          {
+            "name": "isBootstrapped",
+            "dataType": ["boolean"],
+            "description": "Is the startup bootstrapped?"
+          },
+          {
+            "name": "founders",
+            "dataType": ["Entrepreneur"],
+            "description": "Founders of the startup."
+          }
+        ]
+      },
+      {
+        "class": "Entrepreneur",
+        "description": "An individual who starts businesses.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the entrepreneur."
+          },
+          {
+            "name": "biography",
+            "dataType": ["text"],
+            "description": "Biography of the entrepreneur."
+          },
+          {
+            "name": "successfulStartups",
+            "dataType": ["int"],
+            "description": "Number of successful startups founded."
+          }
+        ]
+      }
+    ]
+  }
+  

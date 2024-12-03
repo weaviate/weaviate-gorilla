@@ -1,0 +1,60 @@
+{
+    "classes": [
+        {
+            "class": "Plant",
+            "description": "Various plant species and their characteristics.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "commonName",
+                    "dataType": ["text"],
+                    "description": "Common name of the plant."
+                },
+                {
+                    "name": "scientificName",
+                    "dataType": ["text"],
+                    "description": "Scientific name of the plant."
+                },
+                {
+                    "name": "habitat",
+                    "dataType": ["text"],
+                    "description": "Habitat where the plant is commonly found."
+                },
+                {
+                    "name": "growthHabit",
+                    "dataType": ["text"],
+                    "description": "Growth habit like shrub, tree, herb, etc."
+                },
+                {
+                    "name": "isEndangered",
+                    "dataType": ["boolean"],
+                    "description": "If the plant is endangered or not."
+                },
+                {
+                    "name": "fertilizerNeeds",
+                    "dataType": ["Fertilizer"],
+                    "description": "Types of fertilizers suitable for the plant."
+                }
+            ]
+        },
+        {
+            "class": "Fertilizer",
+            "description": "Different types of fertilizers for plants.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "type",
+                    "dataType": ["text"],
+                    "description": "Type of the fertilizer."
+                },
+                {
+                    "name": "applicationFrequency",
+                    "dataType": ["int"],
+                    "description": "How often the fertilizer should be applied."
+                }
+            ]
+        }
+    ]
+}

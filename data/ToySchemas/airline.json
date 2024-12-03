@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "Airline",
+        "description": "An organization providing air transport services.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the airline."
+          },
+          {
+            "name": "hubAirport",
+            "dataType": ["text"],
+            "description": "Main hub airport."
+          },
+          {
+            "name": "fleetSize",
+            "dataType": ["int"],
+            "description": "Size of the fleet of airplanes."
+          },
+          {
+            "name": "isInternational",
+            "dataType": ["boolean"],
+            "description": "Does the airline offer international flights?"
+          },
+          {
+            "name": "operatesFlight",
+            "dataType": ["Flight"],
+            "description": "Flights operated by the airline."
+          }
+        ]
+      },
+      {
+        "class": "Flight",
+        "description": "A specific flight operated by an airline.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "flightNumber",
+            "dataType": ["text"],
+            "description": "The flight number."
+          },
+          {
+            "name": "duration",
+            "dataType": ["int"],
+            "description": "Duration of the flight in minutes."
+          }
+        ]
+      }
+    ]
+  }
+  

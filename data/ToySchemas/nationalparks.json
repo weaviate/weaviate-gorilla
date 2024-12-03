@@ -1,0 +1,63 @@
+{
+    "classes": [
+        {
+            "class": "NationalPark",
+            "description": "Protected area of natural significance.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "parkName",
+                    "dataType": ["text"],
+                    "description": "The name of the national park."
+                },
+                {
+                    "name": "description",
+                    "dataType": ["text"],
+                    "description": "Brief description about the park and its significance."
+                },
+                {
+                    "name": "location",
+                    "dataType": ["text"],
+                    "description": "The geographic location of the park."
+                },
+                {
+                    "name": "establishedYear",
+                    "dataType": ["int"],
+                    "description": "The year the park was officially established."
+                },
+                {
+                    "name": "isEntryFree",
+                    "dataType": ["boolean"],
+                    "description": "Whether there's an entry fee for the park."
+                },
+                {
+                    "name": "wildlife",
+                    "dataType": ["text"],
+                    "description": "Notable wildlife that can be spotted in the park."
+                },
+                {
+                    "name": "facilities",
+                    "dataType": ["Facility"],
+                    "description": "Facilities available at the park."
+                }
+            ]
+        },
+        {
+            "class": "Facility",
+            "description": "A facility available in a national park.",
+            "properties": [
+                {
+                    "name": "facilityName",
+                    "dataType": ["text"],
+                    "description": "Name of the facility."
+                },
+                {
+                    "name": "description",
+                    "dataType": ["text"],
+                    "description": "Brief description of the facility."
+                }
+            ]
+        }
+    ]
+}

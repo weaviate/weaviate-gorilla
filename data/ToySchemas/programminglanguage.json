@@ -1,0 +1,61 @@
+{
+    "classes": [
+      {
+        "class": "ProgrammingLanguage",
+        "description": "Information about programming languages",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the programming language"
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "Description and history of the programming language"
+          },
+          {
+            "name": "yearReleased",
+            "dataType": ["int"],
+            "description": "Year of release"
+          },
+          {
+            "name": "isCompiled",
+            "dataType": ["boolean"],
+            "description": "Whether the language is compiled or interpreted"
+          },
+          {
+            "name": "usedIn",
+            "dataType": ["SoftwareProject"],
+            "description": "Software projects that use this language"
+          }
+        ]
+      },
+      {
+        "class": "SoftwareProject",
+        "description": "Software projects",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "projectName",
+            "dataType": ["text"],
+            "description": "Name of the software project"
+          },
+          {
+            "name": "repositoryURL",
+            "dataType": ["text"],
+            "description": "URL of the source code repository"
+          },
+          {
+            "name": "linesOfCode",
+            "dataType": ["int"],
+            "description": "Lines of code in the project"
+          }
+        ]
+      }
+    ]
+  }
+  

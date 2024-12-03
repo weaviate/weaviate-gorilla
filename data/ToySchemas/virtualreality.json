@@ -1,0 +1,55 @@
+{
+    "classes": [
+      {
+        "class": "VRExperience",
+        "description": "A virtual reality experience or game.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "title",
+            "dataType": ["text"],
+            "description": "Name of the VR experience."
+          },
+          {
+            "name": "developer",
+            "dataType": ["Developer"],
+            "description": "The developer or studio that produced the experience."
+          },
+          {
+            "name": "genre",
+            "dataType": ["text"],
+            "description": "Genre of the VR experience."
+          },
+          {
+            "name": "releaseYear",
+            "dataType": ["int"],
+            "description": "Year the experience was released."
+          },
+          {
+            "name": "isMultiplayer",
+            "dataType": ["boolean"],
+            "description": "Whether it supports multiplayer mode."
+          }
+        ]
+      },
+      {
+        "class": "Developer",
+        "description": "Information about VR developers.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the developer or studio."
+          },
+          {
+            "name": "foundedYear",
+            "dataType": ["int"],
+            "description": "Year the studio or developer was founded."
+          }
+        ]
+      }
+    ]
+}

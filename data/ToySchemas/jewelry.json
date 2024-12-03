@@ -1,0 +1,55 @@
+{
+    "classes": [
+        {
+            "class": "JewelryItem",
+            "description": "An item of personal adornment.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "name",
+                    "dataType": ["text"],
+                    "description": "Name or title of the jewelry item."
+                },
+                {
+                    "name": "material",
+                    "dataType": ["text"],
+                    "description": "Primary material used, e.g., gold, silver, platinum."
+                },
+                {
+                    "name": "gemstone",
+                    "dataType": ["Gemstone"],
+                    "description": "Gemstone present in the jewelry."
+                },
+                {
+                    "name": "price",
+                    "dataType": ["number"],
+                    "description": "Price of the jewelry item."
+                },
+                {
+                    "name": "isHandmade",
+                    "dataType": ["boolean"],
+                    "description": "Indicates if the item is handmade."
+                }
+            ]
+        },
+        {
+            "class": "Gemstone",
+            "description": "A gemstone used in jewelry.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "name",
+                    "dataType": ["text"],
+                    "description": "Name of the gemstone, e.g., diamond, ruby."
+                },
+                {
+                    "name": "hardness",
+                    "dataType": ["number"],
+                    "description": "Hardness of the gemstone on Mohs scale."
+                }
+            ]
+        }
+    ]
+}

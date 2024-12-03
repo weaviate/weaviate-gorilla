@@ -1,0 +1,58 @@
+{
+    "classes": [
+        {
+            "class": "Pet",
+            "description": "A domesticated animal kept for companionship.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "petName",
+                    "dataType": ["text"],
+                    "description": "The name of the pet."
+                },
+                {
+                    "name": "species",
+                    "dataType": ["text"],
+                    "description": "The species of the pet (e.g., Dog, Cat, Fish)."
+                },
+                {
+                    "name": "breed",
+                    "dataType": ["text"],
+                    "description": "The specific breed or variant of the pet."
+                },
+                {
+                    "name": "age",
+                    "dataType": ["int"],
+                    "description": "The age of the pet in years."
+                },
+                {
+                    "name": "owner",
+                    "dataType": ["Person"],
+                    "description": "The owner of the pet."
+                }
+            ]
+        },
+        {
+            "class": "Person",
+            "description": "An individual or owner of the pet.",
+            "properties": [
+                {
+                    "name": "fullName",
+                    "dataType": ["text"],
+                    "description": "Full name of the person."
+                },
+                {
+                    "name": "address",
+                    "dataType": ["text"],
+                    "description": "Residential address of the person."
+                },
+                {
+                    "name": "contactNumber",
+                    "dataType": ["text"],
+                    "description": "Contact number of the person."
+                }
+            ]
+        }
+    ]
+}

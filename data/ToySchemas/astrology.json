@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "Telescope",
+        "description": "A telescope for astronomical observations.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "model",
+            "dataType": ["text"],
+            "description": "Model of the telescope."
+          },
+          {
+            "name": "manufacturer",
+            "dataType": ["text"],
+            "description": "Manufacturer of the telescope."
+          },
+          {
+            "name": "magnification",
+            "dataType": ["number"],
+            "description": "Magnification capability of the telescope."
+          },
+          {
+            "name": "isInUse",
+            "dataType": ["boolean"],
+            "description": "Is the telescope currently in use?"
+          },
+          {
+            "name": "operatedBy",
+            "dataType": ["Astronomer"],
+            "description": "Astronomer operating the telescope."
+          }
+        ]
+      },
+      {
+        "class": "Astronomer",
+        "description": "A professional astronomer.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the astronomer."
+          },
+          {
+            "name": "yearsExperience",
+            "dataType": ["int"],
+            "description": "Years of experience in the field of astronomy."
+          }
+        ]
+      }
+    ]
+  }
+  

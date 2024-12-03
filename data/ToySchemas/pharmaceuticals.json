@@ -1,0 +1,65 @@
+{
+    "classes": [
+        {
+            "class": "Drug",
+            "description": "Details about various pharmaceutical drugs.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "drugName",
+                    "dataType": ["text"],
+                    "description": "Name of the drug."
+                },
+                {
+                    "name": "activeIngredient",
+                    "dataType": ["text"],
+                    "description": "The main active ingredient in the drug."
+                },
+                {
+                    "name": "approvalYear",
+                    "dataType": ["int"],
+                    "description": "The year the drug was approved."
+                },
+                {
+                    "name": "isOTC",
+                    "dataType": ["boolean"],
+                    "description": "Whether the drug is available over-the-counter (OTC) without a prescription."
+                },
+                {
+                    "name": "manufacturer",
+                    "dataType": ["Manufacturer"],
+                    "description": "The company that manufactures the drug."
+                }
+            ]
+        },
+        {
+            "class": "Manufacturer",
+            "description": "Details about the companies that produce pharmaceutical drugs.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "companyName",
+                    "dataType": ["text"],
+                    "description": "Name of the manufacturing company."
+                },
+                {
+                    "name": "foundedYear",
+                    "dataType": ["int"],
+                    "description": "The year the company was founded."
+                },
+                {
+                    "name": "headquarters",
+                    "dataType": ["text"],
+                    "description": "Location of the company's main office or headquarters."
+                },
+                {
+                    "name": "isGlobal",
+                    "dataType": ["boolean"],
+                    "description": "Whether the company operates on a global scale."
+                }
+            ]
+        }
+    ]
+}

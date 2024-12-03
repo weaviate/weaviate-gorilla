@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "Employee",
+        "description": "An employee in a company.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "The name of the employee."
+          },
+          {
+            "name": "jobTitle",
+            "dataType": ["text"],
+            "description": "The job title of the employee."
+          },
+          {
+            "name": "salary",
+            "dataType": ["number"],
+            "description": "The salary of the employee."
+          },
+          {
+            "name": "isRemote",
+            "dataType": ["boolean"],
+            "description": "Is the employee remote?"
+          },
+          {
+            "name": "worksOn",
+            "dataType": ["Project"],
+            "description": "Projects the employee is working on."
+          }
+        ]
+      },
+      {
+        "class": "Project",
+        "description": "A project in the company.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the project."
+          },
+          {
+            "name": "budget",
+            "dataType": ["number"],
+            "description": "Budget allocated for the project."
+          }
+        ]
+      }
+    ]
+  }
+  

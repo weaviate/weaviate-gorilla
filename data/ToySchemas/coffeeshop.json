@@ -1,0 +1,61 @@
+{
+    "classes": [
+      {
+        "class": "CoffeeShop",
+        "description": "A venue that sells coffee.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the coffee shop."
+          },
+          {
+            "name": "menu",
+            "dataType": ["text"],
+            "description": "List of coffees and snacks available."
+          },
+          {
+            "name": "yearFounded",
+            "dataType": ["int"],
+            "description": "Year the coffee shop was founded."
+          },
+          {
+            "name": "isFranchise",
+            "dataType": ["boolean"],
+            "description": "Is this coffee shop part of a franchise?"
+          },
+          {
+            "name": "locatedIn",
+            "dataType": ["Neighborhood"],
+            "description": "The neighborhood where the coffee shop is located."
+          }
+        ]
+      },
+      {
+        "class": "Neighborhood",
+        "description": "A community within a larger city.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the neighborhood."
+          },
+          {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "Description of the neighborhood."
+          },
+          {
+            "name": "averageRent",
+            "dataType": ["number"],
+            "description": "Average monthly rent in USD."
+          }
+        ]
+      }
+    ]
+  }
+  

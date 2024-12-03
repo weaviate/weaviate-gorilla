@@ -1,0 +1,55 @@
+{
+    "classes": [
+        {
+            "class": "Boat",
+            "description": "Different types of boats and their specifications.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "boatName",
+                    "dataType": ["text"],
+                    "description": "Name or model of the boat."
+                },
+                {
+                    "name": "type",
+                    "dataType": ["text"],
+                    "description": "Type of the boat like sailboat, yacht, etc."
+                },
+                {
+                    "name": "capacity",
+                    "dataType": ["int"],
+                    "description": "Maximum number of passengers the boat can carry."
+                },
+                {
+                    "name": "isMotorized",
+                    "dataType": ["boolean"],
+                    "description": "Whether the boat is motorized or not."
+                },
+                {
+                    "name": "manufacturer",
+                    "dataType": ["BoatManufacturer"],
+                    "description": "The manufacturer or company that produced the boat."
+                }
+            ]
+        },
+        {
+            "class": "BoatManufacturer",
+            "description": "Companies that manufacture boats.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "companyName",
+                    "dataType": ["text"],
+                    "description": "Name of the boat manufacturing company."
+                },
+                {
+                    "name": "foundedYear",
+                    "dataType": ["int"],
+                    "description": "Year the company was founded."
+                }
+            ]
+        }
+    ]
+}

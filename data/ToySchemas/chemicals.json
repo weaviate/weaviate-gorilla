@@ -1,0 +1,58 @@
+{
+    "classes": [
+        {
+            "class": "ChemicalElement",
+            "description": "Basic chemical element from the periodic table.",
+            "vectorIndexType": "hnsw",
+            "vectorizer": "text2vec-transformers",
+            "properties": [
+                {
+                    "name": "elementName",
+                    "dataType": ["text"],
+                    "description": "Name of the chemical element."
+                },
+                {
+                    "name": "symbol",
+                    "dataType": ["text"],
+                    "description": "Symbol of the chemical element."
+                },
+                {
+                    "name": "atomicNumber",
+                    "dataType": ["int"],
+                    "description": "The atomic number of the element."
+                },
+                {
+                    "name": "isMetal",
+                    "dataType": ["boolean"],
+                    "description": "Whether the element is a metal or not."
+                }
+            ]
+        },
+        {
+            "class": "ChemicalCompound",
+            "description": "A compound formed by combining multiple chemical elements.",
+            "properties": [
+                {
+                    "name": "compoundName",
+                    "dataType": ["text"],
+                    "description": "Name of the chemical compound."
+                },
+                {
+                    "name": "formula",
+                    "dataType": ["text"],
+                    "description": "Chemical formula for the compound."
+                },
+                {
+                    "name": "molarMass",
+                    "dataType": ["number"],
+                    "description": "The molar mass of the compound in g/mol."
+                },
+                {
+                    "name": "containsElements",
+                    "dataType": ["ChemicalElement"],
+                    "description": "Elements that make up the compound."
+                }
+            ]
+        }
+    ]
+}

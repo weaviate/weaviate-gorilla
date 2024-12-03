@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "Recipe",
+        "description": "A cooking recipe.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "title",
+            "dataType": ["text"],
+            "description": "The title of the recipe."
+          },
+          {
+            "name": "instructions",
+            "dataType": ["text"],
+            "description": "Cooking instructions."
+          },
+          {
+            "name": "prepTime",
+            "dataType": ["int"],
+            "description": "Preparation time in minutes."
+          },
+          {
+            "name": "isVegetarian",
+            "dataType": ["boolean"],
+            "description": "Is the recipe vegetarian?"
+          },
+          {
+            "name": "usesIngredient",
+            "dataType": ["Ingredient"],
+            "description": "Ingredients used in the recipe."
+          }
+        ]
+      },
+      {
+        "class": "Ingredient",
+        "description": "An ingredient used in recipes.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "Name of the ingredient."
+          },
+          {
+            "name": "calories",
+            "dataType": ["int"],
+            "description": "Calories per 100g."
+          }
+        ]
+      }
+    ]
+  }
+  

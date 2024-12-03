@@ -1,0 +1,56 @@
+{
+    "classes": [
+      {
+        "class": "Car",
+        "description": "A car available for rent.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "make",
+            "dataType": ["text"],
+            "description": "The make of the car."
+          },
+          {
+            "name": "model",
+            "dataType": ["text"],
+            "description": "The model of the car."
+          },
+          {
+            "name": "year",
+            "dataType": ["int"],
+            "description": "The year the car was made."
+          },
+          {
+            "name": "isAvailable",
+            "dataType": ["boolean"],
+            "description": "Whether the car is currently available for rent."
+          },
+          {
+            "name": "rentedBy",
+            "dataType": ["Customer"],
+            "description": "The customer who has rented the car."
+          }
+        ]
+      },
+      {
+        "class": "Customer",
+        "description": "A customer of the car rental service.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "name",
+            "dataType": ["text"],
+            "description": "The name of the customer."
+          },
+          {
+            "name": "age",
+            "dataType": ["int"],
+            "description": "The age of the customer."
+          }
+        ]
+      }
+    ]
+  }
+  

@@ -1,0 +1,50 @@
+{
+    "classes": [
+      {
+        "class": "Robot",
+        "description": "A machine capable of executing actions autonomously.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "robotName",
+            "dataType": ["text"],
+            "description": "Name of the robot."
+          },
+          {
+            "name": "function",
+            "dataType": ["text"],
+            "description": "Primary function or application of the robot, e.g., industrial, healthcare."
+          },
+          {
+            "name": "manufacturer",
+            "dataType": ["RoboticsCompany"],
+            "description": "Company that designed and built the robot."
+          }
+        ]
+      },
+      {
+        "class": "RoboticsCompany",
+        "description": "A company specializing in the design and manufacturing of robots.",
+        "vectorIndexType": "hnsw",
+        "vectorizer": "text2vec-transformers",
+        "properties": [
+          {
+            "name": "companyName",
+            "dataType": ["text"],
+            "description": "Name of the robotics company."
+          },
+          {
+            "name": "foundedYear",
+            "dataType": ["int"],
+            "description": "Year the company was established."
+          },
+          {
+            "name": "specialization",
+            "dataType": ["text"],
+            "description": "Particular focus area in robotics, e.g., humanoid robots, drones."
+          }
+        ]
+      }
+    ]
+}
