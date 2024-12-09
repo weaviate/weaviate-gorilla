@@ -154,14 +154,11 @@ class LMService():
             )
 
             # Parse this in the testing script to enable setting `parallel_tool_calls=True`
+            tool_calls = response.choices[0].message.tool_calls
             
-            response = response.choices[0].message
-            
-            if response.tool_calls:
-                tool_call_args = json.loads(response.tool_calls[0].function.arguments)
-                return tool_call_args
-            else:
-                return None
+            if tool_calls:
+                return tool_calls
+            return None
         
         if self.model_provider == "ollama":
             messages=[

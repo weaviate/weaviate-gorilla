@@ -15,9 +15,7 @@ from src.utils.weaviate_fc_utils import (
     get_collections_info, 
     build_weaviate_query_tool_for_ollama,
     build_weaviate_query_tool_for_openai,
-    build_weaviate_query_tool_for_anthropic,
-    _build_weaviate_filter_return_model,
-    _build_weaviate_aggregation_return_model
+    build_weaviate_query_tool_for_anthropic
 )
 from src.lm.lm import LMService
 from src.utils.util import pretty_print_weaviate_query
@@ -28,7 +26,7 @@ from typing import Optional, Any, List, Dict
 import json
 from datetime import datetime
 
-print("\033[92m=== Starting Experiment Execution ===\033[0m")
+print("\033[92m=== Starting Parallel Tool Calls Test ===\033[0m")
 print("\033[92m=== Loading Weaviate Queries ===\033[0m")
 
 weaviate_queries = load_queries("../../data/synthetic-weaviate-queries-with-schemas.json")
@@ -36,14 +34,12 @@ weaviate_queries = load_queries("../../data/synthetic-weaviate-queries-with-sche
 print("\033[92m=== Initializing LM Service ===\033[0m")
 
 # Configuration
-
-MODEL_PROVIDER = "anthropic"
-MODEL_NAME = "claude-3-5-sonnet-20241022"
-generate_with_models = True # Use this flag to ablate `generate_with_structured_outputs` or `generate_with_python_DSL`
+MODEL_PROVIDER = "openai"  # Only OpenAI supports parallel tool calls currently
+MODEL_NAME = "gpt-4o"
+generate_with_models = True
 
 api_key = ""
 
-# add ollama
 lm_service = LMService(
     model_provider = MODEL_PROVIDER,
     model_name = MODEL_NAME,
@@ -65,10 +61,7 @@ per_schema_scores = {}
 successful_predictions = 0
 failed_predictions = 0
 database_schema_index = 0
-total_ast_score = 0  # Track total AST score
-
-# Clean up, don't build the first schema outside of the experiment loop...
-print("\033[92m=== Initializing First Schema ===\033[0m")
+total_ast_score = 0
 
 # Initialize first schema
 weaviate_client.collections.delete_all()
@@ -102,27 +95,14 @@ for class_schema in class_schemas:
 
 collections_description, collections_enum = get_collections_info(weaviate_client)
 
-# Build tools based on model provider
-if lm_service.model_provider == "ollama":
-    tools = [build_weaviate_query_tool_for_ollama(
-        collections_description=collections_description, 
-        collections_list=collections_enum,
-        generate_with_models=generate_with_models)]
-    tools = [tool.model_dump() for tool in tools] # quick fix, needs to be cleaned up
-elif lm_service.model_provider == "openai":
-    tools = [build_weaviate_query_tool_for_openai(
-        collections_description=collections_description,
-        collections_list=collections_enum,
-        generate_with_models=generate_with_models)]
-elif lm_service.model_provider == "anthropic":
-    tools = [build_weaviate_query_tool_for_anthropic(
-        collections_description=collections_description,
-        collections_list=collections_enum,
-        generate_with_models=generate_with_models)]
+# Build tools for OpenAI
+tools = [build_weaviate_query_tool_for_openai(
+    collections_description=collections_description,
+    collections_list=collections_enum,
+    generate_with_models=generate_with_models)]
 
-print("\033[92m=== Starting Query Processing ===\033[0m")
+print("\033[92m=== Starting Query Processing with Parallel Tool Calls ===\033[0m")
 
-# execute experiment
 for idx, query in enumerate(weaviate_queries):
     print(f"\n\033[92m=== Processing Query {idx+1}/{len(weaviate_queries)} ===\033[0m")
     
@@ -165,45 +145,26 @@ for idx, query in enumerate(weaviate_queries):
 
         collections_description, collections_enum = get_collections_info(weaviate_client)
         
-        # Build tools based on model provider
-        if lm_service.model_provider == "ollama":
-            tools = [build_weaviate_query_tool_for_ollama(
-                collections_description=collections_description,
-                collections_list=collections_enum,
-                generate_with_models=generate_with_models)]
-            tools = [tool.model_dump() for tool in tools] # quick fix, TODO: clean this up
-        elif lm_service.model_provider == "openai":
-            tools = [build_weaviate_query_tool_for_openai(
-                collections_description=collections_description,
-                collections_list=collections_enum,
-                generate_with_models=generate_with_models)]
-        elif lm_service.model_provider == "anthropic":
-            tools = [build_weaviate_query_tool_for_anthropic(
-                collections_description=collections_description,
-                collections_list=collections_enum,
-                generate_with_models=generate_with_models)]
-
+        # Build tools for OpenAI
+        tools = [build_weaviate_query_tool_for_openai(
+            collections_description=collections_description,
+            collections_list=collections_enum,
+            generate_with_models=generate_with_models)]
+    
     try:
         nl_query = query.corresponding_natural_language_query
         print(f"\033[92mProcessing natural language query:\033[0m {nl_query}")
         print("\033[96mGROUND TRUTH QUERY:\033[0m")
         pretty_print_weaviate_query(query)
         
-        # This should be behind the `generate_with_models` flag
-
-        response = lm_service.one_step_function_selection_test(
+        tool_calls = lm_service.one_step_function_selection_test(
             prompt=nl_query,
-            tools=tools
+            tools=tools,
+            parallel_tool_calls=True
         )
 
-        if response:
-            if MODEL_PROVIDER == "openai":
-                tool_call_args = json.loads(response[0].function.arguments) # still only use the first one for this `test-main.py` script
-            else:
-                raise ValueError(f"Tool parsing not yet suppored for {MODEL_PROVIDER}")
-        
-        if not response:
-            print("\033[93mNo tool called\033[0m")
+        if not tool_calls:
+            print("\033[93mNo tool calls made\033[0m")
             result = QueryPredictionResult(
                 query_index=idx,
                 database_schema_index=database_schema_index,
@@ -214,11 +175,17 @@ for idx, query in enumerate(weaviate_queries):
                 error="No tool called"
             )
             failed_predictions += 1
-        else:
-            tool_call_args = response
+            detailed_results.append(result)
+            continue
 
+        print(f"\033[92mNumber of parallel tool calls: {len(tool_calls)}\033[0m")
+        
+        for i, tool_call in enumerate(tool_calls):
+            print(f"\n\033[96mTool Call {i+1}:\033[0m")
+            tool_call_args = json.loads(tool_call.function.arguments)
+            
             if generate_with_models:
-                # Parse response directly into models when generate_with_models is True
+                # Parse response into models
                 integer_property_filter = IntPropertyFilter(**tool_call_args["integer_property_filter"]) if "integer_property_filter" in tool_call_args else None
                 text_property_filter = TextPropertyFilter(**tool_call_args["text_property_filter"]) if "text_property_filter" in tool_call_args else None
                 boolean_property_filter = BooleanPropertyFilter(**tool_call_args["boolean_property_filter"]) if "boolean_property_filter" in tool_call_args else None
@@ -238,52 +205,25 @@ for idx, query in enumerate(weaviate_queries):
                     groupby_property=tool_call_args.get("groupby_property"),
                     corresponding_natural_language_query=nl_query
                 )
-            else:
-                # Use existing filter/aggregation parsing for legacy format
-                filter_model = None
-                if "filter_string" in tool_call_args:
-                    print(f"\033[92mProcessing filter string:\033[0m {tool_call_args['filter_string']}")
-                    filter_model = _build_weaviate_filter_return_model(tool_call_args["filter_string"])
+
+                print("\033[96mPREDICTED QUERY:\033[0m")
+                pretty_print_weaviate_query(predicted_query)
+
+                # Calculate AST score
+                ast_score = abstract_syntax_tree_match_score(predicted_query, query)
+                print(f"\033[92mAST score: {ast_score:.3f}\033[0m")
                 
-                group_by_model = None
-                metrics_model = None
-                if "aggregation_string" in tool_call_args:
-                    print(f"\033[92mProcessing aggregation string:\033[0m {tool_call_args['aggregation_string']}")
-                    group_by_model, metrics_models = _build_weaviate_aggregation_return_model(tool_call_args["aggregation_string"])
-                    if metrics_models:
-                        metrics_model = metrics_models[0]
-                
-                predicted_query = WeaviateQuery(
-                    target_collection=tool_call_args["collection_name"],
-                    search_query=tool_call_args.get("search_query"),
-                    integer_property_filter=filter_model if isinstance(filter_model, IntPropertyFilter) else None,
-                    text_property_filter=filter_model if isinstance(filter_model, TextPropertyFilter) else None,
-                    boolean_property_filter=filter_model if isinstance(filter_model, BooleanPropertyFilter) else None,
-                    integer_property_aggregation=metrics_model if isinstance(metrics_model, IntAggregation) else None,
-                    text_property_aggregation=metrics_model if isinstance(metrics_model, TextAggregation) else None,
-                    boolean_property_aggregation=metrics_model if isinstance(metrics_model, BooleanAggregation) else None,
-                    groupby_property=group_by_model,
-                    corresponding_natural_language_query=nl_query
+                result = QueryPredictionResult(
+                    query_index=idx,
+                    database_schema_index=database_schema_index,
+                    natural_language_query=nl_query,
+                    ground_truth_query=query,
+                    predicted_query=predicted_query,
+                    ast_score=ast_score,
+                    error=None
                 )
+                successful_predictions += 1
 
-            print("\033[96mPREDICTED QUERY:\033[0m")
-            pretty_print_weaviate_query(predicted_query)
-
-            # Calculate AST score
-            ast_score = abstract_syntax_tree_match_score(predicted_query, query)
-            print(f"\033[92mAST score: {ast_score:.3f}\033[0m")
-            
-            result = QueryPredictionResult(
-                query_index=idx,
-                database_schema_index=database_schema_index,
-                natural_language_query=nl_query,
-                ground_truth_query=query,
-                predicted_query=predicted_query,
-                ast_score=ast_score,
-                error=None
-            )
-            successful_predictions += 1
-            
     except Exception as e:
         print(f"\033[91mError occurred: {str(e)}\033[0m")
         result = QueryPredictionResult(
@@ -321,7 +261,7 @@ experiment_summary = ExperimentSummary(
 
 print("\033[92m=== Saving Results ===\033[0m")
 # Save results
-with open(f"{MODEL_NAME}-experiment_results{'-with-models' if generate_with_models else ''}.json", "w") as f:
+with open(f"{MODEL_NAME}-parallel-tool-calls-experiment-results{'-with-models' if generate_with_models else ''}.json", "w") as f:
     f.write(experiment_summary.model_dump_json(indent=2))
 
 print("\n\033[92mExperiment Summary:\033[0m")
