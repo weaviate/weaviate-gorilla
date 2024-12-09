@@ -242,12 +242,16 @@ class TestLMConnectionModel(BaseModel):
     generic_response: str
 
 # Execution Models
+
+# Will have to expand this to include parallel / multiple tool calls for `predicted_queries`
+# `Optional[List[WeaviateQuery]]`
 class QueryPredictionResult(BaseModel):
     query_index: int
     database_schema_index: int
     natural_language_query: str
     ground_truth_query: WeaviateQueryWithSchema
     predicted_query: Optional[WeaviateQuery]
+    tool_rationale: str
     ast_score: float
     error: Optional[str]
 

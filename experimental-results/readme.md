@@ -21,7 +21,5 @@ class ExperimentSummary(BaseModel):
     per_schema_scores: Dict[int, float]
     detailed_results: List[QueryPredictionResult]
 ```
-### Note, would be good to break up `models` into multiple folders -- explained by these folders.
-
 
 ![Weaviate Gorilla](../visuals/weaviate-gorillas/gorilla-96.png)

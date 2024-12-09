@@ -173,7 +173,8 @@ for idx, query in enumerate(weaviate_queries):
 
         response = lm_service.one_step_function_selection_test(
             prompt=nl_query,
-            tools=tools
+            tools=tools,
+            parallel_tool_calls=False
         )
         
         if not response:
@@ -184,12 +185,14 @@ for idx, query in enumerate(weaviate_queries):
                 natural_language_query=nl_query,
                 ground_truth_query=query,
                 predicted_query=None,
+                tool_rationale="",
                 ast_score=0.0,
                 error="No tool called"
             )
             failed_predictions += 1
         else:
-            tool_call_args = response
+            tool_call_args = json.loads(response[0].function.arguments)
+
 
             if generate_with_models:
                 # Parse response directly into models when generate_with_models is True
@@ -215,6 +218,9 @@ for idx, query in enumerate(weaviate_queries):
 
             print("\033[96mPREDICTED QUERY:\033[0m")
             pretty_print_weaviate_query(predicted_query)
+            print("\033[96m\nRationale for Predicted Query:\033[0m")
+            print(tool_call_args.get("tool_rationale"))
+            print()
 
             # Calculate AST score
             ast_score = abstract_syntax_tree_match_score(predicted_query, query)
@@ -226,6 +232,7 @@ for idx, query in enumerate(weaviate_queries):
                 natural_language_query=nl_query,
                 ground_truth_query=query,
                 predicted_query=predicted_query,
+                tool_rationale=tool_call_args.get("tool_rationale"),
                 ast_score=ast_score,
                 error=None
             )
@@ -240,6 +247,7 @@ for idx, query in enumerate(weaviate_queries):
             ground_truth_query=query,
             predicted_query=None,
             ast_score=0.0,
+            tool_rationale="",
             error=str(e)
         )
         failed_predictions += 1
