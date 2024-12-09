@@ -1,5 +1,5 @@
 from pydantic import BaseModel, field_validator, Field
-from typing import Literal, Optional, Dict, List, Union
+from typing import Literal, Optional, Dict, List, Union, Any
 
 # Note, this needs to be cleaned up
 
@@ -287,3 +287,41 @@ class ResponseOrToolCalls(BaseModel):
     use_tools: bool
     response: Optional[str] = None
     tool_calls: Optional[List[ToolCall]] = None
+
+class OpenAIParameters(BaseModel):
+    type: Literal["object"]
+    properties: Dict[str, Dict[str, Any]]
+    required: Optional[List[str]]
+
+class OpenAIFunction(BaseModel):
+    name: str
+    description: str
+    parameters: OpenAIParameters
+
+class OpenAITool(BaseModel):
+    type: Literal["function"]
+    function: OpenAIFunction
+
+class AnthropicToolInputSchema(BaseModel):
+    type: str
+    properties: dict[str, Any]
+    required: list[str]
+
+class AnthropicTool(BaseModel):
+    name: str
+    description: str
+    input_schema: AnthropicToolInputSchema
+
+class OllamaFunctionParameters(BaseModel):
+    type: Literal["object"] = "object"
+    properties: dict[str, dict[str, Any]]
+    required: list[str]
+
+class OllamaFunction(BaseModel):
+    name: str
+    description: str
+    parameters: OllamaFunctionParameters
+
+class OllamaTool(BaseModel):
+    type: Literal["function"] = "function"
+    function: OllamaFunction

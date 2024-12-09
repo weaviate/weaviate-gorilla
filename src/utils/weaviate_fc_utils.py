@@ -8,6 +8,16 @@ from src.models import (
     BooleanAggregation,
     GroupBy
 )
+from src.models import (
+    OpenAIParameters,
+    OpenAIFunction,
+    OpenAITool,
+    AnthropicTool,
+    AnthropicToolInputSchema,
+    OllamaFunctionParameters,
+    OllamaFunction,
+    OllamaTool
+)
 import re
 from typing import Tuple, Union, Any
 from pydantic import BaseModel
@@ -41,44 +51,6 @@ def get_collections_info(client: weaviate.WeaviateClient) -> tuple[str, list[str
             output.append(f"- {prop.name}: (type: {prop.data_type.value})")
 
     return "\n".join(output), collection_names
-
-class OpenAIParameters(BaseModel):
-    type: Literal["object"]
-    properties: Dict[str, Dict[str, Any]]
-    required: Optional[List[str]]
-
-class OpenAIFunction(BaseModel):
-    name: str
-    description: str
-    parameters: OpenAIParameters
-
-class OpenAITool(BaseModel):
-    type: Literal["function"]
-    function: OpenAIFunction
-
-class AnthropicToolInputSchema(BaseModel):
-    type: str
-    properties: dict[str, Any]
-    required: list[str]
-
-class AnthropicTool(BaseModel):
-    name: str
-    description: str
-    input_schema: AnthropicToolInputSchema
-
-class OllamaFunctionParameters(BaseModel):
-    type: Literal["object"] = "object"
-    properties: dict[str, dict[str, Any]]
-    required: list[str]
-
-class OllamaFunction(BaseModel):
-    name: str
-    description: str
-    parameters: OllamaFunctionParameters
-
-class OllamaTool(BaseModel):
-    type: Literal["function"] = "function"
-    function: OllamaFunction
 
 def build_weaviate_query_tool_for_openai(collections_description: str, collections_list: list[str], generate_with_models: bool = False) -> OpenAITool:
     if generate_with_models:
