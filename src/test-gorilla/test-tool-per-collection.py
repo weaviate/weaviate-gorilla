@@ -30,7 +30,7 @@ from src.lm.lm import LMService
 import weaviate
 
 # Configuration
-MODEL_NAME = "gpt-4"
+MODEL_NAME = "gpt-4o"
 api_key = ""
 generate_with_models = True
 
