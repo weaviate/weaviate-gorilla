@@ -195,6 +195,8 @@ for idx, query in enumerate(weaviate_queries):
             prompt=nl_query,
             tools=tools
         )
+
+        # with default `parallel_tool_calls=False` just take the first response
         
         if not response:
             print("\033[93mNo tool called\033[0m")

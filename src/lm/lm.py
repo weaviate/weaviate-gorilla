@@ -130,7 +130,8 @@ class LMService():
     def one_step_function_selection_test(
             self, 
             prompt: str, 
-            tools: list[OpenAITool] | list[AnthropicTool] | list[OllamaTool]
+            tools: list[OpenAITool] | list[AnthropicTool] | list[OllamaTool],
+            parallel_tool_calls: bool = False
         ) -> dict | None:
         if self.model_provider == "openai":
             messages = [
@@ -148,8 +149,11 @@ class LMService():
             response = self.lm_client.chat.completions.create(
                 model=self.model_name,
                 messages=messages,
-                tools=tools
+                tools=tools,
+                parallel_tool_calls=parallel_tool_calls
             )
+
+            # Parse this in the testing script to enable setting `parallel_tool_calls=True`
             
             response = response.choices[0].message
             
