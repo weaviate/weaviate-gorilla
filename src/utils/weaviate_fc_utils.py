@@ -83,7 +83,6 @@ class OllamaTool(BaseModel):
     function: OllamaFunction
 
 def build_weaviate_query_tool_for_openai(collections_description: str, collections_list: list[str], generate_with_models: bool = False) -> OpenAITool:
-
     if generate_with_models:
         properties = {
             "collection_name": {

@@ -3,7 +3,7 @@ import openai
 import anthropic
 from typing import Literal
 from pydantic import BaseModel
-from src.models import TestLMConnectionModel
+from src.models import TestLMConnectionModel, ResponseOrToolCalls
 from src.utils.weaviate_fc_utils import (
     OpenAITool,
     AnthropicTool,
@@ -215,6 +215,36 @@ class LMService():
         else:
             raise ValueError(f"Function calling not yet supported for the LMService with {self.model_provider}")
 
+    def call_tools_with_structured_outputs(
+            self,
+            prompt: str,
+            tools: list[OpenAITool]
+    ):
+        # This will just assume the 1 Tool harcoded into the `ResponseOrToolCalls` model
+        if self.model_provider != "openai":
+            raise ValueError("call_tools_with_structured_outputs is only supported for openai.")
+
+        tools_description = tools[0].model_dump() # Note, this will cause problems when extending to multiple tools -- shouldn't matter for now.
+
+        # Construct messages guiding the model to return JSON in `output_model` format
+        messages = [
+            {"role": "system", "content": f"You are a helpful assistant. Follow the response format instructions and use the tools if needed. Here is a description of the available tools {tools_description}"},
+            {"role": "user", "content": prompt}
+        ]
+
+        # Use the beta parse endpoint to get a structured output
+        response = self.lm_client.beta.chat.completions.parse(
+            model=self.model_name,
+            messages=messages,
+            response_format=ResponseOrToolCalls
+        )
+
+        # Extract the parsed structured response
+        parsed_response = response.choices[0].message.parsed
+        if parsed_response.use_tools == True:
+            return parsed_response.tool_calls # returns the arguments to be parsed in the run script
+        else:
+            return None
 '''
 Note, vLLM function call snippet:
 

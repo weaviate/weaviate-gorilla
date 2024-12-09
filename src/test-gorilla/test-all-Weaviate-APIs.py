@@ -10,6 +10,7 @@ from src.models import (
     GroupBy
 )
 from src.models import Tool, Function, Parameters, ParameterProperty
+from src.models import ResponseOrToolCalls
 from src.utils.weaviate_fc_utils import (
     get_collections_info, 
     build_weaviate_query_tool_for_ollama,
@@ -38,7 +39,7 @@ print("\033[92m=== Initializing LM Service ===\033[0m")
 
 MODEL_PROVIDER = "anthropic"
 MODEL_NAME = "claude-3-5-sonnet-20241022"
-generate_with_models = True
+generate_with_models = True # Use this flag to ablate `generate_with_structured_outputs` or `generate_with_python_DSL`
 
 api_key = ""
 
@@ -188,6 +189,8 @@ for idx, query in enumerate(weaviate_queries):
         print("\033[96mGROUND TRUTH QUERY:\033[0m")
         pretty_print_weaviate_query(query)
         
+        # This should be behind the `generate_with_models` flag
+
         response = lm_service.one_step_function_selection_test(
             prompt=nl_query,
             tools=tools

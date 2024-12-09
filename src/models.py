@@ -1,4 +1,4 @@
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator, Field
 from typing import Literal, Optional, Dict, List, Union
 
 # Note, this needs to be cleaned up
@@ -262,3 +262,28 @@ class ExperimentSummary(BaseModel):
     average_ast_score: float
     per_schema_scores: Dict[int, float]
     detailed_results: List[QueryPredictionResult]
+
+# Models for ablation study on Function Calling versus the `ResponseOrToolCalls` Structured Output model
+class ToolArguments(BaseModel):
+    collection_name: str
+    search_query: Optional[str] = None
+    integer_property_filter: Optional[IntPropertyFilter] = None
+    text_property_filter: Optional[TextPropertyFilter] = None
+    boolean_property_filter: Optional[BooleanPropertyFilter] = None
+    integer_property_aggregation: Optional[IntAggregation] = None
+    text_property_aggregation: Optional[TextAggregation] = None
+    boolean_property_aggregation: Optional[BooleanAggregation] = None
+    groupby_property: Optional[str] = None
+
+class ToolCall(BaseModel):
+    function_name: str
+    arguments: ToolArguments
+
+class ResponseOrToolCalls(BaseModel):
+    reflection_about_tool_use: Optional[str] = Field(
+        default=None,
+        description="A rationale regarding whether tool calls are needed."
+    )
+    use_tools: bool
+    response: Optional[str] = None
+    tool_calls: Optional[List[ToolCall]] = None
