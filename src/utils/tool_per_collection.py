@@ -1,7 +1,7 @@
 from typing import List
 from src.models import OpenAITool, OpenAIFunction, OpenAIParameters
 
-def build_weaviate_query_tools_per_collection(collections_description: str, collections_list: list[str], generate_with_models: bool = False) -> List[OpenAITool]:
+def build_one_tool_per_collection(collections_description: str, collections_list: list[str], generate_with_models: bool = False) -> List[OpenAITool]:
     """
     Creates a separate query tool for each collection in the database.
     
