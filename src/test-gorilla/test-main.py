@@ -195,6 +195,10 @@ for idx, query in enumerate(weaviate_queries):
             prompt=nl_query,
             tools=tools
         )
+        # parse the tool arguments here instead of inside of the lm_service
+
+        if response:
+            tool_call_args = json.loads(response[0].function.arguments) # still only use the first one for this `test-main.py` script
 
         # with default `parallel_tool_calls=False` just take the first response
         
