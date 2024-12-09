@@ -30,21 +30,23 @@
 19. Bringing semantic knowledge graph technology to your data. Bob van Luijt and Micha Verhagen. 2020. [IEEE](https://ieeexplore.ieee.org/abstract/document/8994851)
 
 ## Text-to-SQL
-20. Can LLM Already Serve as A Database Interface? A BIg Bench for Large-Scale Database Grounded Text-to-SQLs. Jinyang Li et al. 2023. [Arxiv Link](https://arxiv.org/pdf/2305.03111) [Web Page](https://bird-bench.github.io/)
-21. LOTUS: Enabling Semantic Queries with LLMs Over Tables of Unstructured and Structured Data. Liana Patel, Siddharth Jha, Carlos Guestrin, Matei Zaharia. 2024. [Arxiv Link](https://arxiv.org/abs/2407.11418)
-22. SUQL: Conversational Search over Structured and Unstructured Data with Large Language Models. Shicheng Liu, Jialiang Xu, Wesley Tjangnaka, Sina J. Semnani, Chen Jie Yu, Monica S. Lam. 2023. [Arxiv Link](https://arxiv.org/abs/2311.09818)
+19. Spider: A Large-Scale Human-Labeled Dataset for Complex and Cross-Domain Semantic Parsing and Text-to-SQL Task. Tao Yu, Rui Zhang, Kai Yang, Michihiro Yasunaga, Dongxu Wang, Zifan Li, James Ma, Irene Li, Qingning Yao, Shanelle Roman, Zilin Zhang, Dragomir Radev. 2018. [EMNLP 2018 Link](https://arxiv.org/abs/1809.08887)
+20. Spider 2.0: Evaluating Language Models on Real-World Enterprise Text-to-SQL Workflows. Lei et al. 2024. [Arxiv Link](https://arxiv.org/pdf/2411.07763)
+21. Can LLM Already Serve as A Database Interface? A BIg Bench for Large-Scale Database Grounded Text-to-SQLs. Jinyang Li et al. 2023. [Arxiv Link](https://arxiv.org/pdf/2305.03111) [Web Page](https://bird-bench.github.io/)
+22. LOTUS: Enabling Semantic Queries with LLMs Over Tables of Unstructured and Structured Data. Liana Patel, Siddharth Jha, Carlos Guestrin, Matei Zaharia. 2024. [Arxiv Link](https://arxiv.org/abs/2407.11418)
+23. SUQL: Conversational Search over Structured and Unstructured Data with Large Language Models. Shicheng Liu, Jialiang Xu, Wesley Tjangnaka, Sina J. Semnani, Chen Jie Yu, Monica S. Lam. 2023. [Arxiv Link](https://arxiv.org/abs/2311.09818)
 
 ## Structured Outputs
-23. Efficient Guided Generation for Large Language Models. Brandon T. Willard, Remi Louf. 2023. [Arxiv Link](https://arxiv.org/abs/2307.09702)
-24. Let Me Speak Freely? A Study on the Impact of Format Restrictions on Performance of Large Language Models. Zhi Rui Tam, Cheng-Kuang Wu, Yi-Lin Tsai, Chieh-Yen Lin, Hung-yi Lee, Yun-Nung Chen. 2024. [Arxiv Link](https://arxiv.org/abs/2408.02442)
-25. StructuredRAG: JSON Response Formatting with Large Language Models. Connor Shorten, Charles Pierse, Thomas Benjamin Smith, Erika Cardenas, Akanksha Sharma, John Trengrove, Bob van Luijt. 2024. [Arxiv Link](https://arxiv.org/abs/2408.11061)
+24. Efficient Guided Generation for Large Language Models. Brandon T. Willard, Remi Louf. 2023. [Arxiv Link](https://arxiv.org/abs/2307.09702)
+25. Let Me Speak Freely? A Study on the Impact of Format Restrictions on Performance of Large Language Models. Zhi Rui Tam, Cheng-Kuang Wu, Yi-Lin Tsai, Chieh-Yen Lin, Hung-yi Lee, Yun-Nung Chen. 2024. [Arxiv Link](https://arxiv.org/abs/2408.02442)
+26. StructuredRAG: JSON Response Formatting with Large Language Models. Connor Shorten, Charles Pierse, Thomas Benjamin Smith, Erika Cardenas, Akanksha Sharma, John Trengrove, Bob van Luijt. 2024. [Arxiv Link](https://arxiv.org/abs/2408.11061)
 
 ## Query Writing
-26. Baleen: Robust Multi-Hop Reasoning at Scale via Condensed Retrieval. Omar Khattab, Christopher Potts, Matei Zaharia. 2022. [Arxiv Link](https://arxiv.org/abs/2101.00436)
-27. Grounding by Trying: LLMs with Reinforcement Learning-Enhanced Retrieval. Sheryl Hsu, Omar Khattab, Chelsea Finn, Archit Sharma. 2024. [Arxiv Link](https://arxiv.org/pdf/2410.23214?)
+27. Baleen: Robust Multi-Hop Reasoning at Scale via Condensed Retrieval. Omar Khattab, Christopher Potts, Matei Zaharia. 2022. [Arxiv Link](https://arxiv.org/abs/2101.00436)
+28. Grounding by Trying: LLMs with Reinforcement Learning-Enhanced Retrieval. Sheryl Hsu, Omar Khattab, Chelsea Finn, Archit Sharma. 2024. [Arxiv Link](https://arxiv.org/pdf/2410.23214?)
 
 ## Large Action Models
-28. xLAM: A Family of Large Action Models to Empower AI Agent Systems. Jianguo Zhang et al. 2024. [Arxiv Link](https://arxiv.org/pdf/2409.03215)
+29. xLAM: A Family of Large Action Models to Empower AI Agent Systems. Jianguo Zhang et al. 2024. [Arxiv Link](https://arxiv.org/pdf/2409.03215)
 
 ==
 <br />
