@@ -284,7 +284,7 @@ class ToolCall(BaseModel):
     arguments: ToolArguments
 
 class ResponseOrToolCalls(BaseModel):
-    reflection_about_tool_use: Optional[str] = Field(
+    tool_rationale: Optional[str] = Field(
         default=None,
         description="A rationale regarding whether tool calls are needed."
     )

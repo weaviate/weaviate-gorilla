@@ -54,7 +54,6 @@ print("\033[92m=== Initializing First Schema ===\033[0m")
 weaviate_client.collections.delete_all()
 
 # Initialize variables for experiment results
-single_tool_results = []
 multi_tool_results = []
 per_schema_scores_single = {}
 per_schema_scores_multi = {}
@@ -100,17 +99,12 @@ for idx, query in enumerate(weaviate_queries):
     
     # Switch schema every 64 queries if needed
     if idx > 0 and idx % 64 == 0:
-        # Update per-schema scores
-        last_64_single = single_tool_results[-64:]
         last_64_multi = multi_tool_results[-64:]
-        
-        if last_64_single:
-            per_schema_scores_single[database_schema_index] = sum(r.ast_score for r in last_64_single) / 64
+
         if last_64_multi:
             per_schema_scores_multi[database_schema_index] = sum(r.ast_score for r in last_64_multi) / 64
             
         print(f"\033[92mSchema {database_schema_index} scores:\033[0m")
-        print(f"Single tool: {per_schema_scores_single[database_schema_index]:.3f}")
         print(f"Multi tool: {per_schema_scores_multi[database_schema_index]:.3f}")
 
         database_schema_index += 1
@@ -161,7 +155,7 @@ for idx, query in enumerate(weaviate_queries):
             prompt=nl_query,
             tools=multi_tools
         )
-        
+
         if not multi_response:
             multi_result = QueryPredictionResult(
                 query_index=idx,
@@ -173,12 +167,13 @@ for idx, query in enumerate(weaviate_queries):
                 error="No response"
             )
         else:
-            tool_call = multi_response[0]
-            tool_call_args = tool_call.arguments.model_dump()
+            tool_call = multi_response[0].function
+            collection_chosen = tool_call.name.replace("query_", "")
+            tool_call_args = json.loads(tool_call.arguments)
             
             # Build predicted query from tool call
             predicted_query = WeaviateQuery(
-                target_collection=tool_call_args["collection_name"],
+                target_collection=collection_chosen,
                 search_query=tool_call_args.get("search_query"),
                 integer_property_filter=IntPropertyFilter(**tool_call_args["integer_property_filter"]) if tool_call_args.get("integer_property_filter") else None,
                 text_property_filter=TextPropertyFilter(**tool_call_args["text_property_filter"]) if tool_call_args.get("text_property_filter") else None,
@@ -189,6 +184,8 @@ for idx, query in enumerate(weaviate_queries):
                 groupby_property=tool_call_args.get("groupby_property"),
                 corresponding_natural_language_query=nl_query
             )
+            print("\033[96mPREDICTED QUERY:\033[0m")
+            pretty_print_weaviate_query(predicted_query)
             
             ast_score = abstract_syntax_tree_match_score(predicted_query, query)
             multi_result = QueryPredictionResult(
@@ -197,6 +194,7 @@ for idx, query in enumerate(weaviate_queries):
                 natural_language_query=nl_query,
                 ground_truth_query=query,
                 predicted_query=predicted_query,
+                tool_rationale="",
                 ast_score=ast_score,
                 error=None
             )
@@ -208,38 +206,23 @@ for idx, query in enumerate(weaviate_queries):
             natural_language_query=nl_query,
             ground_truth_query=query,
             predicted_query=None,
+            tool_rationale="",
             ast_score=0.0,
             error=str(e)
         )
 
-    single_tool_results.append(single_result)
+
     multi_tool_results.append(multi_result)
     
-    print(f"\033[92mSingle Tool AST Score: {single_result.ast_score:.3f}\033[0m")
     print(f"\033[92mMulti Tool AST Score: {multi_result.ast_score:.3f}\033[0m")
 
 # Update scores for final schema
-last_64_single = single_tool_results[-64:] if len(single_tool_results) > 64 else single_tool_results
 last_64_multi = multi_tool_results[-64:] if len(multi_tool_results) > 64 else multi_tool_results
 
-if last_64_single:
-    per_schema_scores_single[database_schema_index] = sum(r.ast_score for r in last_64_single) / len(last_64_single)
 if last_64_multi:
     per_schema_scores_multi[database_schema_index] = sum(r.ast_score for r in last_64_multi) / len(last_64_multi)
 
 print("\033[92m=== Creating Experiment Summaries ===\033[0m")
-
-single_tool_summary = ExperimentSummary(
-    timestamp=datetime.now().isoformat(),
-    model_name=f"{MODEL_NAME}-single-tool",
-    generate_with_models=generate_with_models,
-    total_queries=len(weaviate_queries),
-    successful_predictions=sum(1 for r in single_tool_results if r.predicted_query is not None),
-    failed_predictions=sum(1 for r in single_tool_results if r.predicted_query is None),
-    average_ast_score=sum(r.ast_score for r in single_tool_results) / len(single_tool_results),
-    per_schema_scores=per_schema_scores_single,
-    detailed_results=single_tool_results
-)
 
 multi_tool_summary = ExperimentSummary(
     timestamp=datetime.now().isoformat(),
@@ -254,17 +237,10 @@ multi_tool_summary = ExperimentSummary(
 )
 
 print("\033[92m=== Saving Results ===\033[0m")
-with open(f"{MODEL_NAME}-single-tool-test{'-with-models' if generate_with_models else ''}.json", "w") as f:
-    f.write(single_tool_summary.model_dump_json(indent=2))
-
 with open(f"{MODEL_NAME}-multi-tool-test{'-with-models' if generate_with_models else ''}.json", "w") as f:
     f.write(multi_tool_summary.model_dump_json(indent=2))
 
-print("\n\033[92mSingle Tool Summary:\033[0m")
-print(f"Total Queries: {single_tool_summary.total_queries}")
-print(f"Successful Predictions: {single_tool_summary.successful_predictions}")
-print(f"Failed Predictions: {single_tool_summary.failed_predictions}")
-print(f"Average AST Score: {single_tool_summary.average_ast_score:.3f}")
+
 
 print("\n\033[92mMulti Tool Summary:\033[0m")
 print(f"Total Queries: {multi_tool_summary.total_queries}")

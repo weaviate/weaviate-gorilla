@@ -62,6 +62,7 @@ successful_predictions = 0
 failed_predictions = 0
 database_schema_index = 0
 total_ast_score = 0
+total_tool_calls = 0
 
 # Initialize first schema
 weaviate_client.collections.delete_all()
@@ -171,6 +172,7 @@ for idx, query in enumerate(weaviate_queries):
                 natural_language_query=nl_query,
                 ground_truth_query=query,
                 predicted_query=None,
+                tool_rationale="",
                 ast_score=0.0,
                 error="No tool called"
             )
@@ -178,7 +180,13 @@ for idx, query in enumerate(weaviate_queries):
             detailed_results.append(result)
             continue
 
-        print(f"\033[92mNumber of parallel tool calls: {len(tool_calls)}\033[0m")
+        num_tool_calls = len(tool_calls)
+        total_tool_calls += num_tool_calls
+        avg_tool_calls = total_tool_calls / (idx + 1)
+        print(f"\033[1;93;104mNUMBER OF PARALLEL TOOL CALLS: {num_tool_calls} (Running Average: {avg_tool_calls:.2f})\033[0m")
+        
+        best_result = None
+        best_ast_score = -1
         
         for i, tool_call in enumerate(tool_calls):
             print(f"\n\033[96mTool Call {i+1}:\033[0m")
@@ -213,16 +221,36 @@ for idx, query in enumerate(weaviate_queries):
                 ast_score = abstract_syntax_tree_match_score(predicted_query, query)
                 print(f"\033[92mAST score: {ast_score:.3f}\033[0m")
                 
-                result = QueryPredictionResult(
+                current_result = QueryPredictionResult(
                     query_index=idx,
                     database_schema_index=database_schema_index,
                     natural_language_query=nl_query,
                     ground_truth_query=query,
                     predicted_query=predicted_query,
+                    tool_rationale="",
                     ast_score=ast_score,
                     error=None
                 )
-                successful_predictions += 1
+                
+                if ast_score > best_ast_score:
+                    best_ast_score = ast_score
+                    best_result = current_result
+
+        if best_result:
+            result = best_result
+            successful_predictions += 1
+        else:
+            result = QueryPredictionResult(
+                query_index=idx,
+                database_schema_index=database_schema_index,
+                natural_language_query=nl_query,
+                ground_truth_query=query,
+                predicted_query=None,
+                tool_rationale="",
+                ast_score=0.0,
+                error="No valid predictions"
+            )
+            failed_predictions += 1
 
     except Exception as e:
         print(f"\033[91mError occurred: {str(e)}\033[0m")
@@ -232,6 +260,7 @@ for idx, query in enumerate(weaviate_queries):
             natural_language_query=nl_query,
             ground_truth_query=query,
             predicted_query=None,
+            tool_rationale="",
             ast_score=0.0,
             error=str(e)
         )

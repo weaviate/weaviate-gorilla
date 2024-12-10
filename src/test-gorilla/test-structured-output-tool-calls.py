@@ -186,9 +186,6 @@ for idx, query in enumerate(weaviate_queries):
             prompt=nl_query,
             tools=tools
         )
-        print("Debugging")
-        print(structured_response)
-        print("End of Debugging")
 
         if not structured_response:
             print("\033[93mNo structured response returned.\033[0m")
@@ -198,6 +195,7 @@ for idx, query in enumerate(weaviate_queries):
                 natural_language_query=nl_query,
                 ground_truth_query=query,
                 predicted_query=None,
+                tool_rationale="",
                 ast_score=0.0,
                 error="No response"
             )
@@ -246,6 +244,7 @@ for idx, query in enumerate(weaviate_queries):
                     natural_language_query=nl_query,
                     ground_truth_query=query,
                     predicted_query=predicted_query,
+                    tool_rationale="",
                     ast_score=ast_score,
                     error=None
                 )
@@ -258,6 +257,7 @@ for idx, query in enumerate(weaviate_queries):
                     natural_language_query=nl_query,
                     ground_truth_query=query,
                     predicted_query=None,
+                    tool_rationale="",
                     ast_score=0.0,
                     error="No query predicted"
                 )
@@ -275,6 +275,7 @@ for idx, query in enumerate(weaviate_queries):
             database_schema_index=database_schema_index,
             natural_language_query=nl_query,
             ground_truth_query=query,
+            tool_rationale="",
             predicted_query=None,
             ast_score=0.0,
             error=str(e)
