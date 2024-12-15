@@ -2,10 +2,11 @@
 OPENAI_API_KEY = "YOUR_OPENAI_API_KEY"
 ANTHROPIC_API_KEY = "YOUR_ANTHROPIC_API_KEY"
 COHERE_API_KEY = "YOUR_COHERE_API_KEY"
-# If Ollama requires a key or config, set it up here. Otherwise, leave it as None or empty.
+# If Ollama requires a key or config, you can specify it, otherwise set None.
+OLLAMA_API_KEY = None
 
 from lm import LMService
-from src.utils.weaviate_fc_utils import (
+from src.models import (
     OpenAITool,
     AnthropicTool,
     OllamaTool,
@@ -13,67 +14,104 @@ from src.utils.weaviate_fc_utils import (
 )
 from src.models import TestLMConnectionModel, ResponseOrToolCalls
 
-def test_openai():
-    print("\n--- Testing OpenAI ---")
-    service = LMService(
-        model_provider="openai",
-        model_name="gpt-4",
-        api_key=OPENAI_API_KEY
-    )
-    response = service.generate("What is the capital of France?")
-    print("OpenAI Response:", response)
+# A mock dictionary for the dictionary_lookup tool
+COUNTRY_CAPITALS = {
+    "France": "Paris",
+    "Germany": "Berlin",
+    "Japan": "Tokyo",
+    "Italy": "Rome"
+}
 
-def test_anthropic():
-    print("\n--- Testing Anthropic ---")
-    service = LMService(
-        model_provider="anthropic",
-        model_name="claude-2",
-        api_key=ANTHROPIC_API_KEY
-    )
-    response = service.generate("What is the capital of Germany?")
-    print("Anthropic Response:", response)
+def run_tool_mock(tool_name: str, arguments: dict):
+    """
+    Mock execution of the dictionary_lookup tool.
+    Looks up 'query' in the COUNTRY_CAPITALS dict.
+    """
+    if tool_name == "dictionary_lookup":
+        query = arguments.get("query", "")
+        # Naive approach: check if any country matches
+        for country, capital in COUNTRY_CAPITALS.items():
+            if country.lower() in query.lower():
+                return f"The capital of {country} is {capital}."
+        return "No known capital found for the query."
+    return "Tool not recognized."
 
-def test_cohere():
-    print("\n--- Testing Cohere ---")
+def test_provider_tool_call(provider: str, model_name: str, api_key: str | None, tool_class):
+    """
+    Tests if a given provider can sensibly call the dictionary_lookup tool.
+    """
+    print(f"\n--- Testing {provider.capitalize()} Tool Calling ---")
     service = LMService(
-        model_provider="cohere",
-        model_name="command-nightly",
-        api_key=COHERE_API_KEY
+        model_provider=provider,
+        model_name=model_name,
+        api_key=api_key
     )
-    response = service.generate("Name a famous painting by Leonardo da Vinci.")
-    print("Cohere Response:", response)
 
-def test_ollama():
-    print("\n--- Testing Ollama ---")
-    # Assuming Ollama is running locally and does not require an API key
-    service = LMService(
-        model_provider="ollama",
-        model_name="llama3.1:8b"
-    )
-    response = service.generate("What is the capital of Japan?")
-    print("Ollama Response:", response)
+    # Define the dictionary_lookup tool in the format expected by each provider
+    if provider == "openai":
+        tools = [OpenAITool(
+            name="dictionary_lookup",
+            description="Lookup the capital of a country. Input should be a JSON with a 'query' field.",
+            parameters={"type": "object", "properties": {"query": {"type": "string"}}, "required": ["query"]},
+            output_type=dict
+        )]
+    elif provider == "anthropic":
+        tools = [AnthropicTool(
+            name="dictionary_lookup",
+            description="Lookup the capital of a country. Input: {\"query\":\"country name\"}",
+            parameters={"type": "object", "properties": {"query": {"type": "string"}}, "required": ["query"]},
+            output_type=dict
+        )]
+    elif provider == "ollama":
+        tools = [OllamaTool(
+            name="dictionary_lookup",
+            description="Lookup the capital of a country. Input: {\"query\":\"country name\"}",
+            parameters={"type": "object", "properties": {"query": {"type": "string"}}, "required": ["query"]},
+            output_type=dict
+        )]
+    elif provider == "cohere":
+        tools = [CohereTool(
+            name="dictionary_lookup",
+            description="Lookup the capital of a country. Input: {\"query\":\"country name\"}",
+            parameters={"type": "object", "properties": {"query": {"type": "string"}}, "required": ["query"]},
+            output_type=dict
+        )]
+    else:
+        raise ValueError("Provider not supported for tool calling test.")
 
-def test_function_selection_openai():
-    print("\n--- Testing OpenAI Function Selection ---")
-    service = LMService(
-        model_provider="openai",
-        model_name="gpt-4",
-        api_key=OPENAI_API_KEY
-    )
-    tools = [OpenAITool(
-        name="some_tool",
-        description="A tool for demonstration",
-        parameters={},
-        output_type=dict
-    )]
-    tool_call_response = service.one_step_function_selection_test("Use the tool to find the meaning of life.", tools)
-    print("Tool call response:", tool_call_response)
+    prompt = "I want to know the capital of France. Please use the dictionary_lookup tool to find the answer."
+
+    # Try to have the LLM pick and call the tool
+    tool_call_response = service.one_step_function_selection_test(prompt, tools)
+    print(f"{provider.capitalize()} tool call response:", tool_call_response)
+
+    # If the tool call is returned, run our mock tool and print results
+    if tool_call_response:
+        # Depending on the provider, the structure might differ
+        # For openai, anthropic, cohere: seems to return a dict
+        # For ollama: returns the arguments directly as a dict
+        if isinstance(tool_call_response, dict):
+            arguments = tool_call_response
+        else:
+            # If it's not a dict, try to parse JSON or handle accordingly
+            arguments = tool_call_response
+        
+        result = run_tool_mock("dictionary_lookup", arguments)
+        print(f"Mock tool execution result: {result}")
+    else:
+        print(f"{provider.capitalize()} did not call the tool.")
 
 if __name__ == "__main__":
-    # Run tests one by one
-    # Remove or comment out tests that you don't have keys for or don't want to run.
-    test_openai()
-    test_anthropic()
-    test_cohere()
-    test_ollama()
-    test_function_selection_openai()
+    # You can comment out tests for providers you don't have access keys for.
+
+    # Test OpenAI
+    test_provider_tool_call("openai", "gpt-4", OPENAI_API_KEY, OpenAITool)
+
+    # Test Anthropic
+    test_provider_tool_call("anthropic", "claude-2", ANTHROPIC_API_KEY, AnthropicTool)
+
+    # Test Ollama (assuming local model and no api_key needed)
+    test_provider_tool_call("ollama", "llama3.1:8b", OLLAMA_API_KEY, OllamaTool)
+
+    # Test Cohere
+    test_provider_tool_call("cohere", "command-nightly", COHERE_API_KEY, CohereTool)
