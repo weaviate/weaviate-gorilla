@@ -49,10 +49,11 @@
 29. xLAM: A Family of Large Action Models to Empower AI Agent Systems. Jianguo Zhang et al. 2024. [Arxiv Link](https://arxiv.org/pdf/2409.03215)
 
 ## Compound AI Systems
-30. Compound AI Systems.
+30. The Shift from Models to Compound AI Systems. Matei Zaharia, Omar Khattab, Lingjiao Chen, Jared Quincy Davis, Heather Miller, Chris Potts, James Zou, Michael Carbin, Jonathan Frankle, Naveen Rao, Ali Ghodsi. 2024. [Berkeley Artificial Intelligence Research](https://bair.berkeley.edu/blog/2024/02/18/compound-ai-systems/)
 31. Specifications: The Missing Link to Making the Development of LLM Systems an Engineering Discipline. Ion Stoica, Matei Zaharia, Joseph Gonzalez, Ken Goldberg, Hao Zhang, Anastasios Angelopoulos, Lingjia Chen, Wei-Lin Chiang, Jared Qunicy Davis. 2024. [Arxiv Link](https://arxiv.org/pdf/2412.05299)
 
 ==
+<br />
 Retrieval-Augmented Generation
 <br />
 GPT-4
