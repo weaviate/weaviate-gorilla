@@ -16,27 +16,15 @@ from src.models import (
     AnthropicToolInputSchema,
     OllamaFunctionParameters,
     OllamaFunction,
-    OllamaTool
+    OllamaTool,
+    CohereFunctionParameters,
+    CohereFunction,
+    CohereTool,
 )
 import re
 from typing import Tuple, Union, Any, Dict, List
 from pydantic import BaseModel
 from typing import Literal, Optional
-
-# Add Cohere tool models
-class CohereFunctionParameters(BaseModel):
-    type: str
-    properties: Dict
-    required: List[str]
-
-class CohereFunction(BaseModel):
-    name: str
-    description: str
-    parameters: CohereFunctionParameters
-
-class CohereTool(BaseModel):
-    type: str = "function"
-    function: CohereFunction
 
 def get_collections_info(client: weaviate.WeaviateClient) -> tuple[str, list[str]]:
     """

@@ -329,3 +329,17 @@ class OllamaFunction(BaseModel):
 class OllamaTool(BaseModel):
     type: Literal["function"] = "function"
     function: OllamaFunction
+
+class CohereFunctionParameters(BaseModel):
+    type: str
+    properties: Dict
+    required: List[str]
+
+class CohereFunction(BaseModel):
+    name: str
+    description: str
+    parameters: CohereFunctionParameters
+
+class CohereTool(BaseModel):
+    type: str = "function"
+    function: CohereFunction
