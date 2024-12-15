@@ -19,9 +19,24 @@ from src.models import (
     OllamaTool
 )
 import re
-from typing import Tuple, Union, Any
+from typing import Tuple, Union, Any, Dict, List
 from pydantic import BaseModel
-from typing import Literal, Dict, List, Optional
+from typing import Literal, Optional
+
+# Add Cohere tool models
+class CohereFunctionParameters(BaseModel):
+    type: str
+    properties: Dict
+    required: List[str]
+
+class CohereFunction(BaseModel):
+    name: str
+    description: str
+    parameters: CohereFunctionParameters
+
+class CohereTool(BaseModel):
+    type: str = "function"
+    function: CohereFunction
 
 def get_collections_info(client: weaviate.WeaviateClient) -> tuple[str, list[str]]:
     """
@@ -444,4 +459,149 @@ def build_weaviate_query_tool_for_ollama(collections_description: str, collectio
     )
     return OllamaTool(
         function=query_function
+    )
+
+def build_weaviate_query_tool_for_cohere(collections_description: str, collections_list: list[str], generate_with_models: bool = False) -> CohereTool:
+    if generate_with_models:
+        properties = {
+            "collection_name": {
+                "type": "string",
+                "description": "The collection to query.",
+                "enum": collections_list
+            },
+            "search_query": {
+                "type": "string",
+                "description": "A search query to return objects from a search index."
+            },
+            "integer_property_filter": {
+                "type": "object",
+                "description": "Filter numeric properties using comparison operators",
+                "properties": {
+                    "property_name": {"type": "string"},
+                    "operator": {"type": "string", "enum": ["=", "<", ">", "<=", ">="]},
+                    "value": {"type": "number"}
+                }
+            },
+            "text_property_filter": {
+                "type": "object",
+                "description": "Filter text properties using equality or LIKE operators",
+                "properties": {
+                    "property_name": {"type": "string"},
+                    "operator": {"type": "string", "enum": ["=", "LIKE"]},
+                    "value": {"type": "string"}
+                }
+            },
+            "boolean_property_filter": {
+                "type": "object",
+                "description": "Filter boolean properties using equality operators",
+                "properties": {
+                    "property_name": {"type": "string"},
+                    "operator": {"type": "string", "enum": ["=", "!="]},
+                    "value": {"type": "boolean"}
+                }
+            },
+            "integer_property_aggregation": {
+                "type": "object",
+                "description": "Aggregate numeric properties using statistical functions",
+                "properties": {
+                    "property_name": {"type": "string"},
+                    "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]}
+                }
+            },
+            "text_property_aggregation": {
+                "type": "object",
+                "description": "Aggregate text properties using frequency analysis",
+                "properties": {
+                    "property_name": {"type": "string"},
+                    "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOP_OCCURRENCES"]},
+                    "top_occurrences_limit": {"type": "integer"}
+                }
+            },
+            "boolean_property_aggregation": {
+                "type": "object",
+                "description": "Aggregate boolean properties using statistical functions",
+                "properties": {
+                    "property_name": {"type": "string"},
+                    "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]}
+                }
+            },
+            "groupby_property": {
+                "type": "string",
+                "description": "Group the results by a property."
+            }
+        }
+    else:
+        properties = {
+            "collection_name": {
+                "type": "string",
+                "description": "The collection to query",
+                "enum": collections_list
+            },
+            "search_query": {
+                "type": "string",
+                "description": "Optional search query to find semantically relevant items."
+            },
+            "filter_string": {
+                "type": "string",
+                "description": """
+                Optional filter expression using prefix notation to ensure unambiguous order of operations.
+                
+                Basic condition syntax: property_name:operator:value
+                
+                Compound expressions use prefix AND/OR with parentheses:
+                - AND(condition1, condition2)
+                - OR(condition1, condition2)
+                - AND(condition1, OR(condition2, condition3))
+                
+                Examples:
+                - Simple: age:>:25
+                - Compound: AND(age:>:25, price:<:1000)
+                - Complex: OR(AND(age:>:25, price:<:1000), category:=:'electronics')
+                - Nested: AND(status:=:'active', OR(price:<:50, AND(rating:>:4, stock:>:100)))
+                
+                Supported operators:
+                - Comparison: =, >, <, >=, <= 
+                - Text only: LIKE
+
+                IMPORTANT!!! Please review the collection schema to make sure the property name is spelled correctly!! THIS IS VERY IMPORTANT!!!
+                """
+            },
+            "aggregate_string": {
+                "type": "string",
+                "description": """
+                Optional aggregate expression using syntax: property_name:aggregation_type.
+
+                Group by with: GROUP_BY(property_name) (limited to one property).
+
+                Aggregation Types by Data Type:
+
+                Text: COUNT, TYPE, TOP_OCCURRENCES[limit]
+                Numeric: COUNT, TYPE, MIN, MAX, MEAN, MEDIAN, MODE, SUM
+                Boolean: COUNT, TYPE, TOTAL_TRUE, TOTAL_FALSE, PERCENTAGE_TRUE, PERCENTAGE_FALSE
+                Date: COUNT, TYPE, MIN, MAX, MEAN, MEDIAN, MODE
+
+                Examples:
+
+                Simple: Article:COUNT, wordCount:COUNT,MEAN,MAX, category:TOP_OCCURRENCES[5]
+                Grouped: GROUP_BY(publication):COUNT, GROUP_BY(category):COUNT,price:MEAN,MAX
+
+                Combine with commas: GROUP_BY(publication):COUNT,wordCount:MEAN,category:TOP_OCCURRENCES[5]
+                """
+            }
+        }
+
+    return CohereTool(
+        type="function",
+        function=CohereFunction(
+            name="query_database",
+            description=f"""Query a database.
+
+            Available collections in this database:
+            {collections_description}""",
+            parameters=CohereFunctionParameters(
+                type="object",
+                properties=properties,
+                required=["collection_name"]
+            )
+        )
     )
