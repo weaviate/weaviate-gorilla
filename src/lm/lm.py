@@ -43,7 +43,7 @@ class LMService():
                     api_key=api_key
                 )
             case "cohere":
-                self.lm_client = cohere.Client(
+                self.lm_client = cohere.ClientV2(
                     api_key=api_key
                 )
             case _:
@@ -125,16 +125,18 @@ class LMService():
             case "cohere":
                 messages = [{"role": "user", "content": prompt}]
                 if output_model:
+                    raise NotImplementedError("Not implemented.")
+                    '''
                     # Create an instance with default values
                     model_instance = output_model(generic_response="Hello! This is a test response.")
                     # Append output format instructions if model provided
                     messages[0]["content"] += f"\nRespond with the following JSON format: {model_instance.model_dump_json()}"
-                
+                    '''
                 response = self.lm_client.chat(
                     model=self.model_name,
                     messages=messages
                 )
-                return response.text
+                return response
                 
             case _:
                 raise ValueError(f"Unsupported model provider: {self.model_provider}")

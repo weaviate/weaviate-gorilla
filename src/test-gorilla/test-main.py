@@ -16,8 +16,7 @@ from src.utils.weaviate_fc_utils import (
     build_weaviate_query_tool_for_ollama,
     build_weaviate_query_tool_for_openai,
     build_weaviate_query_tool_for_anthropic,
-    _build_weaviate_filter_return_model,
-    _build_weaviate_aggregation_return_model
+    build_weaviate_query_tool_for_cohere
 )
 from src.lm.lm import LMService
 from src.utils.util import pretty_print_weaviate_query
@@ -37,8 +36,8 @@ print("\033[92m=== Initializing LM Service ===\033[0m")
 
 # Configuration
 
-MODEL_PROVIDER = "anthropic"
-MODEL_NAME = "claude-3-5-sonnet-20241022"
+MODEL_PROVIDER = "cohere"
+MODEL_NAME = "command-r7b-12-2024" # "claude-3-5-sonnet-20241022"
 generate_with_models = True # Use this flag to ablate `generate_with_structured_outputs` or `generate_with_python_DSL`
 
 api_key = ""
@@ -119,6 +118,11 @@ elif lm_service.model_provider == "anthropic":
         collections_description=collections_description,
         collections_list=collections_enum,
         generate_with_models=generate_with_models)]
+elif lm_service.model_provider == "cohere":
+    tools = [build_weaviate_query_tool_for_cohere(
+        collections_description=collections_description,
+        collections_list=collections_enum,
+        generate_with_models=generate_with_models)]
 
 print("\033[92m=== Starting Query Processing ===\033[0m")
 
@@ -182,6 +186,11 @@ for idx, query in enumerate(weaviate_queries):
                 collections_description=collections_description,
                 collections_list=collections_enum,
                 generate_with_models=generate_with_models)]
+        elif lm_service.model_provider == "cohere":
+            tools = [build_weaviate_query_tool_for_cohere(
+                collections_description=collections_description,
+                collections_list=collections_enum,
+                generate_with_models=generate_with_models)]
 
     try:
         nl_query = query.corresponding_natural_language_query
@@ -198,7 +207,11 @@ for idx, query in enumerate(weaviate_queries):
 
         if response:
             if MODEL_PROVIDER == "openai":
+                # Need to test this
                 tool_call_args = json.loads(response[0].function.arguments) # still only use the first one for this `test-main.py` script
+            elif MODEL_PROVIDER == "cohere":
+                # For Cohere, response is already a dict, no need to parse JSON
+                tool_call_args = response
             else:
                 raise ValueError(f"Tool parsing not yet suppored for {MODEL_PROVIDER}")
         
@@ -210,6 +223,7 @@ for idx, query in enumerate(weaviate_queries):
                 natural_language_query=nl_query,
                 ground_truth_query=query,
                 predicted_query=None,
+                tool_rationale="",
                 ast_score=0.0,
                 error="No tool called"
             )
@@ -239,7 +253,7 @@ for idx, query in enumerate(weaviate_queries):
                     corresponding_natural_language_query=nl_query
                 )
             else:
-                # Use existing filter/aggregation parsing for legacy format
+                # Use existing filter/aggregation parsing for DSL concept
                 filter_model = None
                 if "filter_string" in tool_call_args:
                     print(f"\033[92mProcessing filter string:\033[0m {tool_call_args['filter_string']}")
@@ -247,6 +261,7 @@ for idx, query in enumerate(weaviate_queries):
                 
                 group_by_model = None
                 metrics_model = None
+
                 if "aggregation_string" in tool_call_args:
                     print(f"\033[92mProcessing aggregation string:\033[0m {tool_call_args['aggregation_string']}")
                     group_by_model, metrics_models = _build_weaviate_aggregation_return_model(tool_call_args["aggregation_string"])
@@ -279,6 +294,7 @@ for idx, query in enumerate(weaviate_queries):
                 natural_language_query=nl_query,
                 ground_truth_query=query,
                 predicted_query=predicted_query,
+                tool_rationale="",
                 ast_score=ast_score,
                 error=None
             )
@@ -292,6 +308,7 @@ for idx, query in enumerate(weaviate_queries):
             natural_language_query=nl_query,
             ground_truth_query=query,
             predicted_query=None,
+            tool_rationale="",
             ast_score=0.0,
             error=str(e)
         )

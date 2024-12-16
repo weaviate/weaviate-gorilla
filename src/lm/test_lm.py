@@ -1,16 +1,18 @@
+# NOTE THIS HAS ONLY TESTED COHERE!!
+
 # Insert your API keys here
-OPENAI_API_KEY = "YOUR_OPENAI_API_KEY"
-ANTHROPIC_API_KEY = "YOUR_ANTHROPIC_API_KEY"
-COHERE_API_KEY = "YOUR_COHERE_API_KEY"
-# If Ollama requires a key or config, you can specify it, otherwise set None.
-OLLAMA_API_KEY = None
+OPENAI_API_KEY = ""
+ANTHROPIC_API_KEY = ""
+COHERE_API_KEY = ""
 
 from lm import LMService
 from src.models import (
     OpenAITool,
     AnthropicTool,
     OllamaTool,
-    CohereTool
+    CohereTool,
+    CohereFunction,
+    CohereFunctionParameters
 )
 from src.models import TestLMConnectionModel, ResponseOrToolCalls
 
@@ -71,10 +73,16 @@ def test_provider_tool_call(provider: str, model_name: str, api_key: str | None,
         )]
     elif provider == "cohere":
         tools = [CohereTool(
-            name="dictionary_lookup",
-            description="Lookup the capital of a country. Input: {\"query\":\"country name\"}",
-            parameters={"type": "object", "properties": {"query": {"type": "string"}}, "required": ["query"]},
-            output_type=dict
+            type="function",
+            function=CohereFunction(
+                name="dictionary_lookup",
+                description="Lookup the capital of a country. Input: {\"query\":\"country name\"}",
+                parameters=CohereFunctionParameters(
+                    type="object",
+                    properties={"query": {"type": "string"}},
+                    required=["query"]
+                )
+            )
         )]
     else:
         raise ValueError("Provider not supported for tool calling test.")
@@ -105,13 +113,13 @@ if __name__ == "__main__":
     # You can comment out tests for providers you don't have access keys for.
 
     # Test OpenAI
-    test_provider_tool_call("openai", "gpt-4", OPENAI_API_KEY, OpenAITool)
+    # test_provider_tool_call("openai", "gpt-4o", OPENAI_API_KEY, OpenAITool)
 
     # Test Anthropic
-    test_provider_tool_call("anthropic", "claude-2", ANTHROPIC_API_KEY, AnthropicTool)
+    # test_provider_tool_call("anthropic", "claude-3-5-sonnet", ANTHROPIC_API_KEY, AnthropicTool)
 
     # Test Ollama (assuming local model and no api_key needed)
-    test_provider_tool_call("ollama", "llama3.1:8b", OLLAMA_API_KEY, OllamaTool)
+    # test_provider_tool_call("ollama", "llama3.1:8b", OLLAMA_API_KEY, OllamaTool)
 
     # Test Cohere
-    test_provider_tool_call("cohere", "command-nightly", COHERE_API_KEY, CohereTool)
+    test_provider_tool_call("cohere", "command-r-plus", COHERE_API_KEY, CohereTool)
