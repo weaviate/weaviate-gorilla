@@ -343,3 +343,18 @@ class CohereFunction(BaseModel):
 class CohereTool(BaseModel):
     type: str = "function"
     function: CohereFunction
+
+class TogetherAIParameters(BaseModel):
+    type: Literal["object"]
+    properties: Dict[str, Dict[str, Any]]
+    required: Optional[List[str]]
+
+class TogetherAIFunction(BaseModel):
+    name: str
+    description: str
+    parameters: TogetherAIParameters
+
+class TogetherAITool(BaseModel):
+    type: Literal["function"]
+    function: TogetherAIFunction
+

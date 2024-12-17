@@ -1,10 +1,12 @@
-# NOTE THIS HAS ONLY TESTED COHERE!!
+# NOTE THIS HAS ONLY TESTED COHERE AND TOGETHER!!
 
 # Insert your API keys here
 OPENAI_API_KEY = ""
 ANTHROPIC_API_KEY = ""
 COHERE_API_KEY = ""
+TOGETHER_API_KEY = ""
 
+import json
 from lm import LMService
 from src.models import (
     OpenAITool,
@@ -12,7 +14,10 @@ from src.models import (
     OllamaTool,
     CohereTool,
     CohereFunction,
-    CohereFunctionParameters
+    CohereFunctionParameters,
+    TogetherAITool,
+    TogetherAIFunction,
+    TogetherAIParameters
 )
 from src.models import TestLMConnectionModel, ResponseOrToolCalls
 
@@ -84,6 +89,19 @@ def test_provider_tool_call(provider: str, model_name: str, api_key: str | None,
                 )
             )
         )]
+    elif provider == "together":
+        tools = [TogetherAITool(
+            type="function",
+            function=TogetherAIFunction(
+                name="dictionary_lookup",
+                description="Lookup the capital of a country. Input: {\"query\":\"country name\"}",
+                parameters=TogetherAIParameters(
+                    type="object",
+                    properties={"query": {"type": "string"}},
+                    required=["query"]
+                )
+            )
+        )]
     else:
         raise ValueError("Provider not supported for tool calling test.")
 
@@ -98,11 +116,15 @@ def test_provider_tool_call(provider: str, model_name: str, api_key: str | None,
         # Depending on the provider, the structure might differ
         # For openai, anthropic, cohere: seems to return a dict
         # For ollama: returns the arguments directly as a dict
+        # For together: returns tool_calls similar to OpenAI format
         if isinstance(tool_call_response, dict):
             arguments = tool_call_response
         else:
-            # If it's not a dict, try to parse JSON or handle accordingly
-            arguments = tool_call_response
+            # Handle OpenAI/Together style tool_calls
+            if hasattr(tool_call_response[0], 'function'):
+                arguments = json.loads(tool_call_response[0].function.arguments)
+            else:
+                arguments = tool_call_response
         
         result = run_tool_mock("dictionary_lookup", arguments)
         print(f"Mock tool execution result: {result}")
@@ -113,13 +135,16 @@ if __name__ == "__main__":
     # You can comment out tests for providers you don't have access keys for.
 
     # Test OpenAI
-    # test_provider_tool_call("openai", "gpt-4o", OPENAI_API_KEY, OpenAITool)
+    # test_provider_tool_call("openai", "gpt-4", OPENAI_API_KEY, OpenAITool)
 
     # Test Anthropic
-    # test_provider_tool_call("anthropic", "claude-3-5-sonnet", ANTHROPIC_API_KEY, AnthropicTool)
+    # test_provider_tool_call("anthropic", "claude-3-sonnet-20240229", ANTHROPIC_API_KEY, AnthropicTool)
 
     # Test Ollama (assuming local model and no api_key needed)
-    # test_provider_tool_call("ollama", "llama3.1:8b", OLLAMA_API_KEY, OllamaTool)
+    # test_provider_tool_call("ollama", "llama3.1:8b", None, OllamaTool)
 
     # Test Cohere
-    test_provider_tool_call("cohere", "command-r-plus", COHERE_API_KEY, CohereTool)
+    # test_provider_tool_call("cohere", "command-r-plus", COHERE_API_KEY, CohereTool)
+
+    # Test Together
+    test_provider_tool_call("together", "mistralai/Mixtral-8x7B-Instruct-v0.1", TOGETHER_API_KEY, TogetherAITool)

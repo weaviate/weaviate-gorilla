@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from collections import defaultdict
 
 # Load experiment results
-with open("../claude-3-5-sonnet-experiment-results-with-models.json", "r") as f:
+with open("../Llama-3.1-8B-Instruct-Turbo.json", "r") as f:
     results = json.load(f)
 
 total_queries = results["total_queries"]

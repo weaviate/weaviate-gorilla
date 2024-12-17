@@ -9,13 +9,15 @@ from src.utils.weaviate_fc_utils import (
     OpenAITool,
     AnthropicTool,
     OllamaTool,
-    CohereTool
+    CohereTool,
+    TogetherAITool
 )
 import json
 import time
 
 # google models are accessed through the openai SDK with a check on `model_name`
-LMModelProvider = Literal["ollama", "openai", "anthropic", "cohere"]
+# together models are accessed through the openai SDK with a different base URL
+LMModelProvider = Literal["ollama", "openai", "anthropic", "cohere", "together"]
 
 class LMService():
     def __init__(
@@ -47,6 +49,12 @@ class LMService():
             case "cohere":
                 self.lm_client = cohere.ClientV2(
                     api_key=api_key
+                )
+            case "together":
+                print("\033[96mUsing Together.ai through the OpenAI SDK.\033[0m")
+                self.lm_client = openai.OpenAI(
+                    api_key=api_key,
+                    base_url="https://api.together.xyz/v1"
                 )
             case _:
                 raise ValueError(f"Unsupported model provider: {self.model_provider}") 
@@ -141,6 +149,17 @@ class LMService():
                     messages=messages
                 )
                 return response
+
+            case "together":
+                messages = [
+                    {"role": "system", "content": "You are a helpful assistant. Follow the response format instructions."},
+                    {"role": "user", "content": prompt}
+                ]
+                response = self.lm_client.chat.completions.create(
+                    model=self.model_name,
+                    messages=messages
+                )
+                return response.choices[0].message.content
                 
             case _:
                 raise ValueError(f"Unsupported model provider: {self.model_provider}")
@@ -156,7 +175,7 @@ class LMService():
     def one_step_function_selection_test(
             self, 
             prompt: str, 
-            tools: list[OpenAITool] | list[AnthropicTool] | list[OllamaTool] | list[CohereTool],
+            tools: list[OpenAITool] | list[AnthropicTool] | list[OllamaTool] | list[CohereTool] | list[TogetherAITool],
             parallel_tool_calls: bool = False
         ) -> dict | None:
         if self.model_provider == "openai":
@@ -261,6 +280,29 @@ class LMService():
             if response.message.tool_calls:
                 # Return first tool call arguments for consistency with other providers
                 return json.loads(response.message.tool_calls[0].function.arguments)
+            return None
+
+        if self.model_provider == "together":
+            messages = [
+                {
+                    "role": "system",
+                    "content": "You are a helpful assistant. Use the supplied tools to assist the user."
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ]
+            response = self.lm_client.chat.completions.create(
+                model=self.model_name,
+                messages=messages,
+                tools=[tool.model_dump() for tool in tools],
+                tool_choice="auto"
+            )
+            
+            tool_calls = response.choices[0].message.tool_calls
+            if tool_calls:
+                return json.loads(tool_calls[0].function.arguments)
             return None
 
         else:

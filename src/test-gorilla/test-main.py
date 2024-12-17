@@ -16,7 +16,8 @@ from src.utils.weaviate_fc_utils import (
     build_weaviate_query_tool_for_ollama,
     build_weaviate_query_tool_for_openai,
     build_weaviate_query_tool_for_anthropic,
-    build_weaviate_query_tool_for_cohere
+    build_weaviate_query_tool_for_cohere,
+    build_weaviate_query_tool_for_together
 )
 from src.lm.lm import LMService
 from src.utils.util import pretty_print_weaviate_query
@@ -36,8 +37,8 @@ print("\033[92m=== Initializing LM Service ===\033[0m")
 
 # Configuration
 
-MODEL_PROVIDER = "ollama"
-MODEL_NAME = "llama3.1:8b" # "gemini-1.5-pro" # "gemini-2.0-flash-exp" # "command-r7b-12-2024" # "claude-3-5-sonnet-20241022"
+MODEL_PROVIDER = "together"
+MODEL_NAME = "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo" # "gemini-1.5-pro" # "gemini-2.0-flash-exp" # "command-r7b-12-2024" # "claude-3-5-sonnet-20241022"
 generate_with_models = True # Use this flag to ablate `generate_with_structured_outputs` or `generate_with_python_DSL`
 
 api_key = ""
@@ -105,24 +106,24 @@ collections_description, collections_enum = get_collections_info(weaviate_client
 if lm_service.model_provider == "ollama":
     tools = [build_weaviate_query_tool_for_ollama(
         collections_description=collections_description, 
-        collections_list=collections_enum,
-        generate_with_models=generate_with_models)]
+        collections_list=collections_enum)]
     tools = [tool.model_dump() for tool in tools] # quick fix, needs to be cleaned up
 elif lm_service.model_provider == "openai":
     tools = [build_weaviate_query_tool_for_openai(
         collections_description=collections_description,
-        collections_list=collections_enum,
-        generate_with_models=generate_with_models)]
+        collections_list=collections_enum)]
 elif lm_service.model_provider == "anthropic":
     tools = [build_weaviate_query_tool_for_anthropic(
         collections_description=collections_description,
-        collections_list=collections_enum,
-        generate_with_models=generate_with_models)]
+        collections_list=collections_enum)]
 elif lm_service.model_provider == "cohere":
     tools = [build_weaviate_query_tool_for_cohere(
         collections_description=collections_description,
-        collections_list=collections_enum,
-        generate_with_models=generate_with_models)]
+        collections_list=collections_enum)]
+elif lm_service.model_provider == "together":
+    tools = [build_weaviate_query_tool_for_together(
+        collections_description=collections_description,
+        collections_list=collections_enum)]
 
 print("\033[92m=== Starting Query Processing ===\033[0m")
 
@@ -173,38 +174,36 @@ for idx, query in enumerate(weaviate_queries):
         if lm_service.model_provider == "ollama":
             tools = [build_weaviate_query_tool_for_ollama(
                 collections_description=collections_description,
-                collections_list=collections_enum,
-                generate_with_models=generate_with_models)]
+                collections_list=collections_enum)]
             tools = [tool.model_dump() for tool in tools] # quick fix, TODO: clean this up
         elif lm_service.model_provider == "openai":
             tools = [build_weaviate_query_tool_for_openai(
                 collections_description=collections_description,
-                collections_list=collections_enum,
-                generate_with_models=generate_with_models)]
+                collections_list=collections_enum)]
         elif lm_service.model_provider == "anthropic":
             tools = [build_weaviate_query_tool_for_anthropic(
                 collections_description=collections_description,
-                collections_list=collections_enum,
-                generate_with_models=generate_with_models)]
+                collections_list=collections_enum)]
         elif lm_service.model_provider == "cohere":
             tools = [build_weaviate_query_tool_for_cohere(
                 collections_description=collections_description,
-                collections_list=collections_enum,
-                generate_with_models=generate_with_models)]
+                collections_list=collections_enum)]
+        elif lm_service.model_provider == "together":
+            tools = [build_weaviate_query_tool_for_together(
+                collections_description=collections_description,
+                collections_list=collections_enum)]
 
     try:
         nl_query = query.corresponding_natural_language_query
         print(f"\033[92mProcessing natural language query:\033[0m {nl_query}")
         print("\033[96mGROUND TRUTH QUERY:\033[0m")
         pretty_print_weaviate_query(query)
-        
-        # This should be behind the `generate_with_models` flag
 
         response = lm_service.one_step_function_selection_test(
             prompt=nl_query,
             tools=tools
         )
-        
+
         if not response:
             print("\033[93mNo tool called\033[0m")
             print("Because of this response:\n")
@@ -228,6 +227,8 @@ for idx, query in enumerate(weaviate_queries):
                 elif MODEL_PROVIDER == "cohere":
                     # For Cohere, response is already a dict, no need to parse JSON
                     tool_call_args = response
+                elif MODEL_PROVIDER == "together":
+                    tool_call_args = response # already parsed in `lm.py`
                 else:
                     raise ValueError(f"Tool parsing not yet suppored for {MODEL_PROVIDER}")
 
@@ -338,8 +339,13 @@ experiment_summary = ExperimentSummary(
 
 print("\033[92m=== Saving Results ===\033[0m")
 # Save results
-with open(f"{MODEL_NAME}-experiment_results{'-with-models' if generate_with_models else ''}.json", "w") as f:
-    f.write(experiment_summary.model_dump_json(indent=2))
+if MODEL_PROVIDER == "together":
+    MODEL_NAME = MODEL_NAME.replace("/", "-")     
+    with open(f"{MODEL_NAME}-experiment_results{'-with-models' if generate_with_models else ''}.json", "w") as f:
+        f.write(experiment_summary.model_dump_json(indent=2))
+else:
+    with open(f"{MODEL_NAME}-experiment_results{'-with-models' if generate_with_models else ''}.json", "w") as f:
+        f.write(experiment_summary.model_dump_json(indent=2))
 
 print("\n\033[92mExperiment Summary:\033[0m")
 print(f"Total Queries: {experiment_summary.total_queries}")
