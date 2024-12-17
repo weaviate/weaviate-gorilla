@@ -36,8 +36,8 @@ print("\033[92m=== Initializing LM Service ===\033[0m")
 
 # Configuration
 
-MODEL_PROVIDER = "openai"
-MODEL_NAME = "gemini-1.5-pro" # "gemini-2.0-flash-exp" # "command-r7b-12-2024" # "claude-3-5-sonnet-20241022"
+MODEL_PROVIDER = "ollama"
+MODEL_NAME = "llama3.1:8b" # "gemini-1.5-pro" # "gemini-2.0-flash-exp" # "command-r7b-12-2024" # "claude-3-5-sonnet-20241022"
 generate_with_models = True # Use this flag to ablate `generate_with_structured_outputs` or `generate_with_python_DSL`
 
 api_key = ""
