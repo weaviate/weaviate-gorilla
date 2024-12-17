@@ -14,6 +14,7 @@ from src.utils.weaviate_fc_utils import (
 import json
 import time
 
+# google models are accessed through the openai SDK with a check on `model_name`
 LMModelProvider = Literal["ollama", "openai", "anthropic", "cohere"]
 
 class LMService():
@@ -29,7 +30,8 @@ class LMService():
             case "ollama":
                 self.lm_client = ollama
             case "openai":
-                if self.model_name in ["gemini-1.5-pro", "gemini-1.5-flash"]:
+                if self.model_name in ["gemini-1.5-pro", "gemini-1.5-flash", "gemini-2.0-flash-exp"]:
+                    print("\033[96mUsing Gemini through the OpenAI SDK.\033[0m")
                     self.lm_client = openai.OpenAI(
                         api_key=api_key,
                         base_url="https://generativelanguage.googleapis.com/v1beta/"
@@ -78,8 +80,9 @@ class LMService():
                     {"role": "system", "content": "You are a helpful assistant. Follow the response format instructions."},
                     {"role": "user", "content": prompt}
                 ]
-                
-                if output_model:
+                print("Disabling structured output test on init...")
+                # if output_model
+                if False:
                     response = self.lm_client.beta.chat.completions.parse(
                         model=self.model_name,
                         messages=messages,
@@ -87,6 +90,7 @@ class LMService():
                     )
                     return response.choices[0].message.parsed
                 else:
+                    print(self.model_name)
                     response = self.lm_client.chat.completions.create(
                         model=self.model_name,
                         messages=messages
@@ -166,14 +170,19 @@ class LMService():
                     "content": prompt
                 }
             ]
-            # set `parallel_tool_calls=False` to only call a single tool (defaults true)
-            # NOTE!!! It could be the case that the model doesn't prioritize the accuracy of a tool call as much when it "knows" (not sure if that's how OpenAI set this up ofc) that it calls multiple functions potentially
-            response = self.lm_client.chat.completions.create(
-                model=self.model_name,
-                messages=messages,
-                tools=tools,
-                parallel_tool_calls=parallel_tool_calls
-            )
+            if self.model_name in ["gemini-2.0-flash-exp", "gemini-1.5-flash", "gemini-1.5-pro"]:
+                    response = self.lm_client.chat.completions.create(
+                    model=self.model_name,
+                    messages=messages,
+                    tools=tools
+                )
+            else:
+                response = self.lm_client.chat.completions.create(
+                    model=self.model_name,
+                    messages=messages,
+                    tools=tools,
+                    parallel_tool_calls=parallel_tool_calls
+                )
 
             # Parse this in the testing script to enable setting `parallel_tool_calls=True`
             tool_calls = response.choices[0].message.tool_calls
@@ -287,7 +296,7 @@ class LMService():
             return parsed_response.tool_calls # returns the arguments to be parsed in the run script
         else:
             return None
-'''
+'''T
 Note, vLLM function call snippet:
 
 https://docs.vllm.ai/en/latest/getting_started/examples/offline_chat_with_tools.html

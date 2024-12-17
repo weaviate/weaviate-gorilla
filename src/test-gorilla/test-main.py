@@ -36,8 +36,8 @@ print("\033[92m=== Initializing LM Service ===\033[0m")
 
 # Configuration
 
-MODEL_PROVIDER = "cohere"
-MODEL_NAME = "command-r7b-12-2024" # "claude-3-5-sonnet-20241022"
+MODEL_PROVIDER = "openai"
+MODEL_NAME = "gemini-1.5-pro" # "gemini-2.0-flash-exp" # "command-r7b-12-2024" # "claude-3-5-sonnet-20241022"
 generate_with_models = True # Use this flag to ablate `generate_with_structured_outputs` or `generate_with_python_DSL`
 
 api_key = ""
@@ -204,19 +204,11 @@ for idx, query in enumerate(weaviate_queries):
             prompt=nl_query,
             tools=tools
         )
-
-        if response:
-            if MODEL_PROVIDER == "openai":
-                # Need to test this
-                tool_call_args = json.loads(response[0].function.arguments) # still only use the first one for this `test-main.py` script
-            elif MODEL_PROVIDER == "cohere":
-                # For Cohere, response is already a dict, no need to parse JSON
-                tool_call_args = response
-            else:
-                raise ValueError(f"Tool parsing not yet suppored for {MODEL_PROVIDER}")
         
         if not response:
             print("\033[93mNo tool called\033[0m")
+            print("Because of this response:\n")
+            print(response)
             result = QueryPredictionResult(
                 query_index=idx,
                 database_schema_index=database_schema_index,
@@ -229,7 +221,15 @@ for idx, query in enumerate(weaviate_queries):
             )
             failed_predictions += 1
         else:
-            tool_call_args = response
+            # parse response
+            if response:
+                if MODEL_PROVIDER == "openai":
+                    tool_call_args = json.loads(response[0].function.arguments) # still only use the first one for this `test-main.py` script
+                elif MODEL_PROVIDER == "cohere":
+                    # For Cohere, response is already a dict, no need to parse JSON
+                    tool_call_args = response
+                else:
+                    raise ValueError(f"Tool parsing not yet suppored for {MODEL_PROVIDER}")
 
             if generate_with_models:
                 # Parse response directly into models when generate_with_models is True
