@@ -6,6 +6,8 @@ The Weaviate Gorilla project is a collection of research experiments in two core
 
 (2) Creating synthetic training and testing data with Generative Feedback Loops
 
+![Radar Plots](./notebooks/model_comparison_analysis.png)
+
 ## News
 
 📝 Weaviate Gorilla Part 1 GraphQL APIs on the Weaviate Blog - [link](https://weaviate.io/blog/weaviate-gorilla-part-1)
