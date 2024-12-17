@@ -1,18 +1,21 @@
 import ollama
 import openai
 import anthropic
+import cohere
 from typing import Literal
 from pydantic import BaseModel
 from src.models import TestLMConnectionModel, ResponseOrToolCalls
 from src.utils.weaviate_fc_utils import (
     OpenAITool,
     AnthropicTool,
-    OllamaTool
+    OllamaTool,
+    CohereTool
 )
 import json
 import time
 
-LMModelProvider = Literal["ollama", "openai"]
+# google models are accessed through the openai SDK with a check on `model_name`
+LMModelProvider = Literal["ollama", "openai", "anthropic", "cohere"]
 
 class LMService():
     def __init__(
@@ -27,7 +30,8 @@ class LMService():
             case "ollama":
                 self.lm_client = ollama
             case "openai":
-                if self.model_name in ["gemini-1.5-pro", "gemini-1.5-flash"]:
+                if self.model_name in ["gemini-1.5-pro", "gemini-1.5-flash", "gemini-2.0-flash-exp"]:
+                    print("\033[96mUsing Gemini through the OpenAI SDK.\033[0m")
                     self.lm_client = openai.OpenAI(
                         api_key=api_key,
                         base_url="https://generativelanguage.googleapis.com/v1beta/"
@@ -38,6 +42,10 @@ class LMService():
                     )
             case "anthropic":
                 self.lm_client = anthropic.Anthropic(
+                    api_key=api_key
+                )
+            case "cohere":
+                self.lm_client = cohere.ClientV2(
                     api_key=api_key
                 )
             case _:
@@ -72,8 +80,9 @@ class LMService():
                     {"role": "system", "content": "You are a helpful assistant. Follow the response format instructions."},
                     {"role": "user", "content": prompt}
                 ]
-                
-                if output_model:
+                print("Disabling structured output test on init...")
+                # if output_model
+                if False:
                     response = self.lm_client.beta.chat.completions.parse(
                         model=self.model_name,
                         messages=messages,
@@ -81,6 +90,7 @@ class LMService():
                     )
                     return response.choices[0].message.parsed
                 else:
+                    print(self.model_name)
                     response = self.lm_client.chat.completions.create(
                         model=self.model_name,
                         messages=messages
@@ -115,6 +125,22 @@ class LMService():
                         delay = base_delay * (2 ** attempt)  # 10, 20, 40, 80, 160 seconds
                         print(f"Anthropic API call failed, retrying in {delay} seconds... (Attempt {attempt + 1}/{max_retries})")
                         time.sleep(delay)
+
+            case "cohere":
+                messages = [{"role": "user", "content": prompt}]
+                if output_model:
+                    raise NotImplementedError("Not implemented.")
+                    '''
+                    # Create an instance with default values
+                    model_instance = output_model(generic_response="Hello! This is a test response.")
+                    # Append output format instructions if model provided
+                    messages[0]["content"] += f"\nRespond with the following JSON format: {model_instance.model_dump_json()}"
+                    '''
+                response = self.lm_client.chat(
+                    model=self.model_name,
+                    messages=messages
+                )
+                return response
                 
             case _:
                 raise ValueError(f"Unsupported model provider: {self.model_provider}")
@@ -130,7 +156,7 @@ class LMService():
     def one_step_function_selection_test(
             self, 
             prompt: str, 
-            tools: list[OpenAITool] | list[AnthropicTool] | list[OllamaTool],
+            tools: list[OpenAITool] | list[AnthropicTool] | list[OllamaTool] | list[CohereTool],
             parallel_tool_calls: bool = False
         ) -> dict | None:
         if self.model_provider == "openai":
@@ -144,14 +170,19 @@ class LMService():
                     "content": prompt
                 }
             ]
-            # set `parallel_tool_calls=False` to only call a single tool (defaults true)
-            # NOTE!!! It could be the case that the model doesn't prioritize the accuracy of a tool call as much when it "knows" (not sure if that's how OpenAI set this up ofc) that it calls multiple functions potentially
-            response = self.lm_client.chat.completions.create(
-                model=self.model_name,
-                messages=messages,
-                tools=tools,
-                parallel_tool_calls=parallel_tool_calls
-            )
+            if self.model_name in ["gemini-2.0-flash-exp", "gemini-1.5-flash", "gemini-1.5-pro"]:
+                    response = self.lm_client.chat.completions.create(
+                    model=self.model_name,
+                    messages=messages,
+                    tools=tools
+                )
+            else:
+                response = self.lm_client.chat.completions.create(
+                    model=self.model_name,
+                    messages=messages,
+                    tools=tools,
+                    parallel_tool_calls=parallel_tool_calls
+                )
 
             # Parse this in the testing script to enable setting `parallel_tool_calls=True`
             tool_calls = response.choices[0].message.tool_calls
@@ -213,6 +244,25 @@ class LMService():
                     delay = base_delay * (2 ** attempt)  # 10, 20, 40, 80, 160 seconds
                     print(f"Anthropic API call failed, retrying in {delay} seconds... (Attempt {attempt + 1}/{max_retries})")
                     time.sleep(delay)
+
+        if self.model_provider == "cohere":
+            messages = [
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ]
+            response = self.lm_client.chat(
+                model=self.model_name,
+                messages=messages,
+                tools=[tool.model_dump() for tool in tools]
+            )
+            
+            if response.message.tool_calls:
+                # Return first tool call arguments for consistency with other providers
+                return json.loads(response.message.tool_calls[0].function.arguments)
+            return None
+
         else:
             raise ValueError(f"Function calling not yet supported for the LMService with {self.model_provider}")
 
@@ -246,7 +296,7 @@ class LMService():
             return parsed_response.tool_calls # returns the arguments to be parsed in the run script
         else:
             return None
-'''
+'''T
 Note, vLLM function call snippet:
 
 https://docs.vllm.ai/en/latest/getting_started/examples/offline_chat_with_tools.html
