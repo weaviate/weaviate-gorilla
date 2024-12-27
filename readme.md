@@ -8,6 +8,12 @@ The Weaviate Gorilla project is a collection of research experiments in two core
 
 ![Weaviate Gorilla Leaderboard](./visuals/result-table.png)
 
+## Natural Language Commands to Weaviate Queries
+
+Illustrated below, the Weaviate Gorilla translates natural language commands into Weaviate queries. We separate Weaviate queries into 3 categories of difficulty (simple, moderate, complex) based on how many unique query operators they require.
+
+![NL Command to API Visual](./visuals/nl-command-to-apis.png)
+
 ## News
 
 📝 Weaviate Gorilla Part 1 GraphQL APIs on the Weaviate Blog - [link](https://weaviate.io/blog/weaviate-gorilla-part-1)
