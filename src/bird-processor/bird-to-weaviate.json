@@ -146,5 +146,7 @@
       ],
       "envisioned_use_case_overview": "This collection stores information about region saless."
     }
-  ]
+  ],
+  "sql_query": "SELECT T.publisher_name FROM ( SELECT DISTINCT T5.publisher_name FROM region AS T1 INNER JOIN region_sales AS T2 ON T1.id = T2.region_id INNER JOIN game_platform AS T3 ON T2.game_platform_id = T3.id INNER JOIN game_publisher AS T4 ON T3.game_publisher_id = T4.id INNER JOIN publisher AS T5 ON T4.publisher_id = T5.id WHERE T1.region_name = 'North America' AND T2.num_sales * 100000 < 10000 LIMIT 5 ) t",
+  "natural_language_query": "List down at least five publishers of the games with number of sales less than 10000."
 }
