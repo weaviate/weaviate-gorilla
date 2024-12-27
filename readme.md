@@ -6,7 +6,7 @@ The Weaviate Gorilla project is a collection of research experiments in two core
 
 (2) Creating synthetic training and testing data with Generative Feedback Loops
 
-![Radar Plots](./notebooks/model_comparison_analysis.png)
+![Weaviate Gorilla Leaderboard](./visuals/result-table.png)
 
 ## News
 
