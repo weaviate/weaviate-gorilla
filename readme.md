@@ -20,7 +20,7 @@ Illustrated below, the Weaviate Gorilla translates natural language commands int
 
 🎙️ Shishir Patil and Tianjun Zhang on the Weaviate Podcast - [link](https://www.youtube.com/watch?v=HUtYOLX7HZ4)
 
-![Weaviate Gorilla](./visuals/weaviate-gorillas/gorilla-140.png)
+![Weaviate Gorilla](./visuals/weaviate-gorillas/gorilla-118.png)
 
 
 
