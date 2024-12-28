@@ -8,27 +8,39 @@ from src.lm.lm import LMService  # Adjust import as needed
 # 1. Pydantic Models
 # -----------------------------------------------------------------------------
 
-class ModelRating(BaseModel):
+class ModelResponse(BaseModel):
     """
-    Represents the rating of a single model for a particular query.
+    Represents a single model's response to a query.
+    This can be a string, or some other structure (dict, list, etc.).
     """
     model_name: str
-    rating: float
+    response: Union[str, Dict[str, Any], List[Any], None]
 
     class Config:
         # Suppress warnings about the "model_" prefix in field names
         protected_namespaces = ()
 
 
-class QueryRating(BaseModel):
+class QueryResponses(BaseModel):
     """
-    Represents a query and the associated model ratings.
+    Represents a query and the associated model responses.
     """
     query: str
-    model_ratings: List[ModelRating]
+    model_responses: List[ModelResponse]
 
     class Config:
         # Suppress warnings about the "model_" prefix in field names
+        protected_namespaces = ()
+
+
+class PreferenceResponse(BaseModel):
+    """
+    Structured output format for the LLM's preference rating.
+    """
+    preferred_model: str
+    reason: str
+
+    class Config:
         protected_namespaces = ()
 
 
@@ -36,18 +48,18 @@ class QueryRating(BaseModel):
 # 2. Load & Parse Results from Directory
 # -----------------------------------------------------------------------------
 
-def load_all_query_ratings(directory: str) -> List[QueryRating]:
+def load_all_query_responses(directory: str) -> List[QueryResponses]:
     """
     Recursively walks through the given directory to find all .json files
-    and attempts to parse them into a list of QueryRating objects.
+    and attempts to parse them into a list of QueryResponses objects.
 
     Handles two formats:
-      1) A standard "ratings" list of the form:
+      1) A standard "responses" list of the form:
          [
            {
              "query": "Some question",
-             "ModelA": 7.2,
-             "ModelB": 6.9,
+             "ModelA": "...response from model A...",
+             "ModelB": "...response from model B...",
              ...
            },
            ...
@@ -61,7 +73,7 @@ def load_all_query_ratings(directory: str) -> List[QueryRating]:
              {
                "query_index": 0,
                "natural_language_query": "...",
-               "ast_score": 0.85,
+               "model_response": "...",
                ...
              },
              ...
@@ -69,9 +81,9 @@ def load_all_query_ratings(directory: str) -> List[QueryRating]:
          }
 
     Any files that fail to parse or do not match these structures will be skipped.
-    Returns a consolidated list of QueryRating objects from all valid files.
+    Returns a consolidated list of QueryResponses objects from all valid files.
     """
-    all_ratings: List[QueryRating] = []
+    all_responses: List[QueryResponses] = []
 
     for root, dirs, files in os.walk(directory):
         for file in files:
@@ -86,31 +98,30 @@ def load_all_query_ratings(directory: str) -> List[QueryRating]:
                 print(f"Failed to load/parse JSON in file: {filepath} — {e}")
                 continue
 
-            # CASE 1: We have a list of rating objects
+            # CASE 1: We have a list of response objects
             if isinstance(data, list):
-                # Attempt to parse each item as { "query": "...", "<model>": <rating>, ... }
-                file_ratings = _parse_standard_rating_list(data, filepath)
-                all_ratings.extend(file_ratings)
+                file_responses = _parse_standard_response_list(data, filepath)
+                all_responses.extend(file_responses)
 
             # CASE 2: Possibly we have a dict with "detailed_results"
             elif isinstance(data, dict) and "detailed_results" in data:
-                file_ratings = _parse_detailed_results_file(data, filepath)
-                all_ratings.extend(file_ratings)
+                file_responses = _parse_detailed_results_file(data, filepath)
+                all_responses.extend(file_responses)
 
             else:
                 # Not recognized, skip
                 print(f"Skipping file (unrecognized structure): {filepath}")
 
-    return all_ratings
+    return all_responses
 
 
-def _parse_standard_rating_list(data: List[Any], filepath: str) -> List[QueryRating]:
+def _parse_standard_response_list(data: List[Any], filepath: str) -> List[QueryResponses]:
     """
-    Helper to parse a standard ratings list of the form:
+    Helper to parse a standard responses list of the form:
       [
         {
           "query": "Some question",
-          "ModelA": 7.2,
+          "ModelA": "...",
           ...
         },
         ...
@@ -125,26 +136,24 @@ def _parse_standard_rating_list(data: List[Any], filepath: str) -> List[QueryRat
             print(f"Skipping item in {filepath} (no 'query' field).")
             continue
 
-        # Convert rating fields (except 'query') into ModelRating
-        model_ratings = []
-        for model_name, rating_value in item.items():
+        # Convert response fields (except 'query') into ModelResponse
+        model_responses = []
+        for model_name, response_value in item.items():
             if model_name == "query":
                 continue
-            if not isinstance(rating_value, (int, float)):
-                print(f"Skipping non-numeric rating '{rating_value}' for model '{model_name}' in file: {filepath}")
-                continue
-            model_ratings.append(ModelRating(model_name=model_name, rating=rating_value))
+            # In this revised version, we allow any type but store it directly
+            model_responses.append(ModelResponse(model_name=model_name, response=response_value))
 
         try:
-            qr = QueryRating(query=item["query"], model_ratings=model_ratings)
+            qr = QueryResponses(query=item["query"], model_responses=model_responses)
             parsed.append(qr)
         except ValidationError as ve:
-            print(f"Skipping invalid QueryRating in file: {filepath} — {ve}")
+            print(f"Skipping invalid QueryResponses in file: {filepath} — {ve}")
             continue
     return parsed
 
 
-def _parse_detailed_results_file(data: Dict[str, Any], filepath: str) -> List[QueryRating]:
+def _parse_detailed_results_file(data: Dict[str, Any], filepath: str) -> List[QueryResponses]:
     """
     Helper to parse a "detailed_results" file of the form:
       {
@@ -154,16 +163,12 @@ def _parse_detailed_results_file(data: Dict[str, Any], filepath: str) -> List[Qu
           {
             "query_index": 0,
             "natural_language_query": "...",
-            "ast_score": 0.85,
+            "model_response": "...",
             ...
           },
           ...
         ]
       }
-
-    We'll interpret "model_name" from the top-level key,
-    "ast_score" as the rating, and "natural_language_query" as the query.
-    Customize as needed.
     """
     parsed = []
     top_level_model_name = data.get("model_name", "unknown-model")
@@ -178,25 +183,21 @@ def _parse_detailed_results_file(data: Dict[str, Any], filepath: str) -> List[Qu
             print(f"Skipping item in {filepath} (not a dict).")
             continue
 
-        # We'll pick "natural_language_query" as the "query"
-        # and "ast_score" as the rating.
-        # You can adapt these field names as needed.
         query_text = dr_item.get("natural_language_query")
-        ast_score = dr_item.get("ast_score")
+        # "model_response" or "response" can be any type now
+        model_response = dr_item.get("model_response") or dr_item.get("response")
 
         if not query_text:
             print(f"Skipping item in {filepath} (no 'natural_language_query').")
             continue
-        if not isinstance(ast_score, (int, float)):
-            print(f"Skipping item (no numeric 'ast_score') in file: {filepath}")
-            continue
 
+        # We'll store whatever type is there, whether string, dict, list, etc.
         try:
-            model_ratings = [ModelRating(model_name=top_level_model_name, rating=ast_score)]
-            qr = QueryRating(query=query_text, model_ratings=model_ratings)
+            model_responses = [ModelResponse(model_name=top_level_model_name, response=model_response)]
+            qr = QueryResponses(query=query_text, model_responses=model_responses)
             parsed.append(qr)
         except ValidationError as ve:
-            print(f"Skipping invalid QueryRating in file: {filepath} — {ve}")
+            print(f"Skipping invalid QueryResponses in file: {filepath} — {ve}")
             continue
     return parsed
 
@@ -205,28 +206,34 @@ def _parse_detailed_results_file(data: Dict[str, Any], filepath: str) -> List[Qu
 # 3. Generate Prompts for Preference
 # -----------------------------------------------------------------------------
 
-def get_preference_prompt(query_rating: QueryRating) -> str:
+def get_preference_prompt(query_responses: QueryResponses) -> str:
     """
-    Given a QueryRating, returns a structured prompt that:
-      - Presents the query and the numeric ratings of each model.
-      - Asks which model is preferred and why.
-      - Requests a JSON-formatted response with "preferred_model" and "reason".
+    Given a QueryResponses, returns a structured prompt that:
+      - Presents the query and each model's response
+      - Asks which model response is preferred and why
+      - Requests a JSON-formatted response with "preferred_model" and "reason"
     """
-    # Format the model ratings for insertion into the prompt
-    model_ratings_text = "\n".join(
-        f"- **{mr.model_name}**: {mr.rating}" 
-        for mr in query_rating.model_ratings
-    )
+    # Format the model responses for insertion into the prompt.
+    # If the response is not a string, we'll convert it to JSON for display.
+    model_responses_text = ""
+    for mr in query_responses.model_responses:
+        if isinstance(mr.response, str):
+            display_response = mr.response
+        else:
+            display_response = json.dumps(mr.response, indent=2)
+        model_responses_text += f"- **{mr.model_name}**:\n{display_response}\n\n"
 
     prompt = f"""
 You are an assistant helping to evaluate language model outputs.
 
-Given the following query and ratings:
+Given the following query and model responses:
 
-- **Query**: {query_rating.query}
-{model_ratings_text}
+- **Query**: {query_responses.query}
 
-Please indicate which model you prefer and provide a brief explanation.
+{model_responses_text}
+
+Please indicate which model's response you prefer and provide a brief explanation.
+Consider factors like accuracy, clarity, completeness, and relevance to the query.
 
 Respond in the following JSON format:
 
@@ -242,38 +249,43 @@ Respond in the following JSON format:
 # 4. Call LLM & Log Results
 # -----------------------------------------------------------------------------
 
-def rate_preferences(ratings: List[QueryRating], lm_service: LMService) -> List[Dict[str, Any]]:
+def rate_preferences(responses: List[QueryResponses], lm_service: LMService) -> List[Dict[str, Any]]:
     """
-    For each QueryRating, call the language model with a structured prompt.
-    Attempts to parse the response as JSON:
-      {
-        "preferred_model": "...",
-        "reason": "..."
-      }
-
-    Returns a list of dicts with the final preferences for each query.
+    For each QueryResponses, call the language model with a structured prompt.
+    We do a raw response generation, parse JSON, then validate with PreferenceResponse.
     """
     results = []
-    for rating in ratings:
-        prompt = get_preference_prompt(rating)
-        response = lm_service.generate_response(prompt)
+    for response_set in responses:
+        prompt = get_preference_prompt(response_set)
         
-        # Try to parse JSON from the LLM's response
+        # Generate raw text from the LLM
+        raw_response = lm_service.generate_response(prompt)
+
+        # Parse as JSON, then validate with PreferenceResponse
         try:
-            preference = json.loads(response)
+            parsed_json = json.loads(raw_response)
+            preference_obj = PreferenceResponse(**parsed_json)
             results.append({
-                "query": rating.query,
-                "preferred_model": preference.get("preferred_model"),
-                "reason": preference.get("reason")
+                "query": response_set.query,
+                "model_responses": {
+                    mr.model_name: mr.response
+                    for mr in response_set.model_responses
+                },
+                "preferred_model": preference_obj.preferred_model,
+                "reason": preference_obj.reason,
             })
-        except json.JSONDecodeError:
-            # If the response isn't valid JSON, log the raw response
-            print(f"Failed to parse response for query: {rating.query}")
+        except (json.JSONDecodeError, ValidationError) as e:
+            print(f"Warning: Could not parse or validate LLM response for query: {response_set.query} — {e}")
             results.append({
-                "query": rating.query,
+                "query": response_set.query,
+                "model_responses": {
+                    mr.model_name: mr.response
+                    for mr in response_set.model_responses
+                },
                 "preferred_model": None,
-                "reason": response  # store raw response for debugging
+                "reason": raw_response  # fallback: store raw text
             })
+    
     return results
 
 
@@ -300,22 +312,23 @@ if __name__ == "__main__":
     input_dir = "../../experimental-results"
     output_file = "preference_results.json"
 
-    # 1. Load the ratings from all JSON files in 'experimental-results'
-    print(f"Scanning directory for rating JSON files: {input_dir}")
-    all_ratings = load_all_query_ratings(input_dir)
-    if not all_ratings:
-        print("No valid ratings found. Exiting.")
+    # 1. Load the responses from all JSON files in 'experimental-results'
+    print(f"Scanning directory for response JSON files: {input_dir}")
+    all_responses = load_all_query_responses(input_dir)
+    if not all_responses:
+        print("No valid responses found. Exiting.")
         exit(0)
 
-    # 2. Load the language model service (adjust for your actual initialization)
+    # 2. Load the language model service
     lm_service = LMService(
         model_provider="openai",
+        model_name="gpt-4",
         api_key=OPENAI_API_KEY
     )
 
     # 3. Rate preferences
-    print(f"Generating preferences with the LLM for {len(all_ratings)} queries...")
-    preferences = rate_preferences(all_ratings, lm_service)
+    print(f"Generating preferences with the LLM for {len(all_responses)} queries...")
+    preferences = rate_preferences(all_responses, lm_service)
 
     # 4. Save results
     print(f"Saving results to: {output_file}")
