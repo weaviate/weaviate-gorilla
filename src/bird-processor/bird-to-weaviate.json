@@ -1,0 +1,159 @@
+{
+  "weaviate_collections": [
+    {
+      "name": "Genre",
+      "properties": [
+        {
+          "name": "genre_name",
+          "data_type": [
+            "string"
+          ],
+          "description": "The genre name of the genre."
+        }
+      ],
+      "envisioned_use_case_overview": "This collection stores information about genres."
+    },
+    {
+      "name": "Game",
+      "properties": [
+        {
+          "name": "genre_id",
+          "data_type": [
+            "number"
+          ],
+          "description": "The genre id of the game."
+        },
+        {
+          "name": "game_name",
+          "data_type": [
+            "string"
+          ],
+          "description": "The game name of the game."
+        }
+      ],
+      "envisioned_use_case_overview": "This collection stores information about games."
+    },
+    {
+      "name": "Platform",
+      "properties": [
+        {
+          "name": "platform_name",
+          "data_type": [
+            "string"
+          ],
+          "description": "The platform name of the platform."
+        }
+      ],
+      "envisioned_use_case_overview": "This collection stores information about platforms."
+    },
+    {
+      "name": "Publisher",
+      "properties": [
+        {
+          "name": "publisher_name",
+          "data_type": [
+            "string"
+          ],
+          "description": "The publisher name of the publisher."
+        }
+      ],
+      "envisioned_use_case_overview": "This collection stores information about publishers."
+    },
+    {
+      "name": "Game_publisher",
+      "properties": [
+        {
+          "name": "game_id",
+          "data_type": [
+            "number"
+          ],
+          "description": "The game id of the game_publisher."
+        },
+        {
+          "name": "publisher_id",
+          "data_type": [
+            "number"
+          ],
+          "description": "The publisher id of the game_publisher."
+        }
+      ],
+      "envisioned_use_case_overview": "This collection stores information about game publishers."
+    },
+    {
+      "name": "Game_platform",
+      "properties": [
+        {
+          "name": "game_publisher_id",
+          "data_type": [
+            "number"
+          ],
+          "description": "The game publisher id of the game_platform."
+        },
+        {
+          "name": "platform_id",
+          "data_type": [
+            "number"
+          ],
+          "description": "The platform id of the game_platform."
+        },
+        {
+          "name": "release_year",
+          "data_type": [
+            "number"
+          ],
+          "description": "The release year of the game_platform."
+        }
+      ],
+      "envisioned_use_case_overview": "This collection stores information about game platforms."
+    },
+    {
+      "name": "Region",
+      "properties": [
+        {
+          "name": "region_name",
+          "data_type": [
+            "string"
+          ],
+          "description": "The region name of the region."
+        }
+      ],
+      "envisioned_use_case_overview": "This collection stores information about regions."
+    },
+    {
+      "name": "Region_sales",
+      "properties": [
+        {
+          "name": "region_id",
+          "data_type": [
+            "number"
+          ],
+          "description": "The region id of the region_sales."
+        },
+        {
+          "name": "game_platform_id",
+          "data_type": [
+            "number"
+          ],
+          "description": "The game platform id of the region_sales."
+        },
+        {
+          "name": "num_sales",
+          "data_type": [
+            "number"
+          ],
+          "description": "The num sales of the region_sales."
+        }
+      ],
+      "envisioned_use_case_overview": "This collection stores information about region saless."
+    }
+  ],
+  "weaviate_query": {
+    "collection_name": "(",
+    "text_property_filter": {
+      "property_name": "t1.region_name",
+      "operator": "=",
+      "value": "NORTH"
+    }
+  },
+  "natural_language_query": "List down at least five publishers of the games with number of sales less than 10000."
+}
