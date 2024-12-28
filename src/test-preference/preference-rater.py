@@ -3,6 +3,9 @@ import json
 from typing import List, Dict, Any, Union
 from pydantic import BaseModel, ValidationError
 from src.lm.lm import LMService  # Adjust import as needed
+from colorama import init, Fore  # For colored output
+
+init()  # Initialize colorama
 
 # -----------------------------------------------------------------------------
 # 1. Pydantic Models
@@ -318,6 +321,16 @@ if __name__ == "__main__":
     if not all_responses:
         print("No valid responses found. Exiting.")
         exit(0)
+
+    # Print a sample of the first response to verify loading
+    if all_responses:
+        print(f"\n{Fore.GREEN}Successfully loaded responses! Here's a sample of the first record:")
+        sample = all_responses[0]
+        print(f"Query: {sample.query}")
+        print("Model Responses:")
+        for mr in sample.model_responses:
+            print(f"- {mr.model_name}: {mr.response[:100]}..." if isinstance(mr.response, str) else f"- {mr.model_name}: {type(mr.response)}")
+        print(f"{Fore.RESET}\n")
 
     # 2. Load the language model service
     lm_service = LMService(
