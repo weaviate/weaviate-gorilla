@@ -35,11 +35,8 @@ class PreferenceResponse(BaseModel):
     """
     Structured output format for the LLM's preference rating.
     """
-    preferred_model: str
+    model_rankings: List[str]  # List of model names in order of preference
     reason: str
-
-    class Config:
-        protected_namespaces = ()
 
 # -----------------------------------------------------------------------------
 # 2. Load & Parse Results from Directory 
@@ -94,11 +91,12 @@ def load_all_query_predictions(directory: str) -> List[QueryPredictions]:
     # Convert to list of QueryPredictions
     all_predictions = []
     for query, predictions in query_predictions.items():
-        qp = QueryPredictions(
-            corresponding_natural_language_query=query,
-            predictions=predictions
-        )
-        all_predictions.append(qp)
+        if len(predictions) > 1:  # Only include queries with multiple predictions to compare
+            qp = QueryPredictions(
+                corresponding_natural_language_query=query,
+                predictions=predictions
+            )
+            all_predictions.append(qp)
 
     return all_predictions
 
@@ -116,22 +114,26 @@ def get_preference_prompt(query_predictions: QueryPredictions) -> str:
         predictions_text += f"- **{pred.model_name}**:\n{pred.predicted_query}\n\n"
 
     prompt = f"""
-You are an assistant helping to evaluate language model outputs.
+You are an expert at evaluating database query predictions.
 
-Given the following query and model predictions:
+Given this natural language query and the different model predictions:
 
-- **Query**: {query_predictions.corresponding_natural_language_query}
+- **Original Query**: {query_predictions.corresponding_natural_language_query}
 
+Model Predictions:
 {predictions_text}
 
-Please indicate which model's prediction you prefer and provide a brief explanation.
-Consider factors like accuracy, clarity, completeness, and relevance to the query.
+Please rank the models from best to worst based on how well their predicted queries match the intent of the original question.
+Consider:
+- Accuracy in capturing the query intent
+- Correctness of filters and aggregations
+- Proper handling of grouping if required
 
 Respond in the following JSON format:
 
 {{
-    "preferred_model": "Name of the preferred model",
-    "reason": "Your explanation here."
+    "model_rankings": ["best_model", "second_best", ...],
+    "reason": "Detailed explanation of your ranking decisions"
 }}
 """
     return prompt.strip()
@@ -149,18 +151,23 @@ def rate_preferences(predictions: List[QueryPredictions], lm_service: LMService)
         prompt = get_preference_prompt(pred_set)
         
         # Generate raw text from the LLM
-        raw_response = lm_service.generate_response(prompt)
+        raw_response = lm_service.generate(prompt=prompt, output_model=PreferenceResponse)
 
         try:
-            parsed_json = json.loads(raw_response)
-            preference_obj = PreferenceResponse(**parsed_json)
+            # If response is already a dict, no need to parse
+            if isinstance(raw_response, dict):
+                preference_obj = PreferenceResponse(**raw_response)
+            else:
+                parsed_json = json.loads(raw_response)
+                preference_obj = PreferenceResponse(**parsed_json)
+                
             results.append({
                 "query": pred_set.corresponding_natural_language_query,
                 "model_predictions": {
                     pred.model_name: pred.predicted_query
                     for pred in pred_set.predictions
                 },
-                "preferred_model": preference_obj.preferred_model,
+                "model_rankings": preference_obj.model_rankings,
                 "reason": preference_obj.reason,
             })
         except (json.JSONDecodeError, ValidationError) as e:
@@ -171,8 +178,8 @@ def rate_preferences(predictions: List[QueryPredictions], lm_service: LMService)
                     pred.model_name: pred.predicted_query
                     for pred in pred_set.predictions
                 },
-                "preferred_model": None,
-                "reason": raw_response  # fallback: store raw text
+                "model_rankings": None,
+                "reason": str(raw_response)  # fallback: store raw text
             })
     
     return results
@@ -215,6 +222,28 @@ if __name__ == "__main__":
         for pred in sample.predictions:
             print(f"- {pred.model_name}:\n{pred.predicted_query}")
         print(f"{Fore.RESET}\n")
+
+    # Analyze prediction differences
+    print("\nAnalyzing prediction differences across models...")
+    total_queries = len(all_predictions)
+    queries_with_differences = 0
+    queries_printed = 0
+    
+    for query_pred in all_predictions:
+        # Get unique predictions for this query
+        unique_predictions = set(pred.predicted_query for pred in query_pred.predictions)
+        if len(unique_predictions) > 1:  # If there are different predictions
+            queries_with_differences += 1
+            if queries_printed < 10:
+                print(f"\n{Fore.RED}Query with differing predictions:")
+                print(f"Query: {query_pred.corresponding_natural_language_query}")
+                print(f"Number of unique predictions: {len(unique_predictions)}{Fore.RESET}")
+                queries_printed += 1
+    
+    print(f"\n{Fore.CYAN}Summary:")
+    print(f"Total queries analyzed: {total_queries}")
+    print(f"Queries with differing predictions: {queries_with_differences} ({(queries_with_differences/total_queries)*100:.1f}%)")
+    print(f"Queries with identical predictions: {total_queries - queries_with_differences} ({((total_queries-queries_with_differences)/total_queries)*100:.1f}%){Fore.RESET}\n")
 
     # 2. Load the language model service
     lm_service = LMService(
