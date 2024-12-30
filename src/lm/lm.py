@@ -88,9 +88,7 @@ class LMService():
                     {"role": "system", "content": "You are a helpful assistant. Follow the response format instructions."},
                     {"role": "user", "content": prompt}
                 ]
-                print("Disabling structured output test on init...")
-                # if output_model
-                if False:
+                if output_model:
                     response = self.lm_client.beta.chat.completions.parse(
                         model=self.model_name,
                         messages=messages,
