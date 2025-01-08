@@ -24,6 +24,8 @@ Illustrated below, the Weaviate Gorilla translates natural language commands int
 
 🎥 Gorilla LLM Explained by Connor Shorten on Weaviate YouTube - [link](https://www.youtube.com/watch?v=LkV5DTRNxAg)
 
+🎥 SQL-PaLM Explained by Connor Shorten on Weaviate YouTube - [link](https://www.youtube.com/watch?v=g3ocV0a_G2c)
+
 ![Weaviate Gorilla](./visuals/weaviate-gorillas/gorilla-118.png)
 
 
