@@ -16,9 +16,13 @@ Illustrated below, the Weaviate Gorilla translates natural language commands int
 
 ## News
 
-📝 Weaviate Gorilla Part 1 GraphQL APIs on the Weaviate Blog - [link](https://weaviate.io/blog/weaviate-gorilla-part-1)
-
 🎙️ Shishir Patil and Tianjun Zhang on the Weaviate Podcast - [link](https://www.youtube.com/watch?v=HUtYOLX7HZ4)
+
+🎥 Fine-tuning LLMs to use Weaviate's GraphQL APIs on Weaviate Youtube - [link](https://www.youtube.com/watch?v=Zqxd1BnoQQQ)
+
+📝 Fine-tuning LLMs to use Weaviate's GraphQL APIs on the Weaviate Blog - [link](https://weaviate.io/blog/weaviate-gorilla-part-1)
+
+🎥 Gorilla LLM Explained by Connor Shorten on Weaviate YouTube - [link](https://www.youtube.com/watch?v=LkV5DTRNxAg)
 
 ![Weaviate Gorilla](./visuals/weaviate-gorillas/gorilla-118.png)
 
