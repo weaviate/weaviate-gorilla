@@ -19,6 +19,9 @@ import time
 # together models are accessed through the openai SDK with a different base URL
 LMModelProvider = Literal["ollama", "openai", "anthropic", "cohere", "together"]
 
+# need to add models to this...!
+# fixes test_lm.py
+
 class LMService():
     def __init__(
             self,
