@@ -177,6 +177,9 @@ class BaseExperiment(ABC):
         schema_idx = idx // self.config.queries_per_schema
         nl_query = query.corresponding_natural_language_query
         
+        # Print natural language query in red
+        print(f"\n\033[91mNatural Language Query: {nl_query}\033[0m")
+        
         try:
             collections_description, collections_enum = get_collections_info(self.db_manager.client)
             tools = self.build_tools(collections_description, collections_enum)
@@ -191,6 +194,15 @@ class BaseExperiment(ABC):
             
             if predicted_query is None:
                 return self._create_error_result(idx, schema_idx, nl_query, query, "No tool called")
+            
+            # Print predicted query in cyan
+            print(f"\033[96mPredicted Query:")
+            print(pretty_print_weaviate_query(predicted_query))
+            print("\033[0m")
+            
+            # Print ground truth query in white
+            print(f"Ground Truth Query:")
+            print(pretty_print_weaviate_query(query))
             
             ast_score = abstract_syntax_tree_match_score(predicted_query, query)
             return QueryPredictionResult(
