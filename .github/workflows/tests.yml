@@ -1,0 +1,26 @@
+name: Python Tests
+
+on:
+  push:
+    branches: [ "gorilla" ]
+  pull_request:
+    branches: [ "gorilla" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Step 4: Run tests
+      - name: Run pytest
+        run: pytest
