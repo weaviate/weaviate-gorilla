@@ -51,6 +51,9 @@
 ## Compound AI Systems
 30. The Shift from Models to Compound AI Systems. Matei Zaharia, Omar Khattab, Lingjiao Chen, Jared Quincy Davis, Heather Miller, Chris Potts, James Zou, Michael Carbin, Jonathan Frankle, Naveen Rao, Ali Ghodsi. 2024. [Berkeley Artificial Intelligence Research](https://bair.berkeley.edu/blog/2024/02/18/compound-ai-systems/)
 31. Specifications: The Missing Link to Making the Development of LLM Systems an Engineering Discipline. Ion Stoica, Matei Zaharia, Joseph Gonzalez, Ken Goldberg, Hao Zhang, Anastasios Angelopoulos, Lingjia Chen, Wei-Lin Chiang, Jared Qunicy Davis. 2024. [Arxiv Link](https://arxiv.org/pdf/2412.05299)
+32. o1 System Card. [Arxiv Link](https://arxiv.org/abs/2412.16720).
+33. Search-o1: Agentic Search-Enhanced Large Reasoning Models. [Arxiv Link](https://arxiv.org/pdf/2501.05366).
+34. rStar-Math: Small LLMs Can Master Math Reasoning with Self-Evolved Deep Thinking. [Arxiv Link](https://arxiv.org/pdf/2501.04519).
 
 ==
 <br />
