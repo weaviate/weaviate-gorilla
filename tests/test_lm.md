@@ -1,3 +1,4 @@
+```python
 import pytest
 from unittest.mock import Mock, patch, MagicMock
 from src.lm.lm import LMService, LMModelProvider
@@ -168,3 +169,4 @@ def test_openai_structured_outputs(mock_openai):
     
     response = service.call_tools_with_structured_outputs("Use the test function", tools)
     assert response == {"function": "test", "arguments": {"arg": "value"}}
+```
