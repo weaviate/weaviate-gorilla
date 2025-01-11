@@ -11,3 +11,7 @@ Thus we try to jointly unify testing scripts in a single file, as well as indivi
 - Toggle `parallel_tool_calls` in LLM SDK
 - Tool per Collection
 - Structured Output Tool Calls
+
+We are currently undergoing a refactor as the ablation experiments were conducted in a time rush.
+
+The new test script is `main_test.py` that abstracts the ablations. However, this has less logging.
