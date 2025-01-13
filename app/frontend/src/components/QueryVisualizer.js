@@ -12,13 +12,40 @@ const QueryEditor = ({ query, onSave, onCancel }) => {
     }));
   };
 
-  const handleFilterChange = (field, value) => {
+  const handleDelete = (field) => {
     setEditedQuery(prev => ({
       ...prev,
-      integer_property_filter: {
-        ...prev.integer_property_filter,
-        [field]: field === 'value' ? Number(value) : value
+      [field]: null
+    }));
+  };
+
+  const handleFilterChange = (type, field, value) => {
+    setEditedQuery(prev => ({
+      ...prev,
+      [`${type}_property_filter`]: {
+        ...prev[`${type}_property_filter`],
+        [field]: type === 'integer' && field === 'value' ? Number(value) : value
       }
+    }));
+  };
+
+  const addFilter = (type) => {
+    const newFilter = {
+      property_name: '',
+      operator: type === 'integer' ? '>' : '=',
+      value: type === 'integer' ? 0 : ''
+    };
+    
+    setEditedQuery(prev => ({
+      ...prev,
+      [`${type}_property_filter`]: newFilter
+    }));
+  };
+
+  const removeFilter = (type) => {
+    setEditedQuery(prev => ({
+      ...prev,
+      [`${type}_property_filter`]: null
     }));
   };
 
@@ -69,64 +96,181 @@ const QueryEditor = ({ query, onSave, onCancel }) => {
   return (
     <div className="space-y-4 bg-white p-6 rounded-lg shadow-md">
       <div className="space-y-2">
-        <label className="block text-sm font-medium">Natural Language Query</label>
+        <div className="flex justify-between items-center">
+          <label className="block text-sm font-medium">Natural Language Query</label>
+          <button onClick={() => handleDelete('corresponding_natural_language_query')} className="text-red-600 hover:text-red-700">
+            <Trash2 size={14} />
+          </button>
+        </div>
         <input
           type="text"
-          value={editedQuery.corresponding_natural_language_query}
+          value={editedQuery.corresponding_natural_language_query || ''}
           onChange={(e) => handleChange('corresponding_natural_language_query', e.target.value)}
           className="w-full p-2 border rounded"
         />
       </div>
 
       <div className="space-y-2">
-        <label className="block text-sm font-medium">Collection</label>
+        <div className="flex justify-between items-center">
+          <label className="block text-sm font-medium">Collection</label>
+          <button onClick={() => handleDelete('target_collection')} className="text-red-600 hover:text-red-700">
+            <Trash2 size={14} />
+          </button>
+        </div>
         <input
           type="text"
-          value={editedQuery.target_collection}
+          value={editedQuery.target_collection || ''}
           onChange={(e) => handleChange('target_collection', e.target.value)}
           className="w-full p-2 border rounded"
         />
       </div>
 
       <div className="space-y-2">
-        <label className="block text-sm font-medium">Search Query</label>
+        <div className="flex justify-between items-center">
+          <label className="block text-sm font-medium">Search Query</label>
+          <button onClick={() => handleDelete('search_query')} className="text-red-600 hover:text-red-700">
+            <Trash2 size={14} />
+          </button>
+        </div>
         <input
           type="text"
-          value={editedQuery.search_query}
+          value={editedQuery.search_query || ''}
           onChange={(e) => handleChange('search_query', e.target.value)}
           className="w-full p-2 border rounded"
         />
       </div>
 
-      {editedQuery.integer_property_filter && (
-        <div className="space-y-2">
-          <h3 className="font-medium">Integer Property Filter</h3>
-          <div className="grid grid-cols-3 gap-2">
-            <input
-              type="text"
-              value={editedQuery.integer_property_filter.property_name}
-              onChange={(e) => handleFilterChange('property_name', e.target.value)}
-              className="p-2 border rounded"
-              placeholder="Property"
-            />
-            <select
-              value={editedQuery.integer_property_filter.operator}
-              onChange={(e) => handleFilterChange('operator', e.target.value)}
-              className="p-2 border rounded"
-            >
-              <option value="<">&lt;</option>
-              <option value=">">&gt;</option>
-              <option value="=">=</option>
-            </select>
-            <input
-              type="number"
-              value={editedQuery.integer_property_filter.value}
-              onChange={(e) => handleFilterChange('value', e.target.value)}
-              className="p-2 border rounded"
-            />
+      {/* Filters Section */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="font-medium">Filters</h3>
+          <div className="space-x-2">
+            {!editedQuery.integer_property_filter && (
+              <button
+                onClick={() => addFilter('integer')}
+                className="px-3 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 text-sm"
+              >
+                Add Integer Filter
+              </button>
+            )}
+            {!editedQuery.text_property_filter && (
+              <button
+                onClick={() => addFilter('text')}
+                className="px-3 py-1 bg-green-100 text-green-700 rounded hover:bg-green-200 text-sm"
+              >
+                Add Text Filter
+              </button>
+            )}
+            {!editedQuery.boolean_property_filter && (
+              <button
+                onClick={() => addFilter('boolean')}
+                className="px-3 py-1 bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200 text-sm"
+              >
+                Add Boolean Filter
+              </button>
+            )}
           </div>
         </div>
-      )}
+
+        {editedQuery.integer_property_filter && (
+          <div className="p-3 border rounded-lg bg-blue-50">
+            <div className="flex justify-between items-center mb-2">
+              <h4 className="text-sm font-medium">Integer Filter</h4>
+              <button onClick={() => removeFilter('integer')} className="text-red-600 hover:text-red-700">
+                <Trash2 size={14} />
+              </button>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              <input
+                type="text"
+                value={editedQuery.integer_property_filter.property_name}
+                onChange={(e) => handleFilterChange('integer', 'property_name', e.target.value)}
+                className="p-2 border rounded"
+                placeholder="Property"
+              />
+              <select
+                value={editedQuery.integer_property_filter.operator}
+                onChange={(e) => handleFilterChange('integer', 'operator', e.target.value)}
+                className="p-2 border rounded"
+              >
+                <option value="<">&lt;</option>
+                <option value=">">&gt;</option>
+                <option value="=">=</option>
+              </select>
+              <input
+                type="number"
+                value={editedQuery.integer_property_filter.value}
+                onChange={(e) => handleFilterChange('integer', 'value', e.target.value)}
+                className="p-2 border rounded"
+              />
+            </div>
+          </div>
+        )}
+
+        {editedQuery.text_property_filter && (
+          <div className="p-3 border rounded-lg bg-green-50">
+            <div className="flex justify-between items-center mb-2">
+              <h4 className="text-sm font-medium">Text Filter</h4>
+              <button onClick={() => removeFilter('text')} className="text-red-600 hover:text-red-700">
+                <Trash2 size={14} />
+              </button>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              <input
+                type="text"
+                value={editedQuery.text_property_filter.property_name}
+                onChange={(e) => handleFilterChange('text', 'property_name', e.target.value)}
+                className="p-2 border rounded"
+                placeholder="Property"
+              />
+              <select
+                value={editedQuery.text_property_filter.operator}
+                onChange={(e) => handleFilterChange('text', 'operator', e.target.value)}
+                className="p-2 border rounded"
+              >
+                <option value="=">=</option>
+                <option value="contains">Contains</option>
+                <option value="starts_with">Starts With</option>
+                <option value="ends_with">Ends With</option>
+              </select>
+              <input
+                type="text"
+                value={editedQuery.text_property_filter.value}
+                onChange={(e) => handleFilterChange('text', 'value', e.target.value)}
+                className="p-2 border rounded"
+              />
+            </div>
+          </div>
+        )}
+
+        {editedQuery.boolean_property_filter && (
+          <div className="p-3 border rounded-lg bg-yellow-50">
+            <div className="flex justify-between items-center mb-2">
+              <h4 className="text-sm font-medium">Boolean Filter</h4>
+              <button onClick={() => removeFilter('boolean')} className="text-red-600 hover:text-red-700">
+                <Trash2 size={14} />
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <input
+                type="text"
+                value={editedQuery.boolean_property_filter.property_name}
+                onChange={(e) => handleFilterChange('boolean', 'property_name', e.target.value)}
+                className="p-2 border rounded"
+                placeholder="Property"
+              />
+              <select
+                value={editedQuery.boolean_property_filter.value}
+                onChange={(e) => handleFilterChange('boolean', 'value', e.target.value)}
+                className="p-2 border rounded"
+              >
+                <option value="true">True</option>
+                <option value="false">False</option>
+              </select>
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Aggregations Section */}
       <div className="space-y-4">
@@ -266,7 +410,12 @@ const QueryEditor = ({ query, onSave, onCancel }) => {
       </div>
 
       <div className="space-y-2">
-        <label className="block text-sm font-medium">Group By Property</label>
+        <div className="flex justify-between items-center">
+          <label className="block text-sm font-medium">Group By Property</label>
+          <button onClick={() => handleDelete('groupby_property')} className="text-red-600 hover:text-red-700">
+            <Trash2 size={14} />
+          </button>
+        </div>
         <input
           type="text"
           value={editedQuery.groupby_property || ''}
@@ -469,15 +618,36 @@ const QueryVisualizer = () => {
               />
             ) : (
               <div className="space-y-2">
-                <p><span className="font-semibold">Natural Language Query:</span> {currentItem.query.corresponding_natural_language_query}</p>
-                <p><span className="font-semibold">Collection:</span> {currentItem.query.target_collection}</p>
-                <p><span className="font-semibold">Search Query:</span> {currentItem.query.search_query}</p>
+                {currentItem.query.corresponding_natural_language_query && (
+                  <p><span className="font-semibold">Natural Language Query:</span> {currentItem.query.corresponding_natural_language_query}</p>
+                )}
+                {currentItem.query.target_collection && (
+                  <p><span className="font-semibold">Collection:</span> {currentItem.query.target_collection}</p>
+                )}
+                {currentItem.query.search_query && (
+                  <p><span className="font-semibold">Search Query:</span> {currentItem.query.search_query}</p>
+                )}
                 {currentItem.query.integer_property_filter && (
                   <p>
                     <span className="font-semibold">Integer Filter:</span>{' '}
                     {currentItem.query.integer_property_filter.property_name}{' '}
                     {currentItem.query.integer_property_filter.operator}{' '}
                     {currentItem.query.integer_property_filter.value}
+                  </p>
+                )}
+                {currentItem.query.text_property_filter && (
+                  <p>
+                    <span className="font-semibold">Text Filter:</span>{' '}
+                    {currentItem.query.text_property_filter.property_name}{' '}
+                    {currentItem.query.text_property_filter.operator}{' '}
+                    {currentItem.query.text_property_filter.value}
+                  </p>
+                )}
+                {currentItem.query.boolean_property_filter && (
+                  <p>
+                    <span className="font-semibold">Boolean Filter:</span>{' '}
+                    {currentItem.query.boolean_property_filter.property_name} = {' '}
+                    {currentItem.query.boolean_property_filter.value}
                   </p>
                 )}
                 {currentItem.query.integer_property_aggregation && (

@@ -69,7 +69,7 @@
   {
     "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
     "query": {
-      "corresponding_natural_language_query": "Find restaurants where I can have a romantic dinner with outdoor seating that have an average rating greater than 4. Also, provide a list of the top 5 most mentioned types of cuisine across all these restaurants' descriptions.",
+      "corresponding_natural_language_query": "Find restaurants where I can have a romantic dinner with outdoor seating that have an average rating greater than 4. Also, provide a list of the top 5 most mentioned words across all these restaurants' descriptions.",
       "target_collection": "Restaurants",
       "search_query": "romantic dinner with outdoor seating",
       "integer_property_filter": {
@@ -92,9 +92,9 @@
   {
     "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
     "query": {
-      "corresponding_natural_language_query": "What are the most highly-rated vegan-friendly brunch spots that are currently open, and can you provide a breakdown of these spots by cuisine type? I need places with an average rating of 4.5 or higher, and show the percentage of them that are open now.",
+      "corresponding_natural_language_query": "I need places with an average rating of 4.5 or higher, and show the percentage of them that are open now.",
       "target_collection": "Restaurants",
-      "search_query": "vegan-friendly brunch spots",
+      "search_query": null,
       "integer_property_filter": {
         "property_name": "averageRating",
         "operator": ">=",
@@ -108,7 +108,7 @@
         "property_name": "openNow",
         "metrics": "PERCENTAGE_TRUE"
       },
-      "groupby_property": "description.cuisine"
+      "groupby_property": null
     }
   },
   {
@@ -190,7 +190,7 @@
       },
       "text_property_aggregation": null,
       "boolean_property_aggregation": null,
-      "groupby_property": "restaurantName"
+      "groupby_property": null
     }
   },
   {
@@ -205,7 +205,11 @@
         "operator": "LIKE",
         "value": "La%"
       },
-      "boolean_property_filter": null,
+      "boolean_property_filter": {
+        "property_name": "openNow",
+        "operator": "=",
+        "value": ""
+      },
       "integer_property_aggregation": {
         "property_name": "averageRating",
         "metrics": "MAX"
@@ -218,7 +222,7 @@
   {
     "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
     "query": {
-      "corresponding_natural_language_query": "Find live jazz music restaurants that are currently open, which are suitable for a romantic dinner. Provide the count of these restaurants grouped by their cuisine style.",
+      "corresponding_natural_language_query": "Find live jazz music restaurants that are currently open, which are suitable for a romantic dinner.",
       "target_collection": "Restaurants",
       "search_query": "romantic dinner spot with live jazz music",
       "integer_property_filter": null,
@@ -229,19 +233,15 @@
       },
       "boolean_property_filter": null,
       "integer_property_aggregation": null,
-      "text_property_aggregation": {
-        "property_name": "description",
-        "metrics": "COUNT",
-        "top_occurrences_limit": null
-      },
+      "text_property_aggregation": null,
       "boolean_property_aggregation": null,
-      "groupby_property": "description"
+      "groupby_property": null
     }
   },
   {
     "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
     "query": {
-      "corresponding_natural_language_query": "How many different romantic Italian restaurants with vegan options and an average rating above 4.5 are there, and can you show me examples of their descriptions?",
+      "corresponding_natural_language_query": "Show me romantic Italian restaurants with vegan options that have \"Italian\" in their description and an average rating above 4.5.",
       "target_collection": "Restaurants",
       "search_query": "romantic Italian place with vegan options and an average rating over 4.5",
       "integer_property_filter": null,
@@ -252,11 +252,7 @@
       },
       "boolean_property_filter": null,
       "integer_property_aggregation": null,
-      "text_property_aggregation": {
-        "property_name": "description",
-        "metrics": "COUNT",
-        "top_occurrences_limit": null
-      },
+      "text_property_aggregation": null,
       "boolean_property_aggregation": null,
       "groupby_property": null
     }
@@ -264,7 +260,7 @@
   {
     "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
     "query": {
-      "corresponding_natural_language_query": "Find romantic Italian restaurants that offer organic options and group them by average rating. Show how many of these restaurants are currently open, also ensuring they are described as Italian in their profiles.",
+      "corresponding_natural_language_query": "Find romantic Italian restaurants that offer organic options and group them by average rating. Show how many of these restaurants are currently open, also ensuring they are described as Italian in their descriptions.",
       "target_collection": "Restaurants",
       "search_query": "romantic Italian dining with organic options",
       "integer_property_filter": null,
@@ -286,14 +282,14 @@
   {
     "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
     "query": {
-      "corresponding_natural_language_query": "How many romantic Italian cuisine restaurants are open right now, and list those with the word 'Restaurant' in their name?",
+      "corresponding_natural_language_query": "How many romantic Italian cuisine restaurants are open right now, and list those with the word 'Boston in their name?",
       "target_collection": "Restaurants",
       "search_query": "romantic restaurants with Italian cuisine",
       "integer_property_filter": null,
       "text_property_filter": {
         "property_name": "name",
         "operator": "LIKE",
-        "value": "%Restaurant%"
+        "value": "%Boston%"
       },
       "boolean_property_filter": null,
       "integer_property_aggregation": null,
@@ -327,7 +323,7 @@
   {
     "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
     "query": {
-      "corresponding_natural_language_query": "What are some romantic dinner spots that have a rooftop view, live jazz music, and whose names start with 'Cafe'? This requires understanding the context and ambiance described in the descriptions, while also filtering for restaurants based on the exact name pattern 'Cafe%'.",
+      "corresponding_natural_language_query": "What are some romantic dinner spots that have a rooftop view, live jazz music, and whose names start with 'Cafe'?",
       "target_collection": "Restaurants",
       "search_query": "romantic dinner spots with rooftop view and live jazz music",
       "integer_property_filter": null,
@@ -346,7 +342,7 @@
   {
     "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
     "query": {
-      "corresponding_natural_language_query": "What is the average rating of open restaurants with a cozy ambiance, categorized by cuisine type?",
+      "corresponding_natural_language_query": "What is the average rating of open restaurants with a cozy ambiance?",
       "target_collection": "Restaurants",
       "search_query": "cozy ambiance",
       "integer_property_filter": null,
@@ -362,7 +358,7 @@
       },
       "text_property_aggregation": null,
       "boolean_property_aggregation": null,
-      "groupby_property": "description"
+      "groupby_property": null
     }
   },
   {
@@ -390,7 +386,7 @@
   {
     "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
     "query": {
-      "corresponding_natural_language_query": "How many restaurants that are currently open and known for a cozy atmosphere are there for each type of cuisine?",
+      "corresponding_natural_language_query": "How many restaurants that are currently open and known for a cozy atmosphere are there for each averageRating value?",
       "target_collection": "Restaurants",
       "search_query": "cozy atmosphere",
       "integer_property_filter": null,
@@ -407,15 +403,15 @@
         "top_occurrences_limit": null
       },
       "boolean_property_aggregation": null,
-      "groupby_property": "description"
+      "groupby_property": "averageRating"
     }
   },
   {
     "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
     "query": {
-      "corresponding_natural_language_query": "What are some cozy restaurants that are currently open, and what are the most common types of cuisine these open restaurants offer?",
+      "corresponding_natural_language_query": "What are some cozy restaurants that are currently open, and what are the most common words used to describe these restaurants?",
       "target_collection": "Restaurants",
-      "search_query": "Find restaurants that offer a cozy dining experience",
+      "search_query": "cozy dining experience",
       "integer_property_filter": null,
       "text_property_filter": null,
       "boolean_property_filter": {
@@ -458,7 +454,7 @@
   {
     "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
     "query": {
-      "corresponding_natural_language_query": "How many restaurants that are currently open offer an Italian ambiance?",
+      "corresponding_natural_language_query": "Restaurants that are currently open and offer an Italian ambiance.",
       "target_collection": "Restaurants",
       "search_query": "Italian ambiance",
       "integer_property_filter": null,
@@ -470,10 +466,7 @@
       },
       "integer_property_aggregation": null,
       "text_property_aggregation": null,
-      "boolean_property_aggregation": {
-        "property_name": "openNow",
-        "metrics": "COUNT"
-      },
+      "boolean_property_aggregation": null,
       "groupby_property": null
     }
   },
@@ -518,27 +511,31 @@
   {
     "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
     "query": {
-      "corresponding_natural_language_query": "What is the average price of affordable vegetarian meals with healthy ingredients, and can you group these meals by different restaurants to see where they are available?",
+      "corresponding_natural_language_query": "What is the average price of affordable vegetarian meals with healthy ingredients?",
       "target_collection": "Menus",
       "search_query": "affordable vegetarian meals with healthy ingredients",
       "integer_property_filter": null,
       "text_property_filter": null,
-      "boolean_property_filter": null,
+      "boolean_property_filter": {
+        "property_name": "isVegetarian",
+        "operator": "=",
+        "value": ""
+      },
       "integer_property_aggregation": {
         "property_name": "price",
         "metrics": "MEAN"
       },
       "text_property_aggregation": null,
       "boolean_property_aggregation": null,
-      "groupby_property": "menuItem"
+      "groupby_property": null
     }
   },
   {
     "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
     "query": {
-      "corresponding_natural_language_query": "What is the average price of healthy vegetarian meals across various restaurants' menus?",
+      "corresponding_natural_language_query": "What is the average price of seafood meals across various restaurants' menus?",
       "target_collection": "Menus",
-      "search_query": "healthy vegetarian meals",
+      "search_query": "seafood meals",
       "integer_property_filter": null,
       "text_property_filter": null,
       "boolean_property_filter": null,
@@ -554,18 +551,14 @@
   {
     "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
     "query": {
-      "corresponding_natural_language_query": "Can you find cozy Italian restaurants with a romantic ambiance and group them by their average rating? Also, please provide a summary of the most common features mentioned for open restaurants.",
+      "corresponding_natural_language_query": "Can you find cozy Italian restaurants with a romantic ambiance and group them by their average rating?",
       "target_collection": "Restaurants",
       "search_query": "cozy Italian restaurants with romantic ambiance",
       "integer_property_filter": null,
       "text_property_filter": null,
       "boolean_property_filter": null,
       "integer_property_aggregation": null,
-      "text_property_aggregation": {
-        "property_name": "description",
-        "metrics": "TOP_OCCURRENCES",
-        "top_occurrences_limit": 5
-      },
+      "text_property_aggregation": null,
       "boolean_property_aggregation": null,
       "groupby_property": "averageRating"
     }
@@ -573,7 +566,7 @@
   {
     "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
     "query": {
-      "corresponding_natural_language_query": "Which restaurants have a cozy atmosphere and a romantic ambiance, and what are the top 5 most frequently mentioned cuisines overall?",
+      "corresponding_natural_language_query": "Which restaurants have a cozy atmosphere and a romantic ambiance, and what are the top 5 most frequently mentioned words in their descriptions?",
       "target_collection": "Restaurants",
       "search_query": "Find restaurants with cozy atmosphere and romantic ambiance",
       "integer_property_filter": null,
@@ -592,7 +585,7 @@
   {
     "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
     "query": {
-      "corresponding_natural_language_query": "Find Asian restaurants that have a cozy ambiance. For those that match, determine what percentage are currently open. Also, group the open restaurants by their average rating. This query not only seeks semantic matches but also uses aggregation and grouping on the data.",
+      "corresponding_natural_language_query": "Find Asian restaurants that have a cozy ambiance. For those that match, determine what percentage are currently open. Also, group the open restaurants by their average rating.",
       "target_collection": "Restaurants",
       "search_query": "Asian restaurants with a cozy ambiance",
       "integer_property_filter": null,
@@ -612,7 +605,7 @@
     "query": {
       "corresponding_natural_language_query": "What percentage of restaurants offering romantic Italian dining experiences are currently open?",
       "target_collection": "Restaurants",
-      "search_query": "romantic Italian dining that is open now",
+      "search_query": "romantic Italian dining",
       "integer_property_filter": null,
       "text_property_filter": null,
       "boolean_property_filter": null,
@@ -643,10 +636,14 @@
   {
     "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
     "query": {
-      "corresponding_natural_language_query": "Find restaurants characterized by a cozy ambiance suitable for an intimate dinner, that are currently open and have an average rating of at least 4 stars.",
+      "corresponding_natural_language_query": "Find restaurants characterized by a cozy ambiance suitable for an intimate dinner, that are currently open and have an average rating greater than 4 stars.",
       "target_collection": "Restaurants",
       "search_query": "cozy ambiance for an intimate dinner",
-      "integer_property_filter": null,
+      "integer_property_filter": {
+        "property_name": "averageRating",
+        "operator": ">",
+        "value": 4
+      },
       "text_property_filter": null,
       "boolean_property_filter": null,
       "integer_property_aggregation": null,
@@ -784,7 +781,7 @@
       "text_property_aggregation": null,
       "boolean_property_aggregation": {
         "property_name": "confirmed",
-        "metrics": "COUNT"
+        "metrics": "PERCENTAGE_TRUE"
       },
       "groupby_property": null
     }
@@ -792,7 +789,7 @@
   {
     "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
     "query": {
-      "corresponding_natural_language_query": "What are the menu items that cost more than $20, and how can they be grouped by whether they are vegetarian?",
+      "corresponding_natural_language_query": "What are the menu items that cost more than $20 grouped by whether they are vegetarian?",
       "target_collection": "Menus",
       "search_query": null,
       "integer_property_filter": {
@@ -897,7 +894,7 @@
   {
     "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
     "query": {
-      "corresponding_natural_language_query": "How many restaurants have names that start with the letter 'A', and what is the count of these restaurants grouped by their description categories?",
+      "corresponding_natural_language_query": "Restaurants with names that start with the letter 'A'.",
       "target_collection": "Restaurants",
       "search_query": null,
       "integer_property_filter": null,
@@ -908,11 +905,7 @@
       },
       "boolean_property_filter": null,
       "integer_property_aggregation": null,
-      "text_property_aggregation": {
-        "property_name": "description",
-        "metrics": "COUNT",
-        "top_occurrences_limit": null
-      },
+      "text_property_aggregation": null,
       "boolean_property_aggregation": null,
       "groupby_property": null
     }
@@ -1046,7 +1039,7 @@
   {
     "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
     "query": {
-      "corresponding_natural_language_query": "How many restaurants that are currently open are there for each different cuisine or ambiance type, and organize this information by their average rating score?",
+      "corresponding_natural_language_query": "How many restaurants that are currently open are there, and organize this information by their average rating score?",
       "target_collection": "Restaurants",
       "search_query": null,
       "integer_property_filter": null,
@@ -1104,26 +1097,19 @@
       },
       "integer_property_aggregation": null,
       "text_property_aggregation": null,
-      "boolean_property_aggregation": {
-        "property_name": "confirmed",
-        "metrics": "COUNT"
-      },
+      "boolean_property_aggregation": null,
       "groupby_property": "partySize"
     }
   },
   {
     "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
     "query": {
-      "corresponding_natural_language_query": "How many reservations are confirmed, and what percentage of all reservations does this represent?",
+      "corresponding_natural_language_query": "What percentage of reservations are confirmed?",
       "target_collection": "Reservations",
       "search_query": null,
       "integer_property_filter": null,
       "text_property_filter": null,
-      "boolean_property_filter": {
-        "property_name": "confirmed",
-        "operator": "=",
-        "value": true
-      },
+      "boolean_property_filter": null,
       "integer_property_aggregation": null,
       "text_property_aggregation": null,
       "boolean_property_aggregation": {
@@ -1210,7 +1196,7 @@
   {
     "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
     "query": {
-      "corresponding_natural_language_query": "For each average rating score, how many times does each unique cuisine type appear in restaurant descriptions, and what are the top 5 most common words used to describe restaurant ambiance?",
+      "corresponding_natural_language_query": "For each average rating score, what are the 5 most common words used to describe each Restaurant?",
       "target_collection": "Restaurants",
       "search_query": null,
       "integer_property_filter": null,
