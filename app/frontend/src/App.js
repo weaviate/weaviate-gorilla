@@ -1,7 +1,7 @@
-// App.js
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import QueryVisualizer from './components/QueryVisualizer';
 import QuerySearcher from './components/QuerySearcher';
+import WeaviateAgentDemo from './components/WeaviateAgentDemo';
 
 function App() {
   return (
@@ -10,6 +10,7 @@ function App() {
         <Routes>
           <Route path="/" element={<QueryVisualizer />} />
           <Route path="/search" element={<QuerySearcher />} />
+          <Route path="/demo" element={<WeaviateAgentDemo />} />
         </Routes>
       </div>
     </Router>

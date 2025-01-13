@@ -19,7 +19,9 @@ app.add_middleware(
 import json
 import os
 
-with open("synthetic-weaviate-queries-with-schemas.json", 'r') as f:
+QUERIES_FILE = "synthetic-weaviate-queries-with-schemas.json"
+
+with open(QUERIES_FILE, 'r') as f:
     synthetic_query_data = json.load(f)
 
 print(synthetic_query_data[0]["query"]["corresponding_natural_language_query"])
@@ -63,6 +65,10 @@ async def update_query(query_update: QueryUpdate):
     try:
         if 0 <= query_update.index < len(synthetic_query_data):
             synthetic_query_data[query_update.index]["query"] = query_update.updated_query
+            
+            with open(QUERIES_FILE, 'w') as f:
+                json.dump(synthetic_query_data, f, indent=2)
+                
             return {"message": "Query updated successfully"}
         else:
             raise HTTPException(status_code=404, detail="Query index not found")

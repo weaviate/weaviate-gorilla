@@ -22,30 +22,46 @@ const QueryEditor = ({ query, onSave, onCancel }) => {
     }));
   };
 
-  const addAggregation = () => {
+  const addAggregation = (type) => {
+    const newAggregation = {
+      property_name: '',
+      metrics: ''
+    };
+    
+    if (type === 'integer') {
+      setEditedQuery(prev => ({
+        ...prev,
+        integer_property_aggregation: newAggregation
+      }));
+    } else if (type === 'text') {
+      setEditedQuery(prev => ({
+        ...prev,
+        text_property_aggregation: {
+          ...newAggregation,
+          top_occurrences_limit: 5
+        }
+      }));
+    } else if (type === 'boolean') {
+      setEditedQuery(prev => ({
+        ...prev,
+        boolean_property_aggregation: newAggregation
+      }));
+    }
+  };
+
+  const removeAggregation = (type) => {
     setEditedQuery(prev => ({
       ...prev,
-      aggregation: {
-        property_name: '',
-        operator: '',
-        value: ''
-      }
+      [`${type}_property_aggregation`]: null
     }));
   };
 
-  const removeAggregation = () => {
+  const handleAggregationChange = (type, field, value) => {
     setEditedQuery(prev => ({
       ...prev,
-      aggregation: null
-    }));
-  };
-
-  const handleAggregationChange = (field, value) => {
-    setEditedQuery(prev => ({
-      ...prev,
-      aggregation: {
-        ...prev.aggregation,
-        [field]: value
+      [`${type}_property_aggregation`]: {
+        ...prev[`${type}_property_aggregation`],
+        [field]: field === 'top_occurrences_limit' ? Number(value) : value
       }
     }));
   };
@@ -54,7 +70,12 @@ const QueryEditor = ({ query, onSave, onCancel }) => {
     <div className="space-y-4 bg-white p-6 rounded-lg shadow-md">
       <div className="space-y-2">
         <label className="block text-sm font-medium">Natural Language Query</label>
-        <p className="p-2 bg-gray-50 rounded border">{query.corresponding_natural_language_query}</p>
+        <input
+          type="text"
+          value={editedQuery.corresponding_natural_language_query}
+          onChange={(e) => handleChange('corresponding_natural_language_query', e.target.value)}
+          className="w-full p-2 border rounded"
+        />
       </div>
 
       <div className="space-y-2">
@@ -107,54 +128,138 @@ const QueryEditor = ({ query, onSave, onCancel }) => {
         </div>
       )}
 
-      {/* Aggregation Section */}
+      {/* Aggregations Section */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="font-medium">Aggregation</h3>
-          {!editedQuery.aggregation && (
-            <button
-              onClick={addAggregation}
-              className="px-3 py-1 bg-green-100 text-green-700 rounded hover:bg-green-200 flex items-center gap-1 text-sm"
-            >
-              <Plus size={14} />
-              Add Aggregation
-            </button>
-          )}
+          <h3 className="font-medium">Aggregations</h3>
+          <div className="space-x-2">
+            {!editedQuery.integer_property_aggregation && (
+              <button
+                onClick={() => addAggregation('integer')}
+                className="px-3 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 text-sm"
+              >
+                Add Integer Aggregation
+              </button>
+            )}
+            {!editedQuery.text_property_aggregation && (
+              <button
+                onClick={() => addAggregation('text')}
+                className="px-3 py-1 bg-green-100 text-green-700 rounded hover:bg-green-200 text-sm"
+              >
+                Add Text Aggregation
+              </button>
+            )}
+            {!editedQuery.boolean_property_aggregation && (
+              <button
+                onClick={() => addAggregation('boolean')}
+                className="px-3 py-1 bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200 text-sm"
+              >
+                Add Boolean Aggregation
+              </button>
+            )}
+          </div>
         </div>
 
-        {editedQuery.aggregation && (
-          <div className="p-3 border rounded-lg bg-gray-50">
+        {editedQuery.integer_property_aggregation && (
+          <div className="p-3 border rounded-lg bg-blue-50">
             <div className="flex justify-between items-center mb-2">
-              <h4 className="text-sm font-medium">Aggregation Settings</h4>
+              <h4 className="text-sm font-medium">Integer Aggregation</h4>
               <button
-                onClick={removeAggregation}
+                onClick={() => removeAggregation('integer')}
                 className="text-red-600 hover:text-red-700"
               >
                 <Trash2 size={14} />
               </button>
             </div>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-2">
               <input
                 type="text"
-                value={editedQuery.aggregation.property_name}
-                onChange={(e) => handleAggregationChange('property_name', e.target.value)}
+                value={editedQuery.integer_property_aggregation.property_name}
+                onChange={(e) => handleAggregationChange('integer', 'property_name', e.target.value)}
                 className="p-2 border rounded"
                 placeholder="Property Name"
               />
+              <select
+                value={editedQuery.integer_property_aggregation.metrics}
+                onChange={(e) => handleAggregationChange('integer', 'metrics', e.target.value)}
+                className="p-2 border rounded"
+              >
+                <option value="">Select Metric</option>
+                <option value="MEAN">Mean</option>
+                <option value="MEDIAN">Median</option>
+                <option value="MODE">Mode</option>
+                <option value="MIN">Min</option>
+                <option value="MAX">Max</option>
+              </select>
+            </div>
+          </div>
+        )}
+
+        {editedQuery.text_property_aggregation && (
+          <div className="p-3 border rounded-lg bg-green-50">
+            <div className="flex justify-between items-center mb-2">
+              <h4 className="text-sm font-medium">Text Aggregation</h4>
+              <button
+                onClick={() => removeAggregation('text')}
+                className="text-red-600 hover:text-red-700"
+              >
+                <Trash2 size={14} />
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
               <input
                 type="text"
-                value={editedQuery.aggregation.operator}
-                onChange={(e) => handleAggregationChange('operator', e.target.value)}
+                value={editedQuery.text_property_aggregation.property_name}
+                onChange={(e) => handleAggregationChange('text', 'property_name', e.target.value)}
                 className="p-2 border rounded"
-                placeholder="Operator"
+                placeholder="Property Name"
               />
+              <select
+                value={editedQuery.text_property_aggregation.metrics}
+                onChange={(e) => handleAggregationChange('text', 'metrics', e.target.value)}
+                className="p-2 border rounded"
+              >
+                <option value="">Select Metric</option>
+                <option value="COUNT">Count</option>
+                <option value="TYPE">Type</option>
+                <option value="TOP_OCCURRENCES">Top Occurrences</option>
+              </select>
+            </div>
+          </div>
+        )}
+
+        {editedQuery.boolean_property_aggregation && (
+          <div className="p-3 border rounded-lg bg-yellow-50">
+            <div className="flex justify-between items-center mb-2">
+              <h4 className="text-sm font-medium">Boolean Aggregation</h4>
+              <button
+                onClick={() => removeAggregation('boolean')}
+                className="text-red-600 hover:text-red-700"
+              >
+                <Trash2 size={14} />
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
               <input
                 type="text"
-                value={editedQuery.aggregation.value}
-                onChange={(e) => handleAggregationChange('value', e.target.value)}
+                value={editedQuery.boolean_property_aggregation.property_name}
+                onChange={(e) => handleAggregationChange('boolean', 'property_name', e.target.value)}
                 className="p-2 border rounded"
-                placeholder="Value"
+                placeholder="Property Name"
               />
+              <select
+                value={editedQuery.boolean_property_aggregation.metrics}
+                onChange={(e) => handleAggregationChange('boolean', 'metrics', e.target.value)}
+                className="p-2 border rounded"
+              >
+                <option value="">Select Metric</option>
+                <option value="COUNT">Count</option>
+                <option value="TYPE">Type</option>
+                <option value="TOTAL_TRUE">Total True</option>
+                <option value="TOTAL_FALSE">Total False</option>
+                <option value="PERCENTAGE_TRUE">Percentage True</option>
+                <option value="PERCENTAGE_FALSE">Percentage False</option>
+              </select>
             </div>
           </div>
         )}
@@ -267,6 +372,12 @@ const QueryVisualizer = () => {
   return (
     <div className="w-full p-6 min-h-screen bg-cover bg-center" style={{ backgroundImage: 'url("/background.png")' }}>
       <div className="flex items-center mb-12 relative mt-8">
+        <button
+          onClick={() => navigate('/demo')}
+          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2"
+        >
+          DBGorilla homepage
+        </button>
         <h1 className="text-4xl font-bold text-[#1c1468] absolute left-1/2 -translate-x-1/2">Dataset Visualizer</h1>
         <button
           onClick={() => navigate('/search')}
@@ -363,18 +474,33 @@ const QueryVisualizer = () => {
                 <p><span className="font-semibold">Search Query:</span> {currentItem.query.search_query}</p>
                 {currentItem.query.integer_property_filter && (
                   <p>
-                    <span className="font-semibold">Filter:</span>{' '}
+                    <span className="font-semibold">Integer Filter:</span>{' '}
                     {currentItem.query.integer_property_filter.property_name}{' '}
                     {currentItem.query.integer_property_filter.operator}{' '}
                     {currentItem.query.integer_property_filter.value}
                   </p>
                 )}
-                {currentItem.query.aggregation && (
+                {currentItem.query.integer_property_aggregation && (
                   <p>
-                    <span className="font-semibold">Aggregation:</span>{' '}
-                    {currentItem.query.aggregation.operator} of{' '}
-                    {currentItem.query.aggregation.property_name}
-                    {currentItem.query.aggregation.value && ` (${currentItem.query.aggregation.value})`}
+                    <span className="font-semibold">Integer Aggregation:</span>{' '}
+                    {currentItem.query.integer_property_aggregation.metrics} of{' '}
+                    {currentItem.query.integer_property_aggregation.property_name}
+                  </p>
+                )}
+                {currentItem.query.text_property_aggregation && (
+                  <p>
+                    <span className="font-semibold">Text Aggregation:</span>{' '}
+                    {currentItem.query.text_property_aggregation.metrics} of{' '}
+                    {currentItem.query.text_property_aggregation.property_name}
+                    {currentItem.query.text_property_aggregation.top_occurrences_limit && 
+                      ` (Top ${currentItem.query.text_property_aggregation.top_occurrences_limit})`}
+                  </p>
+                )}
+                {currentItem.query.boolean_property_aggregation && (
+                  <p>
+                    <span className="font-semibold">Boolean Aggregation:</span>{' '}
+                    {currentItem.query.boolean_property_aggregation.metrics} of{' '}
+                    {currentItem.query.boolean_property_aggregation.property_name}
                   </p>
                 )}
                 {currentItem.query.groupby_property && (
