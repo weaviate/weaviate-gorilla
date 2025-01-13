@@ -1,47 +1,187 @@
 import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Database, Search, Check, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { ChevronLeft, ChevronRight, Database, Search, Check, X, Edit2, Save } from 'lucide-react';
 
-const SchemaVisualizer = ({ collection }) => (
-  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-    <div className="flex items-center gap-2 mb-4">
-      <Database className="text-[#1c1468]" size={20} />
-      <h3 className="text-lg font-semibold">{collection.name}</h3>
-    </div>
-    <p className="text-sm text-gray-600 mb-4">{collection.envisioned_use_case_overview}</p>
-    <div className="space-y-3">
-      {collection.properties.map((prop, idx) => (
-        <div key={idx} className="flex items-start gap-4 p-2 bg-white rounded border border-gray-100">
-          <div className="flex-1">
-            <p className="font-medium">{prop.name}</p>
-            <p className="text-sm text-gray-500">{prop.description}</p>
-          </div>
-          <div className="text-sm px-2 py-1 rounded bg-[#e8fae3] text-[#1c1468]">
-            {prop.data_type[0]}
+const QueryEditor = ({ query, onSave, onCancel }) => {
+  const [editedQuery, setEditedQuery] = useState(query);
+
+  const handleChange = (field, value) => {
+    setEditedQuery(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleFilterChange = (field, value) => {
+    setEditedQuery(prev => ({
+      ...prev,
+      integer_property_filter: {
+        ...prev.integer_property_filter,
+        [field]: field === 'value' ? Number(value) : value
+      }
+    }));
+  };
+
+  const handleAggregationChange = (field, value) => {
+    setEditedQuery(prev => ({
+      ...prev,
+      integer_property_aggregation: {
+        ...prev.integer_property_aggregation,
+        [field]: value
+      }
+    }));
+  };
+
+  return (
+    <div className="space-y-4 bg-white p-6 rounded-lg shadow-md">
+      <div className="space-y-2">
+        <label className="block text-sm font-medium">Collection</label>
+        <input
+          type="text"
+          value={editedQuery.target_collection}
+          onChange={(e) => handleChange('target_collection', e.target.value)}
+          className="w-full p-2 border rounded"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <label className="block text-sm font-medium">Search Query</label>
+        <input
+          type="text"
+          value={editedQuery.search_query}
+          onChange={(e) => handleChange('search_query', e.target.value)}
+          className="w-full p-2 border rounded"
+        />
+      </div>
+
+      {editedQuery.integer_property_filter && (
+        <div className="space-y-2">
+          <h3 className="font-medium">Integer Property Filter</h3>
+          <div className="grid grid-cols-3 gap-2">
+            <input
+              type="text"
+              value={editedQuery.integer_property_filter.property_name}
+              onChange={(e) => handleFilterChange('property_name', e.target.value)}
+              className="p-2 border rounded"
+              placeholder="Property"
+            />
+            <select
+              value={editedQuery.integer_property_filter.operator}
+              onChange={(e) => handleFilterChange('operator', e.target.value)}
+              className="p-2 border rounded"
+            >
+              <option value="<">&lt;</option>
+              <option value=">">&gt;</option>
+              <option value="=">=</option>
+            </select>
+            <input
+              type="number"
+              value={editedQuery.integer_property_filter.value}
+              onChange={(e) => handleFilterChange('value', e.target.value)}
+              className="p-2 border rounded"
+            />
           </div>
         </div>
-      ))}
-    </div>
-  </div>
-);
+      )}
 
-export default function QueryVisualizer() {
+      {editedQuery.integer_property_aggregation && (
+        <div className="space-y-2">
+          <h3 className="font-medium">Aggregation</h3>
+          <div className="grid grid-cols-2 gap-2">
+            <select
+              value={editedQuery.integer_property_aggregation.metrics}
+              onChange={(e) => handleAggregationChange('metrics', e.target.value)}
+              className="p-2 border rounded"
+            >
+              <option value="MEAN">Mean</option>
+              <option value="SUM">Sum</option>
+              <option value="COUNT">Count</option>
+            </select>
+            <input
+              type="text"
+              value={editedQuery.integer_property_aggregation.property_name}
+              onChange={(e) => handleAggregationChange('property_name', e.target.value)}
+              className="p-2 border rounded"
+              placeholder="Property"
+            />
+          </div>
+        </div>
+      )}
+
+      <div className="space-y-2">
+        <label className="block text-sm font-medium">Group By Property</label>
+        <input
+          type="text"
+          value={editedQuery.groupby_property || ''}
+          onChange={(e) => handleChange('groupby_property', e.target.value)}
+          className="w-full p-2 border rounded"
+        />
+      </div>
+
+      <div className="flex justify-end space-x-2 mt-4">
+        <button
+          onClick={onCancel}
+          className="px-4 py-2 bg-gray-100 rounded hover:bg-gray-200 flex items-center gap-2"
+        >
+          <X size={16} />
+          Cancel
+        </button>
+        <button
+          onClick={() => onSave(editedQuery)}
+          className="px-4 py-2 bg-[#1c1468] text-white rounded hover:bg-[#130e4a] flex items-center gap-2"
+        >
+          <Save size={16} />
+          Save Changes
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const QueryVisualizer = () => {
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [data, setData] = useState([]);
   const [showSchema, setShowSchema] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:8000/data');
-        const jsonData = await response.json();
-        setData(jsonData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
     fetchData();
   }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/data');
+      const jsonData = await response.json();
+      setData(jsonData);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const handleUpdateQuery = async (updatedQuery) => {
+    try {
+      const response = await fetch('http://localhost:8000/update-query', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          index: currentIndex,
+          updated_query: updatedQuery,
+        }),
+      });
+
+      if (response.ok) {
+        await fetchData();
+        setIsEditing(false);
+      } else {
+        console.error('Failed to update query');
+      }
+    } catch (error) {
+      console.error('Error updating query:', error);
+    }
+  };
 
   if (!data.length) {
     return <div>Loading...</div>;
@@ -49,77 +189,39 @@ export default function QueryVisualizer() {
 
   const currentItem = data[currentIndex];
 
-  // Add logging to help debug
-  console.log('Current item:', currentItem);
-  console.log('Current index:', currentIndex);
-  console.log('Data length:', data.length);
-
-  // Add null checks
-  if (!currentItem) {
-    console.error('Current item is null');
-    return <div>Error: Invalid data</div>;
-  }
-
-  if (!currentItem.ground_truth_query) {
-    console.error('Missing ground truth query data:', currentItem);
-    return <div>Error: Invalid query data</div>;
-  }
-
   const handlePrevious = () => {
     setCurrentIndex((prev) => (prev > 0 ? prev - 1 : data.length - 1));
+    setIsEditing(false);
   };
 
   const handleNext = () => {
     setCurrentIndex((prev) => (prev < data.length - 1 ? prev + 1 : 0));
+    setIsEditing(false);
   };
-
-  const handleNextSchema = () => {
-    setCurrentIndex((prev) => {
-      const nextIndex = prev + 64;
-      return nextIndex < data.length ? nextIndex : prev;
-    });
-  };
-
-  const handlePrevSchema = () => {
-    setCurrentIndex((prev) => {
-      const prevIndex = prev - 64;
-      return prevIndex >= 0 ? prevIndex : prev;
-    });
-  };
-
   return (
-    <div className="w-full p-6">
-      <div className="flex items-center mb-8 relative">
-        <h1 className="text-3xl font-bold text-[#1c1468] absolute left-1/2 -translate-x-1/2">Dataset Visualizer</h1>
+    <div className="w-full p-6 min-h-screen bg-cover bg-center" style={{ backgroundImage: 'url("/background.png")' }}>
+      <div className="flex items-center mb-12 relative mt-8">
+        <h1 className="text-4xl font-bold text-[#1c1468] absolute left-1/2 -translate-x-1/2">Dataset Visualizer</h1>
+        <button
+          onClick={() => navigate('/search')}
+          className="px-4 py-2 bg-[#1c1468] text-white rounded-lg hover:bg-[#130e4a] flex items-center gap-2 ml-auto"
+        >
+          <Search size={16} />
+          Search Queries
+        </button>
       </div>
 
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-center mb-6 gap-8">
         <button
           onClick={handlePrevious}
           className="p-2 rounded bg-[#1c1468] text-white hover:bg-[#130e4a]"
         >
           <ChevronLeft size={24} />
         </button>
-        <div className="flex items-center gap-4">
-          <span className="text-lg font-semibold">
+        <div className="flex items-center">
+          <span className="text-2xl font-semibold">
             Query {currentIndex + 1} of {data.length}
           </span>
-          <div className="flex gap-2">
-            <button
-              onClick={handlePrevSchema}
-              className="flex items-center gap-2 px-4 py-2 rounded bg-gray-100 hover:bg-gray-200"
-            >
-              <Database size={16} />
-              Prev Schema
-            </button>
-            <button
-              onClick={handleNextSchema}
-              className="flex items-center gap-2 px-4 py-2 rounded bg-gray-100 hover:bg-gray-200"
-            >
-              <Database size={16} />
-              Next Schema
-            </button>
-          </div>
         </div>
         <button
           onClick={handleNext}
@@ -131,93 +233,81 @@ export default function QueryVisualizer() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="space-y-6">
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-bold mb-3">Natural Language Query</h2>
-            <p className="text-gray-700">{currentItem.natural_language_query}</p>
-          </div>
-
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-bold mb-3">Ground Truth Query</h2>
-            <div className="space-y-2">
-              <p><span className="font-semibold">Collection:</span> {currentItem.ground_truth_query?.target_collection || 'N/A'}</p>
-              {currentItem.ground_truth_query?.search_query && currentItem.ground_truth_query.search_query !== 'N/A' && (
-                <p><span className="font-semibold">Search Query:</span> {currentItem.ground_truth_query.search_query}</p>
-              )}
-              {currentItem.ground_truth_query?.integer_property_filter && (
-                <p>
-                  <span className="font-semibold">Filter:</span>{' '}
-                  {currentItem.ground_truth_query.integer_property_filter.property_name}{' '}
-                  {currentItem.ground_truth_query.integer_property_filter.operator}{' '}
-                  {currentItem.ground_truth_query.integer_property_filter.value}
-                </p>
-              )}
-              {currentItem.ground_truth_query?.integer_property_aggregation && (
-                <p>
-                  <span className="font-semibold">Aggregation:</span>{' '}
-                  {currentItem.ground_truth_query.integer_property_aggregation.metrics} of{' '}
-                  {currentItem.ground_truth_query.integer_property_aggregation.property_name}
-                </p>
-              )}
-              {currentItem.ground_truth_query?.groupby_property && (
-                <p><span className="font-semibold">Group By:</span> {currentItem.ground_truth_query.groupby_property}</p>
-              )}
-            </div>
-          </div>
-
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-bold mb-3">Predicted Query</h2>
-            {currentItem.predicted_query ? (
-              <div className="space-y-2">
-                <p><span className="font-semibold">Collection:</span> {currentItem.predicted_query.target_collection || 'N/A'}</p>
-                {currentItem.predicted_query.search_query && currentItem.predicted_query.search_query !== 'N/A' && (
-                  <p><span className="font-semibold">Search Query:</span> {currentItem.predicted_query.search_query}</p>
-                )}
-                {currentItem.predicted_query.integer_property_filter && (
-                  <p>
-                    <span className="font-semibold">Filter:</span>{' '}
-                    {currentItem.predicted_query.integer_property_filter.property_name}{' '}
-                    {currentItem.predicted_query.integer_property_filter.operator}{' '}
-                    {currentItem.predicted_query.integer_property_filter.value}
-                  </p>
-                )}
-                {currentItem.predicted_query.integer_property_aggregation && (
-                  <p>
-                    <span className="font-semibold">Aggregation:</span>{' '}
-                    {currentItem.predicted_query.integer_property_aggregation.metrics} of{' '}
-                    {currentItem.predicted_query.integer_property_aggregation.property_name}
-                  </p>
-                )}
-                {currentItem.predicted_query.groupby_property && (
-                  <p><span className="font-semibold">Group By:</span> {currentItem.predicted_query.groupby_property}</p>
-                )}
+          {JSON.parse(currentItem.database_schema).weaviate_collections.map((collection, idx) => (
+            <div key={idx} className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+              <div className="flex items-center gap-2 mb-4">
+                <Database className="text-[#1c1468]" size={20} />
+                <h3 className="text-lg font-semibold">{collection.name}</h3>
               </div>
-            ) : (
-              <div className="text-red-500">No tool called.</div>
-            )}
-          </div>
-
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-bold mb-3">AST Score</h2>
-            <div className="relative pt-1">
-              <div className="overflow-hidden h-6 text-xs flex rounded bg-[#e8fae3]">
-                <div
-                  style={{ width: `${(currentItem.ast_score || 0) * 100}%` }}
-                  className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-[#1c1468]"
-                >
-                  {((currentItem.ast_score || 0) * 100).toFixed(1)}%
-                </div>
+              <p className="text-sm text-gray-600 mb-4">{collection.envisioned_use_case_overview}</p>
+              <div className="space-y-3">
+                {collection.properties.map((prop, propIdx) => (
+                  <div key={propIdx} className="flex items-start gap-4 p-2 bg-white rounded border border-gray-100">
+                    <div className="flex-1">
+                      <p className="font-medium">{prop.name}</p>
+                      <p className="text-sm text-gray-500">{prop.description}</p>
+                    </div>
+                    <div className="text-sm px-2 py-1 rounded bg-[#e8fae3] text-[#1c1468]">
+                      {prop.data_type[0]}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
+          ))}
         </div>
 
         <div className="space-y-6">
-          <h2 className="text-xl font-bold">Database Schema</h2>
-          {currentItem.ground_truth_query.database_schema.weaviate_collections.map((collection, idx) => (
-            <SchemaVisualizer key={idx} collection={collection} />
-          ))}
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="flex justify-between items-center mb-3">
+              <h2 className="text-xl font-bold">Query Details</h2>
+              {!isEditing && (
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="p-2 rounded bg-[#1c1468] text-white hover:bg-[#130e4a] flex items-center gap-2"
+                >
+                  <Edit2 size={16} />
+                  Edit Query
+                </button>
+              )}
+            </div>
+            
+            {isEditing ? (
+              <QueryEditor
+                query={currentItem.query}
+                onSave={handleUpdateQuery}
+                onCancel={() => setIsEditing(false)}
+              />
+            ) : (
+              <div className="space-y-2">
+                <p><span className="font-semibold">Natural Language Query:</span> {currentItem.query.corresponding_natural_language_query}</p>
+                <p><span className="font-semibold">Collection:</span> {currentItem.query.target_collection}</p>
+                <p><span className="font-semibold">Search Query:</span> {currentItem.query.search_query}</p>
+                {currentItem.query.integer_property_filter && (
+                  <p>
+                    <span className="font-semibold">Filter:</span>{' '}
+                    {currentItem.query.integer_property_filter.property_name}{' '}
+                    {currentItem.query.integer_property_filter.operator}{' '}
+                    {currentItem.query.integer_property_filter.value}
+                  </p>
+                )}
+                {currentItem.query.integer_property_aggregation && (
+                  <p>
+                    <span className="font-semibold">Aggregation:</span>{' '}
+                    {currentItem.query.integer_property_aggregation.metrics} of{' '}
+                    {currentItem.query.integer_property_aggregation.property_name}
+                  </p>
+                )}
+                {currentItem.query.groupby_property && (
+                  <p><span className="font-semibold">Group By:</span> {currentItem.query.groupby_property}</p>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default QueryVisualizer;
