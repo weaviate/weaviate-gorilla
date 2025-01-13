@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Database, Search, Check, X, Edit2, Save } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Database, Search, Check, X, Edit2, Save, ChevronDown, ChevronUp, Plus, Trash2 } from 'lucide-react';
 
 const QueryEditor = ({ query, onSave, onCancel }) => {
   const [editedQuery, setEditedQuery] = useState(query);
@@ -22,11 +22,29 @@ const QueryEditor = ({ query, onSave, onCancel }) => {
     }));
   };
 
+  const addAggregation = () => {
+    setEditedQuery(prev => ({
+      ...prev,
+      aggregation: {
+        property_name: '',
+        operator: '',
+        value: ''
+      }
+    }));
+  };
+
+  const removeAggregation = () => {
+    setEditedQuery(prev => ({
+      ...prev,
+      aggregation: null
+    }));
+  };
+
   const handleAggregationChange = (field, value) => {
     setEditedQuery(prev => ({
       ...prev,
-      integer_property_aggregation: {
-        ...prev.integer_property_aggregation,
+      aggregation: {
+        ...prev.aggregation,
         [field]: value
       }
     }));
@@ -34,6 +52,11 @@ const QueryEditor = ({ query, onSave, onCancel }) => {
 
   return (
     <div className="space-y-4 bg-white p-6 rounded-lg shadow-md">
+      <div className="space-y-2">
+        <label className="block text-sm font-medium">Natural Language Query</label>
+        <p className="p-2 bg-gray-50 rounded border">{query.corresponding_natural_language_query}</p>
+      </div>
+
       <div className="space-y-2">
         <label className="block text-sm font-medium">Collection</label>
         <input
@@ -84,29 +107,58 @@ const QueryEditor = ({ query, onSave, onCancel }) => {
         </div>
       )}
 
-      {editedQuery.integer_property_aggregation && (
-        <div className="space-y-2">
+      {/* Aggregation Section */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
           <h3 className="font-medium">Aggregation</h3>
-          <div className="grid grid-cols-2 gap-2">
-            <select
-              value={editedQuery.integer_property_aggregation.metrics}
-              onChange={(e) => handleAggregationChange('metrics', e.target.value)}
-              className="p-2 border rounded"
+          {!editedQuery.aggregation && (
+            <button
+              onClick={addAggregation}
+              className="px-3 py-1 bg-green-100 text-green-700 rounded hover:bg-green-200 flex items-center gap-1 text-sm"
             >
-              <option value="MEAN">Mean</option>
-              <option value="SUM">Sum</option>
-              <option value="COUNT">Count</option>
-            </select>
-            <input
-              type="text"
-              value={editedQuery.integer_property_aggregation.property_name}
-              onChange={(e) => handleAggregationChange('property_name', e.target.value)}
-              className="p-2 border rounded"
-              placeholder="Property"
-            />
-          </div>
+              <Plus size={14} />
+              Add Aggregation
+            </button>
+          )}
         </div>
-      )}
+
+        {editedQuery.aggregation && (
+          <div className="p-3 border rounded-lg bg-gray-50">
+            <div className="flex justify-between items-center mb-2">
+              <h4 className="text-sm font-medium">Aggregation Settings</h4>
+              <button
+                onClick={removeAggregation}
+                className="text-red-600 hover:text-red-700"
+              >
+                <Trash2 size={14} />
+              </button>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              <input
+                type="text"
+                value={editedQuery.aggregation.property_name}
+                onChange={(e) => handleAggregationChange('property_name', e.target.value)}
+                className="p-2 border rounded"
+                placeholder="Property Name"
+              />
+              <input
+                type="text"
+                value={editedQuery.aggregation.operator}
+                onChange={(e) => handleAggregationChange('operator', e.target.value)}
+                className="p-2 border rounded"
+                placeholder="Operator"
+              />
+              <input
+                type="text"
+                value={editedQuery.aggregation.value}
+                onChange={(e) => handleAggregationChange('value', e.target.value)}
+                className="p-2 border rounded"
+                placeholder="Value"
+              />
+            </div>
+          </div>
+        )}
+      </div>
 
       <div className="space-y-2">
         <label className="block text-sm font-medium">Group By Property</label>
@@ -142,7 +194,7 @@ const QueryVisualizer = () => {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [data, setData] = useState([]);
-  const [showSchema, setShowSchema] = useState(true);
+  const [expandedSchemas, setExpandedSchemas] = useState({});
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
@@ -154,6 +206,12 @@ const QueryVisualizer = () => {
       const response = await fetch('http://localhost:8000/data');
       const jsonData = await response.json();
       setData(jsonData);
+      // Initialize expanded state for each schema to true (expanded by default)
+      const initialExpandedState = {};
+      jsonData[0]?.database_schema && JSON.parse(jsonData[0].database_schema).weaviate_collections.forEach((_, idx) => {
+        initialExpandedState[idx] = true;
+      });
+      setExpandedSchemas(initialExpandedState);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -198,6 +256,14 @@ const QueryVisualizer = () => {
     setCurrentIndex((prev) => (prev < data.length - 1 ? prev + 1 : 0));
     setIsEditing(false);
   };
+
+  const toggleSchema = (idx) => {
+    setExpandedSchemas(prev => ({
+      ...prev,
+      [idx]: !prev[idx]
+    }));
+  };
+
   return (
     <div className="w-full p-6 min-h-screen bg-cover bg-center" style={{ backgroundImage: 'url("/background.png")' }}>
       <div className="flex items-center mb-12 relative mt-8">
@@ -235,24 +301,36 @@ const QueryVisualizer = () => {
         <div className="space-y-6">
           {JSON.parse(currentItem.database_schema).weaviate_collections.map((collection, idx) => (
             <div key={idx} className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-              <div className="flex items-center gap-2 mb-4">
-                <Database className="text-[#1c1468]" size={20} />
-                <h3 className="text-lg font-semibold">{collection.name}</h3>
+              <div className="flex items-center justify-between gap-2 mb-4">
+                <div className="flex items-center gap-2">
+                  <Database className="text-[#1c1468]" size={20} />
+                  <h3 className="text-lg font-semibold">{collection.name}</h3>
+                </div>
+                <button
+                  onClick={() => toggleSchema(idx)}
+                  className="p-2 rounded bg-[#1c1468] text-white hover:bg-[#130e4a]"
+                >
+                  {expandedSchemas[idx] ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                </button>
               </div>
-              <p className="text-sm text-gray-600 mb-4">{collection.envisioned_use_case_overview}</p>
-              <div className="space-y-3">
-                {collection.properties.map((prop, propIdx) => (
-                  <div key={propIdx} className="flex items-start gap-4 p-2 bg-white rounded border border-gray-100">
-                    <div className="flex-1">
-                      <p className="font-medium">{prop.name}</p>
-                      <p className="text-sm text-gray-500">{prop.description}</p>
-                    </div>
-                    <div className="text-sm px-2 py-1 rounded bg-[#e8fae3] text-[#1c1468]">
-                      {prop.data_type[0]}
-                    </div>
+              {expandedSchemas[idx] && (
+                <>
+                  <p className="text-sm text-gray-600 mb-4">{collection.envisioned_use_case_overview}</p>
+                  <div className="space-y-3">
+                    {collection.properties.map((prop, propIdx) => (
+                      <div key={propIdx} className="flex items-start gap-4 p-2 bg-white rounded border border-gray-100">
+                        <div className="flex-1">
+                          <p className="font-medium">{prop.name}</p>
+                          <p className="text-sm text-gray-500">{prop.description}</p>
+                        </div>
+                        <div className="text-sm px-2 py-1 rounded bg-[#e8fae3] text-[#1c1468]">
+                          {prop.data_type[0]}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </>
+              )}
             </div>
           ))}
         </div>
@@ -291,11 +369,12 @@ const QueryVisualizer = () => {
                     {currentItem.query.integer_property_filter.value}
                   </p>
                 )}
-                {currentItem.query.integer_property_aggregation && (
+                {currentItem.query.aggregation && (
                   <p>
                     <span className="font-semibold">Aggregation:</span>{' '}
-                    {currentItem.query.integer_property_aggregation.metrics} of{' '}
-                    {currentItem.query.integer_property_aggregation.property_name}
+                    {currentItem.query.aggregation.operator} of{' '}
+                    {currentItem.query.aggregation.property_name}
+                    {currentItem.query.aggregation.value && ` (${currentItem.query.aggregation.value})`}
                   </p>
                 )}
                 {currentItem.query.groupby_property && (
