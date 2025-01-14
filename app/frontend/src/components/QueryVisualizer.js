@@ -527,60 +527,63 @@ const QueryVisualizer = () => {
         const parsedResult = JSON.parse(result);
         // If parsing succeeded, we can optionally handle old logic here:
         return (
-          <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+          <div>
             <h3 className="text-lg font-semibold mb-4">Query Result</h3>
-  
-            {/* If your backend still sometimes returns a structured JSON result: */}
-            {parsedResult.integer_aggregation_result !== undefined && (
-              <div className="mb-4">
-                <h4 className="font-medium text-sm text-gray-700">Integer Aggregation</h4>
-                <p className="text-lg">{parsedResult.integer_aggregation_result}</p>
-              </div>
-            )}
-  
-            {parsedResult.text_aggregation_result && (
-              <div className="mb-4">
-                <h4 className="font-medium text-sm text-gray-700">Text Aggregation</h4>
-                {Array.isArray(parsedResult.text_aggregation_result) ? (
-                  <ul className="list-disc pl-5">
-                    {parsedResult.text_aggregation_result.map((item, idx) => (
-                      <li key={idx}>{item}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-lg">{parsedResult.text_aggregation_result}</p>
-                )}
-              </div>
-            )}
-  
-            {parsedResult.boolean_aggregation_result !== undefined && (
-              <div className="mb-4">
-                <h4 className="font-medium text-sm text-gray-700">Boolean Aggregation</h4>
-                <p className="text-lg">
-                  {typeof parsedResult.boolean_aggregation_result === 'boolean'
-                    ? parsedResult.boolean_aggregation_result.toString()
-                    : parsedResult.boolean_aggregation_result}
-                </p>
-              </div>
-            )}
-  
-            {parsedResult.filtered_objects && parsedResult.filtered_objects.length > 0 && (
-              <div>
-                <h4 className="font-medium text-sm text-gray-700 mb-2">Filtered Objects</h4>
-                <div className="max-h-60 overflow-y-auto">
-                  <pre className="bg-gray-100 p-3 rounded text-sm whitespace-pre-wrap">
-                    {JSON.stringify(parsedResult.filtered_objects, null, 2)}
-                  </pre>
+            <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+              {/* If your backend still sometimes returns a structured JSON result: */}
+              {parsedResult.integer_aggregation_result !== undefined && (
+                <div className="mb-4">
+                  <h4 className="font-medium text-sm text-gray-700">Integer Aggregation</h4>
+                  <p className="text-lg">{parsedResult.integer_aggregation_result}</p>
                 </div>
-              </div>
-            )}
+              )}
+  
+              {parsedResult.text_aggregation_result && (
+                <div className="mb-4">
+                  <h4 className="font-medium text-sm text-gray-700">Text Aggregation</h4>
+                  {Array.isArray(parsedResult.text_aggregation_result) ? (
+                    <ul className="list-disc pl-5">
+                      {parsedResult.text_aggregation_result.map((item, idx) => (
+                        <li key={idx}>{item}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-lg">{parsedResult.text_aggregation_result}</p>
+                  )}
+                </div>
+              )}
+  
+              {parsedResult.boolean_aggregation_result !== undefined && (
+                <div className="mb-4">
+                  <h4 className="font-medium text-sm text-gray-700">Boolean Aggregation</h4>
+                  <p className="text-lg">
+                    {typeof parsedResult.boolean_aggregation_result === 'boolean'
+                      ? parsedResult.boolean_aggregation_result.toString()
+                      : parsedResult.boolean_aggregation_result}
+                  </p>
+                </div>
+              )}
+  
+              {parsedResult.filtered_objects && parsedResult.filtered_objects.length > 0 && (
+                <div>
+                  <h4 className="font-medium text-sm text-gray-700 mb-2">Filtered Objects</h4>
+                  <div className="max-h-60 overflow-y-auto">
+                    <pre className="bg-gray-100 p-3 rounded text-sm whitespace-pre-wrap">
+                      {JSON.stringify(parsedResult.filtered_objects, null, 2)}
+                    </pre>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         );
       } catch (error) {
         return (
-          <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-            <h3 className="text-lg font-semibold mb-4">Query Result</h3>
-            <pre className="whitespace-pre-wrap">{result}</pre>
+          <div>
+            <h3 className="text-xl font-semibold mb-4 mt-6">Query Execution Result</h3>
+            <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <pre className="whitespace-pre-wrap">{result}</pre>
+            </div>
           </div>
         );
       }
@@ -589,13 +592,14 @@ const QueryVisualizer = () => {
     // If it's not a string (e.g., already an object), fall back to your old rendering logic
     const parsedResult = result;
     return (
-      <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+      <div>
         <h3 className="text-lg font-semibold mb-4">Query Result</h3>
-        {/* ...same logic as above for parsed objects... */}
+        <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+          {/* ...same logic as above for parsed objects... */}
+        </div>
       </div>
     );
   };
-  
 
   return (
     <div className="w-full p-6 min-h-screen bg-cover bg-center" style={{ backgroundImage: 'url("/background.png")' }}>
