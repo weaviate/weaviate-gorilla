@@ -22,7 +22,7 @@ weaviate_client = weaviate.connect_to_weaviate_cloud(
 print("Successfully connected to Weaviate...")
 
 # Load queries from JSON file
-with open('../../data/synthetic-weaviate-queries-with-schemas.json') as f:
+with open('./synthetic-weaviate-queries-with-schemas.json') as f:
     queries = json.load(f)
 
 # Track created collections to avoid duplicates
@@ -102,7 +102,7 @@ for query_data in queries:
         print("Successfully re-connected to Weaviate...")
 
 # Save updated queries to new file
-output_path = '../../data/synthetic-weaviate-queries-with-results.json'
+output_path = './synthetic-weaviate-queries-with-results.json'
 with open(output_path, 'w') as f:
     json.dump(queries, f, indent=4)
 
