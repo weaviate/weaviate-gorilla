@@ -92,6 +92,10 @@ class BaseExperiment(ABC):
             model_name=config.model_name,
             api_key=config.api_key
         )
+        # Initialize metrics tracking
+        self.total_ast_score = 0.0
+        self.perfect_matches = 0
+        self.total_queries = 0
 
     @abstractmethod
     def build_tools(self, collections_description: str, collections_enum: List[str]) -> List[Tool]:
@@ -123,6 +127,17 @@ class BaseExperiment(ABC):
             
             if result.error is None:
                 successful_predictions += 1
+                # Update metrics
+                self.total_queries += 1
+                self.total_ast_score += result.ast_score
+                if result.ast_score == 1.0:
+                    self.perfect_matches += 1
+                # Print current metrics
+                avg_ast = self.total_ast_score / self.total_queries
+                perfect_pct = (self.perfect_matches / self.total_queries) * 100
+                print(f"\033[93mCurrent Metrics (After {self.total_queries} queries):")
+                print(f"Average AST Score: {avg_ast:.3f}")
+                print(f"Perfect Matches: {self.perfect_matches}/{self.total_queries} ({perfect_pct:.1f}%)\033[0m")
             else:
                 failed_predictions += 1
 
@@ -232,6 +247,46 @@ class BaseExperiment(ABC):
             ast_score=0.0,
             error=error
         )
+
+    def _create_summary(self, queries: List[WeaviateQueryWithSchema], successful_predictions: int,
+                       failed_predictions: int, detailed_results: List[QueryPredictionResult],
+                       per_schema_scores: Dict[int, float]) -> ExperimentSummary:
+        """Create a summary of experiment results."""
+        return ExperimentSummary(
+            timestamp=datetime.now().isoformat(),
+            model_provider=self.config.model_provider,
+            model_name=self.config.model_name,
+            experiment_type=self.config.experiment_type,
+            total_queries=len(queries),
+            successful_predictions=successful_predictions,
+            failed_predictions=failed_predictions,
+            average_ast_score=self.total_ast_score / self.total_queries if self.total_queries > 0 else 0.0,
+            perfect_matches=self.perfect_matches,
+            per_schema_scores=per_schema_scores,
+            detailed_results=detailed_results
+        )
+
+    def _save_results(self, summary: ExperimentSummary):
+        """Save experiment results to a file."""
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"experiment_results_{timestamp}.json"
+        with open(filename, 'w') as f:
+            json.dump(summary.model_dump(), f, indent=2)
+        print(f"\nResults saved to {filename}")
+
+    def _print_summary(self, summary: ExperimentSummary):
+        """Print experiment summary."""
+        print("\n=== Experiment Summary ===")
+        print(f"Model: {summary.model_provider}/{summary.model_name}")
+        print(f"Experiment Type: {summary.experiment_type}")
+        print(f"Total Queries: {summary.total_queries}")
+        print(f"Successful Predictions: {summary.successful_predictions}")
+        print(f"Failed Predictions: {summary.failed_predictions}")
+        print(f"Average AST Score: {summary.average_ast_score:.3f}")
+        print(f"Perfect Matches: {summary.perfect_matches}")
+        print("\nPer Schema Scores:")
+        for schema_idx, score in summary.per_schema_scores.items():
+            print(f"Schema {schema_idx}: {score:.3f}")
 
 class StandardExperiment(BaseExperiment):
     """Standard experiment implementation."""
@@ -346,10 +401,10 @@ if __name__ == "__main__":
     # Example usage of the unified framework
     config = ExperimentConfig(
         model_provider="openai",
-        model_name="gpt-4o",
+        model_name="gpt-4o-mini",
         api_key=os.getenv("OPENAI_API_KEY"),
         experiment_type="standard",
-        generate_with_models=True
+        generate_with_models=False
     )
     
     experiment = create_experiment(config)

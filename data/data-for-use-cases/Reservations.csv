@@ -1,0 +1,4 @@
+reservationName,notes,partySize,confirmed
+"Smith, John","Anniversary celebration - requesting quiet corner table. Would like champagne ready upon arrival.",2,true
+"Garcia Family","Birthday dinner for daughter (turning 8). Allergic to nuts.",6,true
+"Johnson, Sarah","Business dinner - may arrive 10 minutes late.",4,false

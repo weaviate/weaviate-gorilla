@@ -1,7 +1,9 @@
 # uvicorn main:app --reload
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from typing import Optional, Dict, Any
 
 app = FastAPI()
 
@@ -17,17 +19,61 @@ app.add_middleware(
 import json
 import os
 
-with open("gpt-4o-experiment-results-with-models.json", 'r') as f:
-    sample_data = json.load(f)
+QUERIES_FILE = "synthetic-weaviate-queries-with-results.json"
 
-print(sample_data["detailed_results"][0])
+with open(QUERIES_FILE, 'r') as f:
+    synthetic_query_data = json.load(f)
 
+print(synthetic_query_data[0]["query"]["corresponding_natural_language_query"])
+
+# Example of the first row:
 '''
-Example of the first row:
-
-{'query_index': 0, 'database_schema_index': 0, 'natural_language_query': 'Find average and maximum prices of vegetarian dishes that mention "spicy" in their name or description and group the results by dish category.', 'ground_truth_query': {'database_schema': {'weaviate_collections': [{'name': 'RestaurantMenu', 'properties': [{'name': 'DishName', 'data_type': ['string'], 'description': 'The name of the dish offered in the restaurant menu.'}, {'name': 'Price', 'data_type': ['number'], 'description': 'The price of the dish.'}, {'name': 'IsVegetarian', 'data_type': ['boolean'], 'description': 'Indicates if the dish is vegetarian.'}], 'envisioned_use_case_overview': 'The RestaurantMenu collection stores details about each dish offered in a restaurant, including their names, prices, and vegetarian status. This information allows for menu management and facilitates the creation of customer-friendly menu displays.'}, {'name': 'CustomerOrders', 'properties': [{'name': 'CustomerName', 'data_type': ['string'], 'description': 'The name of the customer who places the order.'}, {'name': 'TotalAmount', 'data_type': ['number'], 'description': "The total amount for the customer's order."}, {'name': 'IsTakeaway', 'data_type': ['boolean'], 'description': 'Indicates whether the order is for takeaway or dine-in.'}], 'envisioned_use_case_overview': 'The CustomerOrders collection captures details of customer orders, including their names, total amounts, and whether the orders are takeaway. This collection helps in processing orders and managing order histories.'}, {'name': 'StaffMembers', 'properties': [{'name': 'StaffName', 'data_type': ['string'], 'description': 'The name of the staff member.'}, {'name': 'ExperienceYears', 'data_type': ['number'], 'description': 'The number of years of experience the staff member has.'}, {'name': 'IsOnDuty', 'data_type': ['boolean'], 'description': 'Indicates if the staff member is currently on duty.'}], 'envisioned_use_case_overview': "The StaffMembers collection maintains information about the restaurant's staff, including their names, experience, and current duty status. This collection is essential for scheduling and managing staffing levels."}]}, 'corresponding_natural_language_query': 'Find average and maximum prices of vegetarian dishes that mention "spicy" in their name or description and group the results by dish category.', 'target_collection': 'RestaurantMenu', 'search_query': 'vegetarian spicy', 'integer_property_filter': {'property_name': 'isVegetarian', 'operator': '=', 'value': 1}, 'text_property_filter': None, 'boolean_property_filter': None, 'integer_property_aggregation': {'property_name': 'price', 'metrics': 'MIN'}, 'text_property_aggregation': None, 'boolean_property_aggregation': None, 'groupby_property': 'category'}, 'predicted_query': {'corresponding_natural_language_query': 'Find average and maximum prices of vegetarian dishes that mention "spicy" in their name or description and group the results by dish category.', 'target_collection': 'RestaurantMenu', 'search_query': None, 'integer_property_filter': None, 'text_property_filter': None, 'boolean_property_filter': None, 'integer_property_aggregation': None, 'text_property_aggregation': None, 'boolean_property_aggregation': None, 'groupby_property': None}, 'ast_score': 0.6000000000000001, 'error': None}
+{
+    "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",...}]}",
+    "query": {
+        "corresponding_natural_language_query": "What is the average price of seasonal specialty menu items under $20, grouped by whether they are vegetarian or not?",
+        "target_collection": "Menus",
+        "search_query": "seasonal specialties",
+        "integer_property_filter": {
+            "property_name": "price",
+            "operator": "<",
+            "value": 20
+        },
+        "text_property_filter": null,
+        "boolean_property_filter": null,
+        "integer_property_aggregation": {
+            "property_name": "price",
+            "metrics": "MEAN"
+        },
+        "text_property_aggregation": null,
+        "boolean_property_aggregation": null,
+        "groupby_property": "isVegetarian"
+    },
+    "ground_truth_query_result": "Grouped aggregation results:\n----------------------------------------\nGroup: isVegetarian = true\nProperty: price\n  mean: 15.5\nGroup count: 2\n----------------------------------------\nGroup: isVegetarian = false\nProperty: price\n  mean: 17.0\nGroup count: 1\n"
+}
 '''
 
 @app.get("/data")
 async def get_data():
-    return sample_data["detailed_results"]
+    return synthetic_query_data
+
+class QueryUpdate(BaseModel):
+    index: int
+    updated_query: Dict[Any, Any]
+    updated_result: str
+
+@app.put("/update-query")
+async def update_query(query_update: QueryUpdate):
+    try:
+        if 0 <= query_update.index < len(synthetic_query_data):
+            synthetic_query_data[query_update.index]["query"] = query_update.updated_query
+            synthetic_query_data[query_update.index]["ground_truth_query_result"] = query_update.updated_result
+            
+            with open(QUERIES_FILE, 'w') as f:
+                json.dump(synthetic_query_data, f, indent=2)
+                
+            return {"message": "Query and result updated successfully"}
+        else:
+            raise HTTPException(status_code=404, detail="Query index not found")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))

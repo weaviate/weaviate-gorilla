@@ -12,6 +12,10 @@ from src.utils.weaviate_fc_utils import (
     CohereTool,
     TogetherAITool
 )
+from src.lm.db_gorilla_prompts import (
+    zero_shot_baseline,
+    weaviate_query_api_docs
+)
 import json
 import time
 
@@ -179,6 +183,9 @@ class LMService():
             tools: list[OpenAITool] | list[AnthropicTool] | list[OllamaTool] | list[CohereTool] | list[TogetherAITool],
             parallel_tool_calls: bool = False
         ) -> dict | None:
+        # enhance prompt here
+        enhanced_prompt = weaviate_query_api_docs + "\n" + prompt
+        prompt = enhanced_prompt
         if self.model_provider == "openai":
             messages = [
                 {
@@ -238,6 +245,10 @@ class LMService():
                 try:
                     messages = [
                         {
+                            "role": "system",
+                            "content": "You are a helpful assistant. Use the supplied tools to assist the user."
+                        },
+                        {
                             "role": "user",
                             "content": prompt
                         }
@@ -267,6 +278,10 @@ class LMService():
 
         if self.model_provider == "cohere":
             messages = [
+                {
+                    "role": "system",
+                    "content": "You are a helpful assistant. Use the supplied tools to assist the user."
+                },
                 {
                     "role": "user",
                     "content": prompt
