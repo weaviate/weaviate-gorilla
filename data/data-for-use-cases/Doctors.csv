@@ -1,4 +1,53 @@
 doctorName,expertise,yearsOfExperience,currentlyPracticing
 "Dr. Sarah Chen","Board-certified family physician with additional training in geriatric care and chronic disease management. Special interest in preventive medicine and lifestyle modifications for health optimization.",15,true
 "Dr. Michael Rodriguez","Interventional cardiologist specializing in complex cardiac procedures and structural heart disease. Expertise in advanced cardiac imaging and minimally invasive treatments.",20,true
-"Dr. Emily Thompson","Obstetrics and gynecology specialist with focus on high-risk pregnancies and minimally invasive surgery. Additional expertise in reproductive endocrinology.",12,trues
+"Dr. Emily Thompson","Obstetrics and gynecology specialist with focus on high-risk pregnancies and minimally invasive surgery. Additional expertise in reproductive endocrinology.",12,true
+"Dr. Daniel Bennett","Pediatrician experienced in developmental disorders and adolescent medicine. Advocates for child wellness and preventative care.",10,true
+"Dr. Alicia Rivera","Endocrinologist focusing on diabetes, thyroid disorders, and hormonal imbalances. Research interests include gestational diabetes.",8,true
+"Dr. Robert Wilson","Orthopedic surgeon specialized in sports injuries and joint replacement. Skilled in arthroscopic and minimally invasive procedures.",25,false
+"Dr. Jennifer Morales","Licensed clinical psychologist with an emphasis on cognitive behavioral therapy. Special interest in adolescent mental health.",14,true
+"Dr. Liam Carter","Gastroenterologist proficient in endoscopic procedures and inflammatory bowel disease management. Emphasizes patient education.",18,true
+"Dr. Ava Collins","Neurologist specializing in multiple sclerosis and migraine management. Conducts clinical trials for new treatment protocols.",12,true
+"Dr. Ethan Mitchell","Pulmonologist focusing on asthma, COPD, and sleep apnea. Active in research on novel inhalation therapies.",9,false
+"Dr. Chloe Patel","Allergist and immunologist with expertise in pediatric food allergies and immunotherapy. Advocates personalized treatment plans.",6,true
+"Dr. David Yu","Dermatologist specializing in skin cancer detection and cosmetic dermatology. Runs community outreach for sun safety.",22,true
+"Dr. Sophia Turner","Cardiothoracic surgeon focusing on valve repair and robotic-assisted coronary bypass. Invested in patient rehabilitation programs.",19,true
+"Dr. Leo Hawkins","Psychiatrist with experience in mood disorders, addiction medicine, and dual diagnosis treatment. Combines therapy and medication management.",16,true
+"Dr. Grace Lincoln","Oncologist focusing on breast and ovarian cancers. Leads clinical research on targeted therapies and patient quality of life.",13,false
+"Dr. Victor Maxwell","Family practice physician providing comprehensive care across all ages. Special interest in preventative screenings and community health.",7,true
+"Dr. Isabelle Gomez","Gynecologic oncologist with expertise in minimally invasive cancer surgeries. Active in research on genetic predispositions.",11,true
+"Dr. George Perry","Endovascular neurosurgeon specializing in stroke intervention and aneurysm repair. Skilled in advanced catheter-based treatments.",15,true
+"Dr. Felicia Rousseau","Psychiatrist emphasizing holistic approaches, including lifestyle interventions for anxiety, depression, and PTSD.",20,false
+"Dr. Henry Adams","General surgeon experienced in laparoscopic and robotic procedures. Specializes in hernia repairs and gallbladder surgery.",9,true
+"Dr. Maria Sandoval","Rheumatologist focusing on autoimmune disorders such as lupus and rheumatoid arthritis. Utilizes targeted biologic treatments.",17,true
+"Dr. Audrey Brooks","Neonatologist offering critical care to newborns, especially premature infants. Researches neonatal nutrition and development.",10,true
+"Dr. Oliver Price","Interventional radiologist specializing in image-guided cancer treatments. Skilled in chemoembolization and ablation therapies.",14,true
+"Dr. Fiona Gupta","Hematologist specializing in blood cancers and clotting disorders. Works closely with transplant teams for advanced care.",18,true
+"Dr. Calvin Rogers","Internal medicine specialist focusing on chronic disease management. Passionate about patient-centered primary care.",12,false
+"Dr. Emma Franco","Occupational medicine physician specializing in work-related injuries and wellness programs in corporate settings.",8,true
+"Dr. Antonio Russo","Plastic and reconstructive surgeon with focus on microsurgery, burn care, and complex reconstructive procedures.",22,true
+"Dr. Diana Vogel","Ophthalmologist with experience in cataract and LASIK surgery. Conducts research on macular degeneration treatments.",16,true
+"Dr. Marcus Alvarez","Geriatric psychiatrist specializing in dementia and late-life depression. Employs family-centric therapy models.",19,true
+"Dr. Valerie Knight","Orthodontist providing braces, clear aligners, and corrective jaw treatments. Emphasizes patient comfort and modern techniques.",9,false
+"Dr. Spencer Hammond","Orthopedic trauma surgeon experienced in fracture management and limb reconstruction. Supports community education on injury prevention.",12,true
+"Dr. Tara Light","Anesthesiologist focusing on pain management and regional anesthesia. Pioneering new approaches to multimodal pain relief.",14,true
+"Dr. William Morgan","Clinical geneticist providing counseling and testing for hereditary conditions. Collaborates with multiple subspecialties for management.",7,true
+"Dr. Camille Reed","Pediatric cardiologist focusing on congenital heart defects and cardiac imaging. Advocates for family-centered care.",15,false
+"Dr. Jonathan Patel","Interventional pulmonologist performing complex bronchoscopic procedures and lung volume reduction therapy for COPD.",20,true
+"Dr. Rebecca Brown","Endocrine surgeon specializing in thyroid, parathyroid, and adrenal gland conditions. Implements minimally invasive techniques.",11,true
+"Dr. Xavier Stone","Gastrointestinal oncologist dedicated to colorectal and pancreatic cancer management. Emphasizes early screening and education.",16,true
+"Dr. Lillian Castro","Acute care surgeon focusing on trauma resuscitation and critical care. Leads quality improvement initiatives for trauma services.",21,false
+"Dr. Wesley Lowe","Sports medicine physician skilled in ultrasound-guided injections, concussion management, and athletic injury prevention.",6,true
+"Dr. Penelope Hughes","OB/GYN practicing routine obstetrics, family planning, and annual well-woman exams. Conducts research on postpartum recovery.",8,true
+"Dr. Adrian Li","Pediatric allergist specializing in atopic dermatitis and immunologic disorders. Develops personalized desensitization protocols.",10,true
+"Dr. Francesca Zanetti","Neurologist specializing in neurodegenerative diseases like Parkinson’s and Alzheimer’s. Focus on early detection methods.",24,false
+"Dr. Silvia Morales","Ear, nose, and throat surgeon with a focus on sinus disorders and head & neck surgery. Skilled in endoscopic procedures.",14,true
+"Dr. Omar Najjar","Nephrologist managing chronic kidney disease, dialysis, and transplantation referrals. Advocates for nutritional interventions.",18,true
+"Dr. Helena Porter","Pediatric endocrinologist focusing on type 1 diabetes and growth disorders. Active in clinical trials for new insulin therapies.",9,true
+"Dr. Leo Sanders","Interventional cardiologist specializing in stent placements and electrophysiology studies. Interested in tele-cardiology advancements.",16,false
+"Dr. Amanda King","Geriatrician focusing on cognitive health, medication optimization, and in-home care models for the elderly.",25,true
+"Dr. Diego Ramirez","Pediatric surgeon skilled in minimally invasive techniques. Researches neonatal surgical outcomes and advanced laparoscopic methods.",13,true
+"Dr. Marissa Shaw","Hospitalist overseeing inpatient care coordination. Guides multidisciplinary teams to ensure efficient patient transitions.",8,true
+"Dr. Charles Winston","Psychiatrist specialized in addiction and substance use disorders. Uses medication-assisted treatment and group therapy.",17,true
+"Dr. Harriet Fox","Family medicine physician with an emphasis on women's health and family planning. Supports local community clinics.",5,true
+"Dr. Amir Khan","Interventional pain specialist focusing on spine injections, nerve blocks, and emerging neuromodulation technologies.",15,true

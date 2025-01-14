@@ -2,3 +2,53 @@ clinicName,description,averagePatientSatisfaction,acceptingNewPatients
 "Evergreen Family Practice","A comprehensive family medicine clinic offering preventive care, chronic disease management, and pediatric services. Features modern facilities with an emphasis on holistic health approaches and patient education.",4.8,true
 "Metropolitan Cardiology Center","Specialized cardiac care facility equipped with state-of-the-art diagnostic equipment. Offers comprehensive cardiovascular services including preventive cardiology, interventional procedures, and rehabilitation programs.",4.6,false
 "Wellness Women's Health","Dedicated women's health clinic providing gynecological care, obstetrics, and preventive health services. Offers a supportive environment with focus on personalized care and patient comfort.",4.9,true
+"Downtown Urgent Care","Immediate care for minor illnesses and injuries. Extended hours and walk-in appointments, with x-ray and lab services on-site.",4.5,true
+"Northside Pediatric Clinic","Specialized in child healthcare from infancy to adolescence. Offers immunizations, well-child visits, and developmental screenings.",4.7,true
+"Coastal Dermatology and Skincare","Expert dermatologists providing skin cancer screenings, acne treatment, and cosmetic procedures. Emphasizes patient education and prevention.",4.6,true
+"Harmony Mental Health Center","Comprehensive mental health services including counseling, psychiatric evaluations, and medication management in a supportive environment.",4.4,false
+"Oakridge Geriatric Wellness","Focused on senior care with services such as memory care, fall prevention programs, and chronic disease management.",4.3,true
+"Sunrise Physical Therapy","Therapeutic services for post-surgery rehab, sports injuries, and chronic pain management. Hands-on approach with individualized plans.",4.2,true
+"Global Travel Vaccination Clinic","Provides international travel vaccinations, health advisories, and prophylactic treatments. Offers tailored plans for all travel destinations.",4.7,false
+"Smile Bright Dental Center","General and cosmetic dentistry services including cleanings, orthodontics, and whitening treatments. Modern facility with digital imaging.",4.8,true
+"Urban Health Collective","Multidisciplinary practice offering primary care, mental health, and community outreach programs to underserved populations.",4.6,false
+"Harbor Eye Care","Comprehensive ophthalmology services such as cataract surgery, LASIK evaluations, and routine vision checks.",4.5,true
+"Mesa Endocrinology Associates","Specialized in diabetes, thyroid disorders, and hormonal imbalances. Provides advanced diagnostic tools and personalized treatment plans.",4.3,true
+"South Valley Orthopedic Center","Expert orthopedic surgeons specializing in joint replacement, sports medicine, and spinal conditions.",4.5,false
+"Greenleaf Holistic Healing","Holistic healthcare clinic offering acupuncture, naturopathy, and herbal medicine. Focused on treating root causes of illness.",4.6,true
+"Skyline Oncology Institute","Advanced cancer care facility providing chemotherapy, radiation therapy, and targeted treatments. Offers patient support groups and counseling.",4.7,false
+"Birchwood Allergy and Asthma","Diagnostic testing and treatment for allergies and asthma. Emphasizes immunotherapy and personalized allergy management plans.",4.1,true
+"Cascade Gastroenterology","Expert care for digestive disorders, colonoscopies, and nutritional counseling. State-of-the-art endoscopic suites.",4.2,true
+"Lakeview Nephrology","Focused on kidney function, dialysis management, and transplant coordination. Works closely with nutritionists for optimal patient outcomes.",4.3,false
+"Urban Pediatrics and Adolescent Health","Full-spectrum pediatric care including teen wellness checks, mental health screening, and immunizations.",4.8,true
+"Grand Avenue Rehabilitation","Inpatient and outpatient rehabilitation services for stroke, neurological, and orthopedic recovery. Multidisciplinary therapy approach.",4.5,true
+"Lotus Women’s Wellness","Holistic women’s health center offering OB/GYN services, prenatal classes, and fertility counseling. Creates individualized birth plans.",4.6,true
+"Riverside Urgent Orthopedics","Walk-in orthopedic care for fractures, sprains, and acute sports injuries. Quick imaging and same-day treatment available.",4.4,false
+"Central Sleep Medicine Clinic","Diagnostic sleep studies and treatment for insomnia, sleep apnea, and narcolepsy. Offers CPAP fittings and follow-up care.",4.1,true
+"Hawthorne Neurology and Brain Health","Treatment of neurological conditions such as migraines, epilepsy, and multiple sclerosis. Focus on early intervention and research.",4.2,true
+"Sunbeam Pediatric Dentistry","Child-focused dental care with a playful environment. Specialized in cavity prevention and orthodontic assessments for children.",4.9,true
+"Bayview Urology Center","Expertise in urological conditions including kidney stones, prostate health, and incontinence. Minimally invasive surgical options.",4.4,false
+"Everest Pulmonology Group","Comprehensive lung health services including asthma management, COPD care, and sleep-related breathing disorders.",4.3,true
+"Grace Oncology Support","Outpatient cancer treatment center offering chemotherapy, radiation, and immunotherapy. On-site nutrition and counseling support.",4.7,true
+"CardioPlus Heart Clinic","Preventive cardiology and advanced diagnostic imaging. Provides stress testing, echocardiograms, and vascular evaluations.",4.8,false
+"Sycamore Family Dentistry","Routine cleanings, restorative work, and cosmetic procedures. Patient education on proper oral hygiene emphasized.",4.6,true
+"Brookside Infectious Disease Center","Focuses on managing chronic infections, HIV care, and travel-related illnesses. Offers on-site lab and vaccination clinic.",4.2,true
+"Willow Women’s Fertility","Fertility evaluations, IVF, and reproductive endocrinology. Provides emotional support and guidance throughout treatment.",4.7,false
+"Meridian Spine and Pain Clinic","Interventional pain management treatments for chronic back pain and degenerative disc disease. Multi-modal therapy approach.",4.5,true
+"Caring Hearts Pediatrics","Specialized care for children with congenital and chronic conditions. Emphasizes support for families and care coordination.",4.6,true
+"Everglade ENT Associates","Diagnosis and treatment of ear, nose, and throat conditions including hearing loss, sinusitis, and voice disorders.",4.5,true
+"Eastside Geriatric Care","Primary and specialty care for seniors, focusing on mobility, cognitive health, and coordinated disease management.",4.4,false
+"Tranquil Mind Psychology","Outpatient mental health clinic offering therapy for anxiety, depression, and stress-related disorders. Group sessions available.",4.8,true
+"Redwood Holistic Pediatrics","Blends conventional medicine with integrative therapies for children. Emphasizes nutrition, lifestyle, and preventive approaches.",4.6,true
+"Summit Respiratory Therapy","Specialized in asthma, COPD, and other chronic respiratory conditions. Offers pulmonary rehab and smoking cessation programs.",4.3,true
+"Sunset Infusion Center","Outpatient infusion therapy for autoimmune and chronic conditions. Private infusion suites with comfortable amenities.",4.1,false
+"Lakeside Rheumatology","Manages rheumatoid arthritis, lupus, and other autoimmune disorders. Uses advanced biologic treatments and patient education.",4.5,true
+"Meadowbrook Primary Care","Comprehensive family practice including preventive care, minor procedures, and chronic disease management.",4.4,true
+"Bright Care Ophthalmology","Eye exams, cataract surgeries, and laser vision correction. Advanced diagnostics for glaucoma and retinal diseases.",4.3,false
+"Serenity Women's Clinic","Focus on menopause management, hormone therapy, and annual well-woman exams. Personalized care for each life stage.",4.9,true
+"Northbridge Sports Medicine","Injury prevention, rehabilitation, and performance optimization for athletes. Works closely with trainers and physical therapists.",4.6,true
+"Horizon Medical Associates","Group practice offering internal medicine, endocrinology, and geriatric care. Emphasizes coordinated patient-centered care.",4.7,true
+"Willow Creek Psychiatry","Medication management and psychotherapy for mood disorders, ADHD, and anxiety. Offers telepsychiatry services.",4.3,false
+"GenHope Genetics and Counseling","Genetic testing, counseling, and screening for inherited diseases. Works with families to assess risks and options.",4.5,true
+"Opal Women’s Imaging","Dedicated to mammography, ultrasound, and bone density scanning. Warm environment ensuring patient comfort and swift results.",4.8,true
+"Lighthouse Pediatric Cardiology","Specialized cardiac care for children. Offers echocardiograms, fetal cardiology, and post-surgical follow-up.",4.6,true
+"Riverton Women’s and Children’s Center","Combined women’s health and pediatric services. Provides OB/GYN care, pediatric check-ups, and lactation support.",4.4,false

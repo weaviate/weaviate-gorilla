@@ -81,14 +81,25 @@ print("Successfully created schema and populated collections with data")
 
 # Execute all queries and store results
 print("\nExecuting queries and storing results...")
+failed_queries = 0
 for query_data in queries:
-    print("\nQuery:", query_data['query']['corresponding_natural_language_query'])
     query = WeaviateQuery(**query_data['query'])
     try:
         result = execute_weaviate_query(weaviate_client, query)
         query_data['ground_truth_query_result'] = result
-        print("\033[92mQuery executed successfully\033[0m")  # Green text
     except Exception as e:
+        failed_queries += 1
+        print("\nQuery:", query_data['query']['corresponding_natural_language_query'])
+        print("\nQuery details:")
+        print(f"Target collection: {query.target_collection}")
+        print(f"Search query: {query.search_query}")
+        print(f"Integer filters: {query.integer_property_filter}")
+        print(f"Text filters: {query.text_property_filter}")
+        print(f"Boolean filters: {query.boolean_property_filter}")
+        print(f"Integer aggregations: {query.integer_property_aggregation}")
+        print(f"Text aggregations: {query.text_property_aggregation}")
+        print(f"Boolean aggregations: {query.boolean_property_aggregation}")
+        print(f"Group by: {query.groupby_property}")
         print(f"\033[91mQuery execution failed: {str(e)}\033[0m")  # Red text
         query_data['ground_truth_query_result'] = "QUERY EXECUTION FAILED"
         print("Connecting to Weaviate...")
@@ -100,6 +111,8 @@ for query_data in queries:
             }
         )
         print("Successfully re-connected to Weaviate...")
+
+print(f"\nTotal failed queries: {failed_queries}")
 
 # Save updated queries to new file
 output_path = './synthetic-weaviate-queries-with-results.json'

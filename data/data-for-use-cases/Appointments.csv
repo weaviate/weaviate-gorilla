@@ -2,3 +2,54 @@ patientName,appointmentNotes,appointmentDuration,appointmentConfirmed
 "Alice Johnson","Annual physical examination with focus on managing hypertension. Patient requesting blood work and medication review.",30,true
 "Robert Martinez","Follow-up cardiac consultation post-stress test. Discussion of preventive measures and lifestyle modifications needed.",45,true
 "Maria Williams","First trimester pregnancy check-up. Ultrasound scheduled. Patient has questions about genetic screening options.",60,false
+"David Brown","Bi-annual dental cleaning and cavity check. Discuss potential orthodontic referral.",30,true
+"Stephanie Miller","Mental health follow-up regarding anxiety medication dosage. Review therapy progress.",45,false
+"James Wilson","Post-operative check-up after minor foot surgery. Remove stitches if healed properly.",15,true
+"Rachel Taylor","Allergy consultation and testing. Discuss environment-related triggers and medication options.",60,false
+"Ethan Harris","Pre-employment physical examination. Basic labs and fitness evaluation.",30,true
+"Olivia Clark","Pediatric visit for 2-year-old child. Vaccination updates and growth assessment.",20,true
+"Benjamin Lopez","Cholesterol management review. Discussion of dietary and exercise recommendations.",30,false
+"Emily Davis","Routine GYN annual exam. Pap smear and breast exam. Discuss birth control options.",30,true
+"Michael Wilson","Dermatology visit to evaluate persistent eczema flare-ups. Possible allergy referral.",45,false
+"Sophia Martinez","Orthopedic follow-up for knee pain. Review MRI results and discuss physical therapy.",60,true
+"William Rodriguez","Flu-like symptoms, possible strep test. Evaluate for fever, fatigue, and congestion.",20,false
+"Ava Brown","Psychotherapy session for stress management and insomnia. Evaluate coping strategies.",45,true
+"Christopher Lee","Travel medicine consult. Discuss required vaccines and prophylaxis for upcoming trip.",30,true
+"Victoria King","Nutritional counseling for weight management. Discuss meal plan and exercise regimen.",60,true
+"Daniel Carter","New patient intake and comprehensive physical. Review medical history.",45,false
+"Mia Mitchell","ENT follow-up for chronic sinusitis. Evaluate response to nasal spray treatment.",30,true
+"Matthew Walker","Pre-operative lab work and anesthesia clearance for elective surgery.",20,true
+"Lauren Brooks","Postpartum check-up six weeks after delivery. Mental health screening.",45,false
+"Thomas Sanders","Eye exam for updated prescription. Check for early signs of glaucoma.",30,true
+"Isabella Howard","Migraines follow-up. Adjust medication dosage if necessary.",30,true
+"Jacob Coleman","Sports physical for school athletics. Assess joint health and cardio fitness.",15,false
+"Amelia Turner","Immunization updates for international travel. Discuss side effects.",45,true
+"Ryan Foster","Cancer screening consultation. Review family history and discuss test options.",60,false
+"Grace Hayes","Annual wellness visit. Review lab results and vitamin deficiencies.",30,true
+"Jackson Perry","Foot and ankle check after sports injury. X-ray for possible stress fracture.",30,false
+"Chloe Diaz","Pediatric well-child visit for 5-year-old. Hearing and vision screening.",30,true
+"Oliver Nelson","Physical therapy follow-up for back pain. Assess improvement in mobility.",45,true
+"Madison Reyes","Post-hospital discharge follow-up. Review medications and signs of infection.",20,false
+"Henry Ramirez","Cardiology consult for irregular heartbeat. Possible ECG and Holter monitor scheduling.",45,true
+"Abigail Clark","Diabetes management session. Discuss insulin pump settings and dietary adjustments.",60,true
+"Alexander Wood","Nutrition and weight loss counseling. Introduce new meal plan and exercise strategy.",30,false
+"Ella Johnson","Mental health check-in for depression. Adjust therapy session frequency.",30,true
+"Sam Peterson","Teen annual physical. Scoliosis screening and discussion about healthy habits.",30,true
+"Scarlett Myers","OB/GYN visit for birth control consultation. Discuss IUD vs. oral contraceptives.",45,false
+"Logan Parker","Lab review for thyroid function. Evaluate medication dose adjustment.",30,true
+"Penelope Reed","Follow-up on asthma action plan. Discuss inhaler technique and triggers.",45,true
+"Mason Cooper","Orthopedic consult for shoulder pain. Possible MRI referral for rotator cuff evaluation.",60,true
+"Victoria Diaz","Allergy shot appointment. Review reaction logs and adjust dosage as needed.",15,false
+"Jacob Evans","Pre-travel COVID-19 test and vaccine update. Check documentation requirements.",30,true
+"Layla Gonzalez","General pediatric check-up for 10-year-old. Routine labs and discussion about diet.",30,true
+"Carter Sanders","Follow-up for hypertension. Evaluate blood pressure log and medication side effects.",30,false
+"Sadie Green","Dermatology skin check. Monitor potential suspicious moles or lesions.",20,true
+"Lucas Bennett","Smoking cessation consult. Discuss nicotine replacement therapies and behavioral support.",45,true
+"Aubrey Thompson","Prenatal visit at 24 weeks. Check fetal heartbeat and fundal height measurement.",30,false
+"Connor Murphy","Physical therapy consult for post-knee surgery rehab. Evaluate mobility exercises.",60,true
+"Zoe Morgan","Gastroenterology follow-up for IBS symptoms. Discuss dietary triggers.",45,true
+"Julian Bell","Nutrition appointment focusing on high cholesterol. Introduce Mediterranean diet.",30,false
+"Bella Foster","Neurology consult for recurring tension headaches. Assess medication efficacy.",30,true
+"Evan Roberts","School vaccination review. Administer required immunizations if needed.",20,true
+"Hannah Russell","Postpartum depression screening and counseling. Coordinate therapy sessions.",45,false
+"Noah Baker","Annual physical. Check lipid profile, blood pressure, and overall fitness.",30,true
