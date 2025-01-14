@@ -1,6 +1,7 @@
 import weaviate
 import weaviate.classes as wvc
 import json
+import time
 import pandas as pd
 import os
 from src.models import WeaviateQuery
@@ -68,12 +69,14 @@ for query_entry in queries:
         )
         
         # Load and insert data from corresponding CSV
-        csv_path = f'./{collection_name}.csv'
+        start_time = time.time()
+        csv_path = f'./data-for-use-cases/{collection_name}.csv'
         if os.path.exists(csv_path):
             df = pd.read_csv(csv_path)
             collection_obj = weaviate_client.collections.get(collection_name)
             for _, row in df.iterrows():
                 collection_obj.data.insert(properties=row.to_dict())
+            print(f"Loading data for {collection_name} took {time.time() - start_time:.2f} seconds")
                 
         created_collections.add(collection_name)
 
@@ -87,20 +90,12 @@ for query_data in queries:
     try:
         result = execute_weaviate_query(weaviate_client, query)
         query_data['ground_truth_query_result'] = result
+        print(f"\033[92mQuery executed successfully\033[0m")  # Green text
+        print(f"Query result: {result}")  # Print the query result
     except Exception as e:
         failed_queries += 1
-        print("\nQuery:", query_data['query']['corresponding_natural_language_query'])
-        print("\nQuery details:")
-        print(f"Target collection: {query.target_collection}")
-        print(f"Search query: {query.search_query}")
-        print(f"Integer filters: {query.integer_property_filter}")
-        print(f"Text filters: {query.text_property_filter}")
-        print(f"Boolean filters: {query.boolean_property_filter}")
-        print(f"Integer aggregations: {query.integer_property_aggregation}")
-        print(f"Text aggregations: {query.text_property_aggregation}")
-        print(f"Boolean aggregations: {query.boolean_property_aggregation}")
-        print(f"Group by: {query.groupby_property}")
-        print(f"\033[91mQuery execution failed: {str(e)}\033[0m")  # Red text
+        print(f"\033[91mQuery execution failed\033[0m")  # Red text
+        print(f"Error: {str(e)}")  # Print the error message
         query_data['ground_truth_query_result'] = "QUERY EXECUTION FAILED"
         print("Connecting to Weaviate...")
         weaviate_client = weaviate.connect_to_weaviate_cloud(
