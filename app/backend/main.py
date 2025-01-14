@@ -19,7 +19,7 @@ app.add_middleware(
 import json
 import os
 
-QUERIES_FILE = "synthetic-weaviate-queries-with-schemas.json"
+QUERIES_FILE = "synthetic-weaviate-queries-with-results.json"
 
 with open(QUERIES_FILE, 'r') as f:
     synthetic_query_data = json.load(f)
@@ -29,7 +29,7 @@ print(synthetic_query_data[0]["query"]["corresponding_natural_language_query"])
 # Example of the first row:
 '''
 {
-    "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",\"properties\":[{\"name\":\"name\",\"data_type\":[\"string\"],\"description\":\"The name of the restaurant.\"},{\"name\":\"description\",\"data_type\":[\"string\"],\"description\":\"A detailed description and summary of the restaurant, including cuisine type and ambiance.\"},{\"name\":\"averageRating\",\"data_type\":[\"number\"],\"description\":\"The average rating score out of 5 for the restaurant.\"},{\"name\":\"openNow\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the restaurant is currently open.\"}],\"envisioned_use_case_overview\":\"This schema focuses on enabling users to discover restaurants based on a comprehensive profile. With semantic search, users can find restaurants by cuisine, ambiance, or special features.\"},{\"name\":\"Menus\",\"properties\":[{\"name\":\"menuItem\",\"data_type\":[\"string\"],\"description\":\"The name of the menu item.\"},{\"name\":\"itemDescription\",\"data_type\":[\"string\"],\"description\":\"A detailed description of the menu item, including ingredients and preparation style.\"},{\"name\":\"price\",\"data_type\":[\"number\"],\"description\":\"The price of the menu item.\"},{\"name\":\"isVegetarian\",\"data_type\":[\"boolean\"],\"description\":\"A flag to indicate if the menu item is vegetarian.\"}],\"envisioned_use_case_overview\":\"This schema assists in linking dining experiences with specific restaurants through their menus. Rich search features allow customers to find dishes tailored to dietary needs and price points.\"},{\"name\":\"Reservations\",\"properties\":[{\"name\":\"reservationName\",\"data_type\":[\"string\"],\"description\":\"The name under which the reservation is made.\"},{\"name\":\"notes\",\"data_type\":[\"string\"],\"description\":\"Detailed notes about the reservation, such as special requests or celebrations.\"},{\"name\":\"partySize\",\"data_type\":[\"number\"],\"description\":\"The number of persons in the reservation.\"},{\"name\":\"confirmed\",\"data_type\":[\"boolean\"],\"description\":\"A flag indicating whether the reservation is confirmed.\"}],\"envisioned_use_case_overview\":\"This schema integrates with the restaurants by managing booking experiences. Semantic search of reservations can uncover trends in dining preferences and commonly requested meal attributes.\"}]}",
+    "database_schema": "{\"weaviate_collections\":[{\"name\":\"Restaurants\",...}]}",
     "query": {
         "corresponding_natural_language_query": "What is the average price of seasonal specialty menu items under $20, grouped by whether they are vegetarian or not?",
         "target_collection": "Menus",
@@ -48,7 +48,8 @@ print(synthetic_query_data[0]["query"]["corresponding_natural_language_query"])
         "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": "isVegetarian"
-    }
+    },
+    "ground_truth_query_result": "Grouped aggregation results:\n----------------------------------------\nGroup: isVegetarian = true\nProperty: price\n  mean: 15.5\nGroup count: 2\n----------------------------------------\nGroup: isVegetarian = false\nProperty: price\n  mean: 17.0\nGroup count: 1\n"
 }
 '''
 
@@ -59,17 +60,19 @@ async def get_data():
 class QueryUpdate(BaseModel):
     index: int
     updated_query: Dict[Any, Any]
+    updated_result: str
 
 @app.put("/update-query")
 async def update_query(query_update: QueryUpdate):
     try:
         if 0 <= query_update.index < len(synthetic_query_data):
             synthetic_query_data[query_update.index]["query"] = query_update.updated_query
+            synthetic_query_data[query_update.index]["ground_truth_query_result"] = query_update.updated_result
             
             with open(QUERIES_FILE, 'w') as f:
                 json.dump(synthetic_query_data, f, indent=2)
                 
-            return {"message": "Query updated successfully"}
+            return {"message": "Query and result updated successfully"}
         else:
             raise HTTPException(status_code=404, detail="Query index not found")
     except Exception as e:

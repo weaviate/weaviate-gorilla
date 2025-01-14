@@ -1,0 +1,4 @@
+patientName,appointmentNotes,appointmentDuration,appointmentConfirmed
+"Alice Johnson","Annual physical examination with focus on managing hypertension. Patient requesting blood work and medication review.",30,true
+"Robert Martinez","Follow-up cardiac consultation post-stress test. Discussion of preventive measures and lifestyle modifications needed.",45,true
+"Maria Williams","First trimester pregnancy check-up. Ultrasound scheduled. Patient has questions about genetic screening options.",60,false

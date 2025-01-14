@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Database, Search, Check, X, Edit2, Save, ChevronDown, ChevronUp, Plus, Trash2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Database, Search, Check, X, Edit2, Save, ChevronDown, ChevronUp, Plus, Trash2, Home } from 'lucide-react';
 
 const QueryEditor = ({ query, onSave, onCancel }) => {
   const [editedQuery, setEditedQuery] = useState(query);
@@ -518,15 +518,103 @@ const QueryVisualizer = () => {
     }));
   };
 
+  const renderQueryResult = (result) => {
+    if (!result) return null;
+  
+    // Attempt to parse JSON; if it fails, just show the string output
+    if (typeof result === 'string') {
+      try {
+        const parsedResult = JSON.parse(result);
+        // If parsing succeeded, we can optionally handle old logic here:
+        return (
+          <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <h3 className="text-lg font-semibold mb-4">Query Result</h3>
+  
+            {/* If your backend still sometimes returns a structured JSON result: */}
+            {parsedResult.integer_aggregation_result !== undefined && (
+              <div className="mb-4">
+                <h4 className="font-medium text-sm text-gray-700">Integer Aggregation</h4>
+                <p className="text-lg">{parsedResult.integer_aggregation_result}</p>
+              </div>
+            )}
+  
+            {parsedResult.text_aggregation_result && (
+              <div className="mb-4">
+                <h4 className="font-medium text-sm text-gray-700">Text Aggregation</h4>
+                {Array.isArray(parsedResult.text_aggregation_result) ? (
+                  <ul className="list-disc pl-5">
+                    {parsedResult.text_aggregation_result.map((item, idx) => (
+                      <li key={idx}>{item}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-lg">{parsedResult.text_aggregation_result}</p>
+                )}
+              </div>
+            )}
+  
+            {parsedResult.boolean_aggregation_result !== undefined && (
+              <div className="mb-4">
+                <h4 className="font-medium text-sm text-gray-700">Boolean Aggregation</h4>
+                <p className="text-lg">
+                  {typeof parsedResult.boolean_aggregation_result === 'boolean'
+                    ? parsedResult.boolean_aggregation_result.toString()
+                    : parsedResult.boolean_aggregation_result}
+                </p>
+              </div>
+            )}
+  
+            {parsedResult.filtered_objects && parsedResult.filtered_objects.length > 0 && (
+              <div>
+                <h4 className="font-medium text-sm text-gray-700 mb-2">Filtered Objects</h4>
+                <div className="max-h-60 overflow-y-auto">
+                  <pre className="bg-gray-100 p-3 rounded text-sm whitespace-pre-wrap">
+                    {JSON.stringify(parsedResult.filtered_objects, null, 2)}
+                  </pre>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      } catch (error) {
+        return (
+          <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <h3 className="text-lg font-semibold mb-4">Query Result</h3>
+            <pre className="whitespace-pre-wrap">{result}</pre>
+          </div>
+        );
+      }
+    }
+  
+    // If it's not a string (e.g., already an object), fall back to your old rendering logic
+    const parsedResult = result;
+    return (
+      <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+        <h3 className="text-lg font-semibold mb-4">Query Result</h3>
+        {/* ...same logic as above for parsed objects... */}
+      </div>
+    );
+  };
+  
+
   return (
     <div className="w-full p-6 min-h-screen bg-cover bg-center" style={{ backgroundImage: 'url("/background.png")' }}>
       <div className="flex items-center mb-12 relative mt-8">
-        <button
-          onClick={() => navigate('/demo')}
-          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2"
-        >
-          DBGorilla homepage
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => navigate('/')}
+            className="px-4 py-2 bg-[#1c1468] text-white rounded-lg hover:bg-[#130e4a] flex items-center gap-2"
+          >
+            <Home size={16} />
+            Home
+          </button>
+          <button
+            onClick={() => navigate('/demo')}
+            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2"
+          >
+            Try it with Weaviate Agents
+          </button>
+        </div>
         <h1 className="text-4xl font-bold text-[#1c1468] absolute left-1/2 -translate-x-1/2">Dataset Visualizer</h1>
         <button
           onClick={() => navigate('/search')}
@@ -617,66 +705,69 @@ const QueryVisualizer = () => {
                 onCancel={() => setIsEditing(false)}
               />
             ) : (
-              <div className="space-y-2">
-                {currentItem.query.corresponding_natural_language_query && (
-                  <p><span className="font-semibold">Natural Language Query:</span> {currentItem.query.corresponding_natural_language_query}</p>
-                )}
-                {currentItem.query.target_collection && (
-                  <p><span className="font-semibold">Collection:</span> {currentItem.query.target_collection}</p>
-                )}
-                {currentItem.query.search_query && (
-                  <p><span className="font-semibold">Search Query:</span> {currentItem.query.search_query}</p>
-                )}
-                {currentItem.query.integer_property_filter && (
-                  <p>
-                    <span className="font-semibold">Integer Filter:</span>{' '}
-                    {currentItem.query.integer_property_filter.property_name}{' '}
-                    {currentItem.query.integer_property_filter.operator}{' '}
-                    {currentItem.query.integer_property_filter.value}
-                  </p>
-                )}
-                {currentItem.query.text_property_filter && (
-                  <p>
-                    <span className="font-semibold">Text Filter:</span>{' '}
-                    {currentItem.query.text_property_filter.property_name}{' '}
-                    {currentItem.query.text_property_filter.operator}{' '}
-                    {currentItem.query.text_property_filter.value}
-                  </p>
-                )}
-                {currentItem.query.boolean_property_filter && (
-                  <p>
-                    <span className="font-semibold">Boolean Filter:</span>{' '}
-                    {currentItem.query.boolean_property_filter.property_name} = {' '}
-                    {currentItem.query.boolean_property_filter.value}
-                  </p>
-                )}
-                {currentItem.query.integer_property_aggregation && (
-                  <p>
-                    <span className="font-semibold">Integer Aggregation:</span>{' '}
-                    {currentItem.query.integer_property_aggregation.metrics} of{' '}
-                    {currentItem.query.integer_property_aggregation.property_name}
-                  </p>
-                )}
-                {currentItem.query.text_property_aggregation && (
-                  <p>
-                    <span className="font-semibold">Text Aggregation:</span>{' '}
-                    {currentItem.query.text_property_aggregation.metrics} of{' '}
-                    {currentItem.query.text_property_aggregation.property_name}
-                    {currentItem.query.text_property_aggregation.top_occurrences_limit && 
-                      ` (Top ${currentItem.query.text_property_aggregation.top_occurrences_limit})`}
-                  </p>
-                )}
-                {currentItem.query.boolean_property_aggregation && (
-                  <p>
-                    <span className="font-semibold">Boolean Aggregation:</span>{' '}
-                    {currentItem.query.boolean_property_aggregation.metrics} of{' '}
-                    {currentItem.query.boolean_property_aggregation.property_name}
-                  </p>
-                )}
-                {currentItem.query.groupby_property && (
-                  <p><span className="font-semibold">Group By:</span> {currentItem.query.groupby_property}</p>
-                )}
-              </div>
+              <>
+                <div className="space-y-2">
+                  {currentItem.query.corresponding_natural_language_query && (
+                    <p><span className="font-semibold">Natural Language Query:</span> {currentItem.query.corresponding_natural_language_query}</p>
+                  )}
+                  {currentItem.query.target_collection && (
+                    <p><span className="font-semibold">Collection:</span> {currentItem.query.target_collection}</p>
+                  )}
+                  {currentItem.query.search_query && (
+                    <p><span className="font-semibold">Search Query:</span> {currentItem.query.search_query}</p>
+                  )}
+                  {currentItem.query.integer_property_filter && (
+                    <p>
+                      <span className="font-semibold">Integer Filter:</span>{' '}
+                      {currentItem.query.integer_property_filter.property_name}{' '}
+                      {currentItem.query.integer_property_filter.operator}{' '}
+                      {currentItem.query.integer_property_filter.value}
+                    </p>
+                  )}
+                  {currentItem.query.text_property_filter && (
+                    <p>
+                      <span className="font-semibold">Text Filter:</span>{' '}
+                      {currentItem.query.text_property_filter.property_name}{' '}
+                      {currentItem.query.text_property_filter.operator}{' '}
+                      {currentItem.query.text_property_filter.value}
+                    </p>
+                  )}
+                  {currentItem.query.boolean_property_filter && (
+                    <p>
+                      <span className="font-semibold">Boolean Filter:</span>{' '}
+                      {currentItem.query.boolean_property_filter.property_name} = {' '}
+                      {currentItem.query.boolean_property_filter.value}
+                    </p>
+                  )}
+                  {currentItem.query.integer_property_aggregation && (
+                    <p>
+                      <span className="font-semibold">Integer Aggregation:</span>{' '}
+                      {currentItem.query.integer_property_aggregation.metrics} of{' '}
+                      {currentItem.query.integer_property_aggregation.property_name}
+                    </p>
+                  )}
+                  {currentItem.query.text_property_aggregation && (
+                    <p>
+                      <span className="font-semibold">Text Aggregation:</span>{' '}
+                      {currentItem.query.text_property_aggregation.metrics} of{' '}
+                      {currentItem.query.text_property_aggregation.property_name}
+                      {currentItem.query.text_property_aggregation.top_occurrences_limit && 
+                        ` (Top ${currentItem.query.text_property_aggregation.top_occurrences_limit})`}
+                    </p>
+                  )}
+                  {currentItem.query.boolean_property_aggregation && (
+                    <p>
+                      <span className="font-semibold">Boolean Aggregation:</span>{' '}
+                      {currentItem.query.boolean_property_aggregation.metrics} of{' '}
+                      {currentItem.query.boolean_property_aggregation.property_name}
+                    </p>
+                  )}
+                  {currentItem.query.groupby_property && (
+                    <p><span className="font-semibold">Group By:</span> {currentItem.query.groupby_property}</p>
+                  )}
+                </div>
+                {renderQueryResult(currentItem.ground_truth_query_result)}
+              </>
             )}
           </div>
         </div>
