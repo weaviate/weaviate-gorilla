@@ -753,13 +753,22 @@ const QueryVisualizer = () => {
             <div className="flex justify-between items-center mb-3">
               <h2 className="text-xl font-bold">Query Details</h2>
               {!isEditing && (
-                <button
-                  onClick={() => setIsEditing(true)}
-                  className="p-2 rounded bg-[#1c1468] text-white hover:bg-[#130e4a] flex items-center gap-2"
-                >
-                  <Edit2 size={16} />
-                  Edit Query
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className="p-2 rounded bg-[#1c1468] text-white hover:bg-[#130e4a] flex items-center gap-2"
+                  >
+                    <Edit2 size={16} />
+                    Edit Query
+                  </button>
+                  <button
+                    onClick={() => navigate('/query-builder')}
+                    className="p-2 rounded bg-green-600 text-white hover:bg-green-700 flex items-center gap-2"
+                  >
+                    <Plus size={16} />
+                    Query Builder
+                  </button>
+                </div>
               )}
             </div>
 
