@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, Save, X } from 'lucide-react';
 
@@ -13,7 +13,7 @@ const QueryBuilder = () => {
   const [query, setQuery] = useState({
     corresponding_natural_language_query: '',
     target_collection: '',
-    search_query: '',
+    search_query: false,
     integer_property_filter: null,
     text_property_filter: null,
     boolean_property_filter: null,
@@ -29,26 +29,78 @@ const QueryBuilder = () => {
   const [showIntegerAggregation, setShowIntegerAggregation] = useState(false);
   const [showTextAggregation, setShowTextAggregation] = useState(false);
   const [showBooleanAggregation, setShowBooleanAggregation] = useState(false);
-  const [showSearchQuery, setShowSearchQuery] = useState(false);
+  const [generatedQuery, setGeneratedQuery] = useState('');
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [collectionProperties, setCollectionProperties] = useState([]);
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      if (query.target_collection) {
+        try {
+          const response = await fetch(`http://localhost:8000/collection-properties?collection_name=${query.target_collection}`);
+          if (response.ok) {
+            const data = await response.json();
+            setCollectionProperties(data.properties);
+          }
+        } catch (error) {
+          console.error('Error fetching collection properties:', error);
+        }
+      }
+    };
+
+    fetchProperties();
+  }, [query.target_collection]);
 
   const generateNaturalLanguageQuery = async (queryConfig) => {
+    setIsGenerating(true);
     try {
+      // Clean up the query config before sending
+      const cleanedConfig = {
+        target_collection: queryConfig.target_collection,
+        search_query: queryConfig.search_query || false,
+        integer_property_filter: queryConfig.integer_property_filter?.property_name ? queryConfig.integer_property_filter : null,
+        text_property_filter: queryConfig.text_property_filter?.property_name ? queryConfig.text_property_filter : null,
+        boolean_property_filter: queryConfig.boolean_property_filter?.property_name ? queryConfig.boolean_property_filter : null,
+        integer_property_aggregation: queryConfig.integer_property_aggregation?.property_name ? queryConfig.integer_property_aggregation : null,
+        text_property_aggregation: queryConfig.text_property_aggregation?.property_name ? queryConfig.text_property_aggregation : null,
+        boolean_property_aggregation: queryConfig.boolean_property_aggregation?.property_name ? queryConfig.boolean_property_aggregation : null,
+        groupby_property: queryConfig.groupby_property || null
+      };
+
+      console.log('Sending query config:', JSON.stringify(cleanedConfig, null, 2)); // Pretty print the data
+
       const response = await fetch('http://localhost:8000/generate-nl-query', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(queryConfig),
+        body: JSON.stringify(cleanedConfig),
       });
-
-      if (response.ok) {
-        const data = await response.json();
-        return data.natural_language_query;
+  
+      if (!response.ok) {
+        const errorText = await response.text(); // Get raw error response
+        console.error('Response status:', response.status);
+        console.error('Response text:', errorText);
+        
+        try {
+          const errorData = JSON.parse(errorText);
+          console.error('Parsed error data:', errorData);
+        } catch (e) {
+          console.error('Could not parse error response as JSON');
+        }
+        
+        throw new Error(`Failed to generate natural language query: ${errorText}`);
       }
-      throw new Error('Failed to generate natural language query');
+
+      const data = await response.json();
+      setGeneratedQuery(data.natural_language_query);
+      return data.natural_language_query;
     } catch (error) {
       console.error('Error generating natural language query:', error);
+      setGeneratedQuery(''); // Clear any previous query on error
       return '';
+    } finally {
+      setIsGenerating(false);
     }
   };
 
@@ -109,29 +161,31 @@ const QueryBuilder = () => {
                 <option key={collection} value={collection}>{collection}</option>
               ))}
             </select>
+
+            {collectionProperties.length > 0 && (
+              <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                <h3 className="font-medium mb-2">Collection Properties:</h3>
+                <ul className="list-disc pl-5 space-y-1">
+                  {collectionProperties.map((prop, index) => (
+                    <li key={index}>
+                      <span className="font-medium">{prop.name}</span>
+                      <span className="text-gray-600"> ({prop.data_type})</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
 
           <div className="flex items-center gap-2">
             <button
               type="button"
-              onClick={() => setShowSearchQuery(!showSearchQuery)}
-              className="px-3 py-1 bg-indigo-100 text-indigo-800 rounded text-sm"
+              onClick={() => setQuery({...query, search_query: !query.search_query})}
+              className={`px-3 py-1 ${query.search_query ? 'bg-indigo-600 text-white' : 'bg-indigo-100 text-indigo-800'} rounded text-sm`}
             >
-              {showSearchQuery ? <X size={14} /> : <Plus size={14} />} Search Query
+              Enable Search Query
             </button>
           </div>
-
-          {showSearchQuery && (
-            <div>
-              <label className="block text-sm font-medium mb-2">Search Query</label>
-              <input
-                type="text"
-                value={query.search_query}
-                onChange={(e) => setQuery({...query, search_query: e.target.value})}
-                className="w-full p-2 border rounded"
-              />
-            </div>
-          )}
 
           {/* Filters */}
           <div className="space-y-4">
@@ -450,13 +504,22 @@ const QueryBuilder = () => {
             />
           </div>
 
+          {generatedQuery && (
+            <div className="p-4 bg-gray-50 rounded-lg mb-4">
+              <h3 className="font-medium mb-2">Generated Natural Language Query:</h3>
+              <p className="text-gray-700">{generatedQuery}</p>
+            </div>
+          )}
+
+          {/* Then your button group */}
           <div className="flex justify-end space-x-2">
             <button
-              type="submit"
-              className="px-4 py-2 bg-[#1c1468] text-white rounded hover:bg-[#130e4a] flex items-center gap-2"
+              type="button"
+              onClick={() => generateNaturalLanguageQuery(query)}
+              className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 flex items-center gap-2"
+              disabled={isGenerating}
             >
-              <Save size={16} />
-              Create Query
+              {isGenerating ? 'Generating...' : 'Generate Query'}
             </button>
           </div>
         </form>
