@@ -143,19 +143,19 @@ def map_config_to_operators(query_config: QueryConfig):
     
     # Map filters
     if query_config.integer_property_filter:
-        operators['filter'] = ("integer_property_filter", "IntPropertyFilter")
+        operators['filter'] = ("integer_property_filter", IntPropertyFilter)
     elif query_config.text_property_filter:
-        operators['filter'] = ("text_property_filter", "TextPropertyFilter")
+        operators['filter'] = ("text_property_filter", TextPropertyFilter)
     elif query_config.boolean_property_filter:
-        operators['filter'] = ("boolean_property_filter", "BooleanPropertyFilter")
+        operators['filter'] = ("boolean_property_filter", BooleanPropertyFilter)
         
-    # Map aggregations
+    # Map aggregations with metrics
     if query_config.integer_property_aggregation:
-        operators['agg'] = ("integer_property_aggregation", "IntAggregation")
+        operators['agg'] = ("integer_property_aggregation", IntAggregation, query_config.integer_property_aggregation.get('metrics'))
     elif query_config.text_property_aggregation:
-        operators['agg'] = ("text_property_aggregation", "TextAggregation")
+        operators['agg'] = ("text_property_aggregation", TextAggregation, query_config.text_property_aggregation.get('metrics'))
     elif query_config.boolean_property_aggregation:
-        operators['agg'] = ("boolean_property_aggregation", "BooleanAggregation")
+        operators['agg'] = ("boolean_property_aggregation", BooleanAggregation, query_config.boolean_property_aggregation.get('metrics'))
         
     # Map groupby
     if query_config.groupby_property:
