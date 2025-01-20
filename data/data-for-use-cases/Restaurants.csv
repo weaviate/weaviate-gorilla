@@ -1,4 +1,51 @@
 name,description,averageRating,openNow
-"La Maison d'Or","An elegant French bistro offering classic dishes in an intimate setting with vintage decor and soft lighting. Known for their wine selection and house-made pastries.",4.7,true
-"Sushi Wave","Modern Japanese restaurant specializing in creative rolls and fresh sashimi. Features a sleek minimalist design with a prominent sushi bar and peaceful zen garden.",4.5,false
-"The Rustic Spoon","Farm-to-table American cuisine served in a cozy, rustic atmosphere. Featuring exposed brick walls, wooden beams, and an open kitchen concept.",4.3,true
+"Red Fork","rustic Lebanese restaurant featuring hand-painted murals and rooftop seating. Offering authentic dishes in a rustic setting.",4,true
+"Green Fork","upscale Mexican restaurant featuring vintage decor and live music. Offering authentic dishes in a upscale setting.",5,true
+"Wild Plate","vibrant French restaurant featuring open kitchen concept and waterfront views. Offering authentic dishes in a vibrant setting.",5,true
+"Urban Plate","contemporary French restaurant featuring minimalist design and live music. Offering authentic dishes in a contemporary setting.",4,true
+"Casa Spoon","trendy Thai restaurant featuring terrace dining and chef's tasting menu. Offering authentic dishes in a trendy setting.",4,true
+"La Royal Plate","rustic American restaurant featuring warm wood finishes and wine selection. Offering authentic dishes in a rustic setting.",5,true
+"The Green Plate","traditional Vietnamese restaurant featuring vintage decor and rooftop seating. Offering authentic dishes in a traditional setting.",5,true
+"Green House","charming Greek restaurant featuring hand-painted murals and craft cocktails. Offering authentic dishes in a charming setting.",5,true
+"Le Fork","rustic Spanish restaurant featuring ornate chandeliers and craft cocktails. Offering authentic dishes in a rustic setting.",5,true
+"Le Green Table","rustic Thai restaurant featuring floor-to-ceiling windows and artisanal coffee. Offering authentic dishes in a rustic setting.",4,true
+"Urban Garden","trendy Brazilian restaurant featuring warm wood finishes and private dining rooms. Offering authentic dishes in a trendy setting.",4,true
+"Red Plate","traditional Indian restaurant featuring industrial accents and house-made desserts. Offering authentic dishes in a traditional setting.",5,true
+"La Green Room","contemporary Spanish restaurant featuring vintage decor and vegan options. Offering authentic dishes in a contemporary setting.",4,true
+"Casa Kitchen","cozy Brazilian restaurant featuring floor-to-ceiling windows and artisanal coffee. Offering authentic dishes in a cozy setting.",4,false
+"Blue House","rustic Greek restaurant featuring vintage decor and private dining rooms. Offering authentic dishes in a rustic setting.",4,true
+"La Garden","sleek French restaurant featuring garden seating and private dining rooms. Offering authentic dishes in a sleek setting.",4,true
+"Silver Plate","charming Mediterranean restaurant featuring open kitchen concept and wine selection. Offering authentic dishes in a charming setting.",4,true
+"Red Garden","trendy Mexican restaurant featuring local artwork and artisanal coffee. Offering authentic dishes in a trendy setting.",5,true
+"The Silver Fork","rustic Spanish restaurant featuring local artwork and vegan options. Offering authentic dishes in a rustic setting.",4,true
+"Chez Green Room","charming Greek restaurant featuring open kitchen concept and artisanal coffee. Offering authentic dishes in a charming setting.",4,true
+"Blue Table","charming Thai restaurant featuring local artwork and chef's tasting menu. Offering authentic dishes in a charming setting.",5,true
+"Le Room","charming French restaurant featuring minimalist design and vegan options. Offering authentic dishes in a charming setting.",4,false
+"Wild Table","sleek Mexican restaurant featuring vintage decor and live music. Offering authentic dishes in a sleek setting.",5,true
+"Le Kitchen","charming Chinese restaurant featuring vintage decor and house-made desserts. Offering authentic dishes in a charming setting.",4,true
+"Café Blue Table","contemporary Brazilian restaurant featuring floor-to-ceiling windows and private dining rooms. Offering authentic dishes in a contemporary setting.",4,true
+"Blue Plate","casual Brazilian restaurant featuring open kitchen concept and artisanal coffee. Offering authentic dishes in a casual setting.",5,true
+"Urban Room","casual Mediterranean restaurant featuring open kitchen concept and seasonal menu. Offering authentic dishes in a casual setting.",5,false
+"Urban Spoon","traditional Mediterranean restaurant featuring local artwork and craft cocktails. Offering authentic dishes in a traditional setting.",4,true
+"Café Table","trendy Korean restaurant featuring warm wood finishes and seasonal menu. Offering authentic dishes in a trendy setting.",5,true
+"La Blue Spoon","charming Mediterranean restaurant featuring garden seating and vegan options. Offering authentic dishes in a charming setting.",4,true
+"Green Spoon","cozy Thai restaurant featuring minimalist design and house-made desserts. Offering authentic dishes in a cozy setting.",4,true
+"Royal Fork","sleek Greek restaurant featuring floor-to-ceiling windows and vegan options. Offering authentic dishes in a sleek setting.",5,true
+"Le Golden Room","upscale Vietnamese restaurant featuring ornate chandeliers and rooftop seating. Offering authentic dishes in a upscale setting.",4,false
+"Royal Table","cozy Greek restaurant featuring hand-painted murals and private dining rooms. Offering authentic dishes in a cozy setting.",4,true
+"Chez Wild House","casual American restaurant featuring terrace dining and craft cocktails. Offering authentic dishes in a casual setting.",4,true
+"El Silver House","modern Italian restaurant featuring warm wood finishes and vegan options. Offering authentic dishes in a modern setting.",4,false
+"Bistro Blue Table","trendy Korean restaurant featuring ornate chandeliers and seasonal menu. Offering authentic dishes in a trendy setting.",4,true
+"Café Golden House","elegant Korean restaurant featuring industrial accents and artisanal coffee. Offering authentic dishes in a elegant setting.",5,true
+"The Kitchen","charming Lebanese restaurant featuring local artwork and craft cocktails. Offering authentic dishes in a charming setting.",4,true
+"Casa Blue House","upscale Korean restaurant featuring terrace dining and live music. Offering authentic dishes in a upscale setting.",4,true
+"Urban Table","casual Vietnamese restaurant featuring hand-painted murals and house-made desserts. Offering authentic dishes in a casual setting.",4,false
+"Golden Fork","elegant Japanese restaurant featuring floor-to-ceiling windows and organic ingredients. Offering authentic dishes in a elegant setting.",4,true
+"El Spoon","cozy Japanese restaurant featuring hand-painted murals and rooftop seating. Offering authentic dishes in a cozy setting.",5,true
+"La Golden Spoon","traditional Mediterranean restaurant featuring exposed brick walls and artisanal coffee. Offering authentic dishes in a traditional setting.",4,true
+"Green Plate","traditional Indian restaurant featuring floor-to-ceiling windows and seasonal menu. Offering authentic dishes in a traditional setting.",4,true
+"Café Room","vibrant Brazilian restaurant featuring vintage decor and live music. Offering authentic dishes in a vibrant setting.",4,false
+"Le Golden Kitchen","vibrant Vietnamese restaurant featuring floor-to-ceiling windows and chef's tasting menu. Offering authentic dishes in a vibrant setting.",4,false
+"Royal Garden","vibrant American restaurant featuring local artwork and artisanal coffee. Offering authentic dishes in a vibrant setting.",5,true
+"Bistro Plate","vibrant Chinese restaurant featuring ornate chandeliers and live music. Offering authentic dishes in a vibrant setting.",5,true
+"Chez Urban House","modern Greek restaurant featuring open kitchen concept and vegan options. Offering authentic dishes in a modern setting.",4,true

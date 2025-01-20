@@ -1,4 +1,51 @@
 menuItem,itemDescription,price,isVegetarian
-"Coq au Vin","Traditional French chicken braised in wine, with pearl onions, mushrooms, and fresh herbs. Served with garlic mashed potatoes.",32.5,false
-"Dragon Roll","Premium sushi roll with tempura shrimp, avocado, and cucumber, topped with spicy tuna, eel sauce, and tobiko.",18.95,false
-"Harvest Buddha Bowl","Seasonal roasted vegetables, quinoa, chickpeas, and fresh greens, topped with tahini dressing and crispy chickpeas.",16.5,true
+"Coq au Vin","Traditional French chicken braised in wine, with pearl onions, mushrooms, and fresh herbs. Served with garlic mashed potatoes.",33,false
+"Dragon Roll","Premium sushi roll with tempura shrimp, avocado, and cucumber, topped with spicy tuna, eel sauce, and tobiko.",19,false
+"Harvest Buddha Bowl","Seasonal roasted vegetables, quinoa, chickpeas, and fresh greens, topped with tahini dressing and crispy chickpeas.",17,true
+"Signature Thai Duck","grilled shrimp with basil and chilies, served with chef's seasonal accompaniments.",20,false
+"Chef's Thai Grilled vegetables","steamed cauliflower with fish sauce and fish sauce, served with chef's seasonal accompaniments.",39,true
+"Classic Mediterranean Scallops","baked pork belly with feta and herbs, served with chef's seasonal accompaniments.",23,false
+"Classic Modern American Quinoa","wood-grilled mushrooms with artisanal cheese and seasonal produce, served with chef's seasonal accompaniments.",21,true
+"Traditional French Scallops","roasted scallops with butter and cream, served with chef's seasonal accompaniments.",44,false
+"Signature Italian Chicken","pan-seared lamb with balsamic and garlic, served with chef's seasonal accompaniments.",44,false
+"Traditional Indian Cauliflower","slow-cooked eggplant with curry and garam masala, served with chef's seasonal accompaniments.",32,true
+"Traditional Modern American Cauliflower","wood-grilled chickpeas with seasonal produce and seasonal produce, served with chef's seasonal accompaniments.",18,true
+"Traditional Modern American Salmon","smoked pork belly with local ingredients and artisanal cheese, served with chef's seasonal accompaniments.",34,false
+"Signature Thai Salmon","stir-fried shrimp with coconut milk and lemongrass, served with chef's seasonal accompaniments.",29,false
+"Signature Japanese Tuna","raw duck with sesame and dashi, served with chef's seasonal accompaniments.",46,false
+"Classic Italian Shrimp","wood-fired scallops with parmesan and basil, served with chef's seasonal accompaniments.",31,false
+"Classic Thai Tuna","steamed duck with lime and lemongrass, served with chef's seasonal accompaniments.",21,false
+"House-Made Mediterranean Salmon","roasted shrimp with olive oil and lemon, served with chef's seasonal accompaniments.",25,false
+"Seasonal French Scallops","braised pork belly with shallots and garlic, served with chef's seasonal accompaniments.",17,false
+"Classic Japanese Mushrooms","grilled eggplant with soy sauce and sesame, served with chef's seasonal accompaniments.",29,true
+"House-Made Italian Sea bass","wood-fired tuna with tomato sauce and garlic, served with chef's seasonal accompaniments.",35,false
+"Classic French Scallops","confit chicken with truffle and garlic, served with chef's seasonal accompaniments.",38,false
+"Traditional Modern American Lamb","smoked lamb with seasonal produce and local ingredients, served with chef's seasonal accompaniments.",23,false
+"Signature Japanese Chicken","raw shrimp with wasabi and ponzu, served with chef's seasonal accompaniments.",17,false
+"Signature Indian Shrimp","simmered salmon with cilantro and garam masala, served with chef's seasonal accompaniments.",43,false
+"House-Made French Tuna","confit tuna with herbs and butter, served with chef's seasonal accompaniments.",25,false
+"Chef's Japanese Quinoa","tempura quinoa with wasabi and wasabi, served with chef's seasonal accompaniments.",32,true
+"House-Made French Cauliflower","roasted eggplant with cream and truffle, served with chef's seasonal accompaniments.",34,true
+"Classic Italian Scallops","pan-seared shrimp with garlic and balsamic, served with chef's seasonal accompaniments.",27,false
+"House-Made Indian Chicken","grilled sea bass with yogurt and yogurt, served with chef's seasonal accompaniments.",39,false
+"Chef's Thai Duck","stir-fried lamb with coconut milk and chilies, served with chef's seasonal accompaniments.",24,false
+"Classic Thai Shrimp","stir-fried lamb with fish sauce and basil, served with chef's seasonal accompaniments.",26,false
+"House-Made Japanese Pork belly","simmered shrimp with nori and ponzu, served with chef's seasonal accompaniments.",31,false
+"House-Made Modern American Roasted vegetables","wood-grilled grilled vegetables with artisanal cheese and house-made, served with chef's seasonal accompaniments.",23,true
+"Signature Japanese Salmon","raw tuna with nori and soy sauce, served with chef's seasonal accompaniments.",45,false
+"Chef's Indian Quinoa","slow-cooked grilled vegetables with coconut and garam masala, served with chef's seasonal accompaniments.",28,true
+"Classic Japanese Beef tenderloin","grilled salmon with ponzu and wasabi, served with chef's seasonal accompaniments.",39,false
+"Traditional Indian Lamb","grilled salmon with yogurt and turmeric, served with chef's seasonal accompaniments.",20,false
+"Seasonal Indian Scallops","tandoori sea bass with yogurt and garam masala, served with chef's seasonal accompaniments.",42,false
+"Seasonal Italian Beef tenderloin","wood-fired chicken with olive oil and balsamic, served with chef's seasonal accompaniments.",19,false
+"Chef's French Quinoa","braised roasted vegetables with herbs and butter, served with chef's seasonal accompaniments.",23,true
+"Seasonal Modern American Sea bass","pan-seared pork belly with house-made and artisanal cheese, served with chef's seasonal accompaniments.",20,false
+"Signature Indian Salmon","simmered sea bass with cilantro and coconut, served with chef's seasonal accompaniments.",44,false
+"Chef's Indian Duck","grilled pork belly with curry and curry, served with chef's seasonal accompaniments.",19,false
+"House-Made Mediterranean Beef tenderloin","sautéed pork belly with herbs and feta, served with chef's seasonal accompaniments.",25,false
+"Traditional French Tempeh","seared roasted vegetables with shallots and herbs, served with chef's seasonal accompaniments.",16,true
+"Seasonal Italian Chickpeas","pan-seared tempeh with olive oil and olive oil, served with chef's seasonal accompaniments.",44,true
+"Seasonal Indian Shrimp","tandoori duck with turmeric and garam masala, served with chef's seasonal accompaniments.",39,false
+"Seasonal Japanese Sea bass","steamed tuna with wasabi and miso, served with chef's seasonal accompaniments.",35,false
+"Seasonal Thai Lamb","stir-fried chicken with chilies and lemongrass, served with chef's seasonal accompaniments.",35,false
+"Chef's Thai Cauliflower","grilled lentils with lemongrass and coconut milk, served with chef's seasonal accompaniments.",40,true

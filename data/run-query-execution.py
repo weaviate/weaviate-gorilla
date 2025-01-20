@@ -1,6 +1,7 @@
 import weaviate
 import weaviate.classes as wvc
 import json
+import time
 import pandas as pd
 import os
 from src.models import WeaviateQuery
@@ -22,7 +23,7 @@ weaviate_client = weaviate.connect_to_weaviate_cloud(
 print("Successfully connected to Weaviate...")
 
 # Load queries from JSON file
-with open('../../data/synthetic-weaviate-queries-with-schemas.json') as f:
+with open('./synthetic-weaviate-queries-with-schemas.json') as f:
     queries = json.load(f)
 
 # Track created collections to avoid duplicates
@@ -68,12 +69,14 @@ for query_entry in queries:
         )
         
         # Load and insert data from corresponding CSV
-        csv_path = f'./{collection_name}.csv'
+        start_time = time.time()
+        csv_path = f'./data-for-use-cases/{collection_name}.csv'
         if os.path.exists(csv_path):
             df = pd.read_csv(csv_path)
             collection_obj = weaviate_client.collections.get(collection_name)
             for _, row in df.iterrows():
                 collection_obj.data.insert(properties=row.to_dict())
+            print(f"Loading data for {collection_name} took {time.time() - start_time:.2f} seconds")
                 
         created_collections.add(collection_name)
 
@@ -81,15 +84,18 @@ print("Successfully created schema and populated collections with data")
 
 # Execute all queries and store results
 print("\nExecuting queries and storing results...")
+failed_queries = 0
 for query_data in queries:
-    print("\nQuery:", query_data['query']['corresponding_natural_language_query'])
     query = WeaviateQuery(**query_data['query'])
     try:
         result = execute_weaviate_query(weaviate_client, query)
         query_data['ground_truth_query_result'] = result
-        print("\033[92mQuery executed successfully\033[0m")  # Green text
+        print(f"\033[92mQuery executed successfully\033[0m")  # Green text
+        print(f"Query result: {result}")  # Print the query result
     except Exception as e:
-        print(f"\033[91mQuery execution failed: {str(e)}\033[0m")  # Red text
+        failed_queries += 1
+        print(f"\033[91mQuery execution failed\033[0m")  # Red text
+        print(f"Error: {str(e)}")  # Print the error message
         query_data['ground_truth_query_result'] = "QUERY EXECUTION FAILED"
         print("Connecting to Weaviate...")
         weaviate_client = weaviate.connect_to_weaviate_cloud(
@@ -101,8 +107,10 @@ for query_data in queries:
         )
         print("Successfully re-connected to Weaviate...")
 
+print(f"\nTotal failed queries: {failed_queries}")
+
 # Save updated queries to new file
-output_path = '../../data/synthetic-weaviate-queries-with-results.json'
+output_path = './synthetic-weaviate-queries-with-results.json'
 with open(output_path, 'w') as f:
     json.dump(queries, f, indent=4)
 

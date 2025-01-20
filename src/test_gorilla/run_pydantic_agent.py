@@ -86,6 +86,8 @@ async def main():
         # Print results
         print("\nOriginal Query:", result.original_query)
         print("\nFinal Answer:", result.final_answer)
+        print("\nAggregation Queries sent:", result.aggregations)
+        print("\nBasic Retrieval Queries sent:", result.searches)
         print("\nTotal Time:", result.total_time)
         print("\nUsage Stats:", result.usage)
 

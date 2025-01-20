@@ -86,20 +86,38 @@ def _build_return_metrics(tool_args: dict):
     for agg_type in metrics_types:
         if agg_type in tool_args:
             prop_name = tool_args[agg_type]["property_name"]
-            metrics = tool_args[agg_type]["metrics"].lower()
+            metrics = tool_args[agg_type]["metrics"].upper()
             if prop_name:
                 if agg_type.startswith("integer"):
-                    return wvc.query.Metrics(prop_name).integer(**{metrics: True})
+                    # Map to correct integer metric names
+                    metric_mapping = {
+                        "MEAN": "mean",
+                        "SUM": "sum",
+                        "MAX": "maximum",
+                        "MIN": "minimum",
+                        "COUNT": "count"
+                    }
+                    metric_name = metric_mapping.get(metrics, metrics.lower())
+                    return wvc.query.Metrics(prop_name).integer(**{metric_name: True})
+                    
                 elif agg_type.startswith("text"):
-                    if metrics == "top_occurrences":
+                    # Map to correct text metric names
+                    if metrics == "COUNT":
+                        return wvc.query.Metrics(prop_name).text(count=True)
+                    elif metrics == "TOP_OCCURRENCES":
                         return wvc.query.Metrics(prop_name).text(
                             top_occurrences_count=True,
                             top_occurrences_value=True
                         )
-                    else:
-                        return wvc.query.Metrics(prop_name).text(**{metrics: True})
+                    
                 elif agg_type.startswith("boolean"):
-                    return wvc.query.Metrics(prop_name).boolean(**{metrics: True})
+                    # Map to correct boolean metric names
+                    if metrics == "PERCENTAGE_TRUE":
+                        return wvc.query.Metrics(prop_name).boolean(percentage_true=True)
+                    elif metrics == "COUNT":
+                        return wvc.query.Metrics(prop_name).boolean(count=True)
+                    else:
+                        return wvc.query.Metrics(prop_name).boolean(**{metrics.lower(): True})
     return None
 
 def _execute_aggregation_with_search(
@@ -168,6 +186,10 @@ def _build_filters(tool_args: dict):
             prop_name = tool_args[filter_type]["property_name"]
             operator = tool_args[filter_type]["operator"]
             value = tool_args[filter_type]["value"]
+
+            if filter_type == "boolean_property_filter":
+                if isinstance(value, str):
+                    value = value.lower() == 'true'
 
             filter_obj = Filter.by_property(prop_name)
             if operator == "=":

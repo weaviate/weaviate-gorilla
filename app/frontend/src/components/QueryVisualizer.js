@@ -1,31 +1,45 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Database, Search, Check, X, Edit2, Save, ChevronDown, ChevronUp, Plus, Trash2, Home } from 'lucide-react';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Database,
+  Search,
+  Check,
+  X,
+  Edit2,
+  Save,
+  ChevronDown,
+  ChevronUp,
+  Plus,
+  Trash2,
+  Home,
+} from 'lucide-react';
 
 const QueryEditor = ({ query, onSave, onCancel }) => {
   const [editedQuery, setEditedQuery] = useState(query);
 
   const handleChange = (field, value) => {
-    setEditedQuery(prev => ({
+    setEditedQuery((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
   const handleDelete = (field) => {
-    setEditedQuery(prev => ({
+    setEditedQuery((prev) => ({
       ...prev,
-      [field]: null
+      [field]: null,
     }));
   };
 
   const handleFilterChange = (type, field, value) => {
-    setEditedQuery(prev => ({
+    setEditedQuery((prev) => ({
       ...prev,
       [`${type}_property_filter`]: {
         ...prev[`${type}_property_filter`],
-        [field]: type === 'integer' && field === 'value' ? Number(value) : value
-      }
+        [field]: type === 'integer' && field === 'value' ? Number(value) : value,
+      },
     }));
   };
 
@@ -33,63 +47,63 @@ const QueryEditor = ({ query, onSave, onCancel }) => {
     const newFilter = {
       property_name: '',
       operator: type === 'integer' ? '>' : '=',
-      value: type === 'integer' ? 0 : ''
+      value: type === 'integer' ? 0 : '',
     };
-    
-    setEditedQuery(prev => ({
+
+    setEditedQuery((prev) => ({
       ...prev,
-      [`${type}_property_filter`]: newFilter
+      [`${type}_property_filter`]: newFilter,
     }));
   };
 
   const removeFilter = (type) => {
-    setEditedQuery(prev => ({
+    setEditedQuery((prev) => ({
       ...prev,
-      [`${type}_property_filter`]: null
+      [`${type}_property_filter`]: null,
     }));
   };
 
   const addAggregation = (type) => {
     const newAggregation = {
       property_name: '',
-      metrics: ''
+      metrics: '',
     };
-    
+
     if (type === 'integer') {
-      setEditedQuery(prev => ({
+      setEditedQuery((prev) => ({
         ...prev,
-        integer_property_aggregation: newAggregation
+        integer_property_aggregation: newAggregation,
       }));
     } else if (type === 'text') {
-      setEditedQuery(prev => ({
+      setEditedQuery((prev) => ({
         ...prev,
         text_property_aggregation: {
           ...newAggregation,
-          top_occurrences_limit: 5
-        }
+          top_occurrences_limit: 5,
+        },
       }));
     } else if (type === 'boolean') {
-      setEditedQuery(prev => ({
+      setEditedQuery((prev) => ({
         ...prev,
-        boolean_property_aggregation: newAggregation
+        boolean_property_aggregation: newAggregation,
       }));
     }
   };
 
   const removeAggregation = (type) => {
-    setEditedQuery(prev => ({
+    setEditedQuery((prev) => ({
       ...prev,
-      [`${type}_property_aggregation`]: null
+      [`${type}_property_aggregation`]: null,
     }));
   };
 
   const handleAggregationChange = (type, field, value) => {
-    setEditedQuery(prev => ({
+    setEditedQuery((prev) => ({
       ...prev,
       [`${type}_property_aggregation`]: {
         ...prev[`${type}_property_aggregation`],
-        [field]: field === 'top_occurrences_limit' ? Number(value) : value
-      }
+        [field]: field === 'top_occurrences_limit' ? Number(value) : value,
+      },
     }));
   };
 
@@ -98,7 +112,10 @@ const QueryEditor = ({ query, onSave, onCancel }) => {
       <div className="space-y-2">
         <div className="flex justify-between items-center">
           <label className="block text-sm font-medium">Natural Language Query</label>
-          <button onClick={() => handleDelete('corresponding_natural_language_query')} className="text-red-600 hover:text-red-700">
+          <button
+            onClick={() => handleDelete('corresponding_natural_language_query')}
+            className="text-red-600 hover:text-red-700"
+          >
             <Trash2 size={14} />
           </button>
         </div>
@@ -113,7 +130,10 @@ const QueryEditor = ({ query, onSave, onCancel }) => {
       <div className="space-y-2">
         <div className="flex justify-between items-center">
           <label className="block text-sm font-medium">Collection</label>
-          <button onClick={() => handleDelete('target_collection')} className="text-red-600 hover:text-red-700">
+          <button
+            onClick={() => handleDelete('target_collection')}
+            className="text-red-600 hover:text-red-700"
+          >
             <Trash2 size={14} />
           </button>
         </div>
@@ -451,6 +471,15 @@ const QueryVisualizer = () => {
   const [expandedSchemas, setExpandedSchemas] = useState({});
   const [isEditing, setIsEditing] = useState(false);
 
+  // Define the use-case button info (0-based indices).
+  const useCases = [
+    { label: 'Restaurants', startIndex: 0 },   // 1..63 => 0..62
+    { label: 'Healthcare', startIndex: 63 },  // 64..127 => 63..126
+    { label: 'Courses', startIndex: 127 },    // 128..191 => 127..190
+    { label: 'Travel', startIndex: 191 },     // 192..255 => 191..254
+    { label: 'Art', startIndex: 255 },        // 256..315 => 255..314
+  ];
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -462,9 +491,10 @@ const QueryVisualizer = () => {
       setData(jsonData);
       // Initialize expanded state for each schema to true (expanded by default)
       const initialExpandedState = {};
-      jsonData[0]?.database_schema && JSON.parse(jsonData[0].database_schema).weaviate_collections.forEach((_, idx) => {
-        initialExpandedState[idx] = true;
-      });
+      jsonData[0]?.database_schema &&
+        JSON.parse(jsonData[0].database_schema).weaviate_collections.forEach((_, idx) => {
+          initialExpandedState[idx] = true;
+        });
       setExpandedSchemas(initialExpandedState);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -512,32 +542,31 @@ const QueryVisualizer = () => {
   };
 
   const toggleSchema = (idx) => {
-    setExpandedSchemas(prev => ({
+    setExpandedSchemas((prev) => ({
       ...prev,
-      [idx]: !prev[idx]
+      [idx]: !prev[idx],
     }));
   };
 
   const renderQueryResult = (result) => {
     if (!result) return null;
-  
+
     // Attempt to parse JSON; if it fails, just show the string output
     if (typeof result === 'string') {
       try {
         const parsedResult = JSON.parse(result);
-        // If parsing succeeded, we can optionally handle old logic here:
+        // If parsing succeeded, handle structured data:
         return (
           <div>
             <h3 className="text-lg font-semibold mb-4">Query Result</h3>
             <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-              {/* If your backend still sometimes returns a structured JSON result: */}
               {parsedResult.integer_aggregation_result !== undefined && (
                 <div className="mb-4">
                   <h4 className="font-medium text-sm text-gray-700">Integer Aggregation</h4>
                   <p className="text-lg">{parsedResult.integer_aggregation_result}</p>
                 </div>
               )}
-  
+
               {parsedResult.text_aggregation_result && (
                 <div className="mb-4">
                   <h4 className="font-medium text-sm text-gray-700">Text Aggregation</h4>
@@ -552,7 +581,7 @@ const QueryVisualizer = () => {
                   )}
                 </div>
               )}
-  
+
               {parsedResult.boolean_aggregation_result !== undefined && (
                 <div className="mb-4">
                   <h4 className="font-medium text-sm text-gray-700">Boolean Aggregation</h4>
@@ -563,7 +592,7 @@ const QueryVisualizer = () => {
                   </p>
                 </div>
               )}
-  
+
               {parsedResult.filtered_objects && parsedResult.filtered_objects.length > 0 && (
                 <div>
                   <h4 className="font-medium text-sm text-gray-700 mb-2">Filtered Objects</h4>
@@ -578,9 +607,10 @@ const QueryVisualizer = () => {
           </div>
         );
       } catch (error) {
+        // If string was not valid JSON, just render the string
         return (
           <div>
-            <h3 className="text-xl font-semibold mb-4 mt-6">Query Execution Result</h3>
+            <h3 className="text-2xl text-[#1c1468] font-semibold mb-4 mt-6">Query Execution Result</h3>
             <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
               <pre className="whitespace-pre-wrap">{result}</pre>
             </div>
@@ -588,21 +618,24 @@ const QueryVisualizer = () => {
         );
       }
     }
-  
-    // If it's not a string (e.g., already an object), fall back to your old rendering logic
+
+    // If it's not a string (already an object), fallback
     const parsedResult = result;
     return (
       <div>
         <h3 className="text-lg font-semibold mb-4">Query Result</h3>
         <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-          {/* ...same logic as above for parsed objects... */}
+          <pre className="whitespace-pre-wrap">{JSON.stringify(parsedResult, null, 2)}</pre>
         </div>
       </div>
     );
   };
 
   return (
-    <div className="w-full p-6 min-h-screen bg-cover bg-center" style={{ backgroundImage: 'url("/background.png")' }}>
+    <div
+      className="w-full p-6 min-h-screen bg-cover bg-center"
+      style={{ backgroundImage: 'url("/background.png")' }}
+    >
       <div className="flex items-center mb-12 relative mt-8">
         <div className="flex items-center gap-2">
           <button
@@ -619,7 +652,9 @@ const QueryVisualizer = () => {
             Try it with Weaviate Agents
           </button>
         </div>
-        <h1 className="text-4xl font-bold text-[#1c1468] absolute left-1/2 -translate-x-1/2">Dataset Visualizer</h1>
+        <h1 className="text-4xl font-bold text-[#1c1468] absolute left-1/2 -translate-x-1/2">
+          Dataset Visualizer
+        </h1>
         <button
           onClick={() => navigate('/search')}
           className="px-4 py-2 bg-[#1c1468] text-white rounded-lg hover:bg-[#130e4a] flex items-center gap-2 ml-auto"
@@ -650,7 +685,27 @@ const QueryVisualizer = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* LEFT COLUMN: Use-Case Buttons + Collections */}
         <div className="space-y-6">
+          {/* NEW: Jump-to-Use-Case Buttons at the top (left) */}
+          <div className="bg-white p-4 rounded-lg shadow-md">
+            <div className="grid grid-cols-5 gap-2">
+              {useCases.map((uc) => (
+                <button
+                  key={uc.label}
+                  onClick={() => {
+                    setCurrentIndex(uc.startIndex);
+                    setIsEditing(false);
+                  }}
+                  className="py-2 bg-[#1c1468] text-white rounded hover:bg-[#130e4a] text-sm text-center"
+                >
+                  {uc.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Collections Viewer */}
           {JSON.parse(currentItem.database_schema).weaviate_collections.map((collection, idx) => (
             <div key={idx} className="bg-gray-50 p-4 rounded-lg border border-gray-200">
               <div className="flex items-center justify-between gap-2 mb-4">
@@ -667,10 +722,15 @@ const QueryVisualizer = () => {
               </div>
               {expandedSchemas[idx] && (
                 <>
-                  <p className="text-sm text-gray-600 mb-4">{collection.envisioned_use_case_overview}</p>
+                  <p className="text-sm text-gray-600 mb-4">
+                    {collection.envisioned_use_case_overview}
+                  </p>
                   <div className="space-y-3">
                     {collection.properties.map((prop, propIdx) => (
-                      <div key={propIdx} className="flex items-start gap-4 p-2 bg-white rounded border border-gray-100">
+                      <div
+                        key={propIdx}
+                        className="flex items-start gap-4 p-2 bg-white rounded border border-gray-100"
+                      >
                         <div className="flex-1">
                           <p className="font-medium">{prop.name}</p>
                           <p className="text-sm text-gray-500">{prop.description}</p>
@@ -687,21 +747,31 @@ const QueryVisualizer = () => {
           ))}
         </div>
 
+        {/* RIGHT COLUMN: Query Details */}
         <div className="space-y-6">
           <div className="bg-white p-6 rounded-lg shadow-md">
             <div className="flex justify-between items-center mb-3">
-              <h2 className="text-xl font-bold">Query Details</h2>
+              <h2 className="text-2xl text-[#1c1468] font-bold">Query Details</h2>
               {!isEditing && (
-                <button
-                  onClick={() => setIsEditing(true)}
-                  className="p-2 rounded bg-[#1c1468] text-white hover:bg-[#130e4a] flex items-center gap-2"
-                >
-                  <Edit2 size={16} />
-                  Edit Query
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className="p-2 rounded bg-[#1c1468] text-white hover:bg-[#130e4a] flex items-center gap-2"
+                  >
+                    <Edit2 size={16} />
+                    Edit Query
+                  </button>
+                  <button
+                    onClick={() => navigate('/query-builder')}
+                    className="p-2 rounded bg-green-600 text-white hover:bg-green-700 flex items-center gap-2"
+                  >
+                    <Plus size={16} />
+                    Query Builder
+                  </button>
+                </div>
               )}
             </div>
-            
+
             {isEditing ? (
               <QueryEditor
                 query={currentItem.query}
@@ -710,15 +780,26 @@ const QueryVisualizer = () => {
               />
             ) : (
               <>
-                <div className="space-y-2">
+                <div className="space-y-2 mt-8">
                   {currentItem.query.corresponding_natural_language_query && (
-                    <p><span className="font-semibold">Natural Language Query:</span> {currentItem.query.corresponding_natural_language_query}</p>
+                    <p>
+                      <span className="font-semibold text-2xl text-[#1c1468]">Natural Language Query</span>{' '}
+                      <br ></br>
+                      <span className="text-xl mt-2 block">{currentItem.query.corresponding_natural_language_query}</span>
+                    </p>
                   )}
+                  <h2 className="font-semibold text-2xl text-[#1c1468]">Query APIs utilized</h2>
                   {currentItem.query.target_collection && (
-                    <p><span className="font-semibold">Collection:</span> {currentItem.query.target_collection}</p>
+                    <p>
+                      <span className="font-semibold">Collection:</span>{' '}
+                      {currentItem.query.target_collection}
+                    </p>
                   )}
                   {currentItem.query.search_query && (
-                    <p><span className="font-semibold">Search Query:</span> {currentItem.query.search_query}</p>
+                    <p>
+                      <span className="font-semibold">Search Query:</span>{' '}
+                      {currentItem.query.search_query}
+                    </p>
                   )}
                   {currentItem.query.integer_property_filter && (
                     <p>
@@ -739,7 +820,7 @@ const QueryVisualizer = () => {
                   {currentItem.query.boolean_property_filter && (
                     <p>
                       <span className="font-semibold">Boolean Filter:</span>{' '}
-                      {currentItem.query.boolean_property_filter.property_name} = {' '}
+                      {currentItem.query.boolean_property_filter.property_name} ={' '}
                       {currentItem.query.boolean_property_filter.value}
                     </p>
                   )}
@@ -755,7 +836,7 @@ const QueryVisualizer = () => {
                       <span className="font-semibold">Text Aggregation:</span>{' '}
                       {currentItem.query.text_property_aggregation.metrics} of{' '}
                       {currentItem.query.text_property_aggregation.property_name}
-                      {currentItem.query.text_property_aggregation.top_occurrences_limit && 
+                      {currentItem.query.text_property_aggregation.top_occurrences_limit &&
                         ` (Top ${currentItem.query.text_property_aggregation.top_occurrences_limit})`}
                     </p>
                   )}
@@ -767,7 +848,10 @@ const QueryVisualizer = () => {
                     </p>
                   )}
                   {currentItem.query.groupby_property && (
-                    <p><span className="font-semibold">Group By:</span> {currentItem.query.groupby_property}</p>
+                    <p>
+                      <span className="font-semibold">Group By:</span>{' '}
+                      {currentItem.query.groupby_property}
+                    </p>
                   )}
                 </div>
                 {renderQueryResult(currentItem.ground_truth_query_result)}
