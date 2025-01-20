@@ -610,7 +610,7 @@ const QueryVisualizer = () => {
         // If string was not valid JSON, just render the string
         return (
           <div>
-            <h3 className="text-xl font-semibold mb-4 mt-6">Query Execution Result</h3>
+            <h3 className="text-2xl text-[#1c1468] font-semibold mb-4 mt-6">Query Execution Result</h3>
             <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
               <pre className="whitespace-pre-wrap">{result}</pre>
             </div>
@@ -751,7 +751,7 @@ const QueryVisualizer = () => {
         <div className="space-y-6">
           <div className="bg-white p-6 rounded-lg shadow-md">
             <div className="flex justify-between items-center mb-3">
-              <h2 className="text-xl font-bold">Query Details</h2>
+              <h2 className="text-2xl text-[#1c1468] font-bold">Query Details</h2>
               {!isEditing && (
                 <div className="flex gap-2">
                   <button
@@ -780,13 +780,15 @@ const QueryVisualizer = () => {
               />
             ) : (
               <>
-                <div className="space-y-2">
+                <div className="space-y-2 mt-8">
                   {currentItem.query.corresponding_natural_language_query && (
                     <p>
-                      <span className="font-semibold">Natural Language Query:</span>{' '}
-                      {currentItem.query.corresponding_natural_language_query}
+                      <span className="font-semibold text-2xl text-[#1c1468]">Natural Language Query</span>{' '}
+                      <br ></br>
+                      <span className="text-xl mt-2 block">{currentItem.query.corresponding_natural_language_query}</span>
                     </p>
                   )}
+                  <h2 className="font-semibold text-2xl text-[#1c1468]">Query APIs utilized</h2>
                   {currentItem.query.target_collection && (
                     <p>
                       <span className="font-semibold">Collection:</span>{' '}
