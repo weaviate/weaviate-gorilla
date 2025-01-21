@@ -41,9 +41,11 @@ for query_entry in queries:
         if collection_name in created_collections:
             continue
             
-        # Delete if exists
+        # Check if collection exists
         if weaviate_client.collections.exists(collection_name):
-            weaviate_client.collections.delete(collection_name)
+            print(f"Collection {collection_name} already exists, skipping creation")
+            created_collections.add(collection_name)
+            continue
             
         properties = []
         for prop in collection['properties']:
@@ -97,15 +99,32 @@ for query_data in queries:
         print(f"\033[91mQuery execution failed\033[0m")  # Red text
         print(f"Error: {str(e)}")  # Print the error message
         query_data['ground_truth_query_result'] = "QUERY EXECUTION FAILED"
-        print("Connecting to Weaviate...")
-        weaviate_client = weaviate.connect_to_weaviate_cloud(
-            cluster_url=WEAVIATE_URL,
-            auth_credentials=weaviate.auth.AuthApiKey(WEAVIATE_API_KEY),
-            headers={
-                "X-OpenAI-Api-Key": OPENAI_API_KEY
-            }
-        )
-        print("Successfully re-connected to Weaviate...")
+
+        # Exponential backoff retry logic
+        max_retries = 3
+        delay = 2  # Initial delay in seconds
+        retry_count = 0
+
+        while retry_count < max_retries:
+            try:
+                print(f"Attempt {retry_count + 1}/{max_retries} to reconnect to Weaviate...")
+                weaviate_client = weaviate.connect_to_weaviate_cloud(
+                    cluster_url=WEAVIATE_URL,
+                    auth_credentials=weaviate.auth.AuthApiKey(WEAVIATE_API_KEY),
+                    headers={
+                        "X-OpenAI-Api-Key": OPENAI_API_KEY
+                    }
+                )
+                print("Successfully re-connected to Weaviate")
+                break
+            except Exception as retry_error:
+                retry_count += 1
+                if retry_count == max_retries:
+                    print(f"Failed to reconnect after {max_retries} attempts")
+                    raise retry_error
+                wait_time = delay * (2 ** (retry_count - 1))  # Exponential backoff
+                print(f"Reconnection failed. Waiting {wait_time} seconds before retry...")
+                time.sleep(wait_time)
 
 print(f"\nTotal failed queries: {failed_queries}")
 
