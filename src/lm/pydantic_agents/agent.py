@@ -461,11 +461,60 @@ class WeaviateSearchAgentSimple:
         """Stringify the results of the aggregation executor."""
         print(f"{Fore.GREEN}Stringifying {len(results)} aggregation results{Style.RESET_ALL}")
         stringified_responses = []
+        
         for idx, (result, query) in enumerate(zip(results, queries)):
             response = f"Aggregation Result {idx+1} (Query: {query}):\n"
-            for prop in result.properties:
-                response += f"{prop}:{result.properties[prop]}\n"
+            
+            # Handle grouped results (AggregateGroupByReturn)
+            if hasattr(result, 'groups'):
+                response += f"Found {len(result.groups)} groups:\n"
+                for group in result.groups:
+                    response += f"\nGroup: {group.grouped_by.prop} = {group.grouped_by.value}\n"
+                    if hasattr(group, 'total_count'):
+                        response += f"Total Count: {group.total_count}\n"
+                    
+                    if hasattr(group, 'properties'):
+                        for prop_name, metrics in group.properties.items():
+                            response += f"\n{prop_name} metrics:\n"
+                            
+                            # Handle text metrics with top occurrences
+                            if hasattr(metrics, 'top_occurrences') and metrics.top_occurrences:
+                                response += "Top occurrences:\n"
+                                for occurrence in metrics.top_occurrences:
+                                    response += f"  {occurrence.value}: {occurrence.count}\n"
+                            
+                            # Handle numeric metrics
+                            if hasattr(metrics, 'count') and metrics.count is not None:
+                                response += f"  count: {metrics.count}\n"
+                            if hasattr(metrics, 'minimum') and metrics.minimum is not None:
+                                response += f"  minimum: {metrics.minimum}\n"
+                            if hasattr(metrics, 'maximum') and metrics.maximum is not None:
+                                response += f"  maximum: {metrics.maximum}\n"
+                            if hasattr(metrics, 'mean') and metrics.mean is not None:
+                                response += f"  mean: {metrics.mean:.2f}\n"
+                            if hasattr(metrics, 'sum_') and metrics.sum_ is not None:
+                                response += f"  sum: {metrics.sum_}\n"
+            
+            # Handle non-grouped results (AggregateReturn)
+            elif hasattr(result, 'properties'):
+                for prop_name, metrics in result.properties.items():
+                    response += f"\n{prop_name} metrics:\n"
+                    if hasattr(metrics, 'count') and metrics.count is not None:
+                        response += f"  count: {metrics.count}\n"
+                    if hasattr(metrics, 'mean') and metrics.mean is not None:
+                        response += f"  mean: {metrics.mean:.2f}\n"
+                    if hasattr(metrics, 'maximum') and metrics.maximum is not None:
+                        response += f"  maximum: {metrics.maximum}\n"
+                    if hasattr(metrics, 'minimum') and metrics.minimum is not None:
+                        response += f"  minimum: {metrics.minimum}\n"
+                    if hasattr(metrics, 'sum_') and metrics.sum_ is not None:
+                        response += f"  sum: {metrics.sum_}\n"
+                
+                if hasattr(result, 'total_count'):
+                    response += f"\nTotal Count: {result.total_count}\n"
+            
             stringified_responses.append(response)
+            
         return stringified_responses
 
     def _update_usage(self, usage: Usage):

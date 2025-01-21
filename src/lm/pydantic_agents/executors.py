@@ -107,71 +107,102 @@ def _build_filters(filters: List[PropertyFilter]) -> List[_Filters] | None:
 
 async def process_results(aggregation_results: List[AggregateReturn], search_results: List[QueryReturn]):
     """Process both aggregation and search results."""
+    print(f"\nReceived {len(search_results)} search results and {len(aggregation_results)} aggregation results")
+
     # Process search results
     if search_results:
         for i, result in enumerate(search_results, 1):
             print(f"\nSearch Result Set {i}:")
+            print(f"Number of objects in result set: {len(result.objects)}")
             for item in result.objects:
-                print(f"Menu Item: {item.properties['menuItem']}")
-                print(f"Price: ${item.properties['price']:.2f}")
-                print(f"Vegetarian: {item.properties['isVegetarian']}")
+                print(f"\nObject properties: {list(item.properties.keys())}")
+                for prop, value in item.properties.items():
+                    print(f"{prop}: {value}")
                 print("---")
+    else:
+        print("No search results to process")
 
     # Process aggregation results
     if aggregation_results:
-        print("\nAggregation Results:")
-        for agg_result in aggregation_results:
+        print(f"\nAggregation Results (count: {len(aggregation_results)}):")
+        for idx, agg_result in enumerate(aggregation_results):
+            print(f"\nProcessing aggregation result {idx + 1}")
+            print(f"Result type: {type(agg_result)}")
+            print(f"Available attributes: {dir(agg_result)}")
+            
             try:
-                # Handle AggregateGroupByReturn object
-                if hasattr(agg_result, 'groups') and agg_result.groups:  # Check if groups exist and is not empty
-                    for group in agg_result.groups:
-                        print(f"\nGroup: {group.grouped_by.prop} = {group.grouped_by.value}")
-                        print(f"Count: {group.total_count}")
+                # Handle grouped results (AggregateGroupByReturn)
+                if hasattr(agg_result, 'groups'):
+                    print(f"Found grouped result with {len(agg_result.groups)} groups")
+                    for group_idx, group in enumerate(agg_result.groups):
+                        print(f"\nProcessing group {group_idx + 1}")
+                        print(f"Group attributes: {dir(group)}")
+                        print(f"Group: {group.grouped_by.prop} = {group.grouped_by.value}")
                         
-                        for prop_name, metrics in group.properties.items():
-                            print(f"{prop_name} metrics:")
-                            if isinstance(metrics, (AggregateInteger, AggregateNumber)):
-                                if metrics.mean is not None:
-                                    print(f"  mean: {metrics.mean:.2f}")
-                                if metrics.maximum is not None:
-                                    print(f"  maximum: {metrics.maximum}")
-                                if metrics.minimum is not None:
-                                    print(f"  minimum: {metrics.minimum}")
-                                if metrics.count is not None:
-                                    print(f"  count: {metrics.count}")
-                                if metrics.sum_ is not None:
-                                    print(f"  sum: {metrics.sum_}")
-                            else:
-                                # Convert metrics object to dictionary, filtering None values
-                                metrics_dict = {k: v for k, v in vars(metrics).items() if not k.startswith('_') and v is not None}
-                                for metric_name, value in metrics_dict.items():
-                                    print(f"  {metric_name}: {value}")
+                        if hasattr(group, 'total_count'):
+                            print(f"Total Count: {group.total_count}")
+                        
+                        if hasattr(group, 'properties'):
+                            print(f"Properties in group: {list(group.properties.keys())}")
+                            for prop_name, metrics in group.properties.items():
+                                print(f"\n{prop_name} metrics (type: {type(metrics)}):")
+                                print(f"Metrics attributes: {dir(metrics)}")
+                                
+                                # Handle AggregateText specifically
+                                if hasattr(metrics, 'top_occurrences') and metrics.top_occurrences:
+                                    print("  Top occurrences:")
+                                    for occurrence in metrics.top_occurrences:
+                                        print(f"    {occurrence.value}: {occurrence.count}")
+                                
+                                # Handle numeric metrics
+                                if isinstance(metrics, (AggregateInteger, AggregateNumber)):
+                                    print(f"  Available numeric metrics: count={metrics.count}, "
+                                          f"min={metrics.minimum}, max={metrics.maximum}, "
+                                          f"mean={metrics.mean}, sum={metrics.sum_}")
+                                    if metrics.count is not None:
+                                        print(f"  count: {metrics.count}")
+                                    if metrics.minimum is not None:
+                                        print(f"  minimum: {metrics.minimum}")
+                                    if metrics.maximum is not None:
+                                        print(f"  maximum: {metrics.maximum}")
+                                    if metrics.mean is not None:
+                                        print(f"  mean: {metrics.mean:.2f}")
+                                    if metrics.sum_ is not None:
+                                        print(f"  sum: {metrics.sum_}")
                 
-                # Handle AggregateReturn object
-                if hasattr(agg_result, 'properties'):
+                # Handle non-grouped results (AggregateReturn)
+                elif hasattr(agg_result, 'properties'):
+                    print(f"Found non-grouped result with properties: {list(agg_result.properties.keys())}")
                     for prop_name, metrics in agg_result.properties.items():
-                        print(f"\n{prop_name} metrics:")
+                        print(f"\n{prop_name} metrics (type: {type(metrics)}):")
+                        print(f"Metrics attributes: {dir(metrics)}")
                         if isinstance(metrics, (AggregateInteger, AggregateNumber)):
+                            print(f"  Available numeric metrics: count={metrics.count}, "
+                                  f"min={metrics.minimum}, max={metrics.maximum}, "
+                                  f"mean={metrics.mean}, sum={metrics.sum_}")
+                            if metrics.count is not None:
+                                print(f"  count: {metrics.count}")
                             if metrics.mean is not None:
                                 print(f"  mean: {metrics.mean:.2f}")
                             if metrics.maximum is not None:
                                 print(f"  maximum: {metrics.maximum}")
                             if metrics.minimum is not None:
                                 print(f"  minimum: {metrics.minimum}")
-                            if metrics.count is not None:
-                                print(f"  count: {metrics.count}")
                             if metrics.sum_ is not None:
                                 print(f"  sum: {metrics.sum_}")
-                        else:
-                            metrics_dict = {k: v for k, v in vars(metrics).items() if not k.startswith('_') and v is not None}
-                            for metric_name, value in metrics_dict.items():
-                                print(f"  {metric_name}: {value}")
-
+                else:
+                    print(f"Warning: Unexpected aggregation result type: {type(agg_result)}")
+                    print(f"Available attributes: {dir(agg_result)}")
+                    
                 if hasattr(agg_result, 'total_count'):
                     print(f"\nTotal Count: {agg_result.total_count}")
-                
+                    
             except Exception as e:
                 print(f"Error processing aggregation result: {str(e)}")
+                print(f"Result type: {type(agg_result)}")
+                print(f"Error details: {repr(e)}")
+                print(f"Available attributes: {dir(agg_result)}")
+                raise  # Re-raise the exception to see the full stack trace
 
 
 async def aggregate(
@@ -229,9 +260,12 @@ def _build_return_metrics(
                     )
                 )
             elif isinstance(agg, IntegerPropertyAggregation):
+                metric_name = agg.metrics.value.lower()
+                if metric_name == "sum":
+                    metric_name = "sum_"
                 metrics_list.append(
                     wc.query.Metrics(agg.property_name).integer(
-                        **{agg.metrics.value.lower(): True}
+                        **{metric_name: True}
                     )
                 )
             elif isinstance(agg, TextPropertyAggregation):
@@ -253,57 +287,47 @@ def _build_return_metrics(
 
 
 async def main():
-    """Example usage of the query executor."""
-    import os
-    import weaviate
-    from weaviate.classes.init import Auth
-    from coordinator.src.agents.nodes.query import QueryAgentDeps, query_agent
-
-    client = weaviate.use_async_with_weaviate_cloud(
-        cluster_url=os.getenv("WEAVIATE_URL"),
-        auth_credentials=Auth.api_key(os.getenv("WEAVIATE_API_KEY")),
-        headers={"X-Openai-Api-Key": os.getenv("OPENAI_APIKEY")},
-    )
-
-    try:
-        collection = client.collections.get("Menus")
-
-        # Example schema for menu items
-        schema = {
-            "properties": {
-                "menuItem": "string",
-                "itemDescription": "string",
-                "price": "number",
-                "isVegetarian": "boolean"
-            }
-        }
-
-        query_agent_deps = QueryAgentDeps(collection_schema=schema)
-
-        # Example query
-        query_result = await query_agent.run(
-            "Find vegetarian menu items under $20",
-            deps=query_agent_deps,
-        )
-
-        # Connect the client before searching
-        await client.connect()
-
-        # Execute search
-        search_results = await search(collection, query_result.data, limit=10)
+    """Test AggregateGroupByReturn object parsing."""
+    from dataclasses import dataclass
+    
+    @dataclass
+    class GroupedBy:
+        prop: str
+        value: str
         
-        # Execute aggregation
-        agg_results = []
-        if hasattr(query_result.data, 'aggregations'):
-            for agg in query_result.data.aggregations:
-                agg_result = await aggregate(collection, agg)
-                agg_results.append(agg_result)
-
-        # Process and display results
-        await process_results(agg_results, search_results)
-
-    finally:
-        await client.close()
+    @dataclass 
+    class AggregateInteger:
+        count: int
+        maximum: None
+        mean: None
+        median: None
+        minimum: None
+        mode: None
+        sum_: None
+        
+    @dataclass
+    class AggregateGroup:
+        grouped_by: GroupedBy
+        properties: dict
+        total_count: int
+        
+    @dataclass
+    class AggregateGroupByReturn:
+        groups: list
+    
+    # Create test object
+    test_results = [
+        AggregateGroupByReturn(groups=[
+            AggregateGroup(
+                grouped_by=GroupedBy(prop='openNow', value='true'),
+                properties={'name': AggregateInteger(count=13, maximum=None, mean=None, median=None, minimum=None, mode=None, sum_=None)},
+                total_count=13
+            )
+        ])
+    ]
+    
+    # Process results
+    await process_results(test_results, [])
 
 
 if __name__ == "__main__":

@@ -180,6 +180,8 @@ async def run_queries(client, queries_data: List[Dict], collections: Dict):
             # Print results
             print("\nQuery results:")
             print("Original Query:", result.original_query)
+            print("Search Queries sent:", result.searches)
+            print("Aggregation Queries sent:", result.aggregations)
             print("Final Answer:", result.final_answer)
             print("Usage Stats:", result.usage)
             
