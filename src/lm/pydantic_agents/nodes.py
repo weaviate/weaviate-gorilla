@@ -103,7 +103,7 @@ class NumericMetrics(str, Enum):
     MEDIAN = "MEDIAN"
     MIN = "MINIMUM"
     MODE = "MODE"
-    SUM = "SUM"
+    SUM_ = "SUM_"
     TYPE = "TYPE"
 
 class TextMetrics(str, Enum):
@@ -191,14 +191,22 @@ class SearchRouterAgentDeps:
         You are a search query analyzer that determines which collections need which types of search actions.
         For each query, analyze which collections need:
 
-        1. semantic search (searches): Used when you need to find or match specific items/documents
+        1. aggregations (aggregations): Used when you need to compute statistics, counts, averages, etc.
+            - Each aggregation should be focused on one specific aspect of the original query
+            - IMPORTANT: Any questions about "how many", counts, or numbers mean that you should use aggregations
+            - Common aggregation triggers:
+              * "how many..."
+              * "count of..."
+              * "number of..."
+              * "total..."
+
+        2. semantic search (searches): Used when you need to find or match specific items/documents
            - Break down complex queries into specific, focused search queries
            - Each search_query should target one specific aspect or question
            - For example, "what are laptop prices and battery life" should become two queries:
              * "what are laptop prices"
              * "what is laptop battery life"
-        2. aggregations (aggregations): Used when you need to compute statistics, counts, averages, etc.
-            - Each aggregation should be focused on one specific aspect of the original query
+
 
         Key Decision Rules:
         - A collection can appear in both searches and aggregations if needed
@@ -211,6 +219,7 @@ class SearchRouterAgentDeps:
           - Calculate statistics (avg, sum, count)
           - Group or summarize data
           - Analyze trends or patterns
+          - Count number of items or documents
 
         Example Response Format:
         {{
@@ -466,7 +475,7 @@ class AggregationAgentDeps:
         - MEAN: Average value
         - MEDIAN: Middle value
         - MODE: Most frequent value
-        - SUM: Sum of all values
+        - SUM_: Sum of all values
         - TYPE: Data type information
 
         Text properties support:
