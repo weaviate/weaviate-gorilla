@@ -31,27 +31,28 @@ num_requests = 0
 total_queries_generated = 0
 total_queries_verified = 0
 total_queries_valid = 0
+total_queries_corrected = 0
 start_time = time.time()
 
 # -----------------------------
 # Operator descriptions
 # -----------------------------
 print("Loading operator descriptions...")
-search_query_desc = """Use `search_query` when you need to find the most relevant results..."""
+search_query_desc = """Use `search_query` when you need to find the most relevant results based on semantic similarity. This operator performs a vector search using embeddings to return objects that best match your search criteria. It's ideal for natural language queries and finding conceptually similar content."""
 
-text_property_filter_desc = """Use `text_property_filter` when you need to retrieve objects..."""
+text_property_filter_desc = """Use `text_property_filter` when you need to retrieve objects based on text field conditions. This operator supports exact matches, contains, and regular expressions on text properties. For example, filtering articles by title or documents by specific keywords."""
 
-int_property_filter_desc = """Use `int_property_filter` when you need to return objects..."""
+int_property_filter_desc = """Use `int_property_filter` when you need to return objects based on numeric comparisons. This operator supports greater than, less than, equals, and range queries on integer properties. Useful for filtering by age, count, or any numeric attributes."""
 
-boolean_property_filter_desc = """Use `boolean_property_filter` when you need to retrieve objects..."""
+boolean_property_filter_desc = """Use `boolean_property_filter` when you need to retrieve objects based on true/false conditions. This operator filters on boolean properties, returning only objects that match the specified true or false value. Perfect for filtering by status flags or binary attributes."""
 
-text_property_aggregation_desc = """Use `text_property_aggregation` when you need to compute aggregate values..."""
+text_property_aggregation_desc = """Use `text_property_aggregation` when you need to compute aggregate values on text fields. This operator can count unique values, find most/least common text values, or perform other text-based aggregations. Useful for analyzing distributions of categorical text data."""
 
-int_property_aggregation_desc = """Use `int_property_aggregation` when you need to perform aggregate calculations..."""
+int_property_aggregation_desc = """Use `int_property_aggregation` when you need to perform aggregate calculations on numeric fields. This operator supports sum, average, min, max, and count operations on integer properties. Ideal for statistical analysis and numerical summaries."""
 
-boolean_property_aggregation_desc = """Use `boolean_property_aggregation` when you need to aggregate data..."""
+boolean_property_aggregation_desc = """Use `boolean_property_aggregation` when you need to aggregate data based on boolean fields. This operator can count true/false values, calculate percentages, or analyze distributions of binary attributes. Perfect for summarizing status-based or conditional data."""
 
-groupby_desc = """Use `groupby` when you need to organize or segment results..."""
+groupby_desc = """Use `groupby` when you need to organize or segment results into categories. This operator allows you to group query results by one or more properties and apply aggregations within each group. Essential for creating structured summaries and analyzing patterns across different categories."""
 
 # -----------------------------
 # LLM + Vectorizer initialization
@@ -103,32 +104,38 @@ You are generating natural language database queries that MUST use specific Weav
 [[ Database Schema ]]
 {database_schema}
 
-Instructions:
-1. Your natural language query MUST use ALL operators listed above, and ONLY those operators
-2. You MUST explicitly mention the exact property names from the schema that each operator will use
-3. You MUST make the numeric values, comparison operators, and property names clear in your query
+CRITICAL INSTRUCTIONS:
+1. Your natural language query MUST use ALL operators listed above - no more, no less
+2. Your query MUST be achievable using ONLY the operators provided - do not imply the need for any additional operations
+3. You MUST explicitly mention the exact property names from the schema that each operator will use
+4. You MUST make numeric values, comparison operators, and property names unambiguously clear
 
-Examples:
+Examples of GOOD vs BAD Queries:
 
-GOOD QUERY (for integer_property_filter on 'appointmentDuration'):
+GOOD QUERY (using only integer_property_filter on 'appointmentDuration'):
 "Find appointments that are at least 30 minutes in appointmentDuration"
-- Explicitly references the property name
-- Makes the comparison clear
-- Value is unambiguous
+✓ Explicitly references the exact property name
+✓ Makes the comparison operator crystal clear ("at least")
+✓ Uses an unambiguous numeric value (30)
+✓ Requires only the integer_property_filter operator
 
-BAD QUERY (for integer_property_filter on 'appointmentDuration'):
-"Find appointments for young patients with experienced doctors"
-- Doesn't reference the actual property
-- Unclear what properties or values to filter on
-- Could be interpreted multiple ways
+BAD QUERY (implying need for multiple unspecified operators):
+"Find appointments for young patients with experienced doctors and sort by rating"
+✗ Implies need for additional operators not provided (sorting)
+✗ Uses vague terms ("young", "experienced") instead of explicit values
+✗ Doesn't reference actual property names
+✗ Could require multiple different operators not specified
 
-Remember:
-- Be explicit about property names
-- Include clear numeric values when using filters
-- Make it obvious which operator applies to which part of the query
-- Don't introduce requirements that would need additional operators (THIS IS VERY IMPORTANT!!)
+CRITICAL REMINDERS:
+- Your query must be achievable using EXACTLY the operators provided - no more, no less
+- Every operator listed must be used exactly once
+- Never introduce requirements that would need additional operators
+- Always use explicit property names from the schema
+- Use clear numeric values for all filters
+- Make it obvious which specific operator applies to which part of the query
+- If you're unsure if a query might need an additional operator, DO NOT generate it
 
-Generate a single natural language query meeting these requirements."""
+Generate a single natural language query that strictly follows these requirements."""
 
 # -----------------------------
 # Verification Model + Prompt
@@ -137,6 +144,10 @@ class QueryVerificationModel(BaseModel):
     """
     A model for the second inference step, which checks the correctness of a query.
     """
+    verification_rationale: str = Field(
+        ...,
+        description="Explanation of why the query is valid or invalid based on the operators and execution results"
+    )
     is_valid: bool = Field(
         ...,
         description="True if the generated query aligns with the ground-truth operators or appears correct; False otherwise"
@@ -157,28 +168,63 @@ You are checking the correctness of an AI-generated query that corresponds to sp
 - If the query actually uses the expected operators in a sensible way and the result is consistent, answer True.
 - If the query is missing operators, uses different operators, or the result is suspiciously incorrect, answer False.
 
-Important: Provide the final JSON with a single boolean field "is_valid".
+First explain your reasoning about why the query is valid or invalid, then provide your final verdict.
+
+Important: Provide the final JSON with a verification_rationale explaining your reasoning and an is_valid boolean field.
 """
 
     if execution_result:
         instructions += f"\nExecution result:\n{execution_result}\n"
     instructions += f"\nGround truth operators: {ground_truth_operators}\n"
     instructions += f"Generated query:\n{generated_query}\n"
-    instructions += "\nOnly output JSON with the single key 'is_valid', e.g. `{\"is_valid\": true}`."
+    instructions += "\nOutput JSON with both verification_rationale and is_valid fields, e.g. `{\"verification_rationale\": \"The query correctly uses...\", \"is_valid\": true}`."
     return instructions
+
+def get_correction_prompt(
+    invalid_query: str,
+    verification_rationale: str,
+    ground_truth_operators: List[str],
+    schema: Dict
+) -> str:
+    """
+    Build the prompt for correcting an invalid query.
+    """
+    print("Building correction prompt...")
+    return f"""
+You are correcting an invalid natural language database query. The query needs to properly use the specified operators.
+
+Invalid query: "{invalid_query}"
+
+Reason it was invalid: {verification_rationale}
+
+Required operators that MUST be used: {ground_truth_operators}
+
+Database schema:
+{format_schema(schema)}
+
+Please generate a corrected natural language query that:
+1. Uses ALL of the required operators exactly once
+2. References actual property names from the schema
+3. Makes numeric values and comparisons explicit
+4. Avoids implying any additional operations
+
+Provide ONLY the corrected natural language query as a plain string, with no additional explanation or formatting.
+"""
 
 def verify_query(
     lm_service: LMService,
     generated_query: dict,
     ground_truth_operators: List[str],
+    schema: Dict,
     execution_result: str = None
-) -> bool:
+) -> tuple[bool, str, Optional[str]]:
     """
     Performs a second inference step to verify if the generated query is consistent
     with the ground truth operators and possibly the execution result.
-    Returns True if consistent/correct, False otherwise.
+    If invalid, attempts to correct the query.
+    Returns a tuple of (is_valid, verification_rationale, corrected_query).
     """
-    global total_input_tokens, total_output_tokens, num_requests, total_queries_verified, total_queries_valid
+    global total_input_tokens, total_output_tokens, num_requests, total_queries_verified, total_queries_valid, total_queries_corrected
     
     print(f"Verifying query with ground truth operators: {ground_truth_operators}")
     prompt = get_verification_prompt(
@@ -203,16 +249,44 @@ def verify_query(
     total_queries_verified += 1
     if verification_output.is_valid:
         total_queries_valid += 1
+        corrected_query = None
+    else:
+        # Generate corrected query if invalid
+        correction_prompt = get_correction_prompt(
+            invalid_query=generated_query["corresponding_natural_language_query"],
+            verification_rationale=verification_output.verification_rationale,
+            ground_truth_operators=ground_truth_operators,
+            schema=schema
+        )
+        
+        # Count correction input tokens
+        correction_input_tokens = len(encoding.encode(correction_prompt))
+        total_input_tokens += correction_input_tokens
+
+        class CorrectedQuery(BaseModel):
+            query: str
+        
+        corrected_query_raw = lm_service.generate(correction_prompt, CorrectedQuery)
+        corrected_query = corrected_query_raw.query
+        # Count correction output tokens
+        correction_output_tokens = len(encoding.encode(corrected_query))
+        total_output_tokens += correction_output_tokens
+        num_requests += 1
+        
+        total_queries_corrected += 1
+        print(f"\033[33mCorrected query: {corrected_query}\033[0m")
     
     # Calculate and display verification statistics
     verification_rate = (total_queries_valid / total_queries_verified) * 100
     print(f"\033[32mQuery verification result: {verification_output.is_valid}\033[0m")
+    print(f"\033[36mVerification rationale: {verification_output.verification_rationale}\033[0m")
     print(f"\033[36mVerification Statistics:")
     print(f"Total queries verified: {total_queries_verified}")
     print(f"Total queries valid: {total_queries_valid}")
+    print(f"Total queries corrected: {total_queries_corrected}")
     print(f"Verification success rate: {verification_rate:.1f}%\033[0m")
     print(f"Tokens used - Input: {input_tokens}, Output: {output_tokens}")
-    return verification_output.is_valid
+    return verification_output.is_valid, verification_output.verification_rationale, corrected_query
 
 # -----------------------------
 # Query Generation
@@ -443,20 +517,27 @@ def generate_all_queries(schemas: List[Dict], api_key: str) -> List[Dict]:
             # For this example, we'll pass None
             execution_result = None
             
-            # 4) Verify the query with a second LLM call
-            is_valid = verify_query(
+            # 4) Verify the query with a second LLM call and potentially correct it
+            is_valid, verification_rationale, corrected_query = verify_query(
                 lm_service=lm_service,
                 generated_query=query,
                 ground_truth_operators=ground_truth_ops,
+                schema=schema,
                 execution_result=execution_result
             )
             
-            results.append({
+            result_dict = {
                 "database_schema": schema,
                 "query": query,
                 "ground_truth_operators": ground_truth_ops,
-                "is_valid": is_valid
-            })
+                "is_valid": is_valid,
+                "verification_rationale": verification_rationale
+            }
+            
+            if corrected_query:
+                result_dict["corrected_natural_language_query"] = corrected_query
+                
+            results.append(result_dict)
             
     print(f"\nQuery generation complete. Generated {len(results)} queries.")
     

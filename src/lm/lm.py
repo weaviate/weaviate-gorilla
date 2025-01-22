@@ -111,33 +111,13 @@ class LMService():
                     return response.choices[0].message.content
                     
             case "anthropic":
-                max_retries = 5
-                base_delay = 15
-                
-                for attempt in range(max_retries):
-                    try:
-                        messages = [{"role": "user", "content": prompt}]
-                        if output_model:
-                            # Create an instance with default values
-                            model_instance = output_model(generic_response="Hello! This is a test response.")
-                            # Append output format instructions if model provided
-                            messages[0]["content"] += f"\nRespond with the following JSON format: {model_instance.model_dump_json()}"
-                        
-                        response = self.lm_client.messages.create(
-                            model=self.model_name,
-                            messages=messages,
-                            max_tokens=1024
-                        )
-                        return response.content[0].text
-                        
-                    except Exception as e:
-                        if attempt == max_retries - 1:  # Last attempt
-                            raise e
-                        
-                        # Calculate exponential backoff delay
-                        delay = base_delay * (2 ** attempt)  # 10, 20, 40, 80, 160 seconds
-                        print(f"Anthropic API call failed, retrying in {delay} seconds... (Attempt {attempt + 1}/{max_retries})")
-                        time.sleep(delay)
+                messages = [{"role": "user", "content": prompt}]
+                response = self.lm_client.messages.create(
+                    model=self.model_name,
+                    max_tokens=1024,
+                    messages=messages,
+                )
+                return response.content[0].text
 
             case "cohere":
                 messages = [{"role": "user", "content": prompt}]
@@ -198,7 +178,7 @@ class LMService():
                 }
             ]
             if self.model_name in ["gemini-2.0-flash-exp", "gemini-1.5-flash", "gemini-1.5-pro"]:
-                    response = self.lm_client.chat.completions.create(
+                response = self.lm_client.chat.completions.create(
                     model=self.model_name,
                     messages=messages,
                     tools=tools
@@ -211,8 +191,13 @@ class LMService():
                     parallel_tool_calls=parallel_tool_calls
                 )
 
-            # Parse this in the testing script to enable setting `parallel_tool_calls=True`
-            tool_calls = response.choices[0].message.tool_calls
+            if self.model_name in ["gemini-2.0-flash-exp", "gemini-1.5-flash", "gemini-1.5-pro"]:
+                tool_calls = response.choices[0].message.tool_calls
+                for tool_call in tool_calls:
+                    tool_call.function.arguments = tool_call.function.arguments.replace('\\u003e', '>')
+                    tool_call.function.arguments = tool_call.function.arguments.replace('\\u003c', '<')
+            else:
+                tool_calls = response.choices[0].message.tool_calls
             
             if tool_calls:
                 return tool_calls
@@ -244,10 +229,6 @@ class LMService():
             for attempt in range(max_retries):
                 try:
                     messages = [
-                        {
-                            "role": "system",
-                            "content": "You are a helpful assistant. Use the supplied tools to assist the user."
-                        },
                         {
                             "role": "user",
                             "content": prompt
@@ -315,7 +296,6 @@ class LMService():
                 tools=[tool.model_dump() for tool in tools],
                 tool_choice="auto"
             )
-            
             tool_calls = response.choices[0].message.tool_calls
             if tool_calls:
                 return json.loads(tool_calls[0].function.arguments)

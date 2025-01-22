@@ -92,7 +92,7 @@ def _build_return_metrics(tool_args: dict):
                     # Map to correct integer metric names
                     metric_mapping = {
                         "MEAN": "mean",
-                        "SUM": "sum",
+                        "SUM": "sum_",
                         "MAX": "maximum",
                         "MIN": "minimum",
                         "COUNT": "count"
