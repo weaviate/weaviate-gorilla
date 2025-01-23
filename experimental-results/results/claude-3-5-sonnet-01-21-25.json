@@ -1,16 +1,17 @@
 {
-  "timestamp": "2025-01-21T20:28:20.107601",
-  "model_name": "gpt-4o-mini",
+  "timestamp": "2025-01-21T21:56:22.142369",
+  "model_name": "claude-3-5-sonnet-20241022",
   "generate_with_models": false,
   "total_queries": 315,
-  "successful_predictions": 312,
-  "failed_predictions": 3,
-  "average_ast_score": 0.9522435897435895,
+  "successful_predictions": 305,
+  "failed_predictions": 10,
+  "average_ast_score": 0.9726229508196717,
+  "perfect_matches": 234,
   "per_schema_scores": {
-    "0": 0.9660156250000002,
-    "1": 0.9531250000000002,
-    "2": 0.9195312500000002,
-    "3": 0.9117187500000002
+    "0": 0.9515625000000003,
+    "1": 0.9382812500000001,
+    "2": 0.9289062500000003,
+    "3": 0.9125000000000002
   },
   "detailed_results": [
     {
@@ -145,7 +146,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find restaurants with a cozy ambiance and Italian cuisine, where the average rating is at least 4, count how many such restaurants there are, and group them by whether they are currently open or not.",
         "target_collection": "Restaurants",
-        "search_query": "cozy ambiance Italian cuisine",
+        "search_query": "cozy Italian restaurants",
         "integer_property_filter": {
           "property_name": "averageRating",
           "operator": ">=",
@@ -158,10 +159,7 @@
           "metrics": "COUNT"
         },
         "text_property_aggregation": null,
-        "boolean_property_aggregation": {
-          "property_name": "openNow",
-          "metrics": "PERCENTAGE_TRUE"
-        },
+        "boolean_property_aggregation": null,
         "groupby_property": "openNow"
       },
       "tool_rationale": "",
@@ -300,7 +298,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find Italian cuisine restaurants with a cozy ambiance that have an average rating of at least 4, plus provide the count of such restaurants that are currently open.",
         "target_collection": "Restaurants",
-        "search_query": "Italian cuisine cozy ambiance",
+        "search_query": "Italian cozy restaurants",
         "integer_property_filter": {
           "property_name": "averageRating",
           "operator": ">=",
@@ -312,7 +310,7 @@
         "text_property_aggregation": null,
         "boolean_property_aggregation": {
           "property_name": "openNow",
-          "metrics": "PERCENTAGE_TRUE"
+          "metrics": "TOTAL_TRUE"
         },
         "groupby_property": null
       },
@@ -607,7 +605,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find restaurants with a family-friendly ambiance and Italian cuisine rated with at least 4.5 in averageRating, and identify the top 3 most common descriptions.",
         "target_collection": "Restaurants",
-        "search_query": "family-friendly ambiance Italian cuisine",
+        "search_query": "family-friendly Italian cuisine",
         "integer_property_filter": {
           "property_name": "averageRating",
           "operator": ">=",
@@ -760,7 +758,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find restaurants offering Italian cuisine with a cozy atmosphere, with at least an average rating of 4.5. Also, calculate the percentage of these restaurants that are open and group results based on their open status.",
         "target_collection": "Restaurants",
-        "search_query": "Italian cuisine cozy atmosphere",
+        "search_query": "Italian cozy atmosphere",
         "integer_property_filter": {
           "property_name": "averageRating",
           "operator": ">=",
@@ -916,7 +914,7 @@
         "integer_property_filter": {
           "property_name": "averageRating",
           "operator": ">",
-          "value": 4
+          "value": 4.0
         },
         "text_property_filter": null,
         "boolean_property_filter": null,
@@ -1061,7 +1059,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find restaurants that are similar to Italian family-friendly places, have an averageRating of at least 4, and group them by whether they are currently open (openNow).",
         "target_collection": "Restaurants",
-        "search_query": "Italian family-friendly",
+        "search_query": "Italian family-friendly restaurants",
         "integer_property_filter": {
           "property_name": "averageRating",
           "operator": ">=",
@@ -1207,11 +1205,11 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find Italian restaurants with a cozy ambiance, and the averageRating must be greater than 4.0.",
         "target_collection": "Restaurants",
-        "search_query": "Italian restaurants with a cozy ambiance",
+        "search_query": "Italian restaurants cozy ambiance",
         "integer_property_filter": {
           "property_name": "averageRating",
           "operator": ">",
-          "value": 4
+          "value": 4.0
         },
         "text_property_filter": null,
         "boolean_property_filter": null,
@@ -1356,7 +1354,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find restaurants with an Italian ambiance and explicitly mentioned as family friendly in their description, calculate the average of each restaurant's averageRating, and group the results by restaurant name.",
         "target_collection": "Restaurants",
-        "search_query": "Italian ambiance family friendly",
+        "search_query": "Italian family friendly",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
@@ -1657,15 +1655,16 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find restaurants with a cozy and modern ambiance that mention 'casual dining' in their description. Count the number of unique restaurant names and group the results by whether they are currently open.",
         "target_collection": "Restaurants",
-        "search_query": "cozy modern ambiance casual dining",
+        "search_query": "cozy modern \"casual dining\"",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
           "property_name": "name",
-          "metrics": "COUNT"
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": "openNow"
       },
@@ -1814,16 +1813,17 @@
           "value": "Ocean View Grille"
         },
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
           "property_name": "name",
-          "metrics": "COUNT"
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
-        "groupby_property": "name"
+        "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.8500000000000001,
+      "ast_score": 1.0,
       "error": null
     },
     {
@@ -2106,7 +2106,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find restaurants similar to a cozy Italian restaurant with a great wine selection, include only those whose name contains 'Grill', and count how many of them are currently open.",
         "target_collection": "Restaurants",
-        "search_query": "cozy Italian restaurant great wine selection",
+        "search_query": "cozy Italian restaurant wine selection",
         "integer_property_filter": null,
         "text_property_filter": {
           "property_name": "name",
@@ -2118,12 +2118,12 @@
         "text_property_aggregation": null,
         "boolean_property_aggregation": {
           "property_name": "openNow",
-          "metrics": "COUNT"
+          "metrics": "TOTAL_TRUE"
         },
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 1.0,
+      "ast_score": 0.9500000000000001,
       "error": null
     },
     {
@@ -2405,7 +2405,7 @@
         "integer_property_filter": null,
         "text_property_filter": {
           "property_name": "description",
-          "operator": "=",
+          "operator": "LIKE",
           "value": "romantic"
         },
         "boolean_property_filter": null,
@@ -2415,7 +2415,7 @@
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.9500000000000001,
+      "ast_score": 1.0,
       "error": null
     },
     {
@@ -2550,7 +2550,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find restaurants that offer a romantic ambiance and Italian cuisine, ensure they are open now, calculate the average rating, and organize the results by each restaurant's name.",
         "target_collection": "Restaurants",
-        "search_query": "romantic ambiance Italian cuisine",
+        "search_query": "romantic Italian",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": {
@@ -2702,7 +2702,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find cozy Italian restaurants with a great wine selection that are open now, and calculate the average rating of these open restaurants.",
         "target_collection": "Restaurants",
-        "search_query": "cozy Italian restaurants with a great wine selection",
+        "search_query": "cozy Italian restaurants wine selection",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": {
@@ -2867,7 +2867,7 @@
         "text_property_aggregation": {
           "property_name": "description",
           "metrics": "TOP_OCCURRENCES",
-          "top_occurrences_limit": 1
+          "top_occurrences_limit": null
         },
         "boolean_property_aggregation": null,
         "groupby_property": "name"
@@ -3162,7 +3162,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find restaurants that are known for their cozy ambiance and Italian cuisine, filter those that are currently open, aggregate to count how many are open versus closed, and organize results by the name of the restaurant.",
         "target_collection": "Restaurants",
-        "search_query": "cozy ambiance Italian cuisine",
+        "search_query": "cozy Italian",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": {
@@ -3314,16 +3314,17 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find restaurants serving Italian cuisine with a romantic ambiance that are currently open, and calculate the percentage of restaurants that are open.",
         "target_collection": "Restaurants",
-        "search_query": "Italian cuisine romantic ambiance",
+        "search_query": "romantic Italian restaurants",
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
+        "boolean_property_filter": {
+          "property_name": "openNow",
+          "operator": "=",
+          "value": true
+        },
         "integer_property_aggregation": null,
         "text_property_aggregation": null,
-        "boolean_property_aggregation": {
-          "property_name": "openNow",
-          "metrics": "PERCENTAGE_TRUE"
-        },
+        "boolean_property_aggregation": null,
         "groupby_property": null
       },
       "tool_rationale": "",
@@ -3605,7 +3606,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find currently open restaurants that conceptually relate to 'Italian cuisine with a cozy ambiance.'",
         "target_collection": "Restaurants",
-        "search_query": "Italian cuisine with a cozy ambiance",
+        "search_query": "Italian cuisine cozy ambiance",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": {
@@ -3759,14 +3760,11 @@
           "metrics": "SUM"
         },
         "text_property_aggregation": null,
-        "boolean_property_aggregation": {
-          "property_name": "confirmed",
-          "metrics": "COUNT"
-        },
-        "groupby_property": null
+        "boolean_property_aggregation": null,
+        "groupby_property": "confirmed"
       },
       "tool_rationale": "",
-      "ast_score": 0.8500000000000001,
+      "ast_score": 1.0,
       "error": null
     },
     {
@@ -3897,10 +3895,14 @@
       "predicted_query": {
         "corresponding_natural_language_query": "What is the average price of spicy vegetarian menu items?",
         "target_collection": "Menus",
-        "search_query": "spicy vegetarian",
+        "search_query": "spicy",
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
+        "boolean_property_filter": {
+          "property_name": "isVegetarian",
+          "operator": "=",
+          "value": true
+        },
         "integer_property_aggregation": {
           "property_name": "price",
           "metrics": "MEAN"
@@ -4046,19 +4048,17 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
-          "property_name": "averageRating",
-          "metrics": "COUNT"
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
+          "property_name": "name",
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": {
-          "property_name": "openNow",
-          "metrics": "PERCENTAGE_TRUE"
-        },
+        "boolean_property_aggregation": null,
         "groupby_property": "openNow"
       },
       "tool_rationale": "",
-      "ast_score": 0.8500000000000001,
+      "ast_score": 1.0,
       "error": null
     },
     {
@@ -4190,24 +4190,21 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Identify how many unique restaurants offer a cozy Italian cuisine with a romantic ambiance by analyzing their descriptions and count the occurrences of different restaurant names.",
         "target_collection": "Restaurants",
-        "search_query": "cozy Italian restaurants with a romantic ambiance",
+        "search_query": "cozy Italian romantic ambiance",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
-          "property_name": "name",
-          "metrics": "COUNT"
-        },
+        "integer_property_aggregation": null,
         "text_property_aggregation": {
           "property_name": "name",
-          "metrics": "TOP_OCCURRENCES",
+          "metrics": "COUNT",
           "top_occurrences_limit": null
         },
         "boolean_property_aggregation": null,
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.925,
+      "ast_score": 1.0,
       "error": null
     },
     {
@@ -4338,7 +4335,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "What percentage of restaurants that offer outdoor seating and live music are currently open, and how are they distributed by their average rating?",
         "target_collection": "Restaurants",
-        "search_query": "restaurants with outdoor seating and live music",
+        "search_query": "outdoor seating live music",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
@@ -4348,10 +4345,10 @@
           "property_name": "openNow",
           "metrics": "PERCENTAGE_TRUE"
         },
-        "groupby_property": "averageRating"
+        "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 1.0,
+      "ast_score": 0.8500000000000001,
       "error": null
     },
     {
@@ -4482,16 +4479,12 @@
       "predicted_query": {
         "corresponding_natural_language_query": "What percentage of confirmed reservations mention the word 'celebration' in the notes?",
         "target_collection": "Reservations",
-        "search_query": null,
+        "search_query": "celebration",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
         "integer_property_aggregation": null,
-        "text_property_aggregation": {
-          "property_name": "notes",
-          "metrics": "COUNT",
-          "top_occurrences_limit": null
-        },
+        "text_property_aggregation": null,
         "boolean_property_aggregation": {
           "property_name": "confirmed",
           "metrics": "PERCENTAGE_TRUE"
@@ -4499,7 +4492,7 @@
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.8500000000000001,
+      "ast_score": 1.0,
       "error": null
     },
     {
@@ -4627,7 +4620,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find restaurants with a cozy ambiance and Italian cuisine in their description using search_query, and then group these restaurants by their averageRating.",
         "target_collection": "Restaurants",
-        "search_query": "cozy ambiance Italian cuisine",
+        "search_query": "cozy Italian cuisine",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
@@ -5223,11 +5216,12 @@
         },
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
           "property_name": "reservationName",
-          "metrics": "COUNT"
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": "confirmed"
       },
@@ -5533,12 +5527,12 @@
         "text_property_aggregation": null,
         "boolean_property_aggregation": {
           "property_name": "confirmed",
-          "metrics": "COUNT"
+          "metrics": "TOTAL_TRUE"
         },
         "groupby_property": "reservationName"
       },
       "tool_rationale": "",
-      "ast_score": 1.0,
+      "ast_score": 0.9500000000000001,
       "error": null
     },
     {
@@ -5681,16 +5675,16 @@
         },
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
-          "property_name": "confirmed",
-          "metrics": "COUNT"
-        },
+        "integer_property_aggregation": null,
         "text_property_aggregation": null,
-        "boolean_property_aggregation": null,
+        "boolean_property_aggregation": {
+          "property_name": "confirmed",
+          "metrics": "TOTAL_TRUE"
+        },
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 1.0,
+      "ast_score": 0.9500000000000001,
       "error": null
     },
     {
@@ -6269,16 +6263,17 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
-          "property_name": "averageRating",
-          "metrics": "COUNT"
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
+          "property_name": "name",
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.8,
+      "ast_score": 0.8500000000000001,
       "error": null
     },
     {
@@ -6418,11 +6413,12 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
           "property_name": "name",
-          "metrics": "COUNT"
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": "openNow"
       },
@@ -6716,12 +6712,12 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": null,
+        "boolean_property_aggregation": {
           "property_name": "confirmed",
           "metrics": "COUNT"
         },
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": null,
         "groupby_property": "reservationName"
       },
       "tool_rationale": "",
@@ -6868,12 +6864,12 @@
         "text_property_aggregation": null,
         "boolean_property_aggregation": {
           "property_name": "openNow",
-          "metrics": "COUNT"
+          "metrics": "TOTAL_TRUE"
         },
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.8500000000000001,
+      "ast_score": 0.8,
       "error": null
     },
     {
@@ -7295,16 +7291,17 @@
         "search_query": null,
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
+        "boolean_property_filter": {
+          "property_name": "openNow",
+          "operator": "=",
+          "value": true
+        },
         "integer_property_aggregation": {
           "property_name": "averageRating",
           "metrics": "MEAN"
         },
         "text_property_aggregation": null,
-        "boolean_property_aggregation": {
-          "property_name": "openNow",
-          "metrics": "PERCENTAGE_TRUE"
-        },
+        "boolean_property_aggregation": null,
         "groupby_property": "averageRating"
       },
       "tool_rationale": "",
@@ -7599,17 +7596,22 @@
         "search_query": null,
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
-        "integer_property_aggregation": null,
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": {
+        "boolean_property_filter": {
           "property_name": "openNow",
-          "metrics": "PERCENTAGE_TRUE"
+          "operator": "=",
+          "value": true
         },
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
+          "property_name": "description",
+          "metrics": "TOP_OCCURRENCES",
+          "top_occurrences_limit": 10
+        },
+        "boolean_property_aggregation": null,
         "groupby_property": "averageRating"
       },
       "tool_rationale": "",
-      "ast_score": 1.0,
+      "ast_score": 0.9500000000000001,
       "error": null
     },
     {
@@ -7748,17 +7750,18 @@
         "search_query": null,
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
+        "boolean_property_filter": {
+          "property_name": "openNow",
+          "operator": "=",
+          "value": true
+        },
         "integer_property_aggregation": null,
         "text_property_aggregation": {
           "property_name": "description",
           "metrics": "TOP_OCCURRENCES",
-          "top_occurrences_limit": null
+          "top_occurrences_limit": 5
         },
-        "boolean_property_aggregation": {
-          "property_name": "openNow",
-          "metrics": "PERCENTAGE_TRUE"
-        },
+        "boolean_property_aggregation": null,
         "groupby_property": null
       },
       "tool_rationale": "",
@@ -7907,10 +7910,10 @@
           "property_name": "openNow",
           "metrics": "PERCENTAGE_TRUE"
         },
-        "groupby_property": "averageRating"
+        "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 1.0,
+      "ast_score": 0.8500000000000001,
       "error": null
     },
     {
@@ -8048,13 +8051,14 @@
         "search_query": null,
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
+        "boolean_property_filter": {
+          "property_name": "confirmed",
+          "operator": "=",
+          "value": true
+        },
         "integer_property_aggregation": null,
         "text_property_aggregation": null,
-        "boolean_property_aggregation": {
-          "property_name": "confirmed",
-          "metrics": "COUNT"
-        },
+        "boolean_property_aggregation": null,
         "groupby_property": null
       },
       "tool_rationale": "",
@@ -8193,17 +8197,22 @@
         "search_query": null,
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
-        "integer_property_aggregation": null,
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": {
+        "boolean_property_filter": {
           "property_name": "openNow",
-          "metrics": "PERCENTAGE_TRUE"
+          "operator": "=",
+          "value": true
         },
-        "groupby_property": "description"
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
+          "property_name": "description",
+          "metrics": "TOP_OCCURRENCES",
+          "top_occurrences_limit": 10
+        },
+        "boolean_property_aggregation": null,
+        "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 1.0,
+      "ast_score": 0.8500000000000001,
       "error": null
     },
     {
@@ -9064,10 +9073,7 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
-          "property_name": "averageRating",
-          "metrics": "MEAN"
-        },
+        "integer_property_aggregation": null,
         "text_property_aggregation": null,
         "boolean_property_aggregation": {
           "property_name": "openNow",
@@ -9493,31 +9499,10 @@
         "boolean_property_aggregation": null,
         "groupby_property": "acceptingNewPatients"
       },
-      "predicted_query": {
-        "corresponding_natural_language_query": "Identify clinics that specialize in pediatric care using semantic search, filter out only those with an averagePatientSatisfaction of 4.5 or higher, calculate the mean averagePatientSatisfaction, and group these results based on whether they are acceptingNewPatients.",
-        "target_collection": "Clinics",
-        "search_query": "pediatric care",
-        "integer_property_filter": {
-          "property_name": "averagePatientSatisfaction",
-          "operator": ">=",
-          "value": 4.5
-        },
-        "text_property_filter": null,
-        "boolean_property_filter": null,
-        "integer_property_aggregation": {
-          "property_name": "averagePatientSatisfaction",
-          "metrics": "MEAN"
-        },
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": {
-          "property_name": "acceptingNewPatients",
-          "metrics": "PERCENTAGE_TRUE"
-        },
-        "groupby_property": "acceptingNewPatients"
-      },
+      "predicted_query": null,
       "tool_rationale": "",
-      "ast_score": 1.0,
-      "error": null
+      "ast_score": 0.0,
+      "error": "No tool called"
     },
     {
       "query_index": 64,
@@ -10263,28 +10248,24 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find clinics offering pediatric services with an average patient satisfaction score greater than 4, and count the total number of clinics that are currently accepting new patients.",
         "target_collection": "Clinics",
-        "search_query": "pediatric",
+        "search_query": "pediatric services",
         "integer_property_filter": {
           "property_name": "averagePatientSatisfaction",
           "operator": ">",
           "value": 4
         },
         "text_property_filter": null,
-        "boolean_property_filter": {
+        "boolean_property_filter": null,
+        "integer_property_aggregation": null,
+        "text_property_aggregation": null,
+        "boolean_property_aggregation": {
           "property_name": "acceptingNewPatients",
-          "operator": "=",
-          "value": true
-        },
-        "integer_property_aggregation": {
-          "property_name": "clinicName",
           "metrics": "COUNT"
         },
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": null,
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 1.0,
+      "ast_score": 0.9500000000000001,
       "error": null
     },
     {
@@ -11474,16 +11455,16 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find appointments related to annual health check-ups by searching in appointmentNotes for 'check-up', and count how many of these appointments are confirmed.",
         "target_collection": "Appointments",
-        "search_query": "check-up",
+        "search_query": "check-up annual health",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": null,
+        "boolean_property_aggregation": {
           "property_name": "appointmentConfirmed",
           "metrics": "COUNT"
         },
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": null,
         "groupby_property": null
       },
       "tool_rationale": "",
@@ -11772,7 +11753,7 @@
         "integer_property_filter": null,
         "text_property_filter": {
           "property_name": "clinicName",
-          "operator": "=",
+          "operator": "LIKE",
           "value": "Dermatology"
         },
         "boolean_property_filter": null,
@@ -11918,7 +11899,11 @@
         "corresponding_natural_language_query": "Find clinics based on a high patient satisfaction, filter to include only those currently accepting new patients, perform an average calculation of the averagePatientSatisfaction, and group the results by clinic name.",
         "target_collection": "Clinics",
         "search_query": null,
-        "integer_property_filter": null,
+        "integer_property_filter": {
+          "property_name": "averagePatientSatisfaction",
+          "operator": ">",
+          "value": 4
+        },
         "text_property_filter": null,
         "boolean_property_filter": {
           "property_name": "acceptingNewPatients",
@@ -12069,7 +12054,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find clinics that are conceptually related to pediatrics, are accepting new patients, and calculate the mean average patient satisfaction score across all such clinics.",
         "target_collection": "Clinics",
-        "search_query": "pediatrics",
+        "search_query": "pediatrics children pediatric",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": {
@@ -12230,11 +12215,12 @@
           "operator": "=",
           "value": true
         },
-        "integer_property_aggregation": {
-          "property_name": "yearsOfExperience",
-          "metrics": "COUNT"
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
+          "property_name": "expertise",
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": "expertise"
       },
@@ -12375,7 +12361,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find clinics that match specific healthcare needs and services, filter to show only those accepting new patients, and aggregate to find the top 5 most common descriptions of these clinics.",
         "target_collection": "Clinics",
-        "search_query": null,
+        "search_query": "healthcare services medical treatment",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": {
@@ -12393,7 +12379,7 @@
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.8500000000000001,
+      "ast_score": 1.0,
       "error": null
     },
     {
@@ -12532,13 +12518,19 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": null,
+        "integer_property_aggregation": {
+          "property_name": "averagePatientSatisfaction",
+          "metrics": "COUNT"
+        },
         "text_property_aggregation": null,
-        "boolean_property_aggregation": null,
+        "boolean_property_aggregation": {
+          "property_name": "acceptingNewPatients",
+          "metrics": "PERCENTAGE_TRUE"
+        },
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.8500000000000001,
+      "ast_score": 0.775,
       "error": null
     },
     {
@@ -12964,7 +12956,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find clinics that specialize in cardiac care based on their description and are currently accepting new patients.",
         "target_collection": "Clinics",
-        "search_query": "cardiac care",
+        "search_query": "cardiac care cardiology heart",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": {
@@ -13113,12 +13105,12 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": null,
+        "boolean_property_aggregation": {
           "property_name": "acceptingNewPatients",
           "metrics": "COUNT"
         },
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": null,
         "groupby_property": "clinicName"
       },
       "tool_rationale": "",
@@ -13402,12 +13394,12 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
-          "property_name": "clinicName",
+        "integer_property_aggregation": null,
+        "text_property_aggregation": null,
+        "boolean_property_aggregation": {
+          "property_name": "acceptingNewPatients",
           "metrics": "COUNT"
         },
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": null,
         "groupby_property": "acceptingNewPatients"
       },
       "tool_rationale": "",
@@ -13547,16 +13539,17 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
           "property_name": "clinicName",
-          "metrics": "COUNT"
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
-        "groupby_property": "clinicName"
+        "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.8500000000000001,
+      "ast_score": 1.0,
       "error": null
     },
     {
@@ -13687,7 +13680,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Search for clinics where the description mentions specific healthcare services you need, determine what percentage of these clinics are accepting new patients, and group the results by clinicName.",
         "target_collection": "Clinics",
-        "search_query": "specific healthcare services",
+        "search_query": "healthcare services medical care",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
@@ -13976,8 +13969,12 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find clinics that specialize in pediatric services, offer state-of-the-art facilities, and have high ratings for patient care experience, and then group these clinics based on whether they are accepting new patients.",
         "target_collection": "Clinics",
-        "search_query": "pediatric services state-of-the-art facilities high ratings patient care experience",
-        "integer_property_filter": null,
+        "search_query": "pediatric state-of-the-art facilities patient care",
+        "integer_property_filter": {
+          "property_name": "averagePatientSatisfaction",
+          "operator": ">=",
+          "value": 4.0
+        },
         "text_property_filter": null,
         "boolean_property_filter": null,
         "integer_property_aggregation": null,
@@ -14114,8 +14111,12 @@
       "predicted_query": {
         "corresponding_natural_language_query": "What clinics are recognized for their exceptional orthopedic services and a high emphasis on patient care?",
         "target_collection": "Clinics",
-        "search_query": "exceptional orthopedic services",
-        "integer_property_filter": null,
+        "search_query": "exceptional orthopedic services patient care",
+        "integer_property_filter": {
+          "property_name": "averagePatientSatisfaction",
+          "operator": ">=",
+          "value": 4.0
+        },
         "text_property_filter": null,
         "boolean_property_filter": null,
         "integer_property_aggregation": null,
@@ -14573,7 +14574,11 @@
         "text_property_filter": null,
         "boolean_property_filter": null,
         "integer_property_aggregation": null,
-        "text_property_aggregation": null,
+        "text_property_aggregation": {
+          "property_name": "description",
+          "metrics": "TOP_OCCURRENCES",
+          "top_occurrences_limit": 3
+        },
         "boolean_property_aggregation": null,
         "groupby_property": "acceptingNewPatients"
       },
@@ -14726,7 +14731,7 @@
         "text_property_aggregation": {
           "property_name": "patientName",
           "metrics": "TOP_OCCURRENCES",
-          "top_occurrences_limit": null
+          "top_occurrences_limit": 5
         },
         "boolean_property_aggregation": null,
         "groupby_property": null
@@ -14879,12 +14884,12 @@
         "text_property_aggregation": null,
         "boolean_property_aggregation": {
           "property_name": "acceptingNewPatients",
-          "metrics": "COUNT"
+          "metrics": "TOTAL_TRUE"
         },
         "groupby_property": "clinicName"
       },
       "tool_rationale": "",
-      "ast_score": 1.0,
+      "ast_score": 0.9500000000000001,
       "error": null
     },
     {
@@ -15619,12 +15624,16 @@
           "property_name": "appointmentDuration",
           "metrics": "SUM"
         },
-        "text_property_aggregation": null,
+        "text_property_aggregation": {
+          "property_name": "appointmentNotes",
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
+        },
         "boolean_property_aggregation": null,
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.8,
+      "ast_score": 0.775,
       "error": null
     },
     {
@@ -15913,11 +15922,12 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
           "property_name": "clinicName",
-          "metrics": "COUNT"
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": null
       },
@@ -16211,11 +16221,14 @@
         "boolean_property_filter": null,
         "integer_property_aggregation": null,
         "text_property_aggregation": null,
-        "boolean_property_aggregation": null,
+        "boolean_property_aggregation": {
+          "property_name": "acceptingNewPatients",
+          "metrics": "PERCENTAGE_TRUE"
+        },
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.8500000000000001,
+      "ast_score": 0.8,
       "error": null
     },
     {
@@ -16641,16 +16654,17 @@
         "search_query": null,
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
+        "boolean_property_filter": {
+          "property_name": "acceptingNewPatients",
+          "operator": "=",
+          "value": true
+        },
         "integer_property_aggregation": {
           "property_name": "averagePatientSatisfaction",
           "metrics": "MEAN"
         },
         "text_property_aggregation": null,
-        "boolean_property_aggregation": {
-          "property_name": "acceptingNewPatients",
-          "metrics": "PERCENTAGE_TRUE"
-        },
+        "boolean_property_aggregation": null,
         "groupby_property": "description"
       },
       "tool_rationale": "",
@@ -16945,13 +16959,18 @@
         "search_query": null,
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
-        "integer_property_aggregation": null,
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": {
+        "boolean_property_filter": {
           "property_name": "acceptingNewPatients",
-          "metrics": "COUNT"
+          "operator": "=",
+          "value": true
         },
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
+          "property_name": "clinicName",
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
+        },
+        "boolean_property_aggregation": null,
         "groupby_property": "clinicName"
       },
       "tool_rationale": "",
@@ -17099,11 +17118,12 @@
           "operator": "=",
           "value": true
         },
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
           "property_name": "description",
-          "metrics": "COUNT"
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": "description"
       },
@@ -17396,19 +17416,16 @@
         "text_property_filter": null,
         "boolean_property_filter": {
           "property_name": "appointmentConfirmed",
-          "operator": "!=",
-          "value": true
+          "operator": "=",
+          "value": false
         },
-        "integer_property_aggregation": {
-          "property_name": "appointmentConfirmed",
-          "metrics": "COUNT"
-        },
+        "integer_property_aggregation": null,
         "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.9500000000000001,
+      "ast_score": 1.0,
       "error": null
     },
     {
@@ -18563,12 +18580,12 @@
         "text_property_aggregation": null,
         "boolean_property_aggregation": {
           "property_name": "acceptingNewPatients",
-          "metrics": "COUNT"
+          "metrics": "PERCENTAGE_TRUE"
         },
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 1.0,
+      "ast_score": 0.9500000000000001,
       "error": null
     },
     {
@@ -18975,28 +18992,10 @@
         "boolean_property_aggregation": null,
         "groupby_property": null
       },
-      "predicted_query": {
-        "corresponding_natural_language_query": "Find students whose researchInterests include machine learning, filter those who have completedCredits of at least 30, and calculate the average completedCredits of these students.",
-        "target_collection": "Students",
-        "search_query": "machine learning",
-        "integer_property_filter": {
-          "property_name": "completedCredits",
-          "operator": ">=",
-          "value": 30
-        },
-        "text_property_filter": null,
-        "boolean_property_filter": null,
-        "integer_property_aggregation": {
-          "property_name": "completedCredits",
-          "metrics": "MEAN"
-        },
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": null,
-        "groupby_property": null
-      },
+      "predicted_query": null,
       "tool_rationale": "",
-      "ast_score": 1.0,
-      "error": null
+      "ast_score": 0.0,
+      "error": "No tool called"
     },
     {
       "query_index": 128,
@@ -19143,7 +19142,7 @@
         "text_property_aggregation": {
           "property_name": "courseTitle",
           "metrics": "TOP_OCCURRENCES",
-          "top_occurrences_limit": 1
+          "top_occurrences_limit": 5
         },
         "boolean_property_aggregation": null,
         "groupby_property": null
@@ -20347,11 +20346,12 @@
           "operator": "=",
           "value": true
         },
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
           "property_name": "courseTitle",
-          "metrics": "COUNT"
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": "courseDuration"
       },
@@ -20649,7 +20649,7 @@
         "integer_property_filter": null,
         "text_property_filter": {
           "property_name": "courseTitle",
-          "operator": "=",
+          "operator": "LIKE",
           "value": "Data Science"
         },
         "boolean_property_filter": null,
@@ -20662,7 +20662,7 @@
         "groupby_property": "courseDuration"
       },
       "tool_rationale": "",
-      "ast_score": 0.9500000000000001,
+      "ast_score": 1.0,
       "error": null
     },
     {
@@ -20797,7 +20797,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find instructors who are described as experienced in teaching computer science in their biography, specifically look for instructors named Jane Doe, and calculate the percentage of instructors who hold a tenured position in the 'tenured' field.",
         "target_collection": "Instructors",
-        "search_query": "experienced in teaching computer science",
+        "search_query": "computer science teaching",
         "integer_property_filter": null,
         "text_property_filter": {
           "property_name": "instructorName",
@@ -20946,9 +20946,13 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find courses related to Python programming where the course title contains 'Introduction', and group the results by whether the courses are currently enrolling.",
         "target_collection": "Courses",
-        "search_query": "Introduction Python programming",
+        "search_query": "Python programming",
         "integer_property_filter": null,
-        "text_property_filter": null,
+        "text_property_filter": {
+          "property_name": "courseTitle",
+          "operator": "LIKE",
+          "value": "Introduction"
+        },
         "boolean_property_filter": null,
         "integer_property_aggregation": null,
         "text_property_aggregation": null,
@@ -20956,7 +20960,7 @@
         "groupby_property": "currentlyEnrolling"
       },
       "tool_rationale": "",
-      "ast_score": 1.0,
+      "ast_score": 0.9500000000000001,
       "error": null
     },
     {
@@ -21550,11 +21554,12 @@
           "operator": "=",
           "value": true
         },
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
           "property_name": "courseTitle",
-          "metrics": "COUNT"
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": "courseDuration"
       },
@@ -21996,16 +22001,17 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find courses by topics related to artificial intelligence, filter to only include those that are currently open for enrollment, and calculate the percentage of total courses that are currently enrolling.",
         "target_collection": "Courses",
-        "search_query": "artificial intelligence",
+        "search_query": "artificial intelligence AI machine learning",
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
+        "boolean_property_filter": {
+          "property_name": "currentlyEnrolling",
+          "operator": "=",
+          "value": true
+        },
         "integer_property_aggregation": null,
         "text_property_aggregation": null,
-        "boolean_property_aggregation": {
-          "property_name": "currentlyEnrolling",
-          "metrics": "PERCENTAGE_TRUE"
-        },
+        "boolean_property_aggregation": null,
         "groupby_property": null
       },
       "tool_rationale": "",
@@ -22441,14 +22447,11 @@
           "metrics": "MEAN"
         },
         "text_property_aggregation": null,
-        "boolean_property_aggregation": {
-          "property_name": "currentlyEnrolling",
-          "metrics": "PERCENTAGE_TRUE"
-        },
-        "groupby_property": null
+        "boolean_property_aggregation": null,
+        "groupby_property": "currentlyEnrolling"
       },
       "tool_rationale": "",
-      "ast_score": 0.8500000000000001,
+      "ast_score": 1.0,
       "error": null
     },
     {
@@ -22728,11 +22731,12 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
-          "property_name": "completedCredits",
-          "metrics": "COUNT"
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
+          "property_name": "researchInterests",
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": "enrolledFullTime"
       },
@@ -23166,19 +23170,16 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
-          "property_name": "courseTitle",
-          "metrics": "COUNT"
-        },
+        "integer_property_aggregation": null,
         "text_property_aggregation": null,
         "boolean_property_aggregation": {
           "property_name": "currentlyEnrolling",
-          "metrics": "PERCENTAGE_TRUE"
+          "metrics": "COUNT"
         },
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.925,
+      "ast_score": 1.0,
       "error": null
     },
     {
@@ -23444,7 +23445,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find courses with a courseDescription that covers the entire data science lifecycle, including data collection, processing, analysis, and presentation.",
         "target_collection": "Courses",
-        "search_query": "data science lifecycle including data collection processing analysis presentation",
+        "search_query": "data science lifecycle data collection processing analysis presentation",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
@@ -23597,16 +23598,16 @@
         },
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": null,
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": {
-          "property_name": "tenured",
+        "integer_property_aggregation": {
+          "property_name": "instructorName",
           "metrics": "COUNT"
         },
+        "text_property_aggregation": null,
+        "boolean_property_aggregation": null,
         "groupby_property": "tenured"
       },
       "tool_rationale": "",
-      "ast_score": 1.0,
+      "ast_score": 0.9500000000000001,
       "error": null
     },
     {
@@ -23906,16 +23907,13 @@
         "text_property_aggregation": {
           "property_name": "biography",
           "metrics": "TOP_OCCURRENCES",
-          "top_occurrences_limit": 5
+          "top_occurrences_limit": 10
         },
-        "boolean_property_aggregation": {
-          "property_name": "tenured",
-          "metrics": "PERCENTAGE_TRUE"
-        },
-        "groupby_property": null
+        "boolean_property_aggregation": null,
+        "groupby_property": "tenured"
       },
       "tool_rationale": "",
-      "ast_score": 0.775,
+      "ast_score": 0.9500000000000001,
       "error": null
     },
     {
@@ -24368,12 +24366,12 @@
         "text_property_aggregation": null,
         "boolean_property_aggregation": {
           "property_name": "currentlyEnrolling",
-          "metrics": "COUNT"
+          "metrics": "TOTAL_TRUE"
         },
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 1.0,
+      "ast_score": 0.9500000000000001,
       "error": null
     },
     {
@@ -25251,11 +25249,12 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
           "property_name": "courseTitle",
-          "metrics": "COUNT"
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": null
       },
@@ -25399,12 +25398,12 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": null,
+        "boolean_property_aggregation": {
           "property_name": "currentlyEnrolling",
           "metrics": "COUNT"
         },
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": null,
         "groupby_property": "courseDuration"
       },
       "tool_rationale": "",
@@ -25543,9 +25542,13 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find courses where the courseTitle contains 'Advanced' and calculate the percentage of these that are currentlyEnrolling.",
         "target_collection": "Courses",
-        "search_query": "Advanced",
+        "search_query": null,
         "integer_property_filter": null,
-        "text_property_filter": null,
+        "text_property_filter": {
+          "property_name": "courseTitle",
+          "operator": "LIKE",
+          "value": "Advanced"
+        },
         "boolean_property_filter": null,
         "integer_property_aggregation": null,
         "text_property_aggregation": null,
@@ -25556,7 +25559,7 @@
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.8500000000000001,
+      "ast_score": 1.0,
       "error": null
     },
     {
@@ -25978,16 +25981,17 @@
         "search_query": null,
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
+        "boolean_property_filter": {
+          "property_name": "currentlyEnrolling",
+          "operator": "=",
+          "value": true
+        },
         "integer_property_aggregation": {
           "property_name": "courseDuration",
           "metrics": "SUM"
         },
         "text_property_aggregation": null,
-        "boolean_property_aggregation": {
-          "property_name": "currentlyEnrolling",
-          "metrics": "COUNT"
-        },
+        "boolean_property_aggregation": null,
         "groupby_property": "courseTitle"
       },
       "tool_rationale": "",
@@ -26129,16 +26133,17 @@
         "search_query": null,
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
+        "boolean_property_filter": {
+          "property_name": "currentlyEnrolling",
+          "operator": "=",
+          "value": true
+        },
         "integer_property_aggregation": {
           "property_name": "courseDuration",
           "metrics": "SUM"
         },
         "text_property_aggregation": null,
-        "boolean_property_aggregation": {
-          "property_name": "currentlyEnrolling",
-          "metrics": "TOTAL_TRUE"
-        },
+        "boolean_property_aggregation": null,
         "groupby_property": null
       },
       "tool_rationale": "",
@@ -26435,20 +26440,22 @@
         "search_query": null,
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
-        "integer_property_aggregation": {
-          "property_name": "courseTitle",
-          "metrics": "COUNT"
-        },
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": {
+        "boolean_property_filter": {
           "property_name": "currentlyEnrolling",
-          "metrics": "COUNT"
+          "operator": "=",
+          "value": true
         },
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
+          "property_name": "courseTitle",
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
+        },
+        "boolean_property_aggregation": null,
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.8500000000000001,
+      "ast_score": 1.0,
       "error": null
     },
     {
@@ -26586,7 +26593,11 @@
         "search_query": null,
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
+        "boolean_property_filter": {
+          "property_name": "currentlyEnrolling",
+          "operator": "=",
+          "value": true
+        },
         "integer_property_aggregation": null,
         "text_property_aggregation": null,
         "boolean_property_aggregation": {
@@ -26734,7 +26745,11 @@
         "search_query": null,
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
+        "boolean_property_filter": {
+          "property_name": "currentlyEnrolling",
+          "operator": "=",
+          "value": true
+        },
         "integer_property_aggregation": null,
         "text_property_aggregation": null,
         "boolean_property_aggregation": {
@@ -26879,13 +26894,14 @@
         "search_query": null,
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
+        "boolean_property_filter": {
+          "property_name": "currentlyEnrolling",
+          "operator": "=",
+          "value": true
+        },
         "integer_property_aggregation": null,
         "text_property_aggregation": null,
-        "boolean_property_aggregation": {
-          "property_name": "currentlyEnrolling",
-          "metrics": "COUNT"
-        },
+        "boolean_property_aggregation": null,
         "groupby_property": "courseTitle"
       },
       "tool_rationale": "",
@@ -27316,14 +27332,14 @@
         "boolean_property_filter": null,
         "integer_property_aggregation": {
           "property_name": "yearsOfTeaching",
-          "metrics": "MAX"
+          "metrics": "MEAN"
         },
         "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.9500000000000001,
+      "ast_score": 1.0,
       "error": null
     },
     {
@@ -27459,11 +27475,12 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
           "property_name": "courseTitle",
-          "metrics": "COUNT"
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": "currentlyEnrolling"
       },
@@ -27604,20 +27621,17 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
-          "property_name": "courseTitle",
-          "metrics": "COUNT"
-        },
+        "integer_property_aggregation": null,
         "text_property_aggregation": {
           "property_name": "courseTitle",
-          "metrics": "TOP_OCCURRENCES",
-          "top_occurrences_limit": 5
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
         "boolean_property_aggregation": null,
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 1.0,
+      "ast_score": 0.9500000000000001,
       "error": null
     },
     {
@@ -27900,7 +27914,7 @@
         "text_property_aggregation": null,
         "boolean_property_aggregation": {
           "property_name": "currentlyEnrolling",
-          "metrics": "PERCENTAGE_TRUE"
+          "metrics": "TOTAL_TRUE"
         },
         "groupby_property": null
       },
@@ -28178,28 +28192,10 @@
         "boolean_property_aggregation": null,
         "groupby_property": "discountAvailable"
       },
-      "predicted_query": {
-        "corresponding_natural_language_query": "What is the average packagePrice of travel packages whose packageDetails correspond to 'tropical beach relaxation' and have a price less than $1500, grouped by whether a discount is available?",
-        "target_collection": "Packages",
-        "search_query": "tropical beach relaxation",
-        "integer_property_filter": {
-          "property_name": "packagePrice",
-          "operator": "<",
-          "value": 1500
-        },
-        "text_property_filter": null,
-        "boolean_property_filter": null,
-        "integer_property_aggregation": {
-          "property_name": "packagePrice",
-          "metrics": "MEAN"
-        },
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": null,
-        "groupby_property": "discountAvailable"
-      },
+      "predicted_query": null,
       "tool_rationale": "",
       "ast_score": 0.0,
-      "error": null
+      "error": "No tool called"
     },
     {
       "query_index": 190,
@@ -28465,28 +28461,10 @@
         "boolean_property_aggregation": null,
         "groupby_property": "destinationName"
       },
-      "predicted_query": {
-        "corresponding_natural_language_query": "Find destinations where the description includes 'hot and sunny beaches with vibrant nightlife', the averageVisitCost is less than or equal to 1500, count how many destinations are popular, and group the results by destinationName.",
-        "target_collection": "Courses",
-        "search_query": "hot and sunny beaches with vibrant nightlife",
-        "integer_property_filter": {
-          "property_name": "averageVisitCost",
-          "operator": "<=",
-          "value": 1500
-        },
-        "text_property_filter": null,
-        "boolean_property_filter": null,
-        "integer_property_aggregation": null,
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": {
-          "property_name": "popular",
-          "metrics": "COUNT"
-        },
-        "groupby_property": "destinationName"
-      },
+      "predicted_query": null,
       "tool_rationale": "",
       "ast_score": 0.0,
-      "error": null
+      "error": "No tool called"
     },
     {
       "query_index": 192,
@@ -28621,7 +28599,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find travel packages that include safaris and beaches with a packagePrice less than 1000. Also, count how many times each packageName appears in the results.",
         "target_collection": "TravelPackages",
-        "search_query": "safaris beaches",
+        "search_query": "safari beach",
         "integer_property_filter": {
           "property_name": "packagePrice",
           "operator": "<",
@@ -28633,7 +28611,7 @@
         "text_property_aggregation": {
           "property_name": "packageName",
           "metrics": "COUNT",
-          "top_occurrences_limit": null
+          "top_occurrences_limit": 10
         },
         "boolean_property_aggregation": null,
         "groupby_property": null
@@ -28774,7 +28752,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find travel destinations that offer peaceful beach vacations, where the averageVisitCost is less than or equal to 1500, count how many of these are popular, and group the results by destinationName.",
         "target_collection": "TravelDestinations",
-        "search_query": "peaceful beach vacations",
+        "search_query": "peaceful beach vacation",
         "integer_property_filter": {
           "property_name": "averageVisitCost",
           "operator": "<=",
@@ -29075,7 +29053,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Search for a relaxing vacation package that includes beach activities and cultural tours, filter for packages with a packagePrice greater than 2000, and organize the results based on whether a discount is available, using discountAvailable as the grouping property.",
         "target_collection": "TravelPackages",
-        "search_query": "relaxing vacation package beach activities cultural tours",
+        "search_query": "relaxing beach activities cultural tours",
         "integer_property_filter": {
           "property_name": "packagePrice",
           "operator": ">",
@@ -29671,12 +29649,17 @@
         "search_query": "tropical beaches with vibrant nightlife",
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
-        "integer_property_aggregation": {
-          "property_name": "destinationName",
-          "metrics": "COUNT"
+        "boolean_property_filter": {
+          "property_name": "popular",
+          "operator": "=",
+          "value": true
         },
-        "text_property_aggregation": null,
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
+          "property_name": "destinationName",
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
+        },
         "boolean_property_aggregation": null,
         "groupby_property": "destinationName"
       },
@@ -29817,7 +29800,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find destinations with tropical experiences as described in the destinationDescription, locate destinations that have 'Beach' included in the destinationName, and count how many destinations are currently marked as popular.",
         "target_collection": "TravelDestinations",
-        "search_query": "tropical experiences",
+        "search_query": "tropical",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
@@ -30114,7 +30097,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find travel destinations that are relevant to a charming winter holiday experience with various activities. Additionally, filter results to include only destinations named 'Swiss Alps', and count how many of these destinations are currently popular.",
         "target_collection": "TravelDestinations",
-        "search_query": "charming winter holiday experience activities",
+        "search_query": "charming winter holiday activities",
         "integer_property_filter": null,
         "text_property_filter": {
           "property_name": "destinationName",
@@ -30122,12 +30105,12 @@
           "value": "Swiss Alps"
         },
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": null,
+        "boolean_property_aggregation": {
           "property_name": "popular",
           "metrics": "COUNT"
         },
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": null,
         "groupby_property": null
       },
       "tool_rationale": "",
@@ -30710,11 +30693,18 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Identify popular travel destinations described as tropical beaches and places with rich cultural history, and compute the average cost of visiting these popular locations.",
         "target_collection": "TravelDestinations",
-        "search_query": "tropical beaches",
+        "search_query": "tropical beaches rich cultural history",
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
-        "integer_property_aggregation": null,
+        "boolean_property_filter": {
+          "property_name": "popular",
+          "operator": "=",
+          "value": true
+        },
+        "integer_property_aggregation": {
+          "property_name": "averageVisitCost",
+          "metrics": "MEAN"
+        },
         "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": null
@@ -30856,7 +30846,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find travel destinations related to beach vacations that are popular, categorize them by destinationName, and identify the top 5 most common destination names.",
         "target_collection": "TravelDestinations",
-        "search_query": "beach vacations",
+        "search_query": "beach vacation",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": {
@@ -30871,10 +30861,10 @@
           "top_occurrences_limit": 5
         },
         "boolean_property_aggregation": null,
-        "groupby_property": "destinationName"
+        "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 1.0,
+      "ast_score": 0.8500000000000001,
       "error": null
     },
     {
@@ -31165,7 +31155,11 @@
         "search_query": "tropical beaches with vibrant cultures",
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
+        "boolean_property_filter": {
+          "property_name": "popular",
+          "operator": "=",
+          "value": true
+        },
         "integer_property_aggregation": null,
         "text_property_aggregation": null,
         "boolean_property_aggregation": {
@@ -31459,10 +31453,14 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find popular travel destinations with descriptions that include scenic vistas and vibrant cultures, and group these destinations by their destinationName.",
         "target_collection": "TravelDestinations",
-        "search_query": "scenic vistas and vibrant cultures",
+        "search_query": "scenic vistas vibrant cultures",
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
+        "boolean_property_filter": {
+          "property_name": "popular",
+          "operator": "=",
+          "value": true
+        },
         "integer_property_aggregation": null,
         "text_property_aggregation": null,
         "boolean_property_aggregation": null,
@@ -31601,7 +31599,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find travel destinations that are popular and include descriptions related to 'tropical beaches and adventure sports'.",
         "target_collection": "TravelDestinations",
-        "search_query": "tropical beaches and adventure sports",
+        "search_query": "tropical beaches adventure sports",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": {
@@ -31890,7 +31888,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "What is the average cost of visiting tropical beach resorts described in detail?",
         "target_collection": "TravelDestinations",
-        "search_query": "tropical beach resorts",
+        "search_query": "tropical beach resort",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
@@ -32039,11 +32037,12 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
           "property_name": "destinationName",
-          "metrics": "COUNT"
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": "popular"
       },
@@ -32610,7 +32609,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find travel destinations that match the theme 'tropical beach with vibrant nightlife', and group the results based on whether they are popular among tourists.",
         "target_collection": "TravelDestinations",
-        "search_query": "tropical beach with vibrant nightlife",
+        "search_query": "tropical beach vibrant nightlife",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
@@ -33053,10 +33052,7 @@
         },
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
-          "property_name": "yearsOfExperience",
-          "metrics": "MEAN"
-        },
+        "integer_property_aggregation": null,
         "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": null
@@ -33206,11 +33202,12 @@
         },
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
-          "property_name": "yearsOfExperience",
-          "metrics": "COUNT"
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
+          "property_name": "agentName",
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": "availableNow"
       },
@@ -33359,11 +33356,12 @@
         },
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
           "property_name": "agentName",
-          "metrics": "COUNT"
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": null
       },
@@ -33515,12 +33513,12 @@
         "text_property_aggregation": null,
         "boolean_property_aggregation": {
           "property_name": "discountAvailable",
-          "metrics": "COUNT"
+          "metrics": "TOTAL_TRUE"
         },
         "groupby_property": "packageName"
       },
       "tool_rationale": "",
-      "ast_score": 1.0,
+      "ast_score": 0.9500000000000001,
       "error": null
     },
     {
@@ -33667,12 +33665,12 @@
         "text_property_aggregation": null,
         "boolean_property_aggregation": {
           "property_name": "availableNow",
-          "metrics": "COUNT"
+          "metrics": "TOTAL_TRUE"
         },
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 1.0,
+      "ast_score": 0.9500000000000001,
       "error": null
     },
     {
@@ -34103,13 +34101,16 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": null,
+        "integer_property_aggregation": {
+          "property_name": "packagePrice",
+          "metrics": "MEAN"
+        },
         "text_property_aggregation": null,
         "boolean_property_aggregation": null,
-        "groupby_property": null
+        "groupby_property": "discountAvailable"
       },
       "tool_rationale": "",
-      "ast_score": 0.7000000000000001,
+      "ast_score": 0.8500000000000001,
       "error": null
     },
     {
@@ -34397,16 +34398,17 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
           "property_name": "destinationName",
-          "metrics": "COUNT"
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": "destinationName"
       },
       "tool_rationale": "",
-      "ast_score": 0.8500000000000001,
+      "ast_score": 0.8,
       "error": null
     },
     {
@@ -34546,16 +34548,17 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
           "property_name": "destinationName",
-          "metrics": "COUNT"
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.8500000000000001,
+      "ast_score": 0.8,
       "error": null
     },
     {
@@ -34694,12 +34697,12 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": null,
+        "boolean_property_aggregation": {
           "property_name": "popular",
           "metrics": "COUNT"
         },
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": null,
         "groupby_property": "destinationName"
       },
       "tool_rationale": "",
@@ -34838,20 +34841,24 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Show me travel destinations that include 'Beach' in their destinationName and count how many of them are popular using the popular attribute.",
         "target_collection": "TravelDestinations",
-        "search_query": "Beach",
+        "search_query": null,
         "integer_property_filter": null,
-        "text_property_filter": null,
+        "text_property_filter": {
+          "property_name": "destinationName",
+          "operator": "LIKE",
+          "value": "Beach"
+        },
         "boolean_property_filter": null,
         "integer_property_aggregation": null,
         "text_property_aggregation": null,
         "boolean_property_aggregation": {
           "property_name": "popular",
-          "metrics": "COUNT"
+          "metrics": "TOTAL_TRUE"
         },
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.8500000000000001,
+      "ast_score": 0.9500000000000001,
       "error": null
     },
     {
@@ -35273,16 +35280,17 @@
         "search_query": null,
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
+        "boolean_property_filter": {
+          "property_name": "popular",
+          "operator": "=",
+          "value": true
+        },
         "integer_property_aggregation": {
           "property_name": "averageVisitCost",
           "metrics": "MEAN"
         },
         "text_property_aggregation": null,
-        "boolean_property_aggregation": {
-          "property_name": "popular",
-          "metrics": "PERCENTAGE_TRUE"
-        },
+        "boolean_property_aggregation": null,
         "groupby_property": "destinationName"
       },
       "tool_rationale": "",
@@ -35424,16 +35432,17 @@
         "search_query": null,
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
+        "boolean_property_filter": {
+          "property_name": "discountAvailable",
+          "operator": "=",
+          "value": true
+        },
         "integer_property_aggregation": {
           "property_name": "packagePrice",
           "metrics": "SUM"
         },
         "text_property_aggregation": null,
-        "boolean_property_aggregation": {
-          "property_name": "discountAvailable",
-          "metrics": "TOTAL_TRUE"
-        },
+        "boolean_property_aggregation": null,
         "groupby_property": null
       },
       "tool_rationale": "",
@@ -35581,11 +35590,12 @@
           "operator": "=",
           "value": true
         },
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
           "property_name": "destinationDescription",
-          "metrics": "COUNT"
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": "destinationName"
       },
@@ -35729,17 +35739,22 @@
         "search_query": null,
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
-        "integer_property_aggregation": null,
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": {
+        "boolean_property_filter": {
           "property_name": "popular",
-          "metrics": "COUNT"
+          "operator": "=",
+          "value": true
         },
-        "groupby_property": "destinationName"
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
+          "property_name": "destinationName",
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
+        },
+        "boolean_property_aggregation": null,
+        "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.8500000000000001,
+      "ast_score": 1.0,
       "error": null
     },
     {
@@ -35882,12 +35897,12 @@
           "operator": "=",
           "value": true
         },
-        "integer_property_aggregation": {
-          "property_name": "packageName",
+        "integer_property_aggregation": null,
+        "text_property_aggregation": null,
+        "boolean_property_aggregation": {
+          "property_name": "discountAvailable",
           "metrics": "COUNT"
         },
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": null,
         "groupby_property": "packageName"
       },
       "tool_rationale": "",
@@ -36029,13 +36044,14 @@
         "search_query": null,
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
+        "boolean_property_filter": {
+          "property_name": "popular",
+          "operator": "=",
+          "value": true
+        },
         "integer_property_aggregation": null,
         "text_property_aggregation": null,
-        "boolean_property_aggregation": {
-          "property_name": "popular",
-          "metrics": "PERCENTAGE_TRUE"
-        },
+        "boolean_property_aggregation": null,
         "groupby_property": null
       },
       "tool_rationale": "",
@@ -36755,11 +36771,12 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
           "property_name": "destinationName",
-          "metrics": "COUNT"
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": "popular"
       },
@@ -37471,28 +37488,10 @@
         "boolean_property_aggregation": null,
         "groupby_property": "onDisplay"
       },
-      "predicted_query": {
-        "corresponding_natural_language_query": "Explore art pieces of significant historical relevance, filter those with a currentValuation greater than 1,000,000, calculate the average currentValuation, and group the results by their onDisplay status.",
-        "target_collection": "TravelDestinations",
-        "search_query": null,
-        "integer_property_filter": {
-          "property_name": "averageVisitCost",
-          "operator": ">",
-          "value": 1000000
-        },
-        "text_property_filter": null,
-        "boolean_property_filter": null,
-        "integer_property_aggregation": {
-          "property_name": "averageVisitCost",
-          "metrics": "MEAN"
-        },
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": null,
-        "groupby_property": "popular"
-      },
+      "predicted_query": null,
       "tool_rationale": "",
       "ast_score": 0.0,
-      "error": null
+      "error": "No tool called"
     },
     {
       "query_index": 253,
@@ -37758,25 +37757,10 @@
         "boolean_property_aggregation": null,
         "groupby_property": "exhibitionTitle"
       },
-      "predicted_query": {
-        "corresponding_natural_language_query": "Explore exhibitions that feature modern art and innovative installations, focusing only on those with an averageVisitorCount above 100, grouped by the exhibitionTitle to identify how many unique exhibitions match this criterion.",
-        "target_collection": "TravelDestinations",
-        "search_query": "modern art and innovative installations",
-        "integer_property_filter": {
-          "property_name": "averageVisitorCount",
-          "operator": ">",
-          "value": 100
-        },
-        "text_property_filter": null,
-        "boolean_property_filter": null,
-        "integer_property_aggregation": null,
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": null,
-        "groupby_property": "destinationName"
-      },
+      "predicted_query": null,
       "tool_rationale": "",
       "ast_score": 0.0,
-      "error": null
+      "error": "No tool called"
     },
     {
       "query_index": 255,
@@ -37908,28 +37892,10 @@
         "boolean_property_aggregation": null,
         "groupby_property": null
       },
-      "predicted_query": {
-        "corresponding_natural_language_query": "Find exhibitions with descriptions about exploring the influence of Impressionism, where the averageVisitorCount is greater than 500, and count unique exhibition titles.",
-        "target_collection": "TravelDestinations",
-        "search_query": "exploring the influence of Impressionism",
-        "integer_property_filter": {
-          "property_name": "averageVisitorCount",
-          "operator": ">",
-          "value": 500
-        },
-        "text_property_filter": null,
-        "boolean_property_filter": null,
-        "integer_property_aggregation": {
-          "property_name": "destinationName",
-          "metrics": "COUNT"
-        },
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": null,
-        "groupby_property": null
-      },
+      "predicted_query": null,
       "tool_rationale": "",
       "ast_score": 0.0,
-      "error": null
+      "error": "No tool called"
     },
     {
       "query_index": 256,
@@ -38215,7 +38181,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "List exhibitions with cultural themes in their exhibitionDescription that have an averageVisitorCount greater than 100, and summarize how many of these exhibitions are currentlyRunning.",
         "target_collection": "Exhibitions",
-        "search_query": "cultural themes",
+        "search_query": "cultural",
         "integer_property_filter": {
           "property_name": "averageVisitorCount",
           "operator": ">",
@@ -39121,17 +39087,17 @@
         "search_query": "impressionist",
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": {
-          "property_name": "currentlyRunning",
-          "operator": "=",
-          "value": true
-        },
-        "integer_property_aggregation": {
+        "boolean_property_filter": null,
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
           "property_name": "exhibitionTitle",
-          "metrics": "COUNT"
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": null,
+        "boolean_property_aggregation": {
+          "property_name": "currentlyRunning",
+          "metrics": "PERCENTAGE_TRUE"
+        },
         "groupby_property": null
       },
       "tool_rationale": "",
@@ -39270,7 +39236,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find museums with exhibits highlighting the historical significance of Vincent van Gogh's pieces using semantic search, filter for museums whose names include 'National', aggregate by counting the number of museums open today, and group results by museumName.",
         "target_collection": "Museums",
-        "search_query": "historical significance of Vincent van Gogh",
+        "search_query": "Vincent van Gogh historical exhibits significance",
         "integer_property_filter": null,
         "text_property_filter": {
           "property_name": "museumName",
@@ -39278,12 +39244,12 @@
           "value": "National"
         },
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": null,
+        "boolean_property_aggregation": {
           "property_name": "openToday",
           "metrics": "COUNT"
         },
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": null,
         "groupby_property": "museumName"
       },
       "tool_rationale": "",
@@ -39717,7 +39683,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Which museums, including those with names similar to 'Art Museum', have collections described as having significant cultural impact?",
         "target_collection": "Museums",
-        "search_query": "cultural impact",
+        "search_query": "Art Museum cultural impact significant",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
@@ -40017,7 +39983,11 @@
         "search_query": "Renaissance art",
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
+        "boolean_property_filter": {
+          "property_name": "currentlyRunning",
+          "operator": "=",
+          "value": true
+        },
         "integer_property_aggregation": {
           "property_name": "averageVisitorCount",
           "metrics": "MEAN"
@@ -40171,11 +40141,12 @@
           "operator": "=",
           "value": true
         },
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
           "property_name": "exhibitionTitle",
-          "metrics": "COUNT"
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": "exhibitionTitle"
       },
@@ -40316,7 +40287,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find museums with exhibits that have historical significance and are open today, and count the number of unique museum names.",
         "target_collection": "Museums",
-        "search_query": null,
+        "search_query": "historical significance exhibits",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": {
@@ -40324,16 +40295,17 @@
           "operator": "=",
           "value": true
         },
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
           "property_name": "museumName",
-          "metrics": "COUNT"
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.8500000000000001,
+      "ast_score": 1.0,
       "error": null
     },
     {
@@ -40471,14 +40443,13 @@
         "search_query": "ancient history artifacts",
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": {
-          "property_name": "openToday",
-          "operator": "=",
-          "value": true
-        },
+        "boolean_property_filter": null,
         "integer_property_aggregation": null,
         "text_property_aggregation": null,
-        "boolean_property_aggregation": null,
+        "boolean_property_aggregation": {
+          "property_name": "openToday",
+          "metrics": "COUNT"
+        },
         "groupby_property": "museumName"
       },
       "tool_rationale": "",
@@ -40617,7 +40588,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find museums that have notable exhibits with historical significance, indicate if they are open today, and provide the percentage of museums that are indeed open today.",
         "target_collection": "Museums",
-        "search_query": "notable exhibits historical significance",
+        "search_query": "historical significance notable exhibits",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
@@ -40762,7 +40733,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find museums with exhibits related to the Renaissance that are open today, and group the results by the museum's name.",
         "target_collection": "Museums",
-        "search_query": "Renaissance",
+        "search_query": "Renaissance exhibits",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": {
@@ -41053,7 +41024,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find museums that have Impressionist art mentioned in their exhibitHighlights, calculate the average entryFee, and group results based on whether they are openToday.",
         "target_collection": "Museums",
-        "search_query": "Impressionist art",
+        "search_query": "Impressionist",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
@@ -41062,14 +41033,11 @@
           "metrics": "MEAN"
         },
         "text_property_aggregation": null,
-        "boolean_property_aggregation": {
-          "property_name": "openToday",
-          "metrics": "PERCENTAGE_TRUE"
-        },
-        "groupby_property": null
+        "boolean_property_aggregation": null,
+        "groupby_property": "openToday"
       },
       "tool_rationale": "",
-      "ast_score": 0.8500000000000001,
+      "ast_score": 1.0,
       "error": null
     },
     {
@@ -41206,14 +41174,14 @@
         "boolean_property_filter": null,
         "integer_property_aggregation": {
           "property_name": "averageVisitorCount",
-          "metrics": "SUM"
+          "metrics": "MEAN"
         },
         "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 1.0,
+      "ast_score": 0.9500000000000001,
       "error": null
     },
     {
@@ -41491,24 +41459,17 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Which museums have the most notable exhibit highlights according to their exhibitHighlights description, and how many distinct museum names are there?",
         "target_collection": "Museums",
-        "search_query": null,
+        "search_query": "notable significant important impressive exceptional remarkable outstanding exhibits collections highlights",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
-          "property_name": "museumName",
-          "metrics": "COUNT"
-        },
-        "text_property_aggregation": {
-          "property_name": "exhibitHighlights",
-          "metrics": "COUNT",
-          "top_occurrences_limit": null
-        },
+        "integer_property_aggregation": null,
+        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.775,
+      "ast_score": 1.0,
       "error": null
     },
     {
@@ -41639,7 +41600,7 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Identify exhibitions focusing on historical themes, group them by their current status of being open to the public, and compute the percentage of exhibitions that are currently running.",
         "target_collection": "Exhibitions",
-        "search_query": "historical",
+        "search_query": "historical themes history",
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
@@ -41791,12 +41752,12 @@
         "text_property_aggregation": null,
         "boolean_property_aggregation": {
           "property_name": "openToday",
-          "metrics": "PERCENTAGE_TRUE"
+          "metrics": "COUNT"
         },
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.9500000000000001,
+      "ast_score": 1.0,
       "error": null
     },
     {
@@ -42520,11 +42481,12 @@
         },
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
           "property_name": "exhibitionTitle",
-          "metrics": "COUNT"
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": "currentlyRunning"
       },
@@ -42673,16 +42635,17 @@
         },
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
           "property_name": "exhibitionDescription",
-          "metrics": "COUNT"
+          "metrics": "TYPE",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
-        "groupby_property": "exhibitionDescription"
+        "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.8500000000000001,
+      "ast_score": 0.9500000000000001,
       "error": null
     },
     {
@@ -42977,12 +42940,12 @@
         },
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": null,
+        "boolean_property_aggregation": {
           "property_name": "onDisplay",
           "metrics": "COUNT"
         },
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": null,
         "groupby_property": null
       },
       "tool_rationale": "",
@@ -43416,16 +43379,17 @@
         "search_query": null,
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
+        "boolean_property_filter": {
+          "property_name": "openToday",
+          "operator": "=",
+          "value": true
+        },
         "integer_property_aggregation": {
           "property_name": "entryFee",
           "metrics": "MEAN"
         },
         "text_property_aggregation": null,
-        "boolean_property_aggregation": {
-          "property_name": "openToday",
-          "metrics": "PERCENTAGE_TRUE"
-        },
+        "boolean_property_aggregation": null,
         "groupby_property": "museumName"
       },
       "tool_rationale": "",
@@ -43717,12 +43681,12 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": null,
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": {
-          "property_name": "openToday",
+        "integer_property_aggregation": {
+          "property_name": "museumName",
           "metrics": "COUNT"
         },
+        "text_property_aggregation": null,
+        "boolean_property_aggregation": null,
         "groupby_property": "openToday"
       },
       "tool_rationale": "",
@@ -43866,11 +43830,12 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
           "property_name": "artPieceName",
-          "metrics": "COUNT"
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": null
       },
@@ -44166,12 +44131,12 @@
         "text_property_aggregation": null,
         "boolean_property_aggregation": {
           "property_name": "openToday",
-          "metrics": "COUNT"
+          "metrics": "TOTAL_TRUE"
         },
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.8500000000000001,
+      "ast_score": 0.8,
       "error": null
     },
     {
@@ -44303,9 +44268,13 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find exhibitions where the exhibitionTitle contains 'Impressionism' and group the results by currentlyRunning status.",
         "target_collection": "Exhibitions",
-        "search_query": "Impressionism",
+        "search_query": null,
         "integer_property_filter": null,
-        "text_property_filter": null,
+        "text_property_filter": {
+          "property_name": "exhibitionTitle",
+          "operator": "LIKE",
+          "value": "Impressionism"
+        },
         "boolean_property_filter": null,
         "integer_property_aggregation": null,
         "text_property_aggregation": null,
@@ -44313,7 +44282,7 @@
         "groupby_property": "currentlyRunning"
       },
       "tool_rationale": "",
-      "ast_score": 0.8500000000000001,
+      "ast_score": 1.0,
       "error": null
     },
     {
@@ -44445,9 +44414,13 @@
       "predicted_query": {
         "corresponding_natural_language_query": "Find art pieces where the artPieceName contains the word 'Starry'.",
         "target_collection": "ArtPieces",
-        "search_query": "Starry",
+        "search_query": null,
         "integer_property_filter": null,
-        "text_property_filter": null,
+        "text_property_filter": {
+          "property_name": "artPieceName",
+          "operator": "LIKE",
+          "value": "Starry"
+        },
         "boolean_property_filter": null,
         "integer_property_aggregation": null,
         "text_property_aggregation": null,
@@ -44455,7 +44428,7 @@
         "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 0.8500000000000001,
+      "ast_score": 0.9500000000000001,
       "error": null
     },
     {
@@ -44600,14 +44573,14 @@
         },
         "integer_property_aggregation": {
           "property_name": "averageVisitorCount",
-          "metrics": "MEAN"
+          "metrics": "SUM"
         },
         "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": "exhibitionTitle"
       },
       "tool_rationale": "",
-      "ast_score": 0.9500000000000001,
+      "ast_score": 1.0,
       "error": null
     },
     {
@@ -44898,13 +44871,18 @@
         "search_query": null,
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
-        "integer_property_aggregation": null,
-        "text_property_aggregation": null,
-        "boolean_property_aggregation": {
+        "boolean_property_filter": {
           "property_name": "openToday",
-          "metrics": "COUNT"
+          "operator": "=",
+          "value": true
         },
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
+          "property_name": "exhibitHighlights",
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
+        },
+        "boolean_property_aggregation": null,
         "groupby_property": "museumName"
       },
       "tool_rationale": "",
@@ -45056,7 +45034,7 @@
         "text_property_aggregation": {
           "property_name": "exhibitHighlights",
           "metrics": "TOP_OCCURRENCES",
-          "top_occurrences_limit": null
+          "top_occurrences_limit": 5
         },
         "boolean_property_aggregation": null,
         "groupby_property": null
@@ -45201,19 +45179,16 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
-          "property_name": "averageVisitorCount",
-          "metrics": "COUNT"
-        },
+        "integer_property_aggregation": null,
         "text_property_aggregation": null,
         "boolean_property_aggregation": {
           "property_name": "currentlyRunning",
           "metrics": "PERCENTAGE_TRUE"
         },
-        "groupby_property": "exhibitionTitle"
+        "groupby_property": null
       },
       "tool_rationale": "",
-      "ast_score": 1.0,
+      "ast_score": 0.8500000000000001,
       "error": null
     },
     {
@@ -45500,13 +45475,14 @@
         "search_query": null,
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
+        "boolean_property_filter": {
+          "property_name": "openToday",
+          "operator": "=",
+          "value": true
+        },
         "integer_property_aggregation": null,
         "text_property_aggregation": null,
-        "boolean_property_aggregation": {
-          "property_name": "openToday",
-          "metrics": "PERCENTAGE_TRUE"
-        },
+        "boolean_property_aggregation": null,
         "groupby_property": "entryFee"
       },
       "tool_rationale": "",
@@ -46226,11 +46202,12 @@
         "integer_property_filter": null,
         "text_property_filter": null,
         "boolean_property_filter": null,
-        "integer_property_aggregation": {
+        "integer_property_aggregation": null,
+        "text_property_aggregation": {
           "property_name": "museumName",
-          "metrics": "COUNT"
+          "metrics": "COUNT",
+          "top_occurrences_limit": null
         },
-        "text_property_aggregation": null,
         "boolean_property_aggregation": null,
         "groupby_property": null
       },
@@ -46369,17 +46346,18 @@
         "search_query": null,
         "integer_property_filter": null,
         "text_property_filter": null,
-        "boolean_property_filter": null,
+        "boolean_property_filter": {
+          "property_name": "openToday",
+          "operator": "=",
+          "value": true
+        },
         "integer_property_aggregation": null,
         "text_property_aggregation": null,
-        "boolean_property_aggregation": {
-          "property_name": "openToday",
-          "metrics": "COUNT"
-        },
+        "boolean_property_aggregation": null,
         "groupby_property": "museumName"
       },
       "tool_rationale": "",
-      "ast_score": 0.9500000000000001,
+      "ast_score": 1.0,
       "error": null
     },
     {
@@ -46660,15 +46638,14 @@
           "metrics": "MEAN"
         },
         "text_property_aggregation": null,
-        "boolean_property_aggregation": {
-          "property_name": "openToday",
-          "metrics": "COUNT"
-        },
+        "boolean_property_aggregation": null,
         "groupby_property": "openToday"
       },
       "tool_rationale": "",
       "ast_score": 1.0,
       "error": null
     }
-  ]
+  ],
+  "exact_match_pct": 74.28571428571429,
+  "collection_routing_accuracy": 96.82539682539682
 }
