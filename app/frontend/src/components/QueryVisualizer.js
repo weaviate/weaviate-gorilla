@@ -788,7 +788,7 @@ const QueryVisualizer = () => {
                       <span className="text-xl mt-2 block">{currentItem.query.corresponding_natural_language_query}</span>
                     </p>
                   )}
-                  <h2 className="font-semibold text-2xl text-[#1c1468]">Query APIs utilized</h2>
+                  <h2 className="font-semibold text-2xl text-[#1c1468]">Query APIs Utilized</h2>
                   {currentItem.query.target_collection && (
                     <p>
                       <span className="font-semibold">Collection:</span>{' '}
@@ -854,6 +854,22 @@ const QueryVisualizer = () => {
                     </p>
                   )}
                 </div>
+
+                <div className="mt-6">
+                  <h2 className="font-semibold text-2xl text-[#1c1468]">Query Validation</h2>
+                  <div className="mt-2">
+                    <p className="font-semibold">
+                      LLM-as-Judge Query Assessment:{' '}
+                      <span className={currentItem.is_valid ? 'text-green-600' : 'text-red-600'}>
+                        {currentItem.is_valid ? 'Valid' : 'Invalid'}
+                      </span>
+                    </p>
+                    <p className="mt-2">
+                      {currentItem.verification_rationale}
+                    </p>
+                  </div>
+                </div>
+
                 {renderQueryResult(currentItem.ground_truth_query_result)}
               </>
             )}

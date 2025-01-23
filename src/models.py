@@ -264,6 +264,7 @@ class ExperimentSummary(BaseModel):
     successful_predictions: int
     failed_predictions: int
     average_ast_score: float
+    perfect_matches: int
     per_schema_scores: Dict[int, float]
     detailed_results: List[QueryPredictionResult]
 

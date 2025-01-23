@@ -97,21 +97,33 @@ class BaseExperiment(ABC):
         self.perfect_matches = 0
         self.total_queries = 0
 
-    @abstractmethod
     def build_tools(self, collections_description: str, collections_enum: List[str]) -> List[Tool]:
         """Build appropriate tools based on experiment type."""
         pass
 
-    @abstractmethod
-    def process_tool_response(self, response: Any, nl_query: str) -> Optional[WeaviateQuery]:
+    def _process_tool_response(self, response: Any, nl_query: str) -> Optional[WeaviateQuery]:
         """Process the tool response into a WeaviateQuery."""
-        pass
+        if not response:
+            return None
+        
+        if isinstance(response, dict):
+            # Handle Anthropic response format
+            return self._build_query_from_args(response, nl_query)
+        
+        # Handle Gemini/OpenAI response format
+        if isinstance(response, list) and hasattr(response[0], 'function'):
+            tool_call = response[0].function
+            tool_call_args = json.loads(tool_call.arguments)
+            return self._build_query_from_args(tool_call_args, nl_query)
+            
+        # Handle other model provider formats
+        return None
 
     def run(self):
         """Execute the experiment workflow."""
         print(f"\033[92m=== Starting {self.config.experiment_type.title()} Experiment ===\033[0m")
         
-        queries = load_queries("../../data/synthetic-weaviate-queries-with-schemas.json")
+        queries = load_queries("../../data/synthetic-weaviate-queries-with-results.json")
         detailed_results = []
         per_schema_scores = {}
         successful_predictions = failed_predictions = 0
@@ -204,9 +216,9 @@ class BaseExperiment(ABC):
                 tools=tools,
                 parallel_tool_calls=self.config.parallel_tool_calls
             )
-            
-            predicted_query = self.process_tool_response(response, nl_query)
-            
+
+            predicted_query = self._process_tool_response(response, nl_query)
+
             if predicted_query is None:
                 return self._create_error_result(idx, schema_idx, nl_query, query, "No tool called")
             
@@ -254,9 +266,8 @@ class BaseExperiment(ABC):
         """Create a summary of experiment results."""
         return ExperimentSummary(
             timestamp=datetime.now().isoformat(),
-            model_provider=self.config.model_provider,
             model_name=self.config.model_name,
-            experiment_type=self.config.experiment_type,
+            generate_with_models=self.config.generate_with_models,
             total_queries=len(queries),
             successful_predictions=successful_predictions,
             failed_predictions=failed_predictions,
@@ -268,8 +279,8 @@ class BaseExperiment(ABC):
 
     def _save_results(self, summary: ExperimentSummary):
         """Save experiment results to a file."""
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"experiment_results_{timestamp}.json"
+        timestamp = datetime.now().strftime("%m-%d-%y")
+        filename = f"{summary.model_name.replace('/', '-')}-{timestamp}.json"
         with open(filename, 'w') as f:
             json.dump(summary.model_dump(), f, indent=2)
         print(f"\nResults saved to {filename}")
@@ -277,8 +288,7 @@ class BaseExperiment(ABC):
     def _print_summary(self, summary: ExperimentSummary):
         """Print experiment summary."""
         print("\n=== Experiment Summary ===")
-        print(f"Model: {summary.model_provider}/{summary.model_name}")
-        print(f"Experiment Type: {summary.experiment_type}")
+        print(f"Model: {summary.model_name}")
         print(f"Total Queries: {summary.total_queries}")
         print(f"Successful Predictions: {summary.successful_predictions}")
         print(f"Failed Predictions: {summary.failed_predictions}")
@@ -400,9 +410,9 @@ def create_experiment(config: ExperimentConfig) -> BaseExperiment:
 if __name__ == "__main__":
     # Example usage of the unified framework
     config = ExperimentConfig(
-        model_provider="openai",
-        model_name="gpt-4o-mini",
-        api_key=os.getenv("OPENAI_API_KEY"),
+        model_provider="together",
+        model_name="meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+        api_key=os.getenv("TOGETHER_API_KEY"),
         experiment_type="standard",
         generate_with_models=False
     )
