@@ -22,9 +22,9 @@ Illustrated below, the Weaviate Gorilla translates natural language commands int
 
 📝 Fine-tuning LLMs to use Weaviate's GraphQL APIs on the Weaviate Blog - [link](https://weaviate.io/blog/weaviate-gorilla-part-1)
 
-🎥 Gorilla LLM Explained by Connor Shorten on Weaviate YouTube - [link](https://www.youtube.com/watch?v=LkV5DTRNxAg)
+🎥 Gorilla LLM Explained on Weaviate YouTube - [link](https://www.youtube.com/watch?v=LkV5DTRNxAg)
 
-🎥 SQL-PaLM Explained by Connor Shorten on Weaviate YouTube - [link](https://www.youtube.com/watch?v=g3ocV0a_G2c)
+🎥 SQL-PaLM Explained on Weaviate YouTube - [link](https://www.youtube.com/watch?v=g3ocV0a_G2c)
 
 ![Weaviate Gorilla](./visuals/weaviate-gorillas/gorilla-118.png)
 
