@@ -2,8 +2,6 @@
 
 The capabilities of Large Language Models (LLMs) are rapidly accelerating largely thanks to their integration with external tools. Querying databases is among the most effective of these integrations, enabling LLMs to access private or continually updating data. This repo benchmarks how well Large Language Models can utilize Weaviate's query APIs in the Function Calling framework. The following result table summarizes our most recent experimental results.
 
-![Weaviate Gorilla Leaderboard](./visuals/result-table.png)
-
 ## Natural Language Commands to Weaviate Queries
 
 Illustrated below, the Weaviate Gorilla translates natural language commands into Weaviate queries. We separate Weaviate queries into 3 categories of difficulty (simple, moderate, complex) based on how many unique query operators they require.
