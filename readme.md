@@ -16,7 +16,7 @@ Defined in [OpenAI’s developer documentation](https://platform.openai.com/docs
 
 ![Function Calling](./visuals/simple-function-calling.png)
 
-## Synthetic Data Generation 🏭
+## Synthetic Test Data Generation 🏭
 
 This repo additionally contains a visualization app for inspecting synthetic queries for testing Weaviate Query writing. For more info, please see `/app`!
 
