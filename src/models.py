@@ -34,20 +34,20 @@ class QueryWithFilter(BaseModel):
 # Aggregation Models
 class IntAggregation(BaseModel):
     property_name: str
-    metrics: Literal["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]
+    metrics: Literal["MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]
 
 class TextAggregation(BaseModel):
     property_name: str
-    metrics: Literal["COUNT", "TYPE", "TOP_OCCURRENCES"]
+    metrics: Literal["TOP_OCCURRENCES"]
     top_occurrences_limit: Optional[int] = None
 
 class BooleanAggregation(BaseModel):
     property_name: str
-    metrics: Literal["COUNT", "TYPE", "TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]
+    metrics: Literal["TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]
 
 class DateAggregation(BaseModel):
     property_name: str
-    metrics: Literal["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE"]
+    metrics: Literal["MIN", "MAX", "MEAN", "MEDIAN", "MODE"]
 
 class QueryWithAggregation(BaseModel):
     database_schema: dict
@@ -67,18 +67,18 @@ class AggregateQuery(BaseModel):
 # Aggregation With Query Models
 class IntAggregationWithQuery(BaseModel):
     property_name: str
-    metrics: Literal["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]
+    metrics: Literal["TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]
     corresponding_natural_language_query: str
 
 class TextAggregationWithQuery(BaseModel):
     property_name: str
-    metrics: Literal["COUNT", "TYPE", "TOP_OCCURRENCES"]
+    metrics: Literal["TYPE", "TOP_OCCURRENCES"]
     top_occurrences_limit: Optional[int] = None
     corresponding_natural_language_query: str
 
 class BooleanAggregationWithQuery(BaseModel):
     property_name: str
-    metrics: Literal["COUNT", "TYPE", "TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]
+    metrics: Literal["TYPE", "TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]
     corresponding_natural_language_query: str
 
 class SyntheticAggregationQueries(BaseModel):
@@ -135,6 +135,20 @@ class WeaviateQuery(BaseModel):
     text_property_aggregation: Optional[TextAggregation]
     boolean_property_aggregation: Optional[BooleanAggregation]
     groupby_property: Optional[str]
+
+class NewWeaviateQuery(BaseModel):
+    corresponding_natural_language_query: Optional[str] = None
+    target_collection: str
+    search_query: Optional[str] = None
+    limit: Optional[int] = 5
+    integer_property_filter: Optional[IntPropertyFilter] = None
+    text_property_filter: Optional[TextPropertyFilter] = None
+    boolean_property_filter: Optional[BooleanPropertyFilter] = None
+    integer_property_aggregation: Optional[IntAggregation] = None
+    text_property_aggregation: Optional[TextAggregation] = None
+    boolean_property_aggregation: Optional[BooleanAggregation] = None
+    groupby_property: Optional[str] = None
+    total_count: Optional[bool] = None
 
 # Schema Models
 class Property(BaseModel):

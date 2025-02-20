@@ -3,14 +3,11 @@
 class OPRO():
     pass
 
-class AvaTaR():
-    pass
-
-class BootstrapAgentWorkflowMemory():
-    pass
-
 class BootstrapFewShot():
     pass
 
-class GradientDescent():
+class AvaTaR():
+    pass
+
+class MIPRO():
     pass
