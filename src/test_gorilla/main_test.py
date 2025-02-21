@@ -123,7 +123,7 @@ class BaseExperiment(ABC):
         """Execute the experiment workflow."""
         print(f"\033[92m=== Starting {self.config.experiment_type.title()} Experiment ===\033[0m")
         
-        queries = load_queries("../../data/synthetic-weaviate-queries-with-results.json")
+        queries = load_queries("../../data/updated-queries-with-schemas.json")
         detailed_results = []
         per_schema_scores = {}
         successful_predictions = failed_predictions = 0
@@ -142,7 +142,7 @@ class BaseExperiment(ABC):
                 # Update metrics
                 self.total_queries += 1
                 self.total_ast_score += result.ast_score
-                if result.ast_score == 1.0:
+                if result.ast_score >= 0.95:
                     self.perfect_matches += 1
                 # Print current metrics
                 avg_ast = self.total_ast_score / self.total_queries
@@ -162,8 +162,12 @@ class BaseExperiment(ABC):
 
     def _build_query_from_args(self, args: Dict, nl_query: str) -> WeaviateQuery:
         """Constructs a WeaviateQuery from tool call arguments."""
+        collection_name = args["collection_name"]
+        if collection_name:
+            collection_name = collection_name[0].upper() + collection_name[1:]
+            
         return WeaviateQuery(
-            target_collection=args["collection_name"],
+            target_collection=collection_name,
             search_query=args.get("search_query"),
             integer_property_filter=self._create_model_instance(IntPropertyFilter, args.get("integer_property_filter")),
             text_property_filter=self._create_model_instance(TextPropertyFilter, args.get("text_property_filter")),
@@ -210,12 +214,63 @@ class BaseExperiment(ABC):
         try:
             collections_description, collections_enum = get_collections_info(self.db_manager.client)
             tools = self.build_tools(collections_description, collections_enum)
-            
+
+            prompt = f"""
+You are a precision-focused Weaviate query generator. Your ONLY task is to output a final Weaviate query that EXACTLY matches the provided schema and NL query. Every element (collection names, property names, filter types, operators, numeric formats, aggregation metrics, and group-by properties) must be an exact match. No substitutions, derivations, or extra text is allowed. Do not reveal any internal reasoning.
+
+Instructions:
+1. Analyze the Schema & NL Query:
+   • Use ONLY schema values for collection and property names (e.g., "Restaurants", "averageRating").
+   • Extract the descriptive search query exactly from the NL query.
+   • For filters:
+       - Text: use Text Filter with LIKE.
+       - Numeric: use Integer Filter with operators (=, <, >, <=, >=) and numeric values (include .0 if required).
+       - Boolean: use Boolean Filter with "=" and value True.
+   • For aggregations, use:
+       - Text: TOP_OCCURRENCES.
+       - Numeric: MIN, MAX, MEAN, MEDIAN, MODE, or SUM.
+       - Boolean: TOTAL_TRUE, TOTAL_FALSE, PERCENTAGE_TRUE, or PERCENTAGE_FALSE.
+   • If counting objects is needed, set total_count to true (do NOT use COUNT in aggregations).
+   • Group By must exactly match a schema property.
+
+2. Verification (Internal Only):
+   • Confirm every element exactly matches the schema—no extra filters or modifications.
+
+3. Output Format (Output ONLY):
+Weaviate Query Details:
+  Target Collection: <exact collection>
+  Search Query: <exact search text>
+  Total Count: <true/false>
+  [Filters if any:]
+    • Filter Type: <Text Filter / Integer Filter / Boolean Filter>
+    • Property: <exact property name>
+    • Operator: <exact operator>
+    • Value: <exact value>
+  [Aggregations if any:]
+    • Aggregation Type: <Text / Boolean / Integer Aggregation>
+    • Property: <exact property name>
+    • Metrics: <exact metric>
+  Group By: <if applicable, exact property name>
+  Natural Language Query: {nl_query}
+
+User Query:
+{nl_query}
+
+Available Schema (Collections and Properties):
+{collections_description}
+
+Now, generate the final Weaviate query following these guidelines.
+IMPORTANT!! Please remember, COUNT and TYPE are not valid aggregations for an IntAggregation, TextAggregation, or BooleanAggregation!
+IMPORTANT!! Please remember to format your response as a function call with the arguments you have chosen.
+"""
+
             response = self.lm_service.one_step_function_selection_test(
-                prompt=nl_query,
+                prompt=prompt,
                 tools=tools,
                 parallel_tool_calls=self.config.parallel_tool_calls
             )
+            print("HERE")
+            print(response)
 
             predicted_query = self._process_tool_response(response, nl_query)
 
@@ -244,6 +299,8 @@ class BaseExperiment(ABC):
             )
             
         except Exception as e:
+            print(e)
+            print(f"\033[96m{response}\033[0m")
             return self._create_error_result(idx, schema_idx, nl_query, query, str(e))
 
     def _create_error_result(self, idx: int, schema_idx: int, nl_query: str,
@@ -410,9 +467,9 @@ def create_experiment(config: ExperimentConfig) -> BaseExperiment:
 if __name__ == "__main__":
     # Example usage of the unified framework
     config = ExperimentConfig(
-        model_provider="together",
-        model_name="meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
-        api_key=os.getenv("TOGETHER_API_KEY"),
+        model_provider="openai",
+        model_name="gpt-4o",
+        api_key=os.getenv("OPENAI_API_KEY"),
         experiment_type="standard",
         generate_with_models=False
     )

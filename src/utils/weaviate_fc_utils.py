@@ -101,7 +101,7 @@ def build_weaviate_query_tool_for_openai(collections_description: str, collectio
             "description": "Aggregate numeric properties using statistical functions",
             "properties": {
                 "property_name": {"type": "string"},
-                "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]}
+                "metrics": {"type": "string", "enum": ["MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]}
             }
         },
         "text_property_aggregation": {
@@ -109,7 +109,7 @@ def build_weaviate_query_tool_for_openai(collections_description: str, collectio
             "description": "Aggregate text properties using frequency analysis",
             "properties": {
                 "property_name": {"type": "string"},
-                "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOP_OCCURRENCES"]},
+                "metrics": {"type": "string", "enum": ["TOP_OCCURRENCES"]},
                 "top_occurrences_limit": {"type": "integer"}
             }
         },
@@ -118,7 +118,7 @@ def build_weaviate_query_tool_for_openai(collections_description: str, collectio
             "description": "Aggregate boolean properties using statistical functions",
             "properties": {
                 "property_name": {"type": "string"},
-                "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]}
+                "metrics": {"type": "string", "enum": ["TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]}
             }
         },
         "groupby_property": {
@@ -186,7 +186,7 @@ def build_weaviate_query_tool_for_anthropic(collections_description: str, collec
             "description": "Aggregate numeric properties using statistical functions",
             "properties": {
                 "property_name": {"type": "string"},
-                "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]}
+                "metrics": {"type": "string", "enum": ["MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]}
             }
         },
         "text_property_aggregation": {
@@ -194,7 +194,7 @@ def build_weaviate_query_tool_for_anthropic(collections_description: str, collec
             "description": "Aggregate text properties using frequency analysis",
             "properties": {
                 "property_name": {"type": "string"},
-                "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOP_OCCURRENCES"]},
+                "metrics": {"type": "string", "enum": ["TOP_OCCURRENCES"]},
                 "top_occurrences_limit": {"type": "integer"}
             }
         },
@@ -203,7 +203,7 @@ def build_weaviate_query_tool_for_anthropic(collections_description: str, collec
             "description": "Aggregate boolean properties using statistical functions",
             "properties": {
                 "property_name": {"type": "string"},
-                "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]}
+                "metrics": {"type": "string", "enum": ["TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]}
             }
         },
         "groupby_property": {
@@ -267,7 +267,7 @@ def build_weaviate_query_tool_for_ollama(collections_description: str, collectio
                 "type": "object",
                 "properties": {
                     "property_name": {"type": "string"},
-                    "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]}
+                    "metrics": {"type": "string", "enum": ["MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]}
                 },
                 "required": ["property_name", "metrics"]
             },
@@ -275,7 +275,7 @@ def build_weaviate_query_tool_for_ollama(collections_description: str, collectio
                 "type": "object",
                 "properties": {
                     "property_name": {"type": "string"},
-                    "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOP_OCCURRENCES"]},
+                    "metrics": {"type": "string", "enum": ["TOP_OCCURRENCES"]},
                     "top_occurrences_limit": {"type": "integer"}
                 },
                 "required": ["property_name", "metrics"]
@@ -284,7 +284,7 @@ def build_weaviate_query_tool_for_ollama(collections_description: str, collectio
                 "type": "object",
                 "properties": {
                     "property_name": {"type": "string"},
-                    "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]}
+                    "metrics": {"type": "string", "enum": ["TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]}
                 },
                 "required": ["property_name", "metrics"]
             },
@@ -350,7 +350,7 @@ def build_weaviate_query_tool_for_cohere(collections_description: str, collectio
             "description": "Aggregate numeric properties using statistical functions",
             "properties": {
                 "property_name": {"type": "string"},
-                "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]}
+                "metrics": {"type": "string", "enum": ["MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]}
             }
         },
         "text_property_aggregation": {
@@ -358,7 +358,7 @@ def build_weaviate_query_tool_for_cohere(collections_description: str, collectio
             "description": "Aggregate text properties using frequency analysis",
             "properties": {
                 "property_name": {"type": "string"},
-                "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOP_OCCURRENCES"]},
+                "metrics": {"type": "string", "enum": ["TOP_OCCURRENCES"]},
                 "top_occurrences_limit": {"type": "integer"}
             }
         },
@@ -367,7 +367,7 @@ def build_weaviate_query_tool_for_cohere(collections_description: str, collectio
             "description": "Aggregate boolean properties using statistical functions",
             "properties": {
                 "property_name": {"type": "string"},
-                "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]}
+                "metrics": {"type": "string", "enum": ["TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]}
             }
         },
         "groupby_property": {
@@ -435,7 +435,7 @@ def build_weaviate_query_tool_for_together(collections_description: str, collect
             "description": "Aggregate numeric properties using statistical functions",
             "properties": {
                 "property_name": {"type": "string"},
-                "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]}
+                "metrics": {"type": "string", "enum": ["MIN", "MAX", "MEAN", "MEDIAN", "MODE", "SUM"]}
             }
         },
         "text_property_aggregation": {
@@ -443,7 +443,7 @@ def build_weaviate_query_tool_for_together(collections_description: str, collect
             "description": "Aggregate text properties using frequency analysis",
             "properties": {
                 "property_name": {"type": "string"},
-                "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOP_OCCURRENCES"]},
+                "metrics": {"type": "string", "enum": ["TOP_OCCURRENCES"]},
                 "top_occurrences_limit": {"type": "integer"}
             }
         },
@@ -452,7 +452,7 @@ def build_weaviate_query_tool_for_together(collections_description: str, collect
             "description": "Aggregate boolean properties using statistical functions",
             "properties": {
                 "property_name": {"type": "string"},
-                "metrics": {"type": "string", "enum": ["COUNT", "TYPE", "TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]}
+                "metrics": {"type": "string", "enum": ["TOTAL_TRUE", "TOTAL_FALSE", "PERCENTAGE_TRUE", "PERCENTAGE_FALSE"]}
             }
         },
         "groupby_property": {

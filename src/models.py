@@ -125,18 +125,6 @@ class SyntheticFilterQueries(BaseModel):
     boolean_property_filter_query: BooleanPropertyFilterWithQuery
 
 class WeaviateQuery(BaseModel):
-    corresponding_natural_language_query: str
-    target_collection: str
-    search_query: Optional[str]
-    integer_property_filter: Optional[IntPropertyFilter]
-    text_property_filter: Optional[TextPropertyFilter]
-    boolean_property_filter: Optional[BooleanPropertyFilter]
-    integer_property_aggregation: Optional[IntAggregation]
-    text_property_aggregation: Optional[TextAggregation]
-    boolean_property_aggregation: Optional[BooleanAggregation]
-    groupby_property: Optional[str]
-
-class NewWeaviateQuery(BaseModel):
     corresponding_natural_language_query: Optional[str] = None
     target_collection: str
     search_query: Optional[str] = None
@@ -372,4 +360,3 @@ class TogetherAIFunction(BaseModel):
 class TogetherAITool(BaseModel):
     type: Literal["function"]
     function: TogetherAIFunction
-

@@ -7,7 +7,7 @@ import os
 # Connect to Weaviate and populate datasets
 client = weaviate.connect_to_local(
     headers={
-        "X-OpenAI-Api-Key": ""
+        "X-OpenAI-Api-Key": os.getenv("OPENAI_API_KEY")
     }
 )
 WEAVIATE_URL = "http://localhost:8080/v1/schema"

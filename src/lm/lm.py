@@ -21,6 +21,7 @@ import time
 
 # google models are accessed through the openai SDK with a check on `model_name`
 # together models are accessed through the openai SDK with a different base URL
+# grok models are accessed through the openai SDK with a different base URL
 LMModelProvider = Literal["ollama", "openai", "anthropic", "cohere", "together"]
 
 # need to add models to this...!
@@ -44,6 +45,12 @@ class LMService():
                     self.lm_client = openai.OpenAI(
                         api_key=api_key,
                         base_url="https://generativelanguage.googleapis.com/v1beta/"
+                    )
+                elif self.model_name.startswith("grok-"):
+                    print("\033[96mUsing Grok through the OpenAI SDK.\033[0m")
+                    self.lm_client = openai.OpenAI(
+                        api_key=api_key,
+                        base_url="https://api.x.ai/v1"
                     )
                 else:
                     self.lm_client = openai.OpenAI(
