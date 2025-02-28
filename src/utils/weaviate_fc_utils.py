@@ -29,34 +29,39 @@ from typing import Tuple, Union, Any, Dict, List
 from pydantic import BaseModel
 from typing import Literal, Optional
 
-def get_collections_info(client: weaviate.WeaviateClient) -> tuple[str, list[str]]:
-    """
-    Get detailed information about all collections in a Weaviate instance.
+def get_collections_info(client):
+    """Get information about collections for building tools."""
+    try:
+        # Get the schema using schema.get() instead of collections.get()
+        schema = client.schema.get()
+        
+        # Extract collection names
+        collections_enum = []
+        collections_description = "Available collections:\n"
+        
+        if 'classes' in schema:
+            for cls in schema['classes']:
+                collection_name = cls['class']
+                collections_enum.append(collection_name)
+                
+                # Add collection info to description
+                collections_description += f"- {collection_name}: {cls.get('description', 'No description')}\n"
+                collections_description += "  Properties:\n"
+                
+                # Add property info to description
+                for prop in cls.get('properties', []):
+                    prop_name = prop['name']
+                    prop_type = prop['dataType']
+                    prop_desc = prop.get('description', 'No description')
+                    collections_description += f"  - {prop_name} ({prop_type}): {prop_desc}\n"
+                
+                collections_description += "\n"
+        
+        return collections_description, collections_enum
     
-    Args:
-        client: A Weaviate client instance
-    
-    Returns:
-        tuple[str, list[str]]: Tuple containing formatted collection details string and list of collection names
-    """
-    
-    collections = client.collections.list_all()
-    
-    # Get collection names as list
-    collection_names = list(collections.keys())
-    
-    # Build output string
-    output = []
-    for collection_name, config in collections.items():
-        output.append(f"\nCollection Name: {collection_name}")
-        # output.append(f"Description: {config.description}") # 1024 token limit on tool description
-        output.append("\nProperties:")
-        for prop in config.properties:
-            # output.append(f"- {prop.name}: {prop.description} (type: {prop.data_type.value})")
-            # because of 1024 token limit :(
-            output.append(f"- {prop.name}: (type: {prop.data_type.value})")
-
-    return "\n".join(output), collection_names
+    except Exception as e:
+        print(f"Error getting collections info: {str(e)}")
+        return "Error retrieving schema", []
 
 def build_weaviate_query_tool_for_openai(collections_description: str, collections_list: list[str]) -> OpenAITool:
     properties = {

@@ -1,11 +1,10 @@
 from typing import Optional, List, Dict, Callable, Any
 from datetime import datetime
 import json
-import requests
+import os
 import weaviate
 from abc import ABC, abstractmethod
 from pydantic import BaseModel
-import os
 
 from src.models import (
     WeaviateQueryWithSchema, 
@@ -22,7 +21,6 @@ from src.models import (
 )
 from src.lm.lm import LMService
 from src.utils.weaviate_fc_utils import (
-    get_collections_info,
     build_weaviate_query_tool_for_openai,
     build_weaviate_query_tool_for_anthropic,
     build_weaviate_query_tool_for_ollama,
@@ -35,6 +33,12 @@ from src.utils.load_queries import load_queries
 from src.utils.util import pretty_print_weaviate_query
 from src.utils.metrics import abstract_syntax_tree_match_score
 
+class DatabaseConfig(BaseModel):
+    """Configuration for database connection."""
+    weaviate_url: str
+    weaviate_api_key: str
+    openai_api_key: str
+
 class ExperimentConfig(BaseModel):
     """Configuration for experiment execution."""
     model_provider: str
@@ -42,51 +46,71 @@ class ExperimentConfig(BaseModel):
     api_key: str
     generate_with_models: bool = True
     queries_per_schema: int = 64
-    weaviate_url: str = "http://localhost:8080/v1/schema"
     experiment_type: str = "standard"  # standard, rationale, per_collection, structured, parallel
     parallel_tool_calls: bool = False
+    db_config: DatabaseConfig
+    queries_file: str = "../../data/weaviate-gorilla.json"
+    output_dir: str = "./results"
 
-class DatabaseManager:
-    """Manages Weaviate database operations."""
-    def __init__(self, weaviate_client, schema_url):
-        self.client = weaviate_client
-        self.schema_url = schema_url
+def create_weaviate_client(config: DatabaseConfig) -> weaviate.Client:
+    """Create a Weaviate client based on configuration."""
+    # Connect to Weaviate Cloud
+    return weaviate.connect_to_weaviate_cloud(
+        cluster_url=WEAVIATE_URL,
+        auth_credentials=weaviate.auth.AuthApiKey(WEAVIATE_API_KEY),
+        headers={"X-OpenAI-Api-Key": OPENAI_API_KEY},
+    )
 
-    def reset_database(self):
-        self.client.collections.delete_all()
-
-    def create_schema_from_query(self, query: WeaviateQueryWithSchema):
-        for class_schema in query.database_schema.weaviate_collections:
-            schema_dict = {
-                'class': class_schema.name,
-                'description': class_schema.envisioned_use_case_overview,
-                'properties': [
-                    {
-                        'name': prop.name,
-                        'description': prop.description,
-                        'dataType': prop.data_type
+# Function to extract collections info from queries
+def get_collections_info_from_queries(queries):
+    """Get information about collections and their properties from queries."""
+    try:
+        collections_info = {}
+        
+        for query in queries:
+            for collection in query.database_schema.weaviate_collections:
+                collection_name = collection.name
+                if collection_name not in collections_info:
+                    collections_info[collection_name] = {
+                        "description": collection.description,
+                        "properties": {}
                     }
-                    for prop in class_schema.properties
-                ],
-                'vectorizer': 'text2vec-transformers',
-                'vectorIndexType': 'hnsw'
-            }
+                
+                # Add properties
+                for prop in collection.properties:
+                    collections_info[collection_name]["properties"][prop.name] = {
+                        "dataType": prop.data_type,
+                        "description": prop.description
+                    }
+        
+        # Format the collections description
+        collections_enum = list(collections_info.keys())
+        collections_description = "Available collections:\n"
+        
+        for collection_name, info in collections_info.items():
+            collections_description += f"- {collection_name}: {info['description']}\n"
+            collections_description += "  Properties:\n"
             
-            response = requests.post(
-                url=self.schema_url,
-                data=json.dumps(schema_dict),
-                headers={'Content-Type': 'application/json'}
-            )
-            print(f"\033[92mCreated collection: {schema_dict['class']}\033[0m")
+            for prop_name, prop_info in info["properties"].items():
+                prop_type = prop_info["dataType"]
+                prop_desc = prop_info["description"]
+                collections_description += f"  - {prop_name} ({prop_type}): {prop_desc}\n"
+            
+            collections_description += "\n"
+        
+        return collections_description, collections_enum
+    
+    except Exception as e:
+        print(f"Error getting collections info: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return "Error retrieving schema", []
 
 class BaseExperiment(ABC):
     """Base class for all experiment types."""
     def __init__(self, config: ExperimentConfig):
         self.config = config
-        self.db_manager = DatabaseManager(
-            weaviate.connect_to_local(),
-            config.weaviate_url
-        )
+        self.weaviate_client = create_weaviate_client(config.db_config)
         self.lm_service = LMService(
             model_provider=config.model_provider,
             model_name=config.model_name,
@@ -96,7 +120,11 @@ class BaseExperiment(ABC):
         self.total_ast_score = 0.0
         self.perfect_matches = 0
         self.total_queries = 0
+        
+        # Ensure output directory exists
+        os.makedirs(config.output_dir, exist_ok=True)
 
+    @abstractmethod
     def build_tools(self, collections_description: str, collections_enum: List[str]) -> List[Tool]:
         """Build appropriate tools based on experiment type."""
         pass
@@ -123,52 +151,80 @@ class BaseExperiment(ABC):
         """Execute the experiment workflow."""
         print(f"\033[92m=== Starting {self.config.experiment_type.title()} Experiment ===\033[0m")
         
-        queries = load_queries("../../data/updated-queries-with-schemas.json")
+        # Load queries with custom function that handles the specific JSON format
+        print(f"=== Loading Weaviate Queries ===")
+        queries = load_queries(self.config.queries_file)
+        print(f"Loaded {len(queries)} raw queries")
+        
+        # Get collections info from queries
+        collections_description, collections_enum = get_collections_info_from_queries(queries)
+        
         detailed_results = []
         per_schema_scores = {}
         successful_predictions = failed_predictions = 0
+        schema_queries = {}
         
-        self._initialize_first_schema(queries[0])
-        
+        # Group queries by schema
         for idx, query in enumerate(queries):
-            if self._should_update_schema(idx):
-                self._update_schema_and_scores(idx, queries[idx], detailed_results, per_schema_scores)
+            schema_idx = idx // self.config.queries_per_schema
+            if schema_idx not in schema_queries:
+                schema_queries[schema_idx] = []
+            schema_queries[schema_idx].append((idx, query))
+        
+        # Process each schema group
+        for schema_idx, query_group in schema_queries.items():
+            print(f"\n\033[92m=== Processing Schema {schema_idx} ===\033[0m")
+            schema_results = []
             
-            result = self._process_single_query(idx, query)
-            detailed_results.append(result)
+            for idx, query in query_group:
+                result = self._process_single_query(idx, schema_idx, query, collections_description, collections_enum)
+                detailed_results.append(result)
+                schema_results.append(result)
+                
+                if result.error is None:
+                    successful_predictions += 1
+                    # Update metrics
+                    self.total_queries += 1
+                    self.total_ast_score += result.ast_score
+                    if result.ast_score >= 0.95:
+                        self.perfect_matches += 1
+                    # Print current metrics
+                    avg_ast = self.total_ast_score / self.total_queries
+                    perfect_pct = (self.perfect_matches / self.total_queries) * 100
+                    print(f"\033[93mCurrent Metrics (After {self.total_queries} queries):")
+                    print(f"Average AST Score: {avg_ast:.3f}")
+                    print(f"Perfect Matches: {self.perfect_matches}/{self.total_queries} ({perfect_pct:.1f}%)\033[0m")
+                else:
+                    failed_predictions += 1
             
-            if result.error is None:
-                successful_predictions += 1
-                # Update metrics
-                self.total_queries += 1
-                self.total_ast_score += result.ast_score
-                if result.ast_score >= 0.95:
-                    self.perfect_matches += 1
-                # Print current metrics
-                avg_ast = self.total_ast_score / self.total_queries
-                perfect_pct = (self.perfect_matches / self.total_queries) * 100
-                print(f"\033[93mCurrent Metrics (After {self.total_queries} queries):")
-                print(f"Average AST Score: {avg_ast:.3f}")
-                print(f"Perfect Matches: {self.perfect_matches}/{self.total_queries} ({perfect_pct:.1f}%)\033[0m")
+            # Calculate per schema score
+            valid_results = [r for r in schema_results if r.error is None]
+            if valid_results:
+                per_schema_scores[schema_idx] = sum(r.ast_score for r in valid_results) / len(valid_results)
             else:
-                failed_predictions += 1
+                per_schema_scores[schema_idx] = 0.0
 
         summary = self._create_summary(queries, successful_predictions, failed_predictions,
                                     detailed_results, per_schema_scores)
         self._save_results(summary)
         self._print_summary(summary)
         
-        self.db_manager.client.close()
-
+        try:
+            self.weaviate_client.close()
+        except:
+            print("Note: Could not properly close client connection")
     def _build_query_from_args(self, args: Dict, nl_query: str) -> WeaviateQuery:
         """Constructs a WeaviateQuery from tool call arguments."""
-        collection_name = args["collection_name"]
+        collection_name = args.get("collection_name", "")
         if collection_name:
-            collection_name = collection_name[0].upper() + collection_name[1:]
+            # Ensure first letter is capitalized for consistency
+            collection_name = collection_name[0].upper() + collection_name[1:] if collection_name else ""
             
         return WeaviateQuery(
+            corresponding_natural_language_query=nl_query,
             target_collection=collection_name,
             search_query=args.get("search_query"),
+            limit=args.get("limit", 5),
             integer_property_filter=self._create_model_instance(IntPropertyFilter, args.get("integer_property_filter")),
             text_property_filter=self._create_model_instance(TextPropertyFilter, args.get("text_property_filter")),
             boolean_property_filter=self._create_model_instance(BooleanPropertyFilter, args.get("boolean_property_filter")),
@@ -176,43 +232,22 @@ class BaseExperiment(ABC):
             text_property_aggregation=self._create_model_instance(TextAggregation, args.get("text_property_aggregation")),
             boolean_property_aggregation=self._create_model_instance(BooleanAggregation, args.get("boolean_property_aggregation")),
             groupby_property=args.get("groupby_property"),
-            corresponding_natural_language_query=nl_query
+            total_count=args.get("total_count")
         )
 
     def _create_model_instance(self, model_class, data):
         """Creates a model instance if data is provided."""
         return model_class(**data) if data is not None else None
 
-    def _initialize_first_schema(self, first_query):
-        """Initialize the database with the first schema."""
-        self.db_manager.reset_database()
-        self.db_manager.create_schema_from_query(first_query)
-
-    def _should_update_schema(self, idx: int) -> bool:
-        """Determine if schema should be updated."""
-        return idx > 0 and idx % self.config.queries_per_schema == 0
-
-    def _update_schema_and_scores(self, idx: int, query: WeaviateQueryWithSchema,
-                                detailed_results: List[QueryPredictionResult],
-                                per_schema_scores: Dict[int, float]):
-        """Update schema and calculate scores."""
-        schema_idx = (idx // self.config.queries_per_schema) - 1
-        per_schema_scores[schema_idx] = sum(
-            r.ast_score for r in detailed_results[-self.config.queries_per_schema:]
-        ) / self.config.queries_per_schema
-        
-        self._initialize_first_schema(query)
-
-    def _process_single_query(self, idx: int, query: WeaviateQueryWithSchema) -> QueryPredictionResult:
+    def _process_single_query(self, idx: int, schema_idx: int, query: WeaviateQueryWithSchema, 
+                             collections_description: str, collections_enum: List[str]) -> QueryPredictionResult:
         """Process a single query and return its result."""
-        schema_idx = idx // self.config.queries_per_schema
         nl_query = query.corresponding_natural_language_query
         
-        # Print natural language query in red
-        print(f"\n\033[91mNatural Language Query: {nl_query}\033[0m")
+        # Print natural language query in cyan
+        print(f"\n\033[96mNatural Language Query: {nl_query}\033[0m")
         
         try:
-            collections_description, collections_enum = get_collections_info(self.db_manager.client)
             tools = self.build_tools(collections_description, collections_enum)
 
             prompt = f"""
@@ -222,15 +257,18 @@ Instructions:
 1. Analyze the Schema & NL Query:
    • Use ONLY schema values for collection and property names (e.g., "Restaurants", "averageRating").
    • Extract the descriptive search query exactly from the NL query.
+THIS IS VERY IMPORTANT!! PLEASE PAY CLOSE ATTENTION TO THIS EXPLANATION OF THE AVAILABLE OPERATORS!!
    • For filters:
        - Text: use Text Filter with LIKE.
        - Numeric: use Integer Filter with operators (=, <, >, <=, >=) and numeric values (include .0 if required).
        - Boolean: use Boolean Filter with "=" and value True.
    • For aggregations, use:
        - Text: TOP_OCCURRENCES.
-       - Numeric: MIN, MAX, MEAN, MEDIAN, MODE, or SUM.
+       - Int: MIN, MAX, MEAN, MEDIAN, MODE, or SUM.
+Again, for IntAggregation you have MIN, MAX, MEAN, MEDIAN, MODE, or SUM!!! DO NOT EVER TRY TO USE SOMETHING LIKE TOTAL_TRUE with an IntAggregation!! THIS IS EXTREMELY IMPORTANT!
        - Boolean: TOTAL_TRUE, TOTAL_FALSE, PERCENTAGE_TRUE, or PERCENTAGE_FALSE.
-   • If counting objects is needed, set total_count to true (do NOT use COUNT in aggregations).
+PLEASE REMEMBER THIS!! THIS IS HOW YOU COUNT OBJECTS!!!! DO NOT TRY TO COUNT in Aggregations!! 
+   • If counting objects is needed, set total_count to true (do NOT use COUNT in aggregations!!! This is very important!!).
    • Group By must exactly match a schema property.
 
 2. Verification (Internal Only):
@@ -262,6 +300,10 @@ Available Schema (Collections and Properties):
 Now, generate the final Weaviate query following these guidelines.
 IMPORTANT!! Please remember, COUNT and TYPE are not valid aggregations for an IntAggregation, TextAggregation, or BooleanAggregation!
 IMPORTANT!! Please remember to format your response as a function call with the arguments you have chosen.
+IMPORTANT!! IT IS VERY COMMON TO OUTPUT INCORRECT `IntAggregation` METRICS! PLEASE NOTE!! For IntAggregation,
+Input should be 'MIN', 'MAX', 'MEAN', 'MEDIAN', 'MODE' or 'SUM', otherwise you will get an error such as: [type=literal_error, input_value='COUNT', input_type=str]
+THIS IS EXTERMELY IMPORTANT! YOUR NUMBER 1 FOCUS SHOULD BE TO MAKE SURE THESE QUERIES ARE CORRECTLY FORMATTED!!!
+REMEMBER, DO NOT EVERY TRY TO USE, say COUNT, with an IntAggregation!! YOU COUNT WITH THE `total_count` ARGUMENT!!! IntAggregation only supporst MIN, MAX, MEAN, MEDIAN, MODE, or SUM!!
 """
 
             response = self.lm_service.one_step_function_selection_test(
@@ -269,8 +311,6 @@ IMPORTANT!! Please remember to format your response as a function call with the 
                 tools=tools,
                 parallel_tool_calls=self.config.parallel_tool_calls
             )
-            print("HERE")
-            print(response)
 
             predicted_query = self._process_tool_response(response, nl_query)
 
@@ -299,8 +339,9 @@ IMPORTANT!! Please remember to format your response as a function call with the 
             )
             
         except Exception as e:
-            print(e)
-            print(f"\033[96m{response}\033[0m")
+            print(f"\033[91mError: {str(e)}\033[0m")
+            import traceback
+            traceback.print_exc()
             return self._create_error_result(idx, schema_idx, nl_query, query, str(e))
 
     def _create_error_result(self, idx: int, schema_idx: int, nl_query: str,
@@ -337,7 +378,10 @@ IMPORTANT!! Please remember to format your response as a function call with the 
     def _save_results(self, summary: ExperimentSummary):
         """Save experiment results to a file."""
         timestamp = datetime.now().strftime("%m-%d-%y")
-        filename = f"{summary.model_name.replace('/', '-')}-{timestamp}.json"
+        filename = os.path.join(
+            self.config.output_dir, 
+            f"{summary.model_name.replace('/', '-')}-{timestamp}.json"
+        )
         with open(filename, 'w') as f:
             json.dump(summary.model_dump(), f, indent=2)
         print(f"\nResults saved to {filename}")
@@ -373,33 +417,11 @@ class StandardExperiment(BaseExperiment):
         builder = tool_builders.get(self.config.model_provider)
         return builder() if builder else []
 
-    def process_tool_response(self, response: Any, nl_query: str) -> Optional[WeaviateQuery]:
-        if not response:
-            return None
-            
-        tool_call_args = self._parse_tool_args(response)
-        return self._build_query_from_args(tool_call_args, nl_query)
-
-    def _parse_tool_args(self, response):
-        if self.config.model_provider == "openai":
-            return json.loads(response[0].function.arguments)
-        elif self.config.model_provider in ["cohere", "together"]:
-            return response
-        else:
-            raise ValueError(f"Unsupported model provider: {self.config.model_provider}")
-
 class RationaleExperiment(BaseExperiment):
     """Experiment with tool rationale."""
     def build_tools(self, collections_description: str, collections_enum: List[str]) -> List[Tool]:
         return [build_weaviate_query_tool_for_openai_with_rationale(
             collections_description, collections_enum, self.config.generate_with_models)]
-
-    def process_tool_response(self, response: Any, nl_query: str) -> Optional[WeaviateQuery]:
-        if not response:
-            return None
-        
-        tool_call_args = json.loads(response[0].function.arguments)
-        return self._build_query_from_args(tool_call_args, nl_query)
 
 class PerCollectionExperiment(BaseExperiment):
     """Experiment with one tool per collection."""
@@ -407,8 +429,8 @@ class PerCollectionExperiment(BaseExperiment):
         return build_one_tool_per_collection(
             collections_description, collections_enum, self.config.generate_with_models)
 
-    def process_tool_response(self, response: Any, nl_query: str) -> Optional[WeaviateQuery]:
-        if not response:
+    def _process_tool_response(self, response: Any, nl_query: str) -> Optional[WeaviateQuery]:
+        if not response or not isinstance(response, list) or not hasattr(response[0], 'function'):
             return None
         
         tool_call = response[0].function
@@ -422,32 +444,24 @@ class ParallelToolCallsExperiment(BaseExperiment):
     """Experiment with parallel tool calls."""
     def __init__(self, config: ExperimentConfig):
         super().__init__(config)
+        config.parallel_tool_calls = True
         self.total_tool_calls = 0
 
     def build_tools(self, collections_description: str, collections_enum: List[str]) -> List[Tool]:
         return [build_weaviate_query_tool_for_openai(
             collections_description, collections_enum, self.config.generate_with_models)]
 
-    def process_tool_response(self, response: Any, nl_query: str) -> Optional[WeaviateQuery]:
-        if not response:
+    def _process_tool_response(self, response: Any, nl_query: str) -> Optional[WeaviateQuery]:
+        if not response or not isinstance(response, list):
             return None
 
-        best_query = None
-        best_ast_score = -1
-
-        for tool_call in response:
-            tool_call_args = json.loads(tool_call.function.arguments)
-            current_query = self._build_query_from_args(tool_call_args, nl_query)
-            
-            # We'll need the ground truth query to calculate the score
-            # This is a limitation of the current implementation
-            ast_score = 0  # placeholder
-            
-            if ast_score > best_ast_score:
-                best_ast_score = ast_score
-                best_query = current_query
-
-        return best_query
+        # In a real implementation, we might compare against ground truth
+        # But for simplicity, we'll just take the first response
+        if hasattr(response[0], 'function'):
+            tool_call_args = json.loads(response[0].function.arguments)
+            return self._build_query_from_args(tool_call_args, nl_query)
+        
+        return None
 
 def create_experiment(config: ExperimentConfig) -> BaseExperiment:
     """Factory function to create the appropriate experiment type."""
@@ -465,14 +479,44 @@ def create_experiment(config: ExperimentConfig) -> BaseExperiment:
     return experiment_class(config)
 
 if __name__ == "__main__":
-    # Example usage of the unified framework
-    config = ExperimentConfig(
-        model_provider="openai",
-        model_name="gpt-4o",
-        api_key=os.getenv("OPENAI_API_KEY"),
-        experiment_type="standard",
-        generate_with_models=False
+    # Direct configuration - no command line args
+    # Replace these values with your actual credentials
+    WEAVIATE_URL = ""
+    WEAVIATE_API_KEY = ""
+    OPENAI_API_KEY = "" # used for embeddings in Weaviate
+    LM_API_KEY = ""
+
+    db_config = DatabaseConfig(
+        weaviate_url=WEAVIATE_URL,
+        weaviate_api_key=WEAVIATE_API_KEY,
+        openai_api_key=OPENAI_API_KEY
     )
     
-    experiment = create_experiment(config)
-    experiment.run()
+    config = ExperimentConfig(
+        model_provider="openai",
+        model_name="gpt-4o-mini",
+        api_key=LM_API_KEY,
+        experiment_type="standard",
+        generate_with_models=False,
+        db_config=db_config,
+        queries_file="../../data/weaviate-gorilla.json",  # Updated path
+        output_dir="./results"
+    )
+    
+    print("\n=== Experiment Configuration ===")
+    print(f"Model Provider: {config.model_provider}")
+    print(f"Model Name: {config.model_name}")
+    print(f"Experiment Type: {config.experiment_type}")
+    print(f"Database URL: {config.db_config.weaviate_url}")
+    print(f"Queries File: {config.queries_file}")
+    print(f"Output Directory: {config.output_dir}")
+    print("===============================\n")
+    
+    # Create and run experiment
+    try:
+        experiment = create_experiment(config)
+        experiment.run()
+    except Exception as e:
+        print(f"\033[91mError running experiment: {str(e)}\033[0m")
+        import traceback
+        traceback.print_exc()

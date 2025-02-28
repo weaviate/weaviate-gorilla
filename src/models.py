@@ -152,18 +152,8 @@ class WeaviateCollectionConfig(BaseModel):
 class WeaviateCollections(BaseModel):
     weaviate_collections: list[WeaviateCollectionConfig]
 
-class WeaviateQueryWithSchema(BaseModel):
+class WeaviateQueryWithSchema(WeaviateQuery):
     database_schema: WeaviateCollections
-    corresponding_natural_language_query: str
-    target_collection: str
-    search_query: Optional[str]
-    integer_property_filter: Optional[IntPropertyFilter]
-    text_property_filter: Optional[TextPropertyFilter]
-    boolean_property_filter: Optional[BooleanPropertyFilter]
-    integer_property_aggregation: Optional[IntAggregation]
-    text_property_aggregation: Optional[TextAggregation]
-    boolean_property_aggregation: Optional[BooleanAggregation]
-    groupby_property: Optional[str]
 
 # Could imagine a more esoteric use case vs. explicit query to this
 # This `explanation_...` is a bad idea, better to just create dynamic models
