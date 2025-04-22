@@ -70,7 +70,7 @@ def import_code_files(code_collection):
     
     for root, _, files in os.walk(SRC_DIR):
         for file in files:
-            if file.startswith('.') or file.endswith('.pyc'):
+            if file.startswith('.') or file.endswith('.pyc') or file.endswith('.json') or file.endswith('.md'):
                 continue
                 
             file_path = os.path.join(root, file)
@@ -101,9 +101,8 @@ def import_code_files(code_collection):
 def generate_content_summaries(client):
     print("Generating content summaries for code files...")
     
-    create_summary = Operations.append_property(
+    create_summary = Operations.update_property(
         property_name="content_summary",
-        data_type=DataType.TEXT,
         view_properties=["content", "filename", "parent_folder_name"],
         instruction="Generate a comprehensive summary of this code file. Describe its purpose, main functions, and how it fits into the overall project structure. Focus on technical details that would be relevant for someone trying to understand the codebase."
     )
