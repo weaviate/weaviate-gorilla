@@ -2,6 +2,9 @@ import os
 import weaviate
 import weaviate.classes as wvc
 from pathlib import Path
+from weaviate.agents.transformation import TransformationAgent
+from weaviate.agents.classes import Operations
+from weaviate.collections.classes.config import DataType
 
 # Configuration
 import os
@@ -34,20 +37,28 @@ def setup_schema(client):
     print("Creating CodeFiles collection...")
     code_collection = client.collections.create(
         name=collection_name,
-        vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(),
+        vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_weaviate(),
         properties=[
             wvc.config.Property(
                 name="parent_folder_name",
                 data_type=wvc.config.DataType.TEXT,
+                skip_vectorization=True,
             ),
             wvc.config.Property(
                 name="filename",
                 data_type=wvc.config.DataType.TEXT,
+                skip_vectorization=True,
             ),
             wvc.config.Property(
                 name="content",
                 data_type=wvc.config.DataType.TEXT,
+                skip_vectorization=True,
             ),
+            wvc.config.Property(
+                name="content_summary",
+                data_type=wvc.config.DataType.TEXT,
+                skip_vectorization=False,
+            )
         ],
     )
     print("Successfully created CodeFiles collection")
@@ -87,10 +98,29 @@ def import_code_files(code_collection):
     
     print(f"\nImport completed. Total files imported: {total_files}")
 
+def generate_content_summaries(client):
+    print("Generating content summaries for code files...")
+    
+    create_summary = Operations.append_property(
+        property_name="content_summary",
+        data_type=DataType.TEXT,
+        view_properties=["content", "filename", "parent_folder_name"],
+        instruction="Generate a comprehensive summary of this code file. Describe its purpose, main functions, and how it fits into the overall project structure. Focus on technical details that would be relevant for someone trying to understand the codebase."
+    )
+    
+    agent = TransformationAgent(
+        client=client,
+        collection="CodeFiles",
+        operations=[create_summary],
+    )
+    
+    response = agent.update_all()
+
 def main():
     client = connect_to_weaviate()
     code_collection = setup_schema(client)
     import_code_files(code_collection)
+    generate_content_summaries(client)
     client.close()
 
 if __name__ == "__main__":
