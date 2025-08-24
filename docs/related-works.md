@@ -9,6 +9,7 @@
 6. Agent Workflow Memory. Zora Zhiruo Wang, Jiayuan Mao, Daniel Fried, Graham Neubig. 2024. [Arxiv Link](https://arxiv.org/abs/2409.07429)
 7. API-Bank: A Comprehensive Benchmark for Tool-Augmented LLMs. 2023. [Arxiv Link](https://arxiv.org/pdf/2304.08244)
 8. ToolQA: A Dataset for LLM Question Answering with External Tools. Yuchen Zhuang et al. 2023. [Arxiv Link](https://arxiv.org/abs/2306.13304)
+9. MCP-Universe: Benchmarking Large Language Models with Real-World Model Context Protocol Servers. Ziyang Luo, Zhiqi Shen, Wenzhuo Yang, Zirui Zhao, Prathyusha Jwalapuram, Amrita Saha, Doyen Sahoo, Silvia Savarese, Caiming Xiong, Junnan Li. [Arxiv Link](https://arxiv.org/abs/2508.14704)
 
 ## Tool Description Optimization
 9. AvaTaR: Optimizing LLM Agents for Tool-Assisted Knowledge Retrieval. Shirley Wu, Shiyu Zhao, Qian Huang, Kexin Huang, Michihiro Yasunaga, Kaidi Cao, Vassilis N. Ioannidis, Karthik Subbian, Jure Leskovec, James Zou. 2024. [Arxiv Link](https://arxiv.org/pdf/2406.11200)
