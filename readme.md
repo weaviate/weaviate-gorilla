@@ -32,6 +32,8 @@ The following image depicts synthetic queries from the BIRD dataset, one of the 
 
 ## News 🗞️
 
+🎥 Querying Databases with Function Calling at the Optimized AI Conference - [link](https://www.youtube.com/watch?v=6ft0egpG0bE)
+
 🔬 Querying Databases with Function Calling on ArXiv - [link](https://arxiv.org/abs/2502.00032)
 
 🎙️ Shishir Patil and Tianjun Zhang on the Weaviate Podcast - [link](https://www.youtube.com/watch?v=HUtYOLX7HZ4)
